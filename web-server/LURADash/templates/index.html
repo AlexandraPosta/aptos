@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block head %}
+LURA Dashboard
+{% endblock %}
+
+
+{% block body %}
+<h1>LURA Dashboard</h1>
+
+<div id="content">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Rocket Name</th>
+                <th>Motor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Wind speed</th>
+                <th>Wind direction</th>   
+                <th>Active Control</th>
+                <th>Comments</th>   
+            </tr>
+        </thead>
+        {% for flight in flights %}
+        <tr>
+            <td> {{ flight[0] }} </td>
+            <td> {{ flight[1] }} </td>
+            <td> {{ flight[2] }} </td>
+            <td> {{ flight[3] }} </td>
+            <td> {{ flight[4] }} </td>
+            <td> {{ flight[5] }} </td>
+            <td> {{ flight[6] }} </td>
+            <td> {{ flight[7] }} </td>
+            <td> {{ flight[8] }} </td>
+            <td> {{ flight[9] }} </td>
+            <td> {{ flight[10]}}</td>    
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
