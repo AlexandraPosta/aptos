@@ -8,8 +8,9 @@ To set up the webserver:
 - install python 3.6+
 - setup virtual environment ```pip install virtualenv``` 
 - create environment ```virtualenv env```
-- activate ```cd env\Scripts\``` then ```.\activate```
+- activate ```.\env\Scripts\activate```
 - ```pip install flask```
+- ```pip install sqlalchemy```
 - ```pip install Flask-SQLAlchemy```
 - ```pip install mysql-connector-python```
 
