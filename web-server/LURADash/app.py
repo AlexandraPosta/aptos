@@ -14,12 +14,29 @@ app = Flask(__name__)
 
 
 @app.route('/', methods=['GET', 'POST'])
+@app.route('/flight-data', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         pass
     else:
         flights = get_flight()
-        return render_template("index.html", flights=flights)
+        return render_template("flight.html", flights=flights)
+    
+
+@app.route('/telemetry', methods=['GET', 'POST'])
+def telemetry():
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template("telemetry.html")
+    
+
+@app.route('/database', methods=['GET', 'POST'])
+def database():
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template("database.html")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<!-- Content panels 
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet">-->
+<script type="text/javascript" src="https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js"></script>
+
+<div class="panel-container">
+    <header class="main-header"></header>
+
+    <custom-card title="Launch Vehicle" class="item1" heigth="80%">
+        <div>
+            <div style="margin: 5px">Name: </div>
+            <div style="margin: 5px">Motor: </div>
+            <div>
+                <model-viewer 
+                    src="/static/3d/aptos.glb" 
+                    ios-src="/static/3d/aptos.glb" 
+                    alt="Aptos" 
+                    camera-controls>
+                </model-viewer>
+            </div>
+        </div>
+    </custom-card>
+    <custom-card title="Satellite view" class="item2" width="300px">
+        <div id="map" class="map"></div>
+    </custom-card>
+    <custom-card title="Altitude vs Time" class="item3">
+        <div>This is the content of the card.</div>
+    </custom-card>
+    <custom-card title="Velocity and Acceleration vs Time" class="item4">
+        <div>This is the content of the card.</div>
+    </custom-card>
+    <custom-card title="Vertical vs Actual flight" class="item5">
+        <div>This is the content of the card.</div>
+    </custom-card>
+    <custom-card title="Stats" class="item6">
+        <div>
+            <custom-card title="Pressure">
+                <div>This is the content of the card.</div>
+            </custom-card>
+            <custom-card title="Temperature">
+                <div>This is the content of the card.</div>
+            </custom-card>
+            <custom-card title="Number of Satellites">
+                <div>This is the content of the card.</div>
+            </custom-card>
+        </div>
+    </custom-card>
+    <custom-card title="Logs" class="item7">
+        <div>This is the content of the card.</div>
+    </custom-card>
+    <custom-card title="Flight Stage" class="item8" height="20%">
+        <div class="timeline-container">
+            <div class="timeline-bar">
+                <div class="timeline-milestone" style="left: 10%;">Liftoff</div>
+                <div class="timeline-milestone" style="left: 30%;">Apogee</div>
+                <div class="timeline-milestone" style="left: 40%;">Drogue Deployment</div>
+                <div class="timeline-milestone" style="left: 60%;">Main Deployment</div>
+                <div class="timeline-milestone" style="left: 90%;">Touchdown</div>
+            </div>
+        </div>
+    </custom-card>
+</div>
+{% endblock %}
