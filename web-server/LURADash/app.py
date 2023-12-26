@@ -24,6 +24,7 @@ def index():
 
 if __name__ == "__main__":
     from database import db, setup_db_model
+    
     # SqlAlchemy Database Configuration With Mysql
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin''@localhost/aptosdb'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -36,4 +37,4 @@ if __name__ == "__main__":
     db.session.add(test_1)
     db.session.commit() 
 
-    app.run(debug=False) # VSCode debug does not work otherwise
+    app.run(debug=True) # VSCode debug does not work otherwise
