@@ -10,8 +10,12 @@
 
     <custom-card title="Launch Vehicle" class="item1" heigth="80%">
         <div>
-            <div style="margin: 5px">Name: </div>
-            <div style="margin: 5px">Motor: </div>
+            <div style="margin: 10px">Name: </div>
+            <div style="margin: 10px">Motor: </div>
+            <div style="margin: 10px">Date: </div>
+            <div style="margin: 10px">Location: </div>
+            <div style="margin: 10px">Wind direction: </div>
+            <div style="margin: 10px">Wind speed: </div>
             <div>
                 <model-viewer 
                     src="/static/3d/aptos.glb" 
@@ -19,38 +23,53 @@
                     alt="Aptos" 
                     camera-controls>
                 </model-viewer>
+                <div class="axis-overlay">
+                    Coordinate System
+                </div>
             </div>
         </div>
     </custom-card>
-    <custom-card title="Satellite view" class="item2" width="300px">
-        <div id="map" class="map"></div>
-    </custom-card>
     <custom-card title="Altitude vs Time" class="item3">
-        <div>This is the content of the card.</div>
+        <div id="altChart" style="width:100%;max-width:500px;"></div>
     </custom-card>
     <custom-card title="Velocity and Acceleration vs Time" class="item4">
-        <div>This is the content of the card.</div>
+        <div id="velChart" style="width:100%;max-width:500px;"></div>
     </custom-card>
     <custom-card title="Vertical vs Actual flight" class="item5">
-        <div>This is the content of the card.</div>
+        <div id="controlChart" style="width:100%;max-width:500px;"></div>
     </custom-card>
     <custom-card title="Stats" class="item6">
-        <div>
-            <custom-card title="Pressure">
-                <div>This is the content of the card.</div>
+        <div class="stats-container">
+            <custom-card title="Pressure" class="stat-item0" padding="5px">
+                <div><span id="pressure"></span> Pa</div>
             </custom-card>
-            <custom-card title="Temperature">
-                <div>This is the content of the card.</div>
+            <custom-card title="Temperature" class="stat-item1" padding="5px">
+                <div><span id="temperature"></span> °C</div>
             </custom-card>
-            <custom-card title="Number of Satellites">
-                <div>This is the content of the card.</div>
+            <custom-card title="Humidity" class="stat-item2" padding="5px">
+                <div><span id="humidity"></span> g.m-3</div>
+            </custom-card>
+            <custom-card title="GNSS Satellites" class="stat-item3" padding="5px">
+                <div><span id="sattelites"></span></div>
+            </custom-card>
+            <custom-card title="Velocity" class="stat-item4" padding="5px">
+                <div><span id="velocity"></span> m/s</div>
+            </custom-card>
+            <custom-card title="Acceleration" class="stat-item5" padding="5px">
+                <div><span id="acceleration"></span> m/s^2</div>
+            </custom-card>
+            <custom-card title="Flight Stage" class="stat-item6" padding="5px">
+                <div><span id="flight-stage"></span></div>
+            </custom-card>
+            <custom-card title="Battery" class="stat-item7" padding="5px">
+                <div><span id="battery"></span> V</div>
+            </custom-card>
+            <custom-card title="Errors" class="stat-item8" padding="5px">
+                <div><span id="nr-errors"></span></div>
             </custom-card>
         </div>
     </custom-card>
-    <custom-card title="Logs" class="item7">
-        <div>This is the content of the card.</div>
-    </custom-card>
-    <custom-card title="Flight Stage" class="item8" height="20%">
+    <custom-card title="Flight Stage" class="item7" height="20%">
         <div class="timeline-container">
             <div class="timeline-bar">
                 <div class="timeline-milestone" style="left: 10%;">Liftoff</div>
@@ -60,6 +79,9 @@
                 <div class="timeline-milestone" style="left: 90%;">Touchdown</div>
             </div>
         </div>
+    </custom-card>
+    <custom-card title="Satellite view" class="item2">
+        <div id="map" class="map" height="500px"></div>
     </custom-card>
 </div>
 {% endblock %}

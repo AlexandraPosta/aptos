@@ -24,6 +24,7 @@ class CustomCard extends HTMLElement {
     const title = this.getAttribute('title') || 'Default Title';
     const width = this.getAttribute('width') || 'auto';
     const height = this.getAttribute('height') || 'auto';
+    const padding = this.getAttribute('padding') || '15px';
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -36,11 +37,11 @@ class CustomCard extends HTMLElement {
           border-radius: 5px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
           color: white;
-          padding: 10px;
+          padding: ${padding};
         }
         .card-header {
           font-size: 1em;
-          margin-bottom: 15px;
+          margin-bottom: 10px;
         }
         .card-content {
           font-size: 0.8em;
