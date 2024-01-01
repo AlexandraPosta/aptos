@@ -122,26 +122,10 @@ window.onload = function() {
         t: 0,  
         pad: 0  
       },
-      legend: {
-        font: {
-            color: 'white'
-        },
-      },
+      
       showlegend: true,
-      plot_bgcolor: "#f3f3f3", 
-      paper_bgcolor: "#232429",
-      xaxis: {
-        gridcolor: "#bdbdbd", 
-        tickfont: {
-          color: 'white'
-        },
-      },
-      yaxis: {
-        gridcolor: "#bdbdbd",
-        tickfont: {
-          color: 'white'
-        },
-      } 
+      plot_bgcolor: 'white', 
+      paper_bgcolor: 'white',
     };
 
     const layout_3d = {

@@ -1,0 +1,13 @@
+{% extends 'flight.html' %}
+
+{% block header %}
+<div class="header-container">
+    <input id="search-telemetry"
+           onkeyup="search_telemerty()"
+           type="text" name="search"
+           placeholder="Discover connection...">
+    <button id="run-telemetry" onclick="play_telemetry()">Run</button>
+    <button id="stop-telemetry" onclick="pause_telemetry()">Pause</button>
+    <button id="report-telemetry" onclick="report_telemetry()">Generate Report</button>
+</div>
+{% endblock %}

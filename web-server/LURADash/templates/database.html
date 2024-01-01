@@ -1,18 +1,17 @@
 {% extends 'base.html' %}
 
-{% block head %}
-LURA Dashboard
-{% endblock %}
-
-
 {% block main %}
 <div>
-    <header class="main-header">
-        <!-- Header content like tabs or buttons -->
-    </header>
-    <!-- Content panels -->
-    <div class="panel-container">
-        This is a placeholder for the database page.
+    <div class="header-container">
+        <input id="db-search"
+               onkeyup="search_db()"
+               type="text" name="search"
+               placeholder="Filter database...">
+        <button id="db-execute" onclick="db_execute()">Execute</button>
+    </div>
+
+    <div class="db-container">
+        <table id="db-table"></table>
     </div>
 </div>
 {% endblock %}

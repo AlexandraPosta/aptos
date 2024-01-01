@@ -1,21 +1,16 @@
 {% extends 'base.html' %}
 
 {% block main %}
-<!-- Content panels 
-<link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet">-->
-<script type="text/javascript" src="https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js"></script>
-
+{% block header %}{% endblock %}
 <div class="panel-container">
-    <header class="main-header"></header>
-
     <custom-card title="Launch Vehicle" class="item1" heigth="80%">
         <div>
-            <div style="margin: 10px">Name: </div>
-            <div style="margin: 10px">Motor: </div>
-            <div style="margin: 10px">Date: </div>
-            <div style="margin: 10px">Location: </div>
-            <div style="margin: 10px">Wind direction: </div>
-            <div style="margin: 10px">Wind speed: </div>
+            <div style="margin: 10px">Name: <span id="rocket-name"></span></div>
+            <div style="margin: 10px">Motor: <span id="motor-name"></span></div>
+            <div style="margin: 10px">Date: <span id="date"></span></div>
+            <div style="margin: 10px">Location: <span id="location"></span></div>
+            <div style="margin: 10px">Wind direction: <span id="wind-direction"></span></div>
+            <div style="margin: 10px">Wind speed: <span id="wind-speed"></span></div>
             <div>
                 <model-viewer 
                     src="/static/3d/aptos.glb" 
@@ -24,7 +19,7 @@
                     camera-controls>
                 </model-viewer>
                 <div class="axis-overlay">
-                    Coordinate System
+                    <img src="/static/assets/coordinates.png" alt="coordinates" width="30%">
                 </div>
             </div>
         </div>
@@ -73,10 +68,10 @@
         <div class="timeline-container">
             <div class="timeline-bar">
                 <div class="timeline-milestone" style="left: 10%;">Liftoff</div>
-                <div class="timeline-milestone" style="left: 30%;">Apogee</div>
-                <div class="timeline-milestone" style="left: 40%;">Drogue Deployment</div>
-                <div class="timeline-milestone" style="left: 60%;">Main Deployment</div>
-                <div class="timeline-milestone" style="left: 90%;">Touchdown</div>
+                <div class="timeline-milestone" style="left: 40%;">Apogee</div>
+                <div class="timeline-milestone" style="left: 50%;">Drogue</div>
+                <div class="timeline-milestone" style="left: 60%;">Main</div>
+                <div class="timeline-milestone" style="left: 90%;">Down</div>
             </div>
         </div>
     </custom-card>

@@ -33,14 +33,14 @@ class CustomCard extends HTMLElement {
           min-height: ${height};
         }
         .card {
-          background: #232429;
+          background: white;
           border-radius: 5px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-          color: white;
           padding: ${padding};
         }
         .card-header {
           font-size: 1em;
+          font-weight: bold;
           margin-bottom: 10px;
         }
         .card-content {

@@ -84,15 +84,15 @@ def index():
     if request.method == 'POST':
         pass
     else:
-        return render_template("flight.html")
+        return render_template("flight-data.html")
     
 
-@app.route('/telemetry', methods=['GET', 'POST'])
+@app.route('/telemetry-data', methods=['GET', 'POST'])
 def telemetry():
     if request.method == 'POST':
         pass
     else:
-        return render_template("telemetry.html")
+        return render_template("telemetry-data.html")
     
 
 @app.route('/database', methods=['GET', 'POST'])

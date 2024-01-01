@@ -3,17 +3,18 @@ body, html {
     padding: 0;
     height: 100%;
     width: 100%;
+    font-family: Arial;
 }
 
 .dashboard {
     display: flex;
-    background-color: #161616; /* Dark main content color */
+    background-color: #d1e0e0;
     background-size: 100% 100%;
     z-index: 0;
 }
 
 .sidebar {
-    background-color: #232429;/* Dark sidebar color */
+    background-color: white;
     width: 50px;
     height: 100vh;
     display: flex; /* Use Flexbox for vertical alignment */
@@ -26,28 +27,26 @@ body, html {
 .sidebar .tab-icon {
     margin: 10px;
     text-decoration: none;
-    color: #868686;
+    color: gray;
     display: block;
     text-align: center;
 }
 
 .tab-icon:hover {
-    color: white;
+    color: rgb(147, 18, 18);
 }
 
 .main-content {
     margin-left: 50px;
-    flex-grow: 1;
-    background-color: #161616; /* Dark main content color */
+    flex-grow: 1;/
 }
 
-.main-header {
+.header-container {
     padding: 10px;
-    background-color: #161616; 
-    top: 0;
+    padding-bottom: 0;
+    font-family: Arial;
 }
 
-.item0 { grid-area: header; }
 .item1 { grid-area: launch-vehicle; }
 .item2 { grid-area: satellite-view; }
 .item3 { grid-area: alt-vs-time; }
@@ -59,7 +58,6 @@ body, html {
 .panel-container {
     display: grid;
     grid-template-areas:
-        'header header header'
         'launch-vehicle alt-vs-time control-position'
         'launch-vehicle va-vs-time stats'
         'launch-vehicle va-vs-time stats'
@@ -74,11 +72,13 @@ body, html {
 model-viewer {
     width: 100%;
     height: 400px;
+    padding-bottom: 22px;
 }
 
 .axis-overlay {
     z-index: 2;
-    padding: 4px;
+    position: absolute;
+    bottom: 40px;
 }
 
 .stat-item0 { grid-area: stat-pressure; }
@@ -101,9 +101,9 @@ model-viewer {
 }
 
 .stats-container > custom-card > div {
-    background-color: #232429;
+    background-color: white;
     padding: 6.5px;
-    color: white;
+    color: black;
     font-size: 2.5em;
     text-align: center;
 }
@@ -120,30 +120,27 @@ model-viewer {
 
 .timeline-bar {
     position: relative;
-    height: 5px;
-    background-color: #424242;
+    height: 8px;
+    background-color: #d1e0e0;
     border-radius: 10px;
 }
 
 .timeline-milestone {
     position: absolute;
     font-size: 1em;
-    color: #ffffff;
-    bottom: -20px; 
-    transform: translateX(20%);
+    top: 15px;
 }
 
 /* Customize these pseudo-elements to create the milestone markers */
 .timeline-milestone::before {
     content: '';
     position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateY(60%);
+    transform: translateX(15%);
+    top: -25px;
     width: 10px;
     height: 10px;
     background-color: #BC0000;
-    border: 5px solid #424242; 
+    border: 8px solid #d1e0e0; 
     border-radius: 50%;
 }
 

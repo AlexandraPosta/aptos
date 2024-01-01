@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="module" src="https://unpkg.com/@google/model-viewer"></script>
+    <script type="text/javascript" src="https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/custom-card.js') }}"></script>
   </head>
@@ -17,7 +18,7 @@
       <aside class="sidebar">
           <img src="/static/assets/logo.png" class="tab-icon" style="width:30px; height:38px">
           <a href=flight-data class="tab-icon fa-solid fa-rocket"></a>
-          <a href=telemetry class="tab-icon fa-solid fa-globe"></a>
+          <a href=telemetry-data class="tab-icon fa-solid fa-globe"></a>
           <a href=database class="tab-icon fa-solid fa-database"></a>
       </aside>
       <main class="main-content">

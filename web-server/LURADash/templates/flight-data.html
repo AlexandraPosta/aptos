@@ -1,0 +1,15 @@
+{% extends 'flight.html' %}
+
+{% block header %}
+<div class="header-container">
+    <input id="flight-search"
+           onkeyup="search_flight()"
+           type="text" name="search"
+           placeholder="Search fligh in database...">
+    <button id="play-flight" onclick="play_flight()">Run from beginning</button>
+    <button id="display-flight" onclick="display_flight()">Display all</button>
+    <button id="pause-flight" onclick="pause_flight()">Pause</button>
+    <button id="clear-flight" onclick="clear_flight()">Clear</button>
+    <button id="report-flight" onclick="report_flight()">Generate Report</button>
+</div>
+{% endblock %}
