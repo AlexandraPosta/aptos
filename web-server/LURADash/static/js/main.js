@@ -1,6 +1,3 @@
-
-
-
 // Update Dashboard Charts
 function updateLaunch(chart_data) {
   // TODO
