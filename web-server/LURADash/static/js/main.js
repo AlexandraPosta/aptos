@@ -1,3 +1,6 @@
+
+
+
 // Update Dashboard Charts
 function updateLaunch(chart_data) {
   // TODO
@@ -83,14 +86,15 @@ window.onload = function() {
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/satellite-v9', // Mapbox satellite style
-      center: [1.5491, 53.8008], 
-      zoom: 3, // Starting zoom level
+      center: [0, 53], 
+      zoom: 5, // Starting zoom level
       pitch: 45, // Angle for 3D perspective
       bearing: -10 // Rotation angle around the map center
     });
 
     map.on('load', function () {
         // Add control
+        map.resize();
     });
 
     var trace_2d_0 = {
