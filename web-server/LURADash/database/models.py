@@ -8,8 +8,7 @@ import sys
 from sqlalchemy import Column
 from sqlalchemy.types import Integer, Float, String, Date, Time, Text, BINARY
 
-from database import db
-
+from database.dbconn import db
 
 def unicode_to_str(value):
     if sys.version_info[0] == 2:
@@ -52,7 +51,6 @@ class Flight(db.Model):
         self.active_control = active_control
         self.comments = comments
 
-
     def __repr__(self):
         return unicode_to_str("<Flight: id_flight=%s rocket_name='%s' date_of_launch='%s'>" % 
                               (self.id_flight, self.rocket_name, self.date_of_launch))
@@ -77,8 +75,14 @@ class FlightData():
     acceleration_x = Column(Float)
     acceleration_y = Column(Float)
     acceleration_z = Column(Float)
+    orientation_x = Column(Float)
+    orientation_y = Column(Float)
+    orientation_z = Column(Float)
     temperature = Column(Float)
     humidity = Column(Float)
+    battery = Column(Float)
+    sattelites = Column(Integer)
+    errors = Column(Text())
     servo_1 = Column(Integer, default=0)
     servo_2 = Column(Integer, default=0)
     servo_3 = Column(Integer, default=0)
@@ -97,8 +101,14 @@ class FlightData():
                  acceleration_x=None,
                  acceleration_y=None,
                  acceleration_z=None,
+                 orientation_x=None,
+                 orientation_y=None,
+                 orientation_z=None,
                  temperature=None,
                  humidity=None,
+                 battery=None,
+                 sattelites=None,
+                 errors=None,
                  servo_1=0,
                  servo_2=0,
                  servo_3=0,
@@ -115,8 +125,14 @@ class FlightData():
         self.acceleration_x = acceleration_x
         self.acceleration_y = acceleration_y
         self.acceleration_z = acceleration_z
+        self.orientation_x = orientation_x
+        self.orientation_y = orientation_y
+        self.orientation_z = orientation_z
         self.temperature = temperature
         self.humidity = humidity
+        self.battery = battery
+        self.sattelites = sattelites
+        self.errors = errors
         self.servo_1 = servo_1
         self.servo_2 = servo_2
         self.servo_3 = servo_3
@@ -125,7 +141,6 @@ class FlightData():
     def __repr__(self):
         return unicode_to_str("<Flight Data: id_flight_data=%s id_flight='%s' timestamp='%s'>" % 
                               (self.id_flight_data, self.id_flight, self.timestamp))
-
 
 
 class ControlCommand:
@@ -156,8 +171,6 @@ class ControlCommand:
         self.command_servo_3 = command_servo_3
         self.command_servo_4 = command_servo_4
 
-
     def __repr__(self):
         return unicode_to_str("<Control Command: id_control_commands=%s id_flight='%s' timestamp='%s'>" % 
                               (self.id_control_commands, self.id_flight, self.timestamp))
-

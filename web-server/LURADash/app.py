@@ -5,31 +5,26 @@
 '''
 
 from flask import Flask, render_template, request, jsonify, after_this_request
-from dbconn import get_flight
-from datetime import date, datetime
 import math
 import random
 
 # Create the Flask app
 app = Flask(__name__)
 
-
 def get_data():
     # Parameters for the simulation
     max_altitude = 13000    # Max altitude in meters (13 km)
     duration = 120          # Total duration of flight in seconds
     time_step = 5           # Time step in seconds
-
-    # Simulating altitude, velocity, and acceleration
     time_labels = []
     altitude_values = []
     velocity_values = []
     acceleration_values = []
 
-    # Initial coordinates (example)
-    initial_latitude = 28.5721  # Example latitude
-    initial_longitude = -80.6480  # Example longitude
-    initial_temperature = 15  # Example temperature
+    # Initial data
+    initial_latitude = 28.5721
+    initial_longitude = -80.6480 
+    initial_temperature = 15
 
     longitude_values = [initial_latitude]
     latitude_values = [initial_longitude]
@@ -48,7 +43,8 @@ def get_data():
         longitude = longitude_values[j] + random.uniform(0, -0.00001)
         temperature = temperature_values[j] - random.uniform(0, 0.5)
         j += 1
-
+        
+        # Appending values to the lists
         time_labels.append(f"{time // 60:02d}:{time % 60:02d}.000")
         altitude_values.append(altitude)
         velocity_values.append(velocity)
@@ -73,16 +69,13 @@ def get_data():
         'error': ['Test_1', 'Test_2'],
     })
 
-
 @app.route('/data', methods=['GET'])
 def hello():
     @after_this_request
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
-
     return get_data()
-
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/flight-data', methods=['GET', 'POST'])
@@ -91,7 +84,6 @@ def index():
         pass
     else:
         return render_template("flight-data.html")
-    
 
 @app.route('/telemetry-data', methods=['GET', 'POST'])
 def telemetry():
@@ -99,7 +91,6 @@ def telemetry():
         pass
     else:
         return render_template("telemetry-data.html")
-    
 
 @app.route('/database', methods=['GET', 'POST'])
 def database():
@@ -108,9 +99,8 @@ def database():
     else:
         return render_template("database.html")
 
-
 if __name__ == "__main__":
-    from database import db, setup_db_model
+    from database.dbconn import db, setup_db_model
     
     # SqlAlchemy Database Configuration With Mysql
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin''@localhost/aptosdb'
@@ -119,9 +109,8 @@ if __name__ == "__main__":
     app.app_context().push()
     setup_db_model()
 
-    from models import Flight
-    test_1 = Flight("rocket_3", "motor_3", date.today(), datetime.now().strftime("%H:%M:%S"), "location_3", 0, 0, 1, "Comment")	
-    db.session.add(test_1)
-    db.session.commit() 
+    from database.fakedata import generate_fake_entry
+    generate_fake_entry()
 
+    # Run the app
     app.run(debug=False) # VSCode debug does not work otherwise
