@@ -6,7 +6,7 @@ function updateLaunch(chart_data) {
 function updateAlt(chart_data) {
   var update = {
     x:  [chart_data.labels],
-    y:  [chart_data.altitude]
+    y:  [chart_data.altitude],
   };
   Plotly.extendTraces('altChart', update, [0], chart_data.labels.length);
 }
@@ -14,11 +14,11 @@ function updateAlt(chart_data) {
 function updateVelocity(chart_data) {
   var update_0 = {
     x:  [chart_data.labels],
-    y:  [chart_data.velocity]
+    y:  [chart_data.velocity],
   };
   var update_1 = {
     x:  [chart_data.labels],
-    y:  [chart_data.acceleration]
+    y:  [chart_data.acceleration],
   };
 
   Plotly.extendTraces('velChart', update_0, [0], chart_data.labels.length);
@@ -30,18 +30,25 @@ function updateMap(chart_data) {
 }
 
 function updateControl(chart_data) {
-  var update_0 = {
+  var update_0 = { // ideal
+    x: [Array(chart_data.longitude.length).fill(chart_data.longitude[0])],
+    y: [Array(chart_data.latitude.length).fill(chart_data.latitude[0])],
+    z: [chart_data.altitude]
+  };
+
+  var update_1 = { // real
     x:  [chart_data.longitude],
     y:  [chart_data.latitude],
     z:  [chart_data.altitude]
   };
 
   Plotly.extendTraces('controlChart', update_0, [0], chart_data.labels.length);
+  Plotly.extendTraces('controlChart', update_1, [1], chart_data.labels.length);
 }
 
 function updateStats(chart_data) {
   document.getElementById('pressure').textContent = chart_data.pressure;
-  document.getElementById('temperature').textContent = chart_data.temperature;
+  document.getElementById('temperature').textContent = chart_data.temperature[0];
   document.getElementById('humidity').textContent = chart_data.humidity;
   document.getElementById('sattelites').textContent = chart_data.sattelites;
   document.getElementById('velocity').textContent = chart_data.velocity[0];
@@ -52,7 +59,82 @@ function updateStats(chart_data) {
 }
 
 function updateFlightStages(chart_data) {
+  // TODO
 }
+
+function get_graph(graph_name, height, width, axis_name, traces_name) {
+  var b = (axis_name.length == 2) ? 80 : 10; // 2D or 3D
+  var traces =[];
+
+  traces_name.forEach(trace_name => {
+    if (axis_name.length == 2) {
+      traces.push({
+        x: [],
+        y: [],
+        type: 'lines+markers',
+        name: trace_name
+      });
+    }
+    else {
+      traces.push({
+        x: [],
+        y: [],
+        z: [],
+        type: 'scatter3d',
+        name: trace_name
+      });
+    }
+  });
+
+  var layout = {
+    width: width,  
+    height: height,
+    margin: {
+      l: 50,  
+      r: 0, 
+      b: b,  
+      t: 0,  
+      pad: 0  
+    },
+    
+    showlegend: true,
+    plot_bgcolor: 'white', 
+    paper_bgcolor: 'white',
+
+    xaxis: { 
+      title: { 
+        text: axis_name[0],
+        font: {
+          family: 'Arial'
+        } 
+      },
+      tickfont: {
+        size: 10 
+      },
+    },
+    yaxis: { 
+      title: { 
+        text: axis_name[1],
+        font: {
+          family: 'Arial'
+        }  
+      },
+      tickfont: {
+        size: 10 
+      },
+    },
+  };
+
+  if (axis_name.length == 3) {
+    layout.scene = { 
+      xaxis:{title: axis_name[2]},
+      yaxis:{title: axis_name[1]},
+      zaxis:{title: axis_name[0]},
+    };
+  }
+
+  Plotly.newPlot(graph_name, traces, layout);
+}  
 
 
 // Fetch Dashboard Data
@@ -75,7 +157,6 @@ async function fetchData() {
   }
 }
 
-
 // Mount Charts and Event Triggers
 window.onload = function() {
     mapboxgl.accessToken = 'pk.eyJ1IjoiYWxleHBvc3RhIiwiYSI6ImNscW1sdzFyMDJjNDUyaW8weW9kc2luaWQifQ.bQ-1vhGoRIbowpy5_gNNFw';
@@ -94,57 +175,23 @@ window.onload = function() {
         map.resize();
     });
 
-    var trace_2d_0 = {
-      x: [],
-      y: [],
-      type: 'lines+markers'
-    };
-
-    var trace_2d_1 = {
-      x: [],
-      y: [],
-      type: 'lines+markers'
-    };
-
-    var trace_3d = {
-      x: [],
-      y: [],
-      z: [],
-      type: 'scatter3d'
-    };
-
-    const layout_2d = {
-      width: 580,  
-      height: 250,
-      margin: {
-        l: 30,  
-        r: 0, 
-        b: 50,  
-        t: 0,  
-        pad: 0  
-      },
-      
-      showlegend: true,
-      plot_bgcolor: 'white', 
-      paper_bgcolor: 'white',
-    };
-
-    const layout_3d = {
-      width: 580,  
-      height: 250,
-      margin: {
-        l: 50,  
-        r: 0, 
-        b: 50,  
-        t: 0,
-      },
-      showlegend: true,
-      paper_bgcolor: 'white',
-    };
-
-    Plotly.newPlot('altChart', [trace_2d_0], layout_2d);
-    Plotly.newPlot('velChart', [trace_2d_0, trace_2d_1], layout_2d);
-    Plotly.newPlot('controlChart', [trace_3d], layout_3d);
+    get_graph('altChart', 250, window.innerWidth * 0.35,  ['time', 'altitude'], ['altitude']);
+    get_graph('velChart', 250, window.innerWidth * 0.35, ['time', 'parameters'], ['v', 'acc']);
+    get_graph('controlChart', 250, window.innerWidth * 0.35, ['altitude', 'latitude', 'longitude'], ['ideal', 'real']);
 
     fetchData();
+};
+
+window.onresize = function() {
+  Plotly.relayout('altChart', {
+      'width': window.innerWidth * 0.35,
+  });
+
+  Plotly.relayout('velChart', {
+    'width': window.innerWidth * 0.35,
+  });
+
+  Plotly.relayout('controlChart', {
+    'width': window.innerWidth * 0.35,
+  });
 };

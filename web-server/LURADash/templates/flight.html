@@ -11,7 +11,7 @@
             <div style="margin: 10px">Location: <span id="location"></span></div>
             <div style="margin: 10px">Wind direction: <span id="wind-direction"></span></div>
             <div style="margin: 10px">Wind speed: <span id="wind-speed"></span></div>
-            <div>
+            <div style="position: relative;">
                 <model-viewer 
                     src="/static/3d/aptos.glb" 
                     ios-src="/static/3d/aptos.glb" 
@@ -25,13 +25,13 @@
         </div>
     </custom-card>
     <custom-card title="Altitude vs Time" class="item3">
-        <div id="altChart" style="width:100%;max-width:500px;"></div>
+        <div id="altChart"></div>
     </custom-card>
     <custom-card title="Velocity and Acceleration vs Time" class="item4">
-        <div id="velChart" style="width:100%;max-width:500px;"></div>
+        <div id="velChart"></div>
     </custom-card>
     <custom-card title="Vertical vs Actual flight" class="item5">
-        <div id="controlChart" style="width:100%;max-width:500px;"></div>
+        <div id="controlChart"></div>
     </custom-card>
     <custom-card title="Stats" class="item6">
         <div class="stats-container">

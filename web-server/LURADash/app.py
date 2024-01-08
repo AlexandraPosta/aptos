@@ -18,7 +18,7 @@ def get_data():
     # Parameters for the simulation
     max_altitude = 13000    # Max altitude in meters (13 km)
     duration = 120          # Total duration of flight in seconds
-    time_step = 10          # Time step in seconds
+    time_step = 5           # Time step in seconds
 
     # Simulating altitude, velocity, and acceleration
     time_labels = []
@@ -26,12 +26,15 @@ def get_data():
     velocity_values = []
     acceleration_values = []
 
-    longitude_values = []
-    latitude_values = []
-
     # Initial coordinates (example)
     initial_latitude = 28.5721  # Example latitude
     initial_longitude = -80.6480  # Example longitude
+    initial_temperature = 15  # Example temperature
+
+    longitude_values = [initial_latitude]
+    latitude_values = [initial_longitude]
+    temperature_values = [initial_temperature]
+    j = 0
 
     for i in range(0, duration + time_step, time_step):
         time = i
@@ -41,8 +44,10 @@ def get_data():
         acceleration = -((math.pi ** 2) * max_altitude / (2 * duration ** 2)) * math.sin(math.pi * time / (2 * duration))
 
         # Simplified simulation for longitude and latitude
-        latitude = initial_latitude + random.uniform(0, 0.0002)
-        longitude = initial_longitude + random.uniform(0, 0.0002)
+        latitude = latitude_values[j] - random.uniform(0, -0.00001)
+        longitude = longitude_values[j] + random.uniform(0, -0.00001)
+        temperature = temperature_values[j] - random.uniform(0, 0.5)
+        j += 1
 
         time_labels.append(f"{time // 60:02d}:{time % 60:02d}.000")
         altitude_values.append(altitude)
@@ -50,6 +55,7 @@ def get_data():
         acceleration_values.append(acceleration)
         longitude_values.append(longitude)
         latitude_values.append(latitude)
+        temperature_values.append(temperature)
 
     return jsonify({
         'labels': time_labels,
@@ -57,14 +63,14 @@ def get_data():
         'velocity': velocity_values,
         'acceleration': acceleration_values,
         'pressure': 0,
-        'temperature': 0,
+        'temperature': temperature_values,
         'humidity': 0,
         'sattelites': '0',
         'flight_stage': 'On Pad',
         'latitude': latitude_values,
         'longitude': longitude_values,
         'battery': 0,
-        'error': [],
+        'error': ['Test_1', 'Test_2'],
     })
 
 
@@ -118,4 +124,4 @@ if __name__ == "__main__":
     db.session.add(test_1)
     db.session.commit() 
 
-    app.run(debug=True) # VSCode debug does not work otherwise
+    app.run(debug=False) # VSCode debug does not work otherwise

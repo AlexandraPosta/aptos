@@ -78,7 +78,7 @@ model-viewer {
 .axis-overlay {
     z-index: 2;
     position: absolute;
-    bottom: 40px;
+    bottom: 10px;
 }
 
 .stat-item0 { grid-area: stat-pressure; }
