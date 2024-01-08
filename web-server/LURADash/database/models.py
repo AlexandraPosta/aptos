@@ -56,7 +56,7 @@ class Flight(db.Model):
                               (self.id_flight, self.rocket_name, self.date_of_launch))
 
 
-class FlightData():
+class FlightData(db.Model):
     __tablename__ = "flight_data"
 
     id_flight_data = Column(Integer, autoincrement=True, nullable=False, primary_key=True)
@@ -143,7 +143,7 @@ class FlightData():
                               (self.id_flight_data, self.id_flight, self.timestamp))
 
 
-class ControlCommand:
+class ControlCommand(db.Model):
     __tablename__ = "control_command"
 
     id_control_commands = Column(Integer, autoincrement=True, nullable=False, primary_key=True)

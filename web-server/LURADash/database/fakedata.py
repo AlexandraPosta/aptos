@@ -4,7 +4,7 @@
     Description: Fake data generator for the database
 '''
 
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import random
 import string
 import numpy as np
@@ -81,14 +81,14 @@ def generate_fake_entry():
 
     # Create fake flight entry
     flight = Flight(rocket_name, 
-                    "motor_fake", 
+                    "Motor", 
                     date.today(), 
                     datetime.now().strftime("%H:%M:%S"), 
-                    "location_fake", 
+                    "Location", 
                     random.randint(0,5), 
                     random.randint(-90,90), 
                     0, 
-                    "comment_fake")	
+                    "Comment")	
     
     db.session.add(flight)
     db.session.commit() 
@@ -121,8 +121,8 @@ def generate_fake_entry():
         # Appending flight data to the database
         flight_data = FlightData(flight.id_flight,
                                  b'0',
-                                 'Flash',
-                                 f"{time_elapsed // 60:02d}:{time_elapsed % 60:02d}.000",
+                                 "Flash",
+                                 "{:0>8}".format(str(timedelta(seconds=time_elapsed))),
                                  simulator.flight_stage,
                                  0,
                                  simulator.altitude,
@@ -138,7 +138,7 @@ def generate_fake_entry():
                                  0,
                                  battery,
                                  sattelites,
-                                 'None',
+                                 "None",
                                  0,
                                  0,
                                  0,
