@@ -6,11 +6,13 @@
 
 from datetime import date, datetime, timedelta
 import random
+import math
 import string
 import numpy as np
 
 from database.dbconn import db
 from database.models import Flight, FlightData
+
 
 class RocketSimulator:
     def __init__(self, 
@@ -73,6 +75,7 @@ class RocketSimulator:
             self.flight_stage = 'Apogee'
         else:
             self.flight_stage = 'Down'
+
 
 def generate_fake_entry():
     # Get fake random name
@@ -148,4 +151,49 @@ def generate_fake_entry():
 
         if simulator.altitude <= 0 and time_elapsed > thrust_duration:
             break  # Stop the simulation if the rocket has reached the ground
+
+
+def get_fake_data():
+    # Parameters for the simulation
+    max_altitude = 13000    # Max altitude in meters (13 km)
+    duration = 120          # Total duration of flight in seconds
+    time_step = 5           # Time step in seconds
+    time_labels = []
+    altitude_values = []
+    velocity_values = []
+    acceleration_values = []
+
+    # Initial data
+    initial_latitude = 28.5721
+    initial_longitude = -80.6480 
+    initial_temperature = 15
+
+    longitude_values = [initial_latitude]
+    latitude_values = [initial_longitude]
+    temperature_values = [initial_temperature]
+    j = 0
+
+    for i in range(0, duration + time_step, time_step):
+        time = i
+        # Simplified simulation for altitude, velocity, and acceleration
+        altitude = max_altitude * math.sin(math.pi * time / (2 * duration))
+        velocity = (math.pi * altitude / (2 * duration)) * math.cos(math.pi * time / (2 * duration))
+        acceleration = -((math.pi ** 2) * max_altitude / (2 * duration ** 2)) * math.sin(math.pi * time / (2 * duration))
+
+        # Simplified simulation for longitude and latitude
+        latitude = latitude_values[j] - random.uniform(0, -0.00001)
+        longitude = longitude_values[j] + random.uniform(0, -0.00001)
+        temperature = temperature_values[j] - random.uniform(0, 0.5)
+        j += 1
+        
+        # Appending values to the lists
+        time_labels.append(f"{time // 60:02d}:{time % 60:02d}.000")
+        altitude_values.append(altitude)
+        velocity_values.append(velocity)
+        acceleration_values.append(acceleration)
+        longitude_values.append(longitude)
+        latitude_values.append(latitude)
+        temperature_values.append(temperature)
+
+    return time_labels, altitude_values, velocity_values, acceleration_values, temperature_values, latitude_values, longitude_values
         

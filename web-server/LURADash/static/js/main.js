@@ -1,4 +1,20 @@
 // Update Dashboard Charts
+function updateSequence(data) {
+  updateLaunch(data);
+  updateAlt(data);
+  updateVelocity(data);
+  updateControl(data);
+  updateMap(data);
+  updateStats(data);
+  updateFlightStages(data);
+}
+
+function deleteSequence() {
+  Plotly.deleteTraces('altChart', [0]);
+  Plotly.deleteTraces('velChart', [0, 1]);
+  Plotly.deleteTraces('controlChart', [0, 1]);
+}
+
 function updateLaunch(chart_data) {
   // TODO
 }
@@ -62,7 +78,7 @@ function updateFlightStages(chart_data) {
   // TODO
 }
 
-function get_graph(graph_name, height, width, axis_name, traces_name) {
+function getGraph(graph_name, height, width, axis_name, traces_name) {
   var b = (axis_name.length == 2) ? 80 : 10; // 2D or 3D
   var traces =[];
 
@@ -137,25 +153,86 @@ function get_graph(graph_name, height, width, axis_name, traces_name) {
 }  
 
 
-// Fetch Dashboard Data
-async function fetchData() {
+// Populate Search Bar
+function populateSearchBar() {
   try {
-    fetch('/data')
+    fetchFlights().then(flights => {
+      select = document.getElementById('flight-search');
+      flights.forEach(flight => {
+        option = document.createElement('option');
+        option.id = flight.id_flight;
+        option.value = flight.id_flight;
+        option.text = flight.rocket_name + '-' + flight.motor + '-' + flight.date_of_launch;
+        select.add(option);        
+      }); 
+    });
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+  }
+}
+
+
+// Fetch Data
+async function fetchFlights() {
+  try { 
+    const response = await fetch('/get-flights')
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+  }
+}
+
+
+function fetchFlightData() {
+  try { 
+    fetch('/test')
       .then(response => response.json())
       .then(data => {
-        updateLaunch(data);
-        updateAlt(data);
-        updateVelocity(data);
-        updateControl(data);
-        updateMap(data);
-        updateStats(data);
-        updateFlightStages(data);
+        updateSequence(data);
+      });
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+  }
+}
+
+
+async function fetchInitData() {
+  try {
+    fetch('/init-data')
+      .then(response => response.json())
+      .then(data => {
+        updateSequence(data)
       }); 
-  } 
-  catch (error) {
+  } catch (error) {
       console.error('Failed to fetch data:', error);
   }
 }
+
+
+function attachEventHandlers() { 
+  document.getElementById('flight-search').addEventListener('change', function(event) {
+    var option = this.options[this.selectedIndex];
+    console.log('Selected option:', option.value, option.text);
+  
+    deleteSequence();
+    fetch('/get-flight-data', {
+      "method": "POST",
+      "headers": {"Content-Type": "application/json"},
+      "body": option.value,
+    })
+    .then(response => response.json())
+    .then(data => {
+      updateSequence(data);
+    });
+  });  
+}
+
 
 // Mount Charts and Event Triggers
 window.onload = function() {
@@ -175,11 +252,18 @@ window.onload = function() {
         map.resize();
     });
 
-    get_graph('altChart', 250, window.innerWidth * 0.35,  ['time', 'altitude'], ['altitude']);
-    get_graph('velChart', 250, window.innerWidth * 0.35, ['time', 'parameters'], ['v', 'acc']);
-    get_graph('controlChart', 250, window.innerWidth * 0.35, ['altitude', 'latitude', 'longitude'], ['ideal', 'real']);
+    getGraph('altChart', 250, window.innerWidth * 0.35,  ['time', 'altitude'], ['altitude']);
+    getGraph('velChart', 250, window.innerWidth * 0.35, ['time', 'parameters'], ['v', 'acc']);
+    getGraph('controlChart', 250, window.innerWidth * 0.35, ['altitude', 'latitude', 'longitude'], ['ideal', 'real']);
 
-    fetchData();
+    // Attach event handlers
+    attachEventHandlers();
+    
+    // Populate search bar with flights
+    populateSearchBar();
+
+    // Fetch initial fake data
+    fetchInitData();
 };
 
 window.onresize = function() {

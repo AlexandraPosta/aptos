@@ -2,10 +2,9 @@
 
 {% block header %}
 <div class="header-container">
-    <input id="flight-search"
-           onkeyup="search_flight()"
-           type="text" name="search"
-           placeholder="Search fligh in database...">
+    <select id="flight-search">
+        <option value="">--Search flight in database--</option>
+    </select>
     <button id="play-flight" onclick="play_flight()">Run from beginning</button>
     <button id="display-flight" onclick="display_flight()">Display all</button>
     <button id="pause-flight" onclick="pause_flight()">Pause</button>

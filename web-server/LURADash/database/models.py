@@ -7,6 +7,8 @@
 import sys
 from sqlalchemy import Column
 from sqlalchemy.types import Integer, Float, String, Date, Time, Text, BINARY
+from datetime import datetime, time
+import json
 
 from database.dbconn import db
 
@@ -55,6 +57,19 @@ class Flight(db.Model):
         return unicode_to_str("<Flight: id_flight=%s rocket_name='%s' date_of_launch='%s'>" % 
                               (self.id_flight, self.rocket_name, self.date_of_launch))
 
+    def as_dict(self):
+        obj_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+        for key, value in obj_dict.items():
+            if isinstance(value, bytes):
+                obj_dict[key] = value.decode('utf-8')  # Convert bytes to string or base64 encoding
+            if isinstance(value, datetime):
+                obj_dict[key] = value.isoformat()
+            if isinstance(value, time):
+                obj_dict[key] = value.isoformat()
+
+        return obj_dict
+
 
 class FlightData(db.Model):
     __tablename__ = "flight_data"
@@ -68,7 +83,7 @@ class FlightData(db.Model):
     data_source = Column(String(10), nullable=False, default="None")
     timestamp = Column(Time, nullable=False, default="00:00:00")
     flight_stage = Column(String(10), nullable=False, default="None")
-    barometer_raw = Column(Float)
+    pressure = Column(Float)
     altitude = Column(Float)
     latitude = Column(Float)
     longitude = Column(Float)
@@ -94,7 +109,7 @@ class FlightData(db.Model):
                  data_source="None",
                  timestamp="00:00:00",
                  flight_stage="None",
-                 barometer_raw=None,
+                 pressure=None,
                  altitude=None,
                  latitude=None,
                  longitude=None,
@@ -118,7 +133,7 @@ class FlightData(db.Model):
         self.data_source = data_source
         self.timestamp = timestamp
         self.flight_stage = flight_stage
-        self.barometer_raw = barometer_raw
+        self.pressure = pressure
         self.altitude = altitude
         self.latitude = latitude
         self.longitude = longitude
@@ -142,6 +157,19 @@ class FlightData(db.Model):
         return unicode_to_str("<Flight Data: id_flight_data=%s id_flight='%s' timestamp='%s'>" % 
                               (self.id_flight_data, self.id_flight, self.timestamp))
 
+    def as_dict(self):
+        obj_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+        for key, value in obj_dict.items():
+            if isinstance(value, bytes):
+                obj_dict[key] = value.decode('utf-8')  # Convert bytes to string or base64 encoding
+            if isinstance(value, datetime):
+                obj_dict[key] = value.isoformat()
+            if isinstance(value, time):
+                obj_dict[key] = value.isoformat()
+
+        return obj_dict
+    
 
 class ControlCommand(db.Model):
     __tablename__ = "control_command"
@@ -174,3 +202,16 @@ class ControlCommand(db.Model):
     def __repr__(self):
         return unicode_to_str("<Control Command: id_control_commands=%s id_flight='%s' timestamp='%s'>" % 
                               (self.id_control_commands, self.id_flight, self.timestamp))
+
+    def as_dict(self):
+        obj_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+        for key, value in obj_dict.items():
+            if isinstance(value, bytes):
+                obj_dict[key] = value.decode('utf-8')  # Convert bytes to string or base64 encoding
+            if isinstance(value, datetime):
+                obj_dict[key] = value.isoformat()
+            if isinstance(value, time):
+                obj_dict[key] = value.isoformat()
+
+        return obj_dict
