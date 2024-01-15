@@ -171,16 +171,27 @@ function populateSearchBar() {
   }
 }
 
+function runFlight() {
+  deleteSequence();
+
+  try {
+    fetchFlightData().then(data => {
+      updateSequence(data);
+    });
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+  }
+
+}
+
 
 // Fetch Data
 async function fetchFlights() {
   try { 
     const response = await fetch('/get-flights')
-
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
     const data = await response.json();
     return data.data;
   } catch (error) {
@@ -189,13 +200,19 @@ async function fetchFlights() {
 }
 
 
-function fetchFlightData() {
+async function fetchFlightData(id_flight) {
   try { 
-    fetch('/test')
-      .then(response => response.json())
-      .then(data => {
-        updateSequence(data);
-      });
+    const response = await fetch('/get-flight-data', {
+      "method": "POST",
+      "headers": {"Content-Type": "application/json"},
+      "body": JSON.stringify({id: id_flight}),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.data;
   } catch (error) {
     console.error('Failed to fetch data:', error);
   }
@@ -216,20 +233,10 @@ async function fetchInitData() {
 
 
 function attachEventHandlers() { 
+  // Search Bar Event Handler
   document.getElementById('flight-search').addEventListener('change', function(event) {
     var option = this.options[this.selectedIndex];
-    console.log('Selected option:', option.value, option.text);
-  
-    deleteSequence();
-    fetch('/get-flight-data', {
-      "method": "POST",
-      "headers": {"Content-Type": "application/json"},
-      "body": option.value,
-    })
-    .then(response => response.json())
-    .then(data => {
-      updateSequence(data);
-    });
+    runFlight(option.value);
   });  
 }
 

@@ -16,24 +16,27 @@ app = Flask(__name__)
 
 
 @app.route('/get-flights', methods=['GET'])
-def flightData():
+def getFlights():
     @after_this_request
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
+    
     data = load_flights()
     flights = [flight.as_dict() for flight in data] # Convert to dict
-
     return jsonify(data=flights)
 
 
 @app.route('/get-flight-data', methods=['GET', 'POST'])
-def data():
+def getFlightData():
+    @after_this_request
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
-    flight, flight_data = load_flight_data()
-    return jsonify(data={flight.as_dict(), flight_data.as_dict()})
+    
+    id_flight = request.json.get('id')
+    flight, flight_data = load_flight_data(id_flight)
+    return jsonify(data=[flight.as_dict(), flight_data.as_dict()])
 
 
 @app.route('/init-data', methods=['GET'])
@@ -42,6 +45,7 @@ def initData():
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
+    
     data = get_fake_data()
     return jsonify({
         'labels': data[0],
@@ -97,4 +101,4 @@ if __name__ == "__main__":
     #generate_fake_entry()
 
     # Run the app
-    app.run(debug=True) # VSCode debug does not work otherwise
+    app.run(debug=False) # VSCode debug does not work otherwise
