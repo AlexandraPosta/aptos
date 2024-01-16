@@ -1,11 +1,12 @@
 // Update Dashboard Charts
 function updateSequence(flight, flight_data) {
-  // TODO: check if flight_data is a list of entries or a single entry
-  flight_data.arguments.forEach(arg => {
-    if (arg instanceof Array == False) {
-      arg instanceof Array;
+  Object.entries(flight_data).forEach(([key, value]) => {
+    if (!Array.isArray(value)) {
+        Object.defineProperty(flight_data, key, {
+            value: [value],
+        });
     }
-  });
+});
 
   updateLaunch(flight);
   updateAlt(flight_data.timestamp, flight_data.altitude);
@@ -196,10 +197,9 @@ function flightSearchBar() {
 }
 
 function flightRun(id_flight) {
+  deleteSequence();
   search = document.getElementById('flight-search')
   if (search) {
-    deleteSequence();
-  
     var option = search.options[search.selectedIndex];
     id_flight = option.value;
 
