@@ -1,5 +1,12 @@
 // Update Dashboard Charts
 function updateSequence(flight, flight_data) {
+  // TODO: check if flight_data is a list of entries or a single entry
+  flight_data.arguments.forEach(arg => {
+    if (arg instanceof Array == False) {
+      arg instanceof Array;
+    }
+  });
+
   updateLaunch(flight);
   updateAlt(flight_data.timestamp, flight_data.altitude);
   updateVelocity(flight_data.timestamp, flight_data.acceleration_x, flight_data.acceleration_z);
@@ -171,7 +178,7 @@ function getGraph(graph_name, height, width, axis_name, traces_name) {
 
 
 // Populate Search Bar
-function populateSearchBar() {
+function flightSearchBar() {
   try {
     fetchFlights().then(flights => {
       select = document.getElementById('flight-search');
@@ -188,19 +195,44 @@ function populateSearchBar() {
   }
 }
 
-function runFlight(id_flight) {
-  deleteSequence();
+function flightRun(id_flight) {
+  search = document.getElementById('flight-search')
+  if (search) {
+    deleteSequence();
+  
+    var option = search.options[search.selectedIndex];
+    id_flight = option.value;
 
-  try {
-    fetchFlightData(id_flight).then(data => {
-      flight_data = new FlightData(); // Convert from object to list of entries
-      flight_data.entries_to_lists(data.flight_data)
-      updateSequence(data.flight, flight_data);
-    });
-  } catch (error) {
-    console.error('Failed to fetch data:', error);
+    try {
+      fetchFlightData(id_flight).then(data => {      
+        data.flight_data.forEach(entry => {
+          setTimeout(() => { updateSequence(data.flight, entry); }, 1000);
+        });
+      });
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
   }
+}
 
+function flightDisplay() {
+  search = document.getElementById('flight-search')
+  if (search) {
+    deleteSequence();
+
+    var option = search.options[search.selectedIndex];
+    id_flight = option.value;
+    
+    try {
+      fetchFlightData(id_flight).then(data => {
+        flight_data = new FlightData(); // Convert from object to list of entries
+        flight_data.entries_to_lists(data.flight_data)
+        updateSequence(data.flight, flight_data);
+      });
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
+  }
 }
 
 
@@ -217,7 +249,6 @@ async function fetchFlights() {
     console.error('Failed to fetch data:', error);
   }
 }
-
 
 async function fetchFlightData(id_flight) {
   try { 
@@ -240,24 +271,11 @@ async function fetchFlightData(id_flight) {
 }
 
 
-async function fetchInitData() {
-  try {
-    fetch('/init-data')
-      .then(response => response.json())
-      .then(data => {
-        updateAlt(data)
-      }); 
-  } catch (error) {
-      console.error('Failed to fetch data:', error);
-  }
-}
-
-
+// Event Handlers
 function attachEventHandlers() { 
   // Search Bar Event Handler
   document.getElementById('flight-search').addEventListener('change', function(event) {
-    var option = this.options[this.selectedIndex];
-    runFlight(option.value);
+    flightDisplay();
   });  
 }
 
@@ -289,10 +307,7 @@ window.onload = function() {
     attachEventHandlers();
     
     // Populate search bar with flights
-    populateSearchBar();
-
-    // Fetch initial fake data
-    //fetchInitData();
+    flightSearchBar();
 };
 
 window.onresize = function() {

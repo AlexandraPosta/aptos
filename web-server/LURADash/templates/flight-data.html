@@ -5,11 +5,10 @@
     <select id="flight-search">
         <option value="">--Search flight in database--</option>
     </select>
-    <button id="play-flight" onclick="play_flight()">Run from beginning</button>
-    <button id="display-flight" onclick="display_flight()">Display all</button>
+    <button id="play-flight" onclick="flightRun()">Run from beginning</button>
+    <button id="display-flight" onclick="flightDisplay()">Display all</button>
     <button id="pause-flight" onclick="pause_flight()">Pause</button>
-    <button id="restart-flight" onclick="restart_flight()">Pause</button>
-    <button id="clear-flight" onclick="clear_flight()">Clear</button>
+    <button id="clear-flight" onclick="deleteSequence()">Clear</button>
     <button id="report-flight" onclick="report_flight()">Generate Report</button>
 </div>
 {% endblock %}
