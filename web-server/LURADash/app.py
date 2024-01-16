@@ -24,19 +24,19 @@ def getFlights():
     
     data = load_flights()
     flights = [flight.as_dict() for flight in data] # Convert to dict
-    return jsonify(data=flights)
+    return jsonify({'flights': flights})
 
 
-@app.route('/get-flight-data', methods=['GET', 'POST'])
+@app.route('/get-flight-data', methods=['GET'])
 def getFlightData():
     @after_this_request
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
-    
-    id_flight = request.json.get('id')
-    flight, flight_data = load_flight_data(id_flight)
-    return jsonify(data=[flight.as_dict(), flight_data.as_dict()])
+
+    flight, flight_data = load_flight_data(request.args.get('id'))
+    flight_data = [data.as_dict() for data in flight_data]
+    return jsonify({'flight': flight.as_dict(), 'flight_data': flight_data})
 
 
 @app.route('/init-data', methods=['GET'])
@@ -101,4 +101,4 @@ if __name__ == "__main__":
     #generate_fake_entry()
 
     # Run the app
-    app.run(debug=False) # VSCode debug does not work otherwise
+    app.run(debug=True) # VSCode debug does not work otherwise

@@ -1,80 +1,97 @@
 // Update Dashboard Charts
-function updateSequence(data) {
-  updateLaunch(data);
-  updateAlt(data);
-  updateVelocity(data);
-  updateControl(data);
-  updateMap(data);
-  updateStats(data);
-  updateFlightStages(data);
+function updateSequence(flight, flight_data) {
+  updateLaunch(flight);
+  updateAlt(flight_data.timestamp, flight_data.altitude);
+  updateVelocity(flight_data.timestamp, flight_data.acceleration_x, flight_data.acceleration_z);
+  updateControl(flight_data.longitude, flight_data.latitude, flight_data.altitude);
+  updateMap(flight_data.longitude, flight_data.latitude, flight_data.altitude);
+  updateStats(flight_data);
+  updateFlightStages(flight_data.flight_stage);
 }
 
 function deleteSequence() {
-  Plotly.deleteTraces('altChart', [0]);
-  Plotly.deleteTraces('velChart', [0, 1]);
-  Plotly.deleteTraces('controlChart', [0, 1]);
+  ids = ['altChart', 'velChart', 'controlChart'];
+
+  ids.forEach(graphID => {
+    const plotDiv = document.getElementById(graphID);
+    const numberOfTraces = plotDiv.data.length
+
+    for (let i = 0; i < numberOfTraces; i++) {
+        Plotly.restyle(graphID, 'x', [[]], [i]);
+        Plotly.restyle(graphID, 'y', [[]], [i]);
+        if (plotDiv.data[i].z) {
+          Plotly.restyle(graphID, 'z', [[]], [i]);
+        }
+    }
+  });
 }
 
-function updateLaunch(chart_data) {
-  // TODO
+function updateLaunch(flight) {
+  document.getElementById('rocket-name').textContent = flight.rocket_name;
+  document.getElementById('motor-name').textContent = flight.motor;
+  document.getElementById('date').textContent = flight.date_of_launch;
+  document.getElementById('location').textContent = flight.location;
+  document.getElementById('wind-direction').textContent = flight.wind_direction;
+  document.getElementById('wind-speed').textContent = flight.wind_speed;
 }
 
-function updateAlt(chart_data) {
+function updateAlt(timestamp, altitude) {
   var update = {
-    x:  [chart_data.labels],
-    y:  [chart_data.altitude],
+    x: [timestamp],
+    y: [altitude],
   };
-  Plotly.extendTraces('altChart', update, [0], chart_data.labels.length);
+  Plotly.extendTraces('altChart', update, [0], timestamp.length);
 }
 
-function updateVelocity(chart_data) {
+function updateVelocity(timestamp, velocity, acceleration) {
   var update_0 = {
-    x:  [chart_data.labels],
-    y:  [chart_data.velocity],
+    x:  [timestamp],
+    y:  [acceleration],
   };
   var update_1 = {
-    x:  [chart_data.labels],
-    y:  [chart_data.acceleration],
+    x:  [timestamp],
+    y:  [acceleration],
   };
 
-  Plotly.extendTraces('velChart', update_0, [0], chart_data.labels.length);
-  Plotly.extendTraces('velChart', update_1, [1], chart_data.labels.length);
+  Plotly.extendTraces('velChart', update_0, [0], acceleration.length);
+  Plotly.extendTraces('velChart', update_1, [1], acceleration.length);
 }
 
-function updateMap(chart_data) {
-  // TODO
-}
-
-function updateControl(chart_data) {
+function updateControl(longitude, latitude, altitude) {
   var update_0 = { // ideal
-    x: [Array(chart_data.longitude.length).fill(chart_data.longitude[0])],
-    y: [Array(chart_data.latitude.length).fill(chart_data.latitude[0])],
-    z: [chart_data.altitude]
+    x: [Array(longitude.length).fill(longitude[0])],
+    y: [Array(latitude.length).fill(latitude[0])],
+    z: [altitude]
   };
 
   var update_1 = { // real
-    x:  [chart_data.longitude],
-    y:  [chart_data.latitude],
-    z:  [chart_data.altitude]
+    x:  [longitude],
+    y:  [latitude],
+    z:  [altitude]
   };
 
-  Plotly.extendTraces('controlChart', update_0, [0], chart_data.labels.length);
-  Plotly.extendTraces('controlChart', update_1, [1], chart_data.labels.length);
+  Plotly.extendTraces('controlChart', update_0, [0], altitude.length);
+  Plotly.extendTraces('controlChart', update_1, [1], altitude.length);
 }
 
-function updateStats(chart_data) {
-  document.getElementById('pressure').textContent = chart_data.pressure;
-  document.getElementById('temperature').textContent = chart_data.temperature[0];
-  document.getElementById('humidity').textContent = chart_data.humidity;
-  document.getElementById('sattelites').textContent = chart_data.sattelites;
-  document.getElementById('velocity').textContent = chart_data.velocity[0];
-  document.getElementById('acceleration').textContent = chart_data.acceleration[0];
-  document.getElementById('flight-stage').textContent = chart_data.flight_stage;
-  document.getElementById('battery').textContent = chart_data.battery;
-  document.getElementById('nr-errors').textContent = chart_data.error.length;
+function updateMap(longitude, latitude, altitude) {
+  // TODO
 }
 
-function updateFlightStages(chart_data) {
+function updateStats(flight_data) {
+  end = flight_data.timestamp.length - 1;
+  document.getElementById('pressure').innerHTML  = flight_data.pressure[end];
+  document.getElementById('temperature').innerHTML  = flight_data.temperature[end];
+  document.getElementById('humidity').innerHTML  = flight_data.humidity[end];
+  document.getElementById('sattelites').innerHTML  = flight_data.sattelites[end];
+  document.getElementById('velocity').innerHTML  = 0; // TODO
+  document.getElementById('acceleration').innerHTML  = flight_data.acceleration_z[end];
+  document.getElementById('flight-stage').innerHTML  = flight_data.flight_stage[end];
+  document.getElementById('battery').innerHTML  = flight_data.battery[end];
+  document.getElementById('nr-errors').innerHTML  = flight_data.errors[end];
+}
+
+function updateFlightStages(stage) {
   // TODO
 }
 
@@ -171,12 +188,14 @@ function populateSearchBar() {
   }
 }
 
-function runFlight() {
+function runFlight(id_flight) {
   deleteSequence();
 
   try {
-    fetchFlightData().then(data => {
-      updateSequence(data);
+    fetchFlightData(id_flight).then(data => {
+      flight_data = new FlightData(); // Convert from object to list of entries
+      flight_data.entries_to_lists(data.flight_data)
+      updateSequence(data.flight, flight_data);
     });
   } catch (error) {
     console.error('Failed to fetch data:', error);
@@ -193,7 +212,7 @@ async function fetchFlights() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    return data.data;
+    return data.flights;
   } catch (error) {
     console.error('Failed to fetch data:', error);
   }
@@ -202,17 +221,19 @@ async function fetchFlights() {
 
 async function fetchFlightData(id_flight) {
   try { 
-    const response = await fetch('/get-flight-data', {
-      "method": "POST",
-      "headers": {"Content-Type": "application/json"},
-      "body": JSON.stringify({id: id_flight}),
+    const url = new URL(window.location.href + 'get-flight-data');
+    url.searchParams.append('id', id_flight);
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json'}
     })
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error('HTTP error! status: ${response.status}');
     }
     const data = await response.json();
-    return data.data;
+    return data; // JSON data with flight and flight_data
   } catch (error) {
     console.error('Failed to fetch data:', error);
   }
@@ -224,7 +245,7 @@ async function fetchInitData() {
     fetch('/init-data')
       .then(response => response.json())
       .then(data => {
-        updateSequence(data)
+        updateAlt(data)
       }); 
   } catch (error) {
       console.error('Failed to fetch data:', error);
@@ -259,6 +280,7 @@ window.onload = function() {
         map.resize();
     });
 
+    // Create charts
     getGraph('altChart', 250, window.innerWidth * 0.35,  ['time', 'altitude'], ['altitude']);
     getGraph('velChart', 250, window.innerWidth * 0.35, ['time', 'parameters'], ['v', 'acc']);
     getGraph('controlChart', 250, window.innerWidth * 0.35, ['altitude', 'latitude', 'longitude'], ['ideal', 'real']);
@@ -270,7 +292,7 @@ window.onload = function() {
     populateSearchBar();
 
     // Fetch initial fake data
-    fetchInitData();
+    //fetchInitData();
 };
 
 window.onresize = function() {
