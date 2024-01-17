@@ -13,6 +13,7 @@ body, html {
     z-index: 0;
 }
 
+/*#region Sidebar*/
 .sidebar {
     background-color: white;
     width: 50px;
@@ -35,7 +36,9 @@ body, html {
 .tab-icon:hover {
     color: rgb(147, 18, 18);
 }
+/*#endregion Sidebar*/
 
+/*#region Dashboard Content*/
 .main-content {
     margin-left: 50px;
     flex-grow: 1;/
@@ -161,3 +164,4 @@ model-viewer {
         gap: 10px; /* Space between panels */
     }
 }
+/*#endregion Dashboard Content*/
