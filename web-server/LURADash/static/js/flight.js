@@ -1,7 +1,27 @@
-// Constants
-let loader;
+//#region Worker
+let loader = undefined;
 
-// Update Dashboard Charts
+function initialiseWorker() {
+  if (loader == undefined) {
+    loader = new Worker('/js/load-flight-data.js');
+    
+    loader.onmessage = function(e) {
+      const processedData = e.data;
+      updateSequence(processedData[0], processedData[1]);
+    };
+  }
+}
+
+function stopWorker() {
+  if (loader) {
+    loader.terminate();
+    loader = undefined;
+  }
+}
+//#endregion
+
+
+//#region Dashboard Charts
 function updateSequence(flight, flight_data) {
   Object.entries(flight_data).forEach(([key, value]) => {
     if (!Array.isArray(value)) {
@@ -179,9 +199,10 @@ function getGraph(graph_name, height, width, axis_name, traces_name) {
 
   Plotly.newPlot(graph_name, traces, layout);
 }  
+//#endregion
 
 
-// Populate Search Bar
+//#region Populate Search Bar
 function flightSearchBar() {
   try {
     fetchFlights().then(flights => {
@@ -200,10 +221,13 @@ function flightSearchBar() {
 }
 
 function flightRun() {
-  deleteSequence();
   search = document.getElementById('flight-search')
 
   if (search.selectedIndex != 0) {
+    deleteSequence();
+    stopWorker();
+    initialiseWorker();
+
     var option = search.options[search.selectedIndex];
     id_flight = option.value;
 
@@ -224,15 +248,14 @@ function flightRun() {
 }
 
 function flightStop() {
-  if (loader) {
-    loader.terminate();
-  }
+  stopWorker();
 }
 
 function flightDisplay() {
   search = document.getElementById('flight-search')
   if (search.selectedIndex != 0) {
     deleteSequence();
+    stopWorker();
 
     var option = search.options[search.selectedIndex];
     id_flight = option.value;
@@ -249,8 +272,13 @@ function flightDisplay() {
   }
 }
 
+function flightGenerateReport() {
+  //TODO 
+}
+//#endregion
 
-// Fetch Data
+
+//#region Fetch Data
 async function fetchFlights() {
   try { 
     const response = await fetch('/get-flights')
@@ -284,6 +312,7 @@ async function fetchFlightData(id_flight) {
     console.error('Failed to fetch data:', error);
   }
 }
+//#endregion
 
 
 // Event Handlers
@@ -292,18 +321,24 @@ function attachEventHandlers() {
   document.getElementById('flight-search').addEventListener('change', function(event) {
     flightDisplay();
   });  
+
+  // Stop worker when switching to other tabs
+  document.getElementById('flight-web').addEventListener('click', function(event) {
+    stopWorker();
+  });
+  document.getElementById('telemetry-web').addEventListener('click', function(event) {
+    stopWorker();
+  });
+  document.getElementById('db-web').addEventListener('click', function(event) {
+    stopWorker();
+  });
 }
 
 
 // Mount Charts and Event Triggers
 window.onload = function() {  
   if (window.Worker) {
-    loader = new Worker('/js/load-flight-data.js');
-  
-    loader.onmessage = function(e) {
-      const processedData = e.data;
-      updateSequence(processedData[0], processedData[1]);
-    };
+    initialiseWorker();
   } 
   
   // Create Map

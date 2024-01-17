@@ -19,9 +19,9 @@
     <div class="dashboard">
       <aside class="sidebar">
           <img src="/assets/logo.png" class="tab-icon" style="width:30px; height:38px">
-          <a href=flight-data class="tab-icon fa-solid fa-rocket"></a>
-          <a href=telemetry-data class="tab-icon fa-solid fa-globe"></a>
-          <a href=database class="tab-icon fa-solid fa-database"></a>
+          <a href=flight-data id="flight-web" class="tab-icon fa-solid fa-rocket"></a>
+          <a href=telemetry-data id="telemetry-web" class="tab-icon fa-solid fa-globe"></a>
+          <a href=database id="db-web" class="tab-icon fa-solid fa-database"></a>
       </aside>
       <main class="main-content">
         {% block main %}{% endblock %}

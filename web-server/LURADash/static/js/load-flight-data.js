@@ -5,6 +5,6 @@ self.addEventListener('message', function(e) {
     data.flight_data.forEach(entry => {
         setTimeout(() => { 
             self.postMessage([data.flight, entry]);
-        }, 2000);
+        }, 3000);
     });
 });
