@@ -1,3 +1,9 @@
+/**
+* CustomCard is a custom element that renders a card with a 
+* title and content. 
+* @class CustomCard 
+* @extends HTMLElement
+*/
 class CustomCard extends HTMLElement {
   constructor() {
     super(); 
@@ -20,6 +26,10 @@ class CustomCard extends HTMLElement {
     this.render();
   }
 
+  /**
+   * Render the card with the current attributes.
+   * @returns {void} None
+  */
   render() {
     const title = this.getAttribute('title') || 'Default Title';
     const width = this.getAttribute('width') || 'auto';

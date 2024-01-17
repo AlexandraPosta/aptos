@@ -1,4 +1,7 @@
-// Attach Events
+/**
+ * Attach windows.onload DOM Events
+ * @return {void}     None
+ */
 function attachEventHandlers() { 
 
 };

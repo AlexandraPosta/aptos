@@ -1,6 +1,10 @@
 //#region Worker
 let loader = undefined;
 
+/**
+ * Initialise the worker that loads data onto dashboard charts
+ * @return {[void]}     None
+ */
 function initialiseWorker() {
   if (loader == undefined) {
     loader = new Worker('/js/load-flight-data.js');
@@ -12,6 +16,13 @@ function initialiseWorker() {
   }
 }
 
+/**
+ * Stops the worker that loads data onto dashboard charts.
+ * This is called when switching to other tabs or when a new
+ * set of data is loaded. Make sure to terminate before initialising
+ * a new worker.
+ * @return {[void]}     None
+ */
 function stopWorker() {
   if (loader) {
     loader.terminate();
@@ -22,6 +33,14 @@ function stopWorker() {
 
 
 //#region Dashboard Charts
+/**
+ * Main function that updates all charts on the dashboard. Checks if the
+ * flight data is composed of arrays and if not, converts it to an array.
+ * This is a requirements for Plotly.extendTraces() to work.
+ * @param   {Flight}           flight      Contains flight information
+ * @param   {dict} flight_data Contains points of data for each flight
+ * @return  {void}             None
+ */
 function updateSequence(flight, flight_data) {
   Object.entries(flight_data).forEach(([key, value]) => {
     if (!Array.isArray(value)) {
@@ -29,7 +48,7 @@ function updateSequence(flight, flight_data) {
             value: [value],
         });
     }
-});
+  });
 
   updateLaunch(flight);
   updateAlt(flight_data.timestamp, flight_data.altitude);
@@ -40,7 +59,12 @@ function updateSequence(flight, flight_data) {
   updateFlightStages(flight_data.flight_stage);
 }
 
+/**
+ * Function that deletes all traces from all charts on the dashboard.
+ * @return  {void}             None
+ */
 function deleteSequence() {
+  stopWorker();
   ids = ['altChart', 'velChart', 'controlChart'];
 
   ids.forEach(graphID => {
@@ -57,6 +81,12 @@ function deleteSequence() {
   });
 }
 
+/**
+ * Function that updates the launch information on the dashboard under the
+ * launch section.
+ * @param  {Flight} flight Contains flight information
+ * @return  {void}             None
+ */
 function updateLaunch(flight) {
   document.getElementById('rocket-name').textContent = flight.rocket_name;
   document.getElementById('motor-name').textContent = flight.motor;
@@ -66,6 +96,13 @@ function updateLaunch(flight) {
   document.getElementById('wind-speed').textContent = flight.wind_speed;
 }
 
+/**
+ * Function that updates the altitude chart on the dashboard. Takes advantage
+ * of Plotly.extendTraces() to update the chart in real time.
+ * @param  {list} timestamp   List of timestamps in HH:MM:SS
+ * @param  {list} altitude    List of altitudes in meters
+ * @return {void}             None
+ */
 function updateAlt(timestamp, altitude) {
   var update = {
     x: [timestamp],
@@ -74,6 +111,14 @@ function updateAlt(timestamp, altitude) {
   Plotly.extendTraces('altChart', update, [0]);
 }
 
+/**
+ * Function that updates the velocity chart on the dashboard. Takes advantage
+ * of Plotly.extendTraces() to update the chart in real time.
+ * @param  {list} timestamp     List of timestamps in HH:MM:SS
+ * @param  {list} velocity      List of velocities in m/s
+ * @param  {list} acceleration  List of accelerations in m/s^2
+ * @return {void}               None
+ */
 function updateVelocity(timestamp, velocity, acceleration) {
   var update_0 = {
     x:  [timestamp],
@@ -88,6 +133,16 @@ function updateVelocity(timestamp, velocity, acceleration) {
   Plotly.extendTraces('velChart', update_1, [1]);
 }
 
+/**
+ * Function that updates the control chart on the dashboard. It compares 
+ * the flight of a perfectly vertical ascend with the actual data of the
+ * flight. Takes advantage of Plotly.extendTraces() to update the chart
+ * in real time.
+ * @param  {list} longitude   List of longitudes in degrees
+ * @param  {list} latitude    List of latitudes in degrees
+ * @param  {list} altitude    List of altitudes in meters
+ * @return {void}             None
+ */
 function updateControl(longitude, latitude, altitude) {
   var update_0 = { // ideal
     x: [Array(longitude.length).fill(longitude[0])],
@@ -105,10 +160,24 @@ function updateControl(longitude, latitude, altitude) {
   Plotly.extendTraces('controlChart', update_1, [1]);
 }
 
+/** 
+ * Function that updates the map on the dashboard. Takes advantage of
+ * the mapbox toolbok to update the chart in real time.
+ * @param  {list} longitude   List of longitudes in degrees
+ * @param  {list} latitude    List of latitudes in degrees
+ * @param  {list} altitude    List of altitudes in meters
+ * @return {void}             None
+ */
 function updateMap(longitude, latitude, altitude) {
   // TODO
 }
 
+/**
+ * Function that updates the statistics on the dashboard under the
+ * statistics section.
+ * @param  {dict} flight_data Dictionary of flight data entries in a list format
+ * @return {void}           None
+ */
 function updateStats(flight_data) {
   end = flight_data.timestamp.length - 1;
   document.getElementById('pressure').innerHTML  = flight_data.pressure[end];
@@ -122,10 +191,27 @@ function updateStats(flight_data) {
   document.getElementById('nr-errors').innerHTML  = flight_data.errors[end];
 }
 
+/**
+ * Function that updates the flight stages on the dashboard under the
+ * flight stages section.
+ * @param  {list} stage List of strings that represent the flight stage of the entry
+ * @return {None}       None
+ */
 function updateFlightStages(stage) {
   // TODO
 }
 
+/**
+ * Function that creates a new chart on the dashboard. It uses the Plotly
+ * and automatically identifies the number of traces and axis that are 
+ * needed.
+ * @param  {String} graph_name  Name of the graph
+ * @param  {Float} height       Height of the graph on the monitor
+ * @param  {Float} width        Width of the graph on the monitor
+ * @param  {list} axis_name     List of strings that are axis names
+ * @param  {list} traces_name   List of strings that are trace names
+ * @return {void}               None
+ */
 function getGraph(graph_name, height, width, axis_name, traces_name) {
   var b = (axis_name.length == 2) ? 80 : 10; // 2D or 3D
   var traces =[];
@@ -203,6 +289,12 @@ function getGraph(graph_name, height, width, axis_name, traces_name) {
 
 
 //#region Populate Search Bar
+/**
+ * Function that populates the search bar with all flights from the database.
+ * Flights are in the format: rocket_name-motor-date_of_launch inside the 
+ * search bar.
+ * @return {void}     None
+ */
 function flightSearchBar() {
   try {
     fetchFlights().then(flights => {
@@ -220,6 +312,14 @@ function flightSearchBar() {
   }
 }
 
+/**
+ * Function that plays a flight when the user selects a flight from the search bar.
+ * The flight is identified by the id_flight attribute of the option element.
+ * This function deletes the previous flight data and stops the previoud worker before 
+ * starting a new one with the current data. It also updates the flight stages and 
+ * statistics every two seconds (check worker file for further details). 
+ * @return {void}     None
+ */
 function flightRun() {
   search = document.getElementById('flight-search')
 
@@ -236,10 +336,6 @@ function flightRun() {
         if (loader) {
           loader.postMessage(data);
         }
-        /*data.flight_data.forEach(entry => {
-          //setTimeout(() => { updateSequence(data.flight, entry); }, 1000);
-          //updateSequence(data.flight, entry);
-        });*/
       });
     } catch (error) {
       console.error('Failed to fetch data:', error);
@@ -247,10 +343,19 @@ function flightRun() {
   }
 }
 
+/**
+ * Attah the events handler from the "Pause" DOM element
+ * @return {void}     None
+ */
 function flightStop() {
   stopWorker();
 }
 
+/**
+ * Function that displays the entire duration of a flight. It identifies
+ * the flight by the id_flight attribute of the option element.
+ * @return {void}     None
+ */
 function flightDisplay() {
   search = document.getElementById('flight-search')
   if (search.selectedIndex != 0) {
@@ -272,6 +377,11 @@ function flightDisplay() {
   }
 }
 
+/**
+ * Generates a report for the selected flight. The report is in both word and PDF 
+ * format and downloaded automtically to the user's computer.
+ * @return {void}     None
+ */
 function flightGenerateReport() {
   //TODO 
 }
@@ -279,6 +389,11 @@ function flightGenerateReport() {
 
 
 //#region Fetch Data
+/**
+ * 
+ * @param  {type} foo H
+ * @return {type}     None
+ */
 async function fetchFlights() {
   try { 
     const response = await fetch('/get-flights')
@@ -292,7 +407,11 @@ async function fetchFlights() {
   }
 }
 
-
+/**
+ * 
+ * @param  {type} foo H
+ * @return {type}     None
+ */
 async function fetchFlightData(id_flight) {
   try { 
     const url = new URL(window.location.href + '/get-flight-data');
@@ -315,7 +434,10 @@ async function fetchFlightData(id_flight) {
 //#endregion
 
 
-// Event Handlers
+/**
+ * Attach windows.onload DOM Events
+ * @return {void}     None
+ */
 function attachEventHandlers() { 
   // Search Bar Event Handler
   document.getElementById('flight-search').addEventListener('change', function(event) {
@@ -348,9 +470,9 @@ window.onload = function() {
       container: 'map',
       style: 'mapbox://styles/mapbox/satellite-v9', // Mapbox satellite style
       center: [0, 53], 
-      zoom: 5, // Starting zoom level
-      pitch: 45, // Angle for 3D perspective
-      bearing: -10 // Rotation angle around the map center
+      zoom: 5,          // Starting zoom level
+      pitch: 45,        // Angle for 3D perspective
+      bearing: -10      // Rotation angle around the map center
     });
 
     map.on('load', function () {
