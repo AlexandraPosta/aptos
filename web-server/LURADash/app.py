@@ -6,25 +6,30 @@
 
 from flask import Flask, render_template, request, jsonify, after_this_request
 
-from database.dbconn import db, setup_db_model
+from database.connect import db, setup_db_model
 from database.commands import *
 from database.fakedata import generate_fake_entry, get_fake_data
 
 
 # Create the Flask app
-app = Flask(__name__, 
-            static_url_path='', 
+app = Flask(__name__,
+            static_url_path='',
             static_folder='static',
             template_folder='templates')
 
 
 @app.route('/get-flights', methods=['GET'])
-def getFlights():
+def get_flights():
+    """API to return the list of flights in the database
+
+    Returns:
+        A list of flights in the database
+    """
     @after_this_request
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
-    
+
     data = load_flights()
     flights = [flight.as_dict() for flight in data] # Convert to dict
     return jsonify({'flights': flights})
@@ -32,7 +37,12 @@ def getFlights():
 
 @app.route('/flight-data/get-flight-data', methods=['GET'])
 @app.route('/get-flight-data', methods=['GET'])
-def getFlightData():
+def get_flight_data():
+    """API to return flight data from the database
+
+    Returns:
+        The flight and the flight data
+    """
     @after_this_request
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
@@ -44,12 +54,17 @@ def getFlightData():
 
 
 @app.route('/fake-data', methods=['GET'])
-def initData():
+def init_data():
+    """API to return fake data. Currently not used in the web app.
+
+    Returns:
+        Fake data
+    """
     @after_this_request
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
-    
+
     data = get_fake_data()
     return jsonify({data})
 
@@ -57,6 +72,11 @@ def initData():
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/flight-data', methods=['GET', 'POST'])
 def index():
+    """Main page of the web app
+
+    Returns:
+        The main page of the web app
+    """
     if request.method == 'POST':
         pass
     else:
@@ -65,6 +85,11 @@ def index():
 
 @app.route('/telemetry-data', methods=['GET', 'POST'])
 def telemetry():
+    """Telemetry data page of the web app
+
+    Returns:
+        The telemetry data page of the web app
+    """
     if request.method == 'POST':
         pass
     else:
@@ -73,6 +98,11 @@ def telemetry():
 
 @app.route('/database', methods=['GET', 'POST'])
 def database():
+    """Database page of the web app
+
+    Returns:
+        The database page of the web app
+    """
     if request.method == 'POST':
         pass
     else:

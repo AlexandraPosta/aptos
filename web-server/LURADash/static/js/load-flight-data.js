@@ -1,9 +1,9 @@
 /**
- * Worker file to load flight data without blocking the UI main thread.
- * It received the flight data as a message from the main script and 
- * sends it back to be processed every 3 seconds.
- * @return {void}     None
- */
+ * @organisation Leeds University Rocketry Organisation - LURA
+ * @fileoverview This file contains the code for the worker that loads the flight data.
+ * @author A. Posta
+*/
+
 self.addEventListener('message', function(e) {
     // Receive data from the main script
     let data = e.data;

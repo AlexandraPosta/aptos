@@ -1,4 +1,10 @@
 /**
+ * @organisation Leeds University Rocketry Organisation - LURA
+ * @fileoverview Custon widgets class.
+ * @author A. Posta
+*/
+
+/**
 * CustomCard is a custom element that renders a card with a 
 * title and content. 
 * @class CustomCard 

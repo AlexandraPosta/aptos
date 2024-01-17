@@ -5,14 +5,23 @@
 '''
 
 import sys
+from datetime import datetime, time
 from sqlalchemy import Column
 from sqlalchemy.types import Integer, Float, String, Date, Time, Text, BINARY
-from datetime import datetime, time
-import json
 
-from database.dbconn import db
+from database.connect import db
 
 def unicode_to_str(value):
+    """Converts unicode to string
+
+    Converts unicode to string if python version is 2.x
+
+    Args:
+        value: Value to be converted
+
+    Returns:
+        Value converted to string
+    """
     if sys.version_info[0] == 2:
         return value.encode("utf-8")
     else:
@@ -20,6 +29,24 @@ def unicode_to_str(value):
 
 
 class Flight(db.Model):
+    """Flight model for storing flight information
+
+    Access to store the main information of a flights. This
+    the main information that stays true throught the flight.
+
+    Attributes:
+        id_flight: Flight ID represented as an integer.
+        rocket_name: Name of the rocket as string.
+        motor: Name of the motor as string.
+        date_of_launch: Date of the launch as string in YYYY-MM-DD format.
+        time_of_launch: Time of the launch as string in HH:MM:SS format.
+        location: Location of the launch as string.
+        wind_speed: Wind speed as float.
+        wind_direction: Wind direction as float.
+        active_control: Active control as boolean.
+        comments: Comments as string.
+    """
+
     __tablename__ = "flight"
 
     id_flight = Column(Integer, autoincrement=True, nullable=False, primary_key=True)
@@ -33,15 +60,15 @@ class Flight(db.Model):
     active_control = Column(BINARY, nullable=False, default=0)
     comments = Column(Text())
 
-    def __init__(self, 
-                 rocket_name="None", 
-                 motor="None", 
-                 date_of_launch="1000-01-01", 
-                 time_of_launch="00:00:00", 
-                 location="None"	, 
-                 wind_speed=0, 
-                 wind_direction=0, 
-                 active_control=0, 
+    def __init__(self,
+                 rocket_name="None",
+                 motor="None",
+                 date_of_launch="1000-01-01",
+                 time_of_launch="00:00:00",
+                 location="None",
+                 wind_speed=0,
+                 wind_direction=0,
+                 active_control=0,
                  comments=None):
         self.rocket_name = rocket_name
         self.motor = motor
@@ -54,10 +81,19 @@ class Flight(db.Model):
         self.comments = comments
 
     def __repr__(self):
-        return unicode_to_str("<Flight: id_flight=%s rocket_name='%s' date_of_launch='%s'>" % 
+        return unicode_to_str("<Flight: id_flight_data=%s rocket_name='%s' date_of_launch='%s'>" % 
                               (self.id_flight, self.rocket_name, self.date_of_launch))
 
     def as_dict(self):
+        """Converts flight to dictionary
+
+        Converts the flight instance to a dictionary. This is
+        used to convert the flight instance to a JSON object to 
+        allow for easy transmission backend-frontend.
+
+        Returns:
+            Dictionary of the flight instance
+        """
         obj_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
         for key, value in obj_dict.items():
@@ -72,12 +108,47 @@ class Flight(db.Model):
 
 
 class FlightData(db.Model):
+    """Flight Data model for storing flight data
+
+    Access to store the flight data. This is the data that
+    is collected during the flight.
+
+    Attributes:
+        id_flight: list of flight ids
+        raw_data: list of raw data values; normally True
+        data_source: list of data sources as string: flash or telemetry
+        timestamp: list of timestamps as string in HH:MM:SS format
+        flight_stage: list of flight stages as string
+        pressure: list of pressures in mbar
+        altitude: list of altitudes in meters
+        latitude: list of latitudes in degrees
+        longitude: list of longitudes in degrees
+        acceleration_x: list of x-axis accelerations in m/s^2
+        acceleration_y: list of y-axis accelerations in m/s^2
+        acceleration_z: list of z-axis accelerations in m/s^2
+        orientation_x: list of x-axis orientations in degrees
+        orientation_y: list of y-axis orientations in degrees  
+        orientation_z: list of z-axis orientations in degrees
+        temperature: list of temperatures in degrees Celsius
+        humidity: list of humidities in percentage
+        battery: list of battery levels in voltage
+        sattelites: list of sattelite counts
+        errors: list of errors as string
+        servo_1: list of servo 1 positions as float
+        servo_2: list of servo 2 positions as float
+        servo_3: list of servo 3 positions as float
+        servo_4: list of servo 4 positions as float
+    
+    """
     __tablename__ = "flight_data"
 
     id_flight_data = Column(Integer, autoincrement=True, nullable=False, primary_key=True)
-    id_flight = Column(Integer, 
-        db.ForeignKey("flight.ID_flight", use_alter=True, name="flight.ID_flight", ondelete="SET NULL"),
-        nullable=False 
+    id_flight = Column(Integer,
+        db.ForeignKey("flight.ID_flight",
+                      use_alter=True,
+                      name="flight.ID_flight",
+                      ondelete="SET NULL"),
+        nullable=False
     )
     raw_data = Column(BINARY, nullable=False, default=1)
     data_source = Column(String(10), nullable=False, default="None")
@@ -158,6 +229,15 @@ class FlightData(db.Model):
                               (self.id_flight_data, self.id_flight, self.timestamp))
 
     def as_dict(self):
+        """Converts flight to dictionary
+
+        Converts the flight instance to a dictionary. This is
+        used to convert the flight instance to a JSON object to 
+        allow for easy transmission backend-frontend.
+
+        Returns:
+            Dictionary of the flight instance
+        """
         obj_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
         for key, value in obj_dict.items():
@@ -169,14 +249,31 @@ class FlightData(db.Model):
                 obj_dict[key] = value.isoformat()
 
         return obj_dict
-    
+
 
 class ControlCommand(db.Model):
+    """Control Command model for storing control commands	
+
+    Access to store the control commands. This is the data that
+    is sent to the rocket to control it.
+
+    Attributes:
+        id_flight: list of flight ids
+        timestamp: list of timestamps as string in HH:MM:SS format
+        command_servo_1: list of servo 1 commands as integer
+        command_servo_2: list of servo 2 commands as integer
+        command_servo_3: list of servo 3 commands as integer
+        command_servo_4: list of servo 4 commands as integer
+
+    """
     __tablename__ = "control_command"
 
     id_control_commands = Column(Integer, autoincrement=True, nullable=False, primary_key=True)
-    id_flight = Column(Integer, 
-        db.ForeignKey("flight.ID_flight", use_alter=True, name="flight.ID_flight", ondelete="SET NULL"),
+    id_flight = Column(Integer,
+        db.ForeignKey("flight.ID_flight",
+                      use_alter=True,
+                      name="flight.ID_flight",
+                      ondelete="SET NULL"),
         nullable=False
     )
     timestamp = Column(Time, nullable=False, default="00:00:00")
@@ -204,6 +301,15 @@ class ControlCommand(db.Model):
                               (self.id_control_commands, self.id_flight, self.timestamp))
 
     def as_dict(self):
+        """Converts flight to dictionary
+
+        Converts the flight instance to a dictionary. This is
+        used to convert the flight instance to a JSON object to 
+        allow for easy transmission backend-frontend.
+
+        Returns:
+            Dictionary of the flight instance
+        """
         obj_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
         for key, value in obj_dict.items():

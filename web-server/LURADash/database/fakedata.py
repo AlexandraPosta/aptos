@@ -10,21 +10,40 @@ import math
 import string
 import numpy as np
 
-from database.dbconn import db
+from database.connect import db
 from database.models import Flight, FlightData
 
 
 class RocketSimulator:
-    def __init__(self, 
-                 initial_altitude, 
-                 initial_latitude, 
-                 initial_longitude, 
-                 max_thrust, 
-                 thrust_duration, 
+    """Simulates the flight of a rocket
+
+    Simplified simulates the flight of a rocket based on the 
+    initial altitude, latitude, longitude, maximum thrust, 
+    thrust duration and temperature.
+
+    Attributes:
+        g: Acceleration due to gravity in m/s^2
+        flight_stage: Current flight stage
+        velocity: Current velocity in x, y, z
+        altitude: Current altitude in m
+        acceleration: Current acceleration in x, y, z
+        orientation: Current orientation in roll, pitch, yaw
+        max_thrust: Maximum thrust in m/s^2
+        thrust_duration: Duration of the thrust in seconds
+        latitude: Current latitude
+        longitude: Current longitude
+        temperature: Current temperature in degrees C
+    """
+    def __init__(self,
+                 initial_altitude,
+                 initial_latitude,
+                 initial_longitude,
+                 max_thrust,
+                 thrust_duration,
                  initial_temp):
-        self.g = 9.81 
+        self.g = 9.81
         self.flight_stage = 'On Pad'
-        self.velocity = np.array([0., 0., 0.])  
+        self.velocity = np.array([0., 0., 0.])
         self.altitude = initial_altitude
         self.acceleration = np.array([0., 0., -self.g])  # Acceleration in x, y, z
         self.orientation = np.array([0., 0., 0.])  # Orientation in roll, pitch, yaw
@@ -35,6 +54,17 @@ class RocketSimulator:
         self.temperature = initial_temp
 
     def thrust(self, time_elapsed):
+        """Calculates the thrust
+
+        Calculates the current thrust based on the maximum thrust
+        and the thrust duration.
+
+        Args:
+            time_elapsed: Time elapsed since the start of the simulation
+
+        Returns:
+            Current thrust
+        """
         if time_elapsed < self.thrust_duration:
             # Linearly decrease thrust over time
             return self.max_thrust * (1 - time_elapsed / self.thrust_duration)
@@ -42,9 +72,18 @@ class RocketSimulator:
             return 0
 
     def update(self, time_step, time_elapsed):
+        """Updates the simulation
+
+        Updates the simulation based on the time step and the time
+        elapsed since the start of the simulation.
+
+        Args:
+            time_step: Time step in seconds
+            time_elapsed: Time elapsed since the start of the simulation
+        """
         # Calculate current thrust and resulting acceleration
         current_thrust = self.thrust(time_elapsed)
-        
+
         # Accoun for parachute deployment
         if self.flight_stage == 'Main':
             self.acceleration = np.array([0., 0., -self.g/20])
@@ -78,43 +117,47 @@ class RocketSimulator:
 
 
 def generate_fake_entry():
+    """Generates a fake flight entry
+
+    Generates a fake flight entry and adds it to the database.
+    The flight entry is an instance of the Flight model.
+    """
     # Get fake random name
     letters = string.ascii_lowercase
     rocket_name = ''.join(random.choice(letters) for i in range(8))
 
     # Create fake flight entry
-    flight = Flight(rocket_name, 
+    flight = Flight(rocket_name,
                     "Motor", 
-                    date.today(), 
-                    datetime.now().strftime("%H:%M:%S"), 
+                    date.today(),
+                    datetime.now().strftime("%H:%M:%S"),
                     "Location", 
-                    random.randint(0,5), 
-                    random.randint(-90,90), 
-                    0, 
+                    random.randint(0,5),
+                    random.randint(-90,90),
+                    0,
                     "Comment")	
-    
+
     db.session.add(flight)
-    db.session.commit() 
+    db.session.commit()
 
     # Create fake flight data entries
-    # Simulation parameters
-    initial_altitude = 0            # Initial altitude in m  
+    initial_altitude = 0            # Initial altitude in meters
     max_thrust = 100                # Maximum thrust in m/s^2
     thrust_duration = 10            # Duration of the thrust in seconds
     initial_temp = 15               # Initial temperature in degrees C
     battery = 7.4
     sattelites = 5
-    initial_latitude = 28.5721   
+    initial_latitude = 28.5721
     initial_longitude = -80.6480
     time_step = 1                   # Time step in seconds
     total_time = 300                # Total simulation time in seconds
     time_elapsed = 0
 
-    simulator = RocketSimulator(initial_altitude, 
-                                initial_latitude, 
-                                initial_longitude, 
-                                max_thrust, 
-                                thrust_duration, 
+    simulator = RocketSimulator(initial_altitude,
+                                initial_latitude,
+                                initial_longitude,
+                                max_thrust,
+                                thrust_duration,
                                 initial_temp)
 
     while time_elapsed <= total_time:
@@ -147,13 +190,25 @@ def generate_fake_entry():
                                  0,
                                  0)
         db.session.add(flight_data)
-        db.session.commit() 
+        db.session.commit()
 
         if simulator.altitude <= 0 and time_elapsed > thrust_duration:
             break  # Stop the simulation if the rocket has reached the ground
 
 
 def get_fake_data():
+    """Generates fake data
+
+    Generates fake data for the flight data page. The data is
+    generated using a simplified simulation of the flight of a
+    rocket.
+
+    Args:
+        None
+
+    Returns:
+        Dictionary containing the fake data
+    """
     # Parameters for the simulation
     max_altitude = 13000    # Max altitude in meters (13 km)
     duration = 120          # Total duration of flight in seconds
@@ -165,7 +220,7 @@ def get_fake_data():
 
     # Initial data
     initial_latitude = 28.5721
-    initial_longitude = -80.6480 
+    initial_longitude = -80.6480
     initial_temperature = 15
 
     longitude_values = [initial_latitude]
@@ -178,14 +233,15 @@ def get_fake_data():
         # Simplified simulation for altitude, velocity, and acceleration
         altitude = max_altitude * math.sin(math.pi * time / (2 * duration))
         velocity = (math.pi * altitude / (2 * duration)) * math.cos(math.pi * time / (2 * duration))
-        acceleration = -((math.pi ** 2) * max_altitude / (2 * duration ** 2)) * math.sin(math.pi * time / (2 * duration))
+        acceleration = -((math.pi ** 2) * max_altitude /
+                         (2 * duration ** 2)) * math.sin(math.pi * time / (2 * duration))
 
         # Simplified simulation for longitude and latitude
         latitude = latitude_values[j] - random.uniform(0, -0.00001)
         longitude = longitude_values[j] + random.uniform(0, -0.00001)
         temperature = temperature_values[j] - random.uniform(0, 0.5)
         j += 1
-        
+
         # Appending values to the lists
         time_labels.append(f"{time // 60:02d}:{time % 60:02d}.000")
         altitude_values.append(altitude)

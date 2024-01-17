@@ -1,4 +1,10 @@
 /**
+ * @organisation Leeds University Rocketry Organisation - LURA
+ * @fileoverview Custon flight data class.
+ * @author A. Posta
+*/
+
+/**
 * Class to store flight data in array like lists. When return from server, 
 * the data is in JSON format, which is not very useful for plotting. This class 
 * converts the JSON data into lists, which can be used for plotting.

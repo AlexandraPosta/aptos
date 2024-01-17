@@ -1,3 +1,9 @@
+/**
+ * @organisation Leeds University Rocketry Organisation - LURA
+ * @fileoverview This file contains functions used to display flight data on the dashboard.
+ * @author A. Posta
+*/
+
 //#region Worker
 let loader = undefined;
 
