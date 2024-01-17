@@ -195,5 +195,18 @@ def get_fake_data():
         latitude_values.append(latitude)
         temperature_values.append(temperature)
 
-    return time_labels, altitude_values, velocity_values, acceleration_values, temperature_values, latitude_values, longitude_values
-        
+    return {
+        'labels': time_labels,
+        'altitude': altitude_values,
+        'velocity': velocity_values,
+        'acceleration': acceleration_values,
+        'pressure': 0,
+        'temperature': temperature_values,
+        'humidity': 0,
+        'sattelites': '0',
+        'flight_stage': 'On Pad',
+        'latitude': latitude,
+        'longitude': longitude,
+        'battery': 0,
+        'error': ['Test_1', 'Test_2'],
+    }

@@ -1,3 +1,6 @@
+// Constants
+let loader;
+
 // Update Dashboard Charts
 function updateSequence(flight, flight_data) {
   Object.entries(flight_data).forEach(([key, value]) => {
@@ -48,7 +51,7 @@ function updateAlt(timestamp, altitude) {
     x: [timestamp],
     y: [altitude],
   };
-  Plotly.extendTraces('altChart', update, [0], timestamp.length);
+  Plotly.extendTraces('altChart', update, [0]);
 }
 
 function updateVelocity(timestamp, velocity, acceleration) {
@@ -61,8 +64,8 @@ function updateVelocity(timestamp, velocity, acceleration) {
     y:  [acceleration],
   };
 
-  Plotly.extendTraces('velChart', update_0, [0], acceleration.length);
-  Plotly.extendTraces('velChart', update_1, [1], acceleration.length);
+  Plotly.extendTraces('velChart', update_0, [0]);
+  Plotly.extendTraces('velChart', update_1, [1]);
 }
 
 function updateControl(longitude, latitude, altitude) {
@@ -78,8 +81,8 @@ function updateControl(longitude, latitude, altitude) {
     z:  [altitude]
   };
 
-  Plotly.extendTraces('controlChart', update_0, [0], altitude.length);
-  Plotly.extendTraces('controlChart', update_1, [1], altitude.length);
+  Plotly.extendTraces('controlChart', update_0, [0]);
+  Plotly.extendTraces('controlChart', update_1, [1]);
 }
 
 function updateMap(longitude, latitude, altitude) {
@@ -196,18 +199,23 @@ function flightSearchBar() {
   }
 }
 
-function flightRun(id_flight) {
+function flightRun() {
   deleteSequence();
   search = document.getElementById('flight-search')
-  if (search) {
+
+  if (search.selectedIndex != 0) {
     var option = search.options[search.selectedIndex];
     id_flight = option.value;
 
     try {
       fetchFlightData(id_flight).then(data => {      
-        data.flight_data.forEach(entry => {
-          setTimeout(() => { updateSequence(data.flight, entry); }, 1000);
-        });
+        if (loader) {
+          loader.postMessage(data);
+        }
+        /*data.flight_data.forEach(entry => {
+          //setTimeout(() => { updateSequence(data.flight, entry); }, 1000);
+          //updateSequence(data.flight, entry);
+        });*/
       });
     } catch (error) {
       console.error('Failed to fetch data:', error);
@@ -215,9 +223,15 @@ function flightRun(id_flight) {
   }
 }
 
+function flightStop() {
+  if (loader) {
+    loader.terminate();
+  }
+}
+
 function flightDisplay() {
   search = document.getElementById('flight-search')
-  if (search) {
+  if (search.selectedIndex != 0) {
     deleteSequence();
 
     var option = search.options[search.selectedIndex];
@@ -250,9 +264,10 @@ async function fetchFlights() {
   }
 }
 
+
 async function fetchFlightData(id_flight) {
   try { 
-    const url = new URL(window.location.href + 'get-flight-data');
+    const url = new URL(window.location.href + '/get-flight-data');
     url.searchParams.append('id', id_flight);
 
     const response = await fetch(url, {
@@ -281,8 +296,18 @@ function attachEventHandlers() {
 
 
 // Mount Charts and Event Triggers
-window.onload = function() {
-    mapboxgl.accessToken = 'pk.eyJ1IjoiYWxleHBvc3RhIiwiYSI6ImNscW1sdzFyMDJjNDUyaW8weW9kc2luaWQifQ.bQ-1vhGoRIbowpy5_gNNFw';
+window.onload = function() {  
+  if (window.Worker) {
+    loader = new Worker('/js/load-flight-data.js');
+  
+    loader.onmessage = function(e) {
+      const processedData = e.data;
+      updateSequence(processedData[0], processedData[1]);
+    };
+  } 
+  
+  // Create Map
+  mapboxgl.accessToken = 'pk.eyJ1IjoiYWxleHBvc3RhIiwiYSI6ImNscW1sdzFyMDJjNDUyaW8weW9kc2luaWQifQ.bQ-1vhGoRIbowpy5_gNNFw';
 
     const map = new mapboxgl.Map({
       container: 'map',
