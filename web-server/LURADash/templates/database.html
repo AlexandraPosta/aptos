@@ -7,19 +7,17 @@
 {% block main %}
 <div>
     <div class="header-container">
-        <select id="db-table">
+        <select style="width: 200px;" id="db-table">
             <option value="">--Select table in database--</option>
         </select>
-        <select id="db-column">
+        <select style="width: 200px;" id="db-column">
             <option value="">--Select column to filter by--</option>
         </select>
-        <select id="db-filter">
+        <select style="width: 200px;" id="db-filter">
             <option value="">--Select value to filter by--</option>
         </select>
     </div>
 
-    <div class="db-container">
-        <table id="db-table"></table>
-    </div>
+    <div class="db-container" id="db-container"></div>
 </div>
 {% endblock %}

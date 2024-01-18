@@ -304,14 +304,16 @@ function getGraph(graph_name, height, width, axis_name, traces_name) {
 function flightSearchBar() {
   try {
     fetchFlights().then(flights => {
-      select = document.getElementById('flight-search');
-      flights.forEach(flight => {
-        option = document.createElement('option');
-        option.id = flight.id_flight;
-        option.value = flight.id_flight;
-        option.text = flight.rocket_name + '-' + flight.motor + '-' + flight.date_of_launch;
-        select.add(option);        
-      }); 
+      if (flights) {
+        select = document.getElementById('flight-search');
+        flights.forEach(flight => {
+          option = document.createElement('option');
+          option.id = flight.id_flight;
+          option.value = flight.id_flight;
+          option.text = flight.rocket_name + '-' + flight.motor + '-' + flight.date_of_launch;
+          select.add(option);        
+        });
+      }
     });
   } catch (error) {
     console.error('Failed to fetch data:', error);
@@ -339,7 +341,7 @@ function flightRun() {
 
     try {
       fetchFlightData(id_flight).then(data => {      
-        if (loader) {
+        if (loader && data) {
           loader.postMessage(data);
         }
       });
@@ -373,9 +375,11 @@ function flightDisplay() {
     
     try {
       fetchFlightData(id_flight).then(data => {
-        flight_data = new FlightData(); // Convert from object to list of entries
-        flight_data.entries_to_lists(data.flight_data)
-        updateSequence(data.flight, flight_data);
+        if (data) {
+          flight_data = new FlightData(); // Convert from object to list of entries
+          flight_data.entries_to_lists(data.flight_data)
+          updateSequence(data.flight, flight_data);
+        }
       });
     } catch (error) {
       console.error('Failed to fetch data:', error);
@@ -413,9 +417,9 @@ async function fetchFlights() {
 }
 
 /**
- * 
- * @param  {type} foo H
- * @return {type}     None
+ * Function that fetches a flight from the database.
+ * @param  {int} id_flight    ID of the flight
+ * @return {data}             Flight and flight data
  */
 async function fetchFlightData(id_flight) {
   try { 
@@ -425,7 +429,7 @@ async function fetchFlightData(id_flight) {
     const response = await fetch(url, {
       method: 'GET',
       headers: {'Content-Type': 'application/json'}
-    })
+    });
 
     if (!response.ok) {
       throw new Error('HTTP error! status: ${response.status}');

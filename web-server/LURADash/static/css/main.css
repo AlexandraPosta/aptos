@@ -13,6 +13,20 @@ body, html {
     z-index: 0;
 }
 
+.main-content {
+    margin-left: 50px;
+    background-color: #d1e0e0;
+    min-height: 100vh;
+    flex-grow: 1;
+}
+
+.header-container {
+    padding: 10px;
+    padding-bottom: 0;
+    font-family: Arial;
+}
+
+
 /*#region Sidebar*/
 .sidebar {
     background-color: white;
@@ -37,18 +51,6 @@ body, html {
     color: rgb(147, 18, 18);
 }
 /*#endregion Sidebar*/
-
-
-.main-content {
-    margin-left: 50px;
-    flex-grow: 1;/
-}
-
-.header-container {
-    padding: 10px;
-    padding-bottom: 0;
-    font-family: Arial;
-}
 
 
 /*#region Dashboard Content*/
@@ -171,13 +173,25 @@ model-viewer {
 /*#region Database*/
 .db-container {
     display: block;
-    /* width: 100vw; */
-    /* padding: 10px; */
-    height: 100vh;
+    height: 100%;
+    width: 100%;
 }
 
-.db-table {
+.db-container > table {
     height: inherit;
     padding: 10px;
+}
+
+.db-container > table > thead > tr > th {
+    text-align: center;
+    font-family: Arial;
+    padding: 5px;
+    background-color: rgb(102, 146, 148);
+}
+
+.db-container > table > tbody > tr > td {
+    font-family: Arial;
+    padding: 5px;
+    background-color: white;
 }
 /*#endregion Database*/
