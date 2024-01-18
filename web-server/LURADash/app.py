@@ -186,4 +186,4 @@ if __name__ == "__main__":
         all_columns[column.name] = column.type
 
     # Run the app
-    app.run(debug=True) # VSCode debug does not work otherwise
+    app.run(debug=False) # set to false, VSCode debug does not work otherwise
