@@ -1,6 +1,6 @@
 /**
  * @organisation Leeds University Rocketry Organisation - LURA
- * @fileoverview This file contains functions used to display flight data on the dashboard.
+ * @fileoverview This file contains functions used to display telemetry data on the dashboard.
  * @author A. Posta
 */
 
@@ -296,38 +296,23 @@ function getGraph(graph_name, height, width, axis_name, traces_name) {
 
 //#region Populate Search Bar
 /**
- * Function that populates the search bar with all flights from the database.
- * Flights are in the format: rocket_name-motor-date_of_launch inside the 
- * search bar.
+ * 
  * @return {void}     None
  */
-function flightSearchBar() {
+function TelemetrySearchBar() {
   try {
-    fetchFlights().then(flights => {
-      select = document.getElementById('flight-search');
-      flights.forEach(flight => {
-        option = document.createElement('option');
-        option.id = flight.id_flight;
-        option.value = flight.id_flight;
-        option.text = flight.rocket_name + '-' + flight.motor + '-' + flight.date_of_launch;
-        select.add(option);        
-      }); 
-    });
+    // TODO
   } catch (error) {
     console.error('Failed to fetch data:', error);
   }
 }
 
 /**
- * Function that plays a flight when the user selects a flight from the search bar.
- * The flight is identified by the id_flight attribute of the option element.
- * This function deletes the previous flight data and stops the previoud worker before 
- * starting a new one with the current data. It also updates the flight stages and 
- * statistics every two seconds (check worker file for further details). 
+ * Start the telemetry connection. 
  * @return {void}     None
  */
-function flightRun() {
-  search = document.getElementById('flight-search')
+function telemetryRun() {
+  search = document.getElementById('telemetry-search')
 
   if (search.selectedIndex != 0) {
     deleteSequence();
@@ -338,45 +323,7 @@ function flightRun() {
     id_flight = option.value;
 
     try {
-      fetchFlightData(id_flight).then(data => {      
-        if (loader) {
-          loader.postMessage(data);
-        }
-      });
-    } catch (error) {
-      console.error('Failed to fetch data:', error);
-    }
-  }
-}
-
-/**
- * Attah the events handler from the "Pause" DOM element
- * @return {void}     None
- */
-function flightStop() {
-  stopWorker();
-}
-
-/**
- * Function that displays the entire duration of a flight. It identifies
- * the flight by the id_flight attribute of the option element.
- * @return {void}     None
- */
-function flightDisplay() {
-  search = document.getElementById('flight-search')
-  if (search.selectedIndex != 0) {
-    deleteSequence();
-    stopWorker();
-
-    var option = search.options[search.selectedIndex];
-    id_flight = option.value;
-    
-    try {
-      fetchFlightData(id_flight).then(data => {
-        flight_data = new FlightData(); // Convert from object to list of entries
-        flight_data.entries_to_lists(data.flight_data)
-        updateSequence(data.flight, flight_data);
-      });
+      // TODO
     } catch (error) {
       console.error('Failed to fetch data:', error);
     }
@@ -388,7 +335,7 @@ function flightDisplay() {
  * format and downloaded automtically to the user's computer.
  * @return {void}     None
  */
-function flightGenerateReport() {
+function telemetryGenerateReport() {
   //TODO 
 }
 //#endregion
@@ -397,9 +344,9 @@ function flightGenerateReport() {
 //#region Fetch Data
 /**
  * Function that fetches all flights from the database.
- * @return {Flight}     List of flights
+ * @return {Flight}     Returns a flight model as a dictionary
  */
-async function fetchFlights() {
+async function telemetryFlights() {
   try { 
     const response = await fetch('/get-flights')
     if (!response.ok) {
@@ -413,11 +360,11 @@ async function fetchFlights() {
 }
 
 /**
- * 
- * @param  {type} foo H
- * @return {type}     None
+ * Function that fetches the flight data from the database.
+ * @param  {int}         id_flight  ID of the flight
+ * @return {FlightData}             Return data of the frlights as a list of entries
  */
-async function fetchFlightData(id_flight) {
+async function telemetryFlightData(id_flight) {
   try { 
     const url = new URL(window.location.href + '/get-flight-data');
     url.searchParams.append('id', id_flight);
@@ -445,19 +392,8 @@ async function fetchFlightData(id_flight) {
  */
 function attachEventHandlers() { 
   // Search Bar Event Handler
-  document.getElementById('flight-search').addEventListener('change', function(event) {
-    flightDisplay();
-  });  
-
-  // Stop worker when switching to other tabs
-  document.getElementById('flight-web').addEventListener('click', function(event) {
-    stopWorker();
-  });
-  document.getElementById('telemetry-web').addEventListener('click', function(event) {
-    stopWorker();
-  });
-  document.getElementById('db-web').addEventListener('click', function(event) {
-    stopWorker();
+  document.getElementById('telemetry-search').addEventListener('change', function(event) {
+    // TODO
   });
 }
 

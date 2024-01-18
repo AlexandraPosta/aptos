@@ -109,6 +109,45 @@ def database():
         return render_template("database.html")
 
 
+@app.route('/get-tables', methods=['GET'])
+def database_tables():
+    @after_this_request
+    def add_header(response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+    tables = db.metadata.tables.keys()
+    return jsonify({'tables': list(tables)})
+
+
+@app.route('/get-columns', methods=['GET'])
+def database_table_columns():
+    @after_this_request
+    def add_header(response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+    
+    columns = []
+    for column in table.columns:
+        c = {}
+        c['name'] = column.name
+        c['type'] = str(column.type)
+        columns.append(c)
+
+    return jsonify({'columns': columns})
+
+
+@app.route('/get-table-data', methods=['GET'])
+def database_table_data():
+    @after_this_request
+    def add_header(response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+
+    flight, flight_data = load_flight_data(request.args.get('query'))
+    data = None
+    return jsonify({'data': data})
+
+
 if __name__ == "__main__":
     # SqlAlchemy Database Configuration With Mysql
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin''@localhost/aptosdb'
@@ -119,6 +158,10 @@ if __name__ == "__main__":
 
     # Generate fake data into the database
     #generate_fake_entry()
+    table = db.metadata.tables['flight']
+    all_columns = {}
+    for column in table.columns:
+        all_columns[column.name] = column.type
 
     # Run the app
-    app.run(debug=True) # VSCode debug does not work otherwise
+    app.run(debug=False) # VSCode debug does not work otherwise

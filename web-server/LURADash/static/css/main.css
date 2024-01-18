@@ -38,7 +38,7 @@ body, html {
 }
 /*#endregion Sidebar*/
 
-/*#region Dashboard Content*/
+
 .main-content {
     margin-left: 50px;
     flex-grow: 1;/
@@ -50,6 +50,8 @@ body, html {
     font-family: Arial;
 }
 
+
+/*#region Dashboard Content*/
 .item1 { grid-area: launch-vehicle; }
 .item2 { grid-area: satellite-view; }
 .item3 { grid-area: alt-vs-time; }
@@ -165,3 +167,17 @@ model-viewer {
     }
 }
 /*#endregion Dashboard Content*/
+
+/*#region Database*/
+.db-container {
+    display: block;
+    /* width: 100vw; */
+    /* padding: 10px; */
+    height: 100vh;
+}
+
+.db-table {
+    height: inherit;
+    padding: 10px;
+}
+/*#endregion Database*/

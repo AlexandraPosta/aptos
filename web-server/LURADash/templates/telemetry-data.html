@@ -1,5 +1,9 @@
 {% extends 'flight.html' %}
 
+{% block extend_include %}
+<script src="{{ url_for('static', filename='js/telemetry.js') }}"></script>
+{% endblock %}
+
 {% block header %}
 <div class="header-container">
     <input id="search-telemetry"

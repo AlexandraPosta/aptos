@@ -1,13 +1,21 @@
 {% extends 'base.html' %}
 
+{% block include %}
+<script src="{{ url_for('static', filename='js/database.js') }}"></script>
+{% endblock %}
+
 {% block main %}
 <div>
     <div class="header-container">
-        <input id="db-search"
-               onkeyup="search_db()"
-               type="text" name="search"
-               placeholder="Filter database...">
-        <button id="db-execute" onclick="db_execute()">Execute</button>
+        <select id="db-table">
+            <option value="">--Select table in database--</option>
+        </select>
+        <select id="db-column">
+            <option value="">--Select column to filter by--</option>
+        </select>
+        <select id="db-filter">
+            <option value="">--Select value to filter by--</option>
+        </select>
     </div>
 
     <div class="db-container">
