@@ -7,7 +7,7 @@ void HERKULEX_init(SmartServo *motor)
 
     //starting sequence
     HERKULEX_servo_set_torque(motor, SERVO_TORQUE_ON);
-    HERKULEX_position_control(motor, 512);
+    HERKULEX_position_control(motor, 512); // middle value
 }
 
 //---------------------- Useful functions -----------------
@@ -23,8 +23,9 @@ void HERKULEX_servo_set_torque(SmartServo *motor, uint8_t cmdTorque)
     txBuf[2] = SERVO_MIN_PACKET_SIZE + 3; // Packet Size
     txBuf[3] = motor->servo_id;                  // Servo ID
     txBuf[4] = SERVO_CMD_RAM_WRITE;       // Command Ram Write (0x03)
-    txBuf[5] = 0;                   // Checksum1
-    txBuf[6] = 0;                   // Checksum2
+    //save processes by removing these 2 lines
+    //txBuf[5] = 0;                   // Checksum1
+    //txBuf[6] = 0;                   // Checksum2
     txBuf[7] = SERVO_RAM_TORQUE_CONTROL;  // Address 52
     txBuf[8] = SERVO_BYTE1;               // Length
     txBuf[9] = cmdTorque;            // Torque ON
@@ -56,8 +57,9 @@ void HERKULEX_position_control(SmartServo *motor, uint16_t position, uint8_t pla
     txBuf[2]  = SERVO_MIN_PACKET_SIZE + 5;    // Packet Size
     txBuf[3]  = motor->servo_id;               
     txBuf[4]  = SERVO_CMD_I_JOG;              // Command I JOG (0x06)
-    txBuf[5]  = 0;                      // Checksum1
-    txBuf[6]  = 0;                      // Checksum2
+    //save processes by removing these 2 lines
+    //txBuf[5]  = 0;                      // Checksum1
+    //txBuf[6]  = 0;                      // Checksum2
     txBuf[7]  = goalposition_lsb;              
     txBuf[8]  = goalposition_msb;  
     txBuf[9]  = 4;
@@ -85,8 +87,9 @@ uint8_t HERKULEX_position_feedback(SmartServo *motor)
     txBuf[2] = SERVO_MIN_PACKET_SIZE + 2;       // Packet Size
     txBuf[3] = motor->servo_id;                 // Servo ID
     txBuf[4] = SERVO_CMD_RAM_READ;              // Status Error, Status Detail request
-    txBuf[5] = 0;                               // Checksum1
-    txBuf[6] = 0;                               // Checksum2    
+    //save processes by removing these 2 lines
+    //txBuf[5] = 0;                               // Checksum1
+    //txBuf[6] = 0;                               // Checksum2    
     txBuf[7] = SERVO_RAM_CALIBRATED_POSITION;   // Address 52
     txBuf[8] = SERVO_BYTE2;                     // Address 52 and 53      
 

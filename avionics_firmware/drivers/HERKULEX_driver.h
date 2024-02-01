@@ -222,6 +222,12 @@ void HERKULEX_position_control(SmartServo *motor, uint16_t position, uint8_t pla
 
 uint8_t HERKULEX_position_feedback(SmartServo *motor);
 
+//function to change a rom value
+//function to read a rom value
+
+//function to change a ram value
+//function to read a ram value
+
 #pragma endregion Public
 
 #endif
