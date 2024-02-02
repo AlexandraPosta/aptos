@@ -39,7 +39,7 @@ https://github.com/hamadbinghalib/HerkulexSmartServoCLibrary/tree/main
 #define SERVO_ROM_MAX_ACCELERATION_TIME           15
 #define SERVO_ROM_DEAD_ZONE                       16
 #define SERVO_ROM_SATURATOR_OFFSET                17
-#define SERVO_ROM_SATURATOR_SLOPE                 18  // 2Byte
+#define SERVO_ROM_SATURATOR_SLOPE                 (18 << 8) // 18 & 19  // 2Byte
 #define SERVO_ROM_PWM_OFFSET                      20
 #define SERVO_ROM_MIN_PWM                         21
 #define SERVO_ROM_MAX_PWM                         22  // 2Byte
@@ -209,6 +209,7 @@ typedef struct SmartServo
     uint8_t servo_id;
     uint8_t servo_pos_deg;
     uint8_t servo_status;
+    uint8_t servo_error_status;
     uart servo_uart;
 } SmartServo;
 
@@ -220,14 +221,36 @@ void HERKULEX_servo_set_torque(SmartServo *motor, uint8_t cmdTorque);
 
 void HERKULEX_position_control(SmartServo *motor, uint16_t position, uint8_t playtime);
 
-uint8_t HERKULEX_position_feedback(SmartServo *motor);
+void HERKULEX_position_feedback(SmartServo *motor);
+
+//***reboot function
+//***factory reset function (called rollback)
+
+
+
+//------------------ ROM functions (maintained after reboot) ---------
 
 //function to change a rom value
-//function to read a rom value
+void HERKULEX_set_rom(SmartServo *motor, uint16_t reg, uint16_t value);
 
+//function to read a rom value
+//reg is a defined register to read, length is either SERVO_BYTE1 or SERVO_BYTE2
+uint16_t HERKULEX_read_rom(SmartServo *motor, uint16_t reg, uint8_t length);
+
+//----------------- RAM functions (lost after reboot) ------------
 //function to change a ram value
+void HERKULEX_set_ram(SmartServo *motor, uint16_t reg, uint16_t value);
+
 //function to read a ram value
+//reg is a defined register to read, length is either SERVO_BYTE1 or SERVO_BYTE2
+uint16_t HERKULEX_read_ram(SmartServo *motor, uint16_t reg, uint8_t length);
 
 #pragma endregion Public
+#pragma region Private
+//------------------ function with building blocks for ram and rom read/writes -------------------------
+
+uint16_t HERKULEX_read(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t length);
+
+#pragma endregion Private
 
 #endif
