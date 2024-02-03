@@ -207,6 +207,7 @@ https://github.com/hamadbinghalib/HerkulexSmartServoCLibrary/tree/main
 typedef struct SmartServo
 {
     uint8_t servo_id;
+    uint8_t servo_pos;
     uint8_t servo_pos_deg;
     uint8_t servo_status;
     uint8_t servo_error_status;
@@ -226,13 +227,13 @@ void HERKULEX_position_feedback(SmartServo *motor);
 //***reboot function
 void HERKULEX_reboot(SmartServo *motor);
 //***factory reset function (called rollback)
-
+void HERKULEX_rollback(SmartServo *motor);
 
 
 //------------------ ROM functions (maintained after reboot) ---------
 
 //function to change a rom value
-void HERKULEX_set_rom(SmartServo *motor, uint16_t reg, uint16_t value);
+void HERKULEX_set_rom(SmartServo *motor, uint16_t reg, uint8_t length, uint8_t *data);
 
 //function to read a rom value
 //reg is a defined register to read, length is either SERVO_BYTE1 or SERVO_BYTE2
@@ -240,7 +241,7 @@ uint16_t HERKULEX_read_rom(SmartServo *motor, uint16_t reg, uint8_t length);
 
 //----------------- RAM functions (lost after reboot) ------------
 //function to change a ram value
-void HERKULEX_set_ram(SmartServo *motor, uint16_t reg, uint16_t value);
+void HERKULEX_set_ram(SmartServo *motor, uint16_t reg, uint8_t length, uint8_t *data);
 
 //function to read a ram value
 //reg is a defined register to read, length is either SERVO_BYTE1 or SERVO_BYTE2
@@ -251,6 +252,8 @@ uint16_t HERKULEX_read_ram(SmartServo *motor, uint16_t reg, uint8_t length);
 //------------------ function with building blocks for ram and rom read/writes -------------------------
 
 uint16_t HERKULEX_read(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t length);
+
+void HERKULEX_write(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t length, uint8_t *data);
 
 #pragma endregion Private
 

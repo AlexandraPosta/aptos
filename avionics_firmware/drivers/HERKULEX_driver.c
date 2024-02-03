@@ -37,15 +37,17 @@ void HERKULEX_servo_set_torque(SmartServo *motor, uint8_t cmdTorque)
 
     // Checksum1 = (PacketSize ^ pID ^ CMD ^ Data[0] ^ Data[1] ^ ... ^ Data[n]) & 0xFE
     // Checksum2 = (~Checksum1)&0xFE
-    txBuf[5] = (txBuf[2]^txBuf[3]^txBuf[4]^txBuf[7]^txBuf[8]^txBuf[9]) & 0xFE;
-    txBuf[6] = (~txBuf[5])&0xFE;
+    txBuf[5] = (txBuf[2]^txBuf[3]^txBuf[4]^txBuf[7]^txBuf[8]^txBuf[9]) & SERVO_CHKSUM_MASK;
+    txBuf[6] = (~txBuf[5])&SERVO_CHKSUM_MASK;
 
     uart_write_buff(motor->servo_uart, txBuf, packet_size);
 }
 
+
 // move servo to specific position, between 0 and 1023, 512 being middle
 void HERKULEX_position_control(SmartServo *motor, uint16_t position, uint8_t playtime) 
 {
+    //*********************************** Could this be simplified by implementing the WRITE function **********
     //if values are out of bounds return
     if (position > 1023) return;
     if (playtime > 255) return;
@@ -70,8 +72,8 @@ void HERKULEX_position_control(SmartServo *motor, uint16_t position, uint8_t pla
     
     // Checksum1 = (PacketSize ^ pID ^ CMD ^ Data[0] ^ Data[1] ^ ... ^ Data[n]) & 0xFE
     // Checksum2 = (~Checksum1)&0xFE
-    txBuf[5] = (txBuf[2]^txBuf[3]^txBuf[4]^txBuf[7]^txBuf[8]^txBuf[9]^txBuf[10]^txBuf[11]) & 0xFE;
-    txBuf[6] = (~txBuf[5])&0xFE;
+    txBuf[5] = (txBuf[2]^txBuf[3]^txBuf[4]^txBuf[7]^txBuf[8]^txBuf[9]^txBuf[10]^txBuf[11]) & SERVO_CHKSUM_MASK;
+    txBuf[6] = (~txBuf[5])&SERVO_CHKSUM_MASK;
 
     uart_write_buff(motor->servo_uart, txBuf, packet_size);
 }
@@ -88,15 +90,16 @@ void HERKULEX_position_feedback(SmartServo *motor)
 
     //check there was no errors
     if (motor->servo_error_status == SERVO_STATUS_OK && position != 0){
-        motor->servo_pos_deg = position; // do we want to convert this to an angle? angle = position * 0.325
+        motor->servo_pos = position;
+        motor->servo_pos_deg = position * 0.325;
     }
     
 }
 
 //reboot the servo, clears RAM and reloads from ROM
 void HERKULEX_reboot(SmartServo *motor){
-    uint8_t packet_size = SERVO_MIN_ACK_PACKET_SIZE; //packet size for transmit
-    uint8_t txBuf[SERVO_MIN_ACK_PACKET_SIZE];
+    uint8_t packet_size = SERVO_MIN_PACKET_SIZE; //packet size for transmit
+    uint8_t txBuf[SERVO_MIN_PACKET_SIZE];
     
     txBuf[0] = SERVO_HEADER;                    // Packet Header (0xFF)
     txBuf[1] = SERVO_HEADER;                    // Packet Header (0xFF)
@@ -113,8 +116,8 @@ void HERKULEX_reboot(SmartServo *motor){
 
 // roll back ROM to default values, except IDs and Baudrates
 void HERKULEX_rollback(SmartServo *motor){
-    uint8_t packet_size = SERVO_MIN_ACK_PACKET_SIZE + 2; //packet size for transmit
-    uint8_t txBuf[SERVO_MIN_ACK_PACKET_SIZE + 2];
+    uint8_t packet_size = SERVO_MIN_PACKET_SIZE + 2; //packet size for transmit
+    uint8_t txBuf[SERVO_MIN_PACKET_SIZE + 2];
     
     txBuf[0] = SERVO_HEADER;                    // Packet Header (0xFF)
     txBuf[1] = SERVO_HEADER;                    // Packet Header (0xFF)
@@ -136,9 +139,9 @@ void HERKULEX_rollback(SmartServo *motor){
 
 //------- ROM functions (maintained after reboot) ---------
 //function to change a rom value
-void HERKULEX_set_rom(SmartServo *motor, uint16_t reg, uint16_t value)
+void HERKULEX_set_rom(SmartServo *motor, uint16_t reg, uint8_t length, uint8_t *data)
 {
-
+    HERKULEX_write(motor, SERVO_CMD_ROM_WRITE, reg, length, data);
 }
 //function to read a rom value
 uint16_t HERKULEX_read_rom(SmartServo *motor, uint16_t reg, uint8_t length)
@@ -148,9 +151,9 @@ uint16_t HERKULEX_read_rom(SmartServo *motor, uint16_t reg, uint8_t length)
 
 //------- RAM functions (lost after reboot) ------------
 //function to change a ram value
-void HERKULEX_set_ram(SmartServo *motor, uint16_t reg, uint16_t value)
+void HERKULEX_set_rom(SmartServo *motor, uint16_t reg, uint8_t length, uint8_t *data)
 {
-
+    HERKULEX_write(motor, SERVO_CMD_RAM_WRITE, reg, length, data);
 }
 //function to read a ram value
 uint16_t HERKULEX_read_ram(SmartServo *motor, uint16_t reg, uint8_t length)
@@ -167,8 +170,8 @@ uint16_t HERKULEX_read(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t len
         return 0;
     }
 
-    uint8_t packet_size = SERVO_MIN_ACK_PACKET_SIZE + 2; //packet size for transmit
-    uint8_t txBuf[SERVO_MIN_ACK_PACKET_SIZE + 2];
+    uint8_t packet_size = SERVO_MIN_PACKET_SIZE + 2; //packet size for transmit
+    uint8_t txBuf[SERVO_MIN_PACKET_SIZE + 2];
     
     txBuf[0] = SERVO_HEADER;                    // Packet Header (0xFF)
     txBuf[1] = SERVO_HEADER;                    // Packet Header (0xFF)
@@ -249,4 +252,37 @@ uint16_t HERKULEX_read(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t len
     
     //return recieved bytes
     return result;
+}
+
+//private write function
+void HERKULEX_write(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t length, uint8_t *data)
+{
+    //check length is a valid input (1 or 2)
+    if (length != SERVO_BYTE1 && length != SERVO_BYTE2){
+        return 0;
+    }
+
+    uint8_t packet_size = SERVO_MIN_PACKET_SIZE + length; //packet size for transmit
+    uint8_t txBuf[SERVO_MIN_PACKET_SIZE + SERVO_MAX_DATA_SIZE]; //length can't be dynamic so set at max length
+    
+    txBuf[0] = SERVO_HEADER;                    // Packet Header (0xFF)
+    txBuf[1] = SERVO_HEADER;                    // Packet Header (0xFF)
+    txBuf[2] = packet_size;                     // Packet Size
+    txBuf[3] = motor->servo_id;                 // Servo ID
+    txBuf[4] = SERVO_CMD_RAM_READ;              // RAM Read Command
+    txBuf[7] = reg;                             // Register Address given
+    txBuf[8] = length;                          // is SERVO_BYTE1 or SERVO_BYTE2 for either 1 or 2 bytes of data to return
+
+    //add data to buffer
+    //use the length and data pointer to add the data into the buffer
+    for (int ii = 0; ii< length; ii++) {
+        txBuf[SERVO_MIN_PACKET_SIZE + ii] = data[ii];
+    }
+
+    // Check Sum1 and Check Sum2 ********** NEED REVISING for different lengths **************
+    txBuf[5] = (txBuf[2]^txBuf[3]^txBuf[4]^txBuf[7]^txBuf[8]) & SERVO_CHKSUM_MASK;
+    txBuf[6] = (~txBuf[5])&SERVO_CHKSUM_MASK;
+    
+    // send packet
+    uart_write_buff(motor->servo_uart, txBuf, packet_size);
 }
