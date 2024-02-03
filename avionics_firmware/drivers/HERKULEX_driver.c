@@ -83,12 +83,55 @@ void HERKULEX_position_feedback(SmartServo *motor)
     //read the position from servo
     position = HERKULEX_read_ram(motor, SERVO_RAM_CALIBRATED_POSITION, SERVO_BYTE2);
 
+    //in the example the highest byte is AND with 0b00000011, this is because that is the max it could be.
+    position = position & 0x03FF; // taken from the examples, for position they had  & 0x03 for the highest byte
+
     //check there was no errors
     if (motor->servo_error_status == SERVO_STATUS_OK && position != 0){
-        motor->servo_pos_deg = position; // do we want to convert this to an angle?
+        motor->servo_pos_deg = position; // do we want to convert this to an angle? angle = position * 0.325
     }
     
 }
+
+//reboot the servo, clears RAM and reloads from ROM
+void HERKULEX_reboot(SmartServo *motor){
+    uint8_t packet_size = SERVO_MIN_ACK_PACKET_SIZE; //packet size for transmit
+    uint8_t txBuf[SERVO_MIN_ACK_PACKET_SIZE];
+    
+    txBuf[0] = SERVO_HEADER;                    // Packet Header (0xFF)
+    txBuf[1] = SERVO_HEADER;                    // Packet Header (0xFF)
+    txBuf[2] = packet_size;                     // Packet Size
+    txBuf[3] = motor->servo_id;                 // Servo ID
+    txBuf[4] = SERVO_CMD_REBOOT;                // Reboot Command
+    // Check Sum1 and Check Sum2
+    txBuf[5] = (txBuf[2]^txBuf[3]^txBuf[4]) & SERVO_CHKSUM_MASK;
+    txBuf[6] = (~txBuf[5])&SERVO_CHKSUM_MASK;
+    
+    // send packet
+    uart_write_buff(motor->servo_uart, txBuf, packet_size);
+}
+
+// roll back ROM to default values, except IDs and Baudrates
+void HERKULEX_rollback(SmartServo *motor){
+    uint8_t packet_size = SERVO_MIN_ACK_PACKET_SIZE + 2; //packet size for transmit
+    uint8_t txBuf[SERVO_MIN_ACK_PACKET_SIZE + 2];
+    
+    txBuf[0] = SERVO_HEADER;                    // Packet Header (0xFF)
+    txBuf[1] = SERVO_HEADER;                    // Packet Header (0xFF)
+    txBuf[2] = packet_size;                     // Packet Size
+    txBuf[3] = motor->servo_id;                 // Servo ID
+    txBuf[4] = SERVO_CMD_ROLLBACK;              // Rollback Command
+    txBuf[7] = 1;                               // Skips ID rollback
+    txBuf[8] = 1;                               // Skips Baudrate rollback
+
+    // Check Sum1 and Check Sum2
+    txBuf[5] = (txBuf[2]^txBuf[3]^txBuf[4]^txBuf[7]^txBuf[8]) & SERVO_CHKSUM_MASK;
+    txBuf[6] = (~txBuf[5])&SERVO_CHKSUM_MASK;
+    
+    // send packet
+    uart_write_buff(motor->servo_uart, txBuf, packet_size);
+}
+
 
 
 //------- ROM functions (maintained after reboot) ---------
@@ -125,7 +168,7 @@ uint16_t HERKULEX_read(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t len
     }
 
     uint8_t packet_size = SERVO_MIN_ACK_PACKET_SIZE + 2; //packet size for transmit
-    uint8_t txBuf[9];
+    uint8_t txBuf[SERVO_MIN_ACK_PACKET_SIZE + 2];
     
     txBuf[0] = SERVO_HEADER;                    // Packet Header (0xFF)
     txBuf[1] = SERVO_HEADER;                    // Packet Header (0xFF)
@@ -136,8 +179,8 @@ uint16_t HERKULEX_read(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t len
     txBuf[8] = length;                          // is SERVO_BYTE1 or SERVO_BYTE2 for either 1 or 2 bytes of data to return
 
     // Check Sum1 and Check Sum2
-    txBuf[5] = (txBuf[2]^txBuf[3]^txBuf[4]^txBuf[7]^txBuf[8]) & 0xFE;
-    txBuf[6] = (~txBuf[5])&0xFE;
+    txBuf[5] = (txBuf[2]^txBuf[3]^txBuf[4]^txBuf[7]^txBuf[8]) & SERVO_CHKSUM_MASK;
+    txBuf[6] = (~txBuf[5])&SERVO_CHKSUM_MASK;
     
     // send packet
     uart_write_buff(motor->servo_uart, txBuf, packet_size);
@@ -171,7 +214,7 @@ uint16_t HERKULEX_read(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t len
     //---------------------- error checking -------------------
     // Checksums:
     // Checksum1
-    uint8_t chksum1 = (rxBuf[2]^rxBuf[3]^rxBuf[4]^rxBuf[7]^rxBuf[8]^rxBuf[9]^rxBuf[10]^rxBuf[11]^rxBuf[12]) & 0xFE;
+    uint8_t chksum1 = (rxBuf[2]^rxBuf[3]^rxBuf[4]^rxBuf[7]^rxBuf[8]^rxBuf[9]^rxBuf[10]^rxBuf[11]^rxBuf[12]) & SERVO_CHKSUM_MASK;
     //check
     if (chksum1 != rxBuf[5])
     {
@@ -180,7 +223,7 @@ uint16_t HERKULEX_read(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t len
     }
     
     // // Checksum2
-    uint8_t chksum2 = (~rxBuf[5]&0xFE);
+    uint8_t chksum2 = (~rxBuf[5]&SERVO_CHKSUM_MASK);
     if (chksum2 != rxBuf[6])
     {
         motor->servo_error_status = SERVO_ERROR_INVALID_PACKET; //checksum error
@@ -199,7 +242,8 @@ uint16_t HERKULEX_read(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t len
 
     //------------------- Extract data ---------
     if (length == SERVO_BYTE2){
-        result = ((rxBuf[10]&0x03)<<8) | rxBuf[9];
+        //result = ((rxBuf[10]&0x03)<<8) | rxBuf[9]; // not sure why the &0x03 bit was there, its from the example get position code
+        result = (rxBuf[10]<<8) | rxBuf[9];
     }else{
         result = rxBuf[9];
     }

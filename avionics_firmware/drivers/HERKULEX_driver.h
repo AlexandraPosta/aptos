@@ -224,6 +224,7 @@ void HERKULEX_position_control(SmartServo *motor, uint16_t position, uint8_t pla
 void HERKULEX_position_feedback(SmartServo *motor);
 
 //***reboot function
+void HERKULEX_reboot(SmartServo *motor);
 //***factory reset function (called rollback)
 
 
