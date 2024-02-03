@@ -242,7 +242,6 @@ uint16_t HERKULEX_read(SmartServo *motor, uint8_t cmd, uint16_t reg, uint8_t len
 
     //------------------- Extract data ---------
     if (length == SERVO_BYTE2){
-        //result = ((rxBuf[10]&0x03)<<8) | rxBuf[9]; // not sure why the &0x03 bit was there, its from the example get position code
         result = (rxBuf[10]<<8) | rxBuf[9];
     }else{
         result = rxBuf[9];
