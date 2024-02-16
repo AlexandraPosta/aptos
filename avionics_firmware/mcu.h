@@ -157,10 +157,11 @@ static inline void uart_init(USART_TypeDef *uart, unsigned long baud) {
   }
 
   // UART
-  if (uart == UART1) af = 7, tx = PIN('A', 9), rx = PIN('A', 10);
-  if (uart == UART2) af = 7, tx = PIN('A', 2), rx = PIN('A', 3);
-  if (uart == UART3) af = 7, tx = PIN('D', 8), rx = PIN('D', 9); 
-  if (uart == LUART1) af = 8, tx = PIN('G', 7), rx = PIN('G', 8);   
+  // TODO pins check
+  if (uart == UART1)  af = 7, tx = PIN('A', 9),  rx = PIN('A', 10); // EXTERN USART
+  if (uart == UART2)  af = 7, tx = PIN('A', 2),  rx = PIN('A', 3);
+  if (uart == UART3)  af = 7, tx = PIN('D', 8),  rx = PIN('D', 9);  // GNSS RX/TX
+  if (uart == LUART1) af = 8, tx = PIN('B', 11), rx = PIN('B', 10);
 
   gpio_set_mode(tx, GPIO_MODE_AF);
   gpio_set_af(tx, af);
@@ -214,12 +215,48 @@ static inline uint8_t uart_read_byte(USART_TypeDef *uart) {
 }
 #pragma endregion UART
 
+// TODO change pins
+#pragma region CS
+// Map cs pins to sensors
+#define CS0 PIN('E', 6)   // EEPROM 1
+#define CS1 PIN('C', 13)  // Accelerometer
+#define CS2 PIN('C', 13)  // IMU
+#define CS3 PIN('C', 14)  // Barometer
+#define CS4 PIN('C', 14)  // Humidity 
+
+
+// Generate all switch cases for the multiplexer
+static inline void set_cs(uint16_t pin_cs)
+{
+  // TODO
+  unset_cs();
+  gpio_write(pin_cs, LOW);
+}
+
+static inline void unset_cs()
+{
+  // TODO
+  // all CS pins HIGH
+}
+
+static inline void cs_init()
+{
+  gpio_set_mode(CS0, GPIO_MODE_OUTPUT);
+  gpio_set_mode(CS1, GPIO_MODE_OUTPUT);
+  gpio_set_mode(CS2, GPIO_MODE_OUTPUT);
+  gpio_set_mode(CS3, GPIO_MODE_OUTPUT);
+  gpio_set_mode(CS4, GPIO_MODE_OUTPUT);
+  // TODO
+}
+#pragma endregion CS
+
 
 #pragma region SPI
 /**
   @brief Initialisation of the SPI
   @param spi
 */
+// TODO check pins
 static inline void spi_init(SPI_TypeDef *spi) {
   // STM32L4R5 Reference manual SPI Documentation (from page ):
   //  - RM0351, pg 78-82: Memory map and peripheral register boundary
@@ -232,11 +269,14 @@ static inline void spi_init(SPI_TypeDef *spi) {
   uint8_t af;
   uint16_t ss, sclk, miso, mosi;
 
-  if (spi == SPI1) RCC->APB2ENR  |= BIT(12), af = 5, ss = PIN('A', 4), sclk = PIN('A', 5),  miso = PIN('A', 6),  mosi = PIN('A', 7);
-  if (spi == SPI2) RCC->APB1ENR1 |= BIT(14), af = 5, ss = PIN('B', 12), sclk = PIN('B', 13), miso = PIN('B', 14), mosi = PIN('B', 15);
-  if (spi == SPI3) RCC->APB1ENR1 |= BIT(15), af = 6, ss = PIN('A', 15), sclk = PIN('C', 10), miso = PIN('C', 11), mosi = PIN('C', 12);
+  if (spi == SPI1)
+    RCC->APB2ENR |= BIT(12), af = 5, ss = PIN('A', 4), sclk = PIN('E', 13), miso = PIN('E', 14), mosi = PIN('E', 15);
+  if (spi == SPI2)
+    RCC->APB1ENR1 |= BIT(14), af = 5, ss = PIN('B', 12), sclk = PIN('B', 13), miso = PIN('B', 14), mosi = PIN('B', 15);
+  if (spi == SPI3)
+    RCC->APB1ENR1 |= BIT(15), af = 6, ss = PIN('A', 15), sclk = PIN('C', 10), miso = PIN('C', 11), mosi = PIN('C', 12);
 
-  gpio_set_mode(ss, GPIO_MODE_AF);
+  gpio_set_mode(ss, GPIO_MODE_OUTPUT);
   gpio_set_mode(sclk, GPIO_MODE_AF);
   gpio_set_mode(miso, GPIO_MODE_AF);
   gpio_set_mode(mosi, GPIO_MODE_AF);
@@ -334,41 +374,53 @@ static inline uint16_t spi_read_byte(SPI_TypeDef *spi) {
 
 
 /**
-  @brief Test that the SPI works appropriately; use Putty to check the LUART output
+  @brief Transmit single byte to and from SPI peripheral
   @param spi Selected SPI (1, 2 or 3)
+  @param send_byte Byte to be sent via SPI
+  @return Byte from SPI
 */
-/*
-static inline uint16_t spi_test_routine(SPI_TypeDef *spi, uint16_t valueToSend) {
-  spi = SPI1;
-  valueToSend++;
+static inline uint8_t spi_transmit(SPI_TypeDef *spi, uint8_t send_byte)
+{
+  uint8_t recieve_byte = 0;
+  spi_ready_write(spi);
+  //*((volatile uint8_t *)&(spi->DR)) = send_byte << 8;
+  *(volatile uint8_t *)&spi->DR = send_byte;
+  spi_ready_read(spi);
+  recieve_byte = *((volatile uint8_t *)&(spi->DR));
+  return recieve_byte;
+}
 
-  // Convert the integer to a byte array
-  uint8_t byteBuffer[sizeof(valueToSend)];
-  for (size_t i = 0; i < sizeof(valueToSend); ++i) {
-    byteBuffer[i] = (uint8_t)(valueToSend >> (i * 8)) & 0xFF;
+/**
+  @brief Transmit multiple bytes to and from SPI peripheral
+  @param spi Selected SPI (1, 2 or 3)
+  @param send_byte Byte to be sent via SPI
+  @param transmit_size Number of bytes to be sent (Not currently implemented)
+  @param receive_size Number of bytes to be recieved
+  @return Byte from SPI
+*/
+static inline uint32_t spi_transmit_receive(SPI_TypeDef *spi, uint16_t pin_cs, uint8_t *send_bytes, uint8_t transmit_size, uint8_t receive_size)
+{
+  set_cs(pin_cs);
+  spi_ready_write(spi);
+
+  // Not currently implemented
+  for(int i=0; i<transmit_size; i++) {
+    spi_transmit(spi, ((uint8_t *)send_bytes)[i]);
   }
 
-  // Calculate the length of the byte array
-  size_t bufferLength = sizeof(byteBuffer);
-  
-  spi_write_buf(SPI1, (char *)byteBuffer, bufferLength);
-
-  // Wait for transfer to complete (until receive buffer is not empty)
-  spi_ready_read(SPI1); 
-
-  // Read received data from SPI
-  uint16_t receivedValue = spi_read_byte(SPI1);
-
-  // Convert the received byte array back to an integer
-  for (size_t i = 0; i < sizeof(receivedValue); ++i) {
-    receivedValue |= ((uint16_t)byteBuffer[i] << (i * 8));
+  uint32_t result = 0;
+  while (receive_size > 0)
+  {
+    uint8_t received = spi_transmit(spi, 0x00);
+    result = (result << 8);
+    result = result | received;
+    receive_size--;
+    printf("Received Value: %u  %u  %u \r\n", received, receive_size, result);
+    spi_ready_write(spi);
   }
-
-  // Print the received integer
-  printf("Received Value: %hu\r\n", receivedValue);
-
-  return 0;
-}*/
+  unset_cs();
+  return result;
+}
 
 #pragma endregion SPI
 
