@@ -20,7 +20,7 @@ void SysTick_Handler(void) {
   @brief TODO
 */
 void update_sensors() {
-  pass;
+  return;
 };
 
 
@@ -28,7 +28,7 @@ void update_sensors() {
   @brief TODO
 */
 void send_data() {
-  pass;
+  return;
 };
 
 
@@ -46,7 +46,7 @@ void toggle_timeout_flag()
 */
 // TODO check pins
 void run_test_routine() {  
-  uint16_t led_B = PIN('H', 3);
+  uint16_t led_B = PIN('E', 7);
   gpio_set_mode(led_B, GPIO_MODE_OUTPUT);
   pwr_vdd2_init();
   systick_init(FREQ / 1000);

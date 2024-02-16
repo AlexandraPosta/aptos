@@ -226,20 +226,20 @@ static inline uint8_t uart_read_byte(USART_TypeDef *uart) {
 
 
 // Generate all switch cases for the multiplexer
-static inline void set_cs(uint16_t pin_cs)
-{
-  // TODO
-  unset_cs();
-  gpio_write(pin_cs, LOW);
-}
-
 static inline void unset_cs()
 {
   // TODO
   // all CS pins HIGH
 }
 
-static inline void cs_init()
+static inline void set_cs(uint16_t pin_cs)
+{
+  // TODO
+  unset_cs();
+  gpio_write(pin_cs, LOW);
+}
+/*
+void cs_init()
 {
   gpio_set_mode(CS0, GPIO_MODE_OUTPUT);
   gpio_set_mode(CS1, GPIO_MODE_OUTPUT);
@@ -248,6 +248,7 @@ static inline void cs_init()
   gpio_set_mode(CS4, GPIO_MODE_OUTPUT);
   // TODO
 }
+*/
 #pragma endregion CS
 
 
