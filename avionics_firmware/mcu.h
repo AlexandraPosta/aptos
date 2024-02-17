@@ -1,6 +1,6 @@
 /*
 	Leeds University Rocketry Organisation - LURA
-  Author Name: Alexandra Posta
+  Author Name: Alexandra Posta, Oliver Martin
   Created on: 27 Feb 2023
   Description: Main header file for the HFC firmware; suitable for STM32L4R5
 */
@@ -15,8 +15,9 @@
 
 // https://github.com/STMicroelectronics/cmsis_device_l4/blob/master/Include/system_stm32l4xx.h
 #include "stm32l4r5xx.h"
+#include "STM32_init.h"
 
-#define FREQ 4000000  
+#define FREQ 4000000  //why isn't this higher? couldn't it be 48MHz?
 #define BIT(x) (1UL << (x))
 #define PIN(bank, num) ((((bank) - 'A') << 8) | (num))
 #define PINNO(pin) (pin & 255)
@@ -149,19 +150,20 @@ static inline void uart_init(USART_TypeDef *uart, unsigned long baud) {
   uint8_t af = 8;           // Alternate function
   uint16_t rx = 0, tx = 0;  // pins
 
-  if (uart == UART1) RCC->APB2ENR  |= BIT(14);   
-  if (uart == UART2) RCC->APB1ENR1 |= BIT(17);   
-  if (uart == UART3) RCC->APB1ENR1 |= BIT(18);   
-  if (uart == LUART1) {
-    RCC->APB1ENR2 |= BIT(0); 
-  }
+  if (uart == UART1) RCC->APB2ENR  |= BIT(14);   //TODO find what needs to be done here
+  if (uart == UART2) RCC->APB1ENR1 |= BIT(17);   //TODO find what needs to be done here
 
   // UART
-  // TODO pins check
-  if (uart == UART1)  af = 7, tx = PIN('A', 9),  rx = PIN('A', 10); // EXTERN USART
-  if (uart == UART2)  af = 7, tx = PIN('A', 2),  rx = PIN('A', 3);
-  if (uart == UART3)  af = 7, tx = PIN('D', 8),  rx = PIN('D', 9);  // GNSS RX/TX
-  if (uart == LUART1) af = 8, tx = PIN('B', 11), rx = PIN('B', 10);
+  if (uart == UART1){   //SERVO USART1
+    af = 7;
+    tx = USART1_tx;
+    rx = USART1_rx; 
+  }  
+  if (uart == UART2){   //GNSS USART2
+    af = 7; 
+    tx = USART2_tx;
+    rx = USART2_rx; 
+  }  
 
   gpio_set_mode(tx, GPIO_MODE_AF);
   gpio_set_af(tx, af);
@@ -215,26 +217,22 @@ static inline uint8_t uart_read_byte(USART_TypeDef *uart) {
 }
 #pragma endregion UART
 
-// TODO change pins
 #pragma region CS
-// Map cs pins to sensors
-#define CS0 PIN('E', 6)   // EEPROM 1
-#define CS1 PIN('C', 13)  // Accelerometer
-#define CS2 PIN('C', 13)  // IMU
-#define CS3 PIN('C', 14)  // Barometer
-#define CS4 PIN('C', 14)  // Humidity 
 
-
-// Generate all switch cases for the multiplexer
+// Set all CS pins to high
 static inline void unset_cs()
 {
-  // TODO
   // all CS pins HIGH
+  gpio_write(CS0, HIGH);
+  gpio_write(CS1, HIGH);
+  gpio_write(CS2, HIGH);
+  gpio_write(CS3, HIGH);
+  gpio_write(CS4, HIGH);
 }
 
+//pull the one CS line low
 static inline void set_cs(uint16_t pin_cs)
 {
-  // TODO
   unset_cs();
   gpio_write(pin_cs, LOW);
 }
@@ -246,7 +244,6 @@ void cs_init()
   gpio_set_mode(CS2, GPIO_MODE_OUTPUT);
   gpio_set_mode(CS3, GPIO_MODE_OUTPUT);
   gpio_set_mode(CS4, GPIO_MODE_OUTPUT);
-  // TODO
 }
 */
 #pragma endregion CS
@@ -268,21 +265,30 @@ static inline void spi_init(SPI_TypeDef *spi) {
   //  - NUCLEO Pinout: https://os.mbed.com/platforms/ST-Nucleo-L476RG/#nucleo-pinout)
 
   uint8_t af;
-  uint16_t ss, sclk, miso, mosi;
+  uint16_t /*ss,*/ sclk, miso, mosi;
 
+  //TODO is SS needed and what for??
   if (spi == SPI1)
-    RCC->APB2ENR |= BIT(12), af = 5, ss = PIN('A', 4), sclk = PIN('E', 13), miso = PIN('E', 14), mosi = PIN('E', 15);
+    RCC->APB2ENR |= BIT(12);
+    af = 5;
+    //ss = PIN('A', 4);
+    sclk = SPI1_sclk;
+    miso = SPI1_miso;
+    mosi = SPI1_mosi;
   if (spi == SPI2)
-    RCC->APB1ENR1 |= BIT(14), af = 5, ss = PIN('B', 12), sclk = PIN('B', 13), miso = PIN('B', 14), mosi = PIN('B', 15);
-  if (spi == SPI3)
-    RCC->APB1ENR1 |= BIT(15), af = 6, ss = PIN('A', 15), sclk = PIN('C', 10), miso = PIN('C', 11), mosi = PIN('C', 12);
-
-  gpio_set_mode(ss, GPIO_MODE_OUTPUT);
+    RCC->APB1ENR1 |= BIT(14);
+    af = 5;
+    //ss = PIN('B', 12);
+    sclk = SPI2_sclk;
+    miso = SPI2_miso;
+    mosi = SPI2_mosi;
+  
+  //gpio_set_mode(ss, GPIO_MODE_OUTPUT);
   gpio_set_mode(sclk, GPIO_MODE_AF);
   gpio_set_mode(miso, GPIO_MODE_AF);
   gpio_set_mode(mosi, GPIO_MODE_AF);
 
-  gpio_set_af(ss, af);
+  //gpio_set_af(ss, af);
   gpio_set_af(sclk, af);
   gpio_set_af(miso, af);
   gpio_set_af(mosi, af);
@@ -316,7 +322,7 @@ static inline void spi_init(SPI_TypeDef *spi) {
   spi->CR2 |= (7U << 8);
 
   // Activating SS output enable
-  spi->CR2 |= BIT(2);
+  spi->CR2 |= BIT(2); 
 
   // Not using TI protocol so not bothered by FRF bit
   // Not using NSSP protocol so not bothered by NSS bit
@@ -338,7 +344,6 @@ static inline void spi_write_byte(SPI_TypeDef *spi, uint8_t byte) {
   spi->DR = byte;
   while ((spi->SR & BIT(7)) != 0) spin(1);
 }
-
 
 /**
   @brief Write to SPI buffer
@@ -383,7 +388,7 @@ static inline uint16_t spi_read_byte(SPI_TypeDef *spi) {
 static inline uint8_t spi_transmit(SPI_TypeDef *spi, uint8_t send_byte)
 {
   uint8_t recieve_byte = 0;
-  spi_ready_write(spi);
+  spi_ready_read(spi);
   //*((volatile uint8_t *)&(spi->DR)) = send_byte << 8;
   *(volatile uint8_t *)&spi->DR = send_byte;
   spi_ready_read(spi);
@@ -402,7 +407,7 @@ static inline uint8_t spi_transmit(SPI_TypeDef *spi, uint8_t send_byte)
 static inline uint32_t spi_transmit_receive(SPI_TypeDef *spi, uint16_t pin_cs, uint8_t *send_bytes, uint8_t transmit_size, uint8_t receive_size)
 {
   set_cs(pin_cs);
-  spi_ready_write(spi);
+  spi_ready_read(spi);
 
   // Not currently implemented
   for(int i=0; i<transmit_size; i++) {
@@ -416,7 +421,7 @@ static inline uint32_t spi_transmit_receive(SPI_TypeDef *spi, uint16_t pin_cs, u
     result = (result << 8);
     result = result | received;
     receive_size--;
-    printf("Received Value: %u  %u  %u \r\n", received, receive_size, result);
+    //printf("Received Value: %u  %u  %u \r\n", received, receive_size, result);
     spi_ready_write(spi);
   }
   unset_cs();

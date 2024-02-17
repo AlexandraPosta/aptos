@@ -46,20 +46,20 @@ void toggle_timeout_flag()
 */
 // TODO check pins
 void run_test_routine() {  
-  uint16_t led_B = PIN('E', 7);
-  gpio_set_mode(led_B, GPIO_MODE_OUTPUT);
-  pwr_vdd2_init();
-  systick_init(FREQ / 1000);
-  uart_init(LUART1, 9600);
+  
+  //why is this included so many times???? systick_init(FREQ / 1000);
 
   uint32_t timer = 0, period = 500;
 
   for (;;) {
-    if (timer_expired(&timer, period, s_ticks)) {
-      static bool on = true;                            // This block is executed
-      gpio_write(led_B, on);                            // Every `period` milliseconds
-      on = !on;                                         // Toggle LED state
-      printf("LED: %d, tick: %lu\r\n", on, s_ticks);    // Write message
+    if (timer_expired(&timer, period, s_ticks)) {       // This block is executed every `period` milliseconds
+      static bool on = true;                            
+      if (on){
+        STM32_led_on(); 
+      }else{
+        STM32_led_off();
+      }               
+      on = !on;     // Toggle LED state
     }
   }
 }
@@ -70,9 +70,18 @@ void run_test_routine() {
 */
 int main(void) {
   STM32_init();
-  systick_init(FREQ / 1000);
-  uart_init(LUART1, 9600);
-  printf("==================== PROGRAM START ==================\r\n");
-  run_test_routine();
+  //why is this here as well??? systick_init(FREQ / 1000);
+  //This is included in stm32_init() if needed uart_init(LUART1, 9600);
+  //printf("==================== PROGRAM START ==================\r\n");
+  //cs_init();
+  
+  STM32_indicate_on_buzzer();
+  STM32_indicate_on_led();
+  STM32_led_on();
+
+  gpio_write(RGB1_G, HIGH);
+  gpio_write(RGB2_R, HIGH);
+  //delay_microseconds(10000);
+  //run_test_routine();
   return 0;
 }
