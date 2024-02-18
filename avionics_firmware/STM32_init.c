@@ -13,6 +13,14 @@
 */
 void STM32_init()
 {
+  //set system clock speed
+  //MSI range can only be set if MSI is off, or MSI is on and MSIRDY = 1
+  RCC->CR = (RCC->CR & ~RCC_CR_MSION_Msk)     | RCC_CR_MSION;       //MSI on
+  while ((RCC->CR & RCC_CR_MSION) && !(RCC->CR & RCC_CR_MSIRDY)); //wait until off, or on and ready
+  RCC->CR = (RCC->CR & ~RCC_CR_MSIRANGE_Msk)  | RCC_CR_MSIRANGE_11; //set MSI range to 48Hz (0b1011)
+  RCC->CR = (RCC->CR & ~RCC_CR_MSIRGSEL_Msk)  | RCC_CR_MSIRGSEL;    //set to use MSI range from CR register
+  //RCC->CR = (RCC->CR & ~RCC_CR_MSION_Msk)     | RCC_CR_MSION;       //MSI on
+
   systick_init(FREQ / 1000);     // Tick every 1 ms
   STM32_init_peripherals();
   STM32_init_internals();

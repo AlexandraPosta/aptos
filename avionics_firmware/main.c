@@ -46,14 +46,13 @@ void toggle_timeout_flag()
 */
 // TODO check pins
 void run_test_routine() {  
-  
-  //why is this included so many times???? systick_init(FREQ / 1000);
-
-  uint32_t timer = 0, period = 500;
-
-  for (;;) {
-    if (timer_expired(&timer, period, s_ticks)) {       // This block is executed every `period` milliseconds
-      static bool on = true;                            
+  static bool on = true;
+  int counter = 0;
+  while (1){
+    delay_microseconds(500);  
+    counter = counter + 1;
+    if (counter < 20){
+      watchdog_pat();    
       if (on){
         STM32_led_on(); 
       }else{
@@ -74,14 +73,16 @@ int main(void) {
   //This is included in stm32_init() if needed uart_init(LUART1, 9600);
   //printf("==================== PROGRAM START ==================\r\n");
   //cs_init();
+  watchdog_init();
   
   STM32_indicate_on_buzzer();
   STM32_indicate_on_led();
+  watchdog_pat();
   STM32_led_on();
 
   gpio_write(RGB1_G, HIGH);
   gpio_write(RGB2_R, HIGH);
   //delay_microseconds(10000);
-  //run_test_routine();
+  run_test_routine();
   return 0;
 }

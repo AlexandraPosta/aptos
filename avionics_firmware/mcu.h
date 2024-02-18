@@ -17,7 +17,7 @@
 #include "stm32l4r5xx.h"
 #include "STM32_init.h"
 
-#define FREQ 4000000  //why isn't this higher? couldn't it be 48MHz?
+#define FREQ 48000000  //why isn't this higher? couldn't it be 48MHz?
 #define BIT(x) (1UL << (x))
 #define PIN(bank, num) ((((bank) - 'A') << 8) | (num))
 #define PINNO(pin) (pin & 255)
@@ -454,3 +454,36 @@ static inline void pwr_vdd2_init() {
   RCC->APB1ENR1 |= BIT(28);         // page 291
   PWR->CR2 |= BIT(9);               // set the IOSV bit in the PWR_CR2 page 186, 219
 }
+
+#pragma region watchdog
+//information about watchdogs cann be found here:
+//https://www.st.com/resource/en/product_training/STM32WB-WDG_TIMERS-Independent-Watchdog-IWDG.pdf 
+
+/**
+  @brief Starts the watchdog timer
+*/
+static inline void watchdog_init(){
+  //set the IWDG_SW option bit //doesn't seem needed
+  
+  /*The first step is to write the Key register with value 0x0000 CCCC which starts the watchdog.
+    Then remove the independent watchdog register protection by writing 0x0000 5555 to unlock the key.
+    Set the independent watchdog prescaler in the IWDG_PR register by selecting the prescaler divider feeding the counter clock.
+    Write the reload register (IWDG_RLR) to define the value to be loaded in the watchdog counter.
+  */
+  IWDG->KR = 0xCCCC;
+  IWDG->KR = 0x5555;
+  IWDG->PR = 0x0001;  //Prescalar is 3 bits, 000 = /4, 001 = /8, 010 = /16, 011 = /32... Divides the 32kHz clock signal
+  //IWDG->RLR = //value to be reloaded into the counter on reset, IWDG->SR must be set to change this value.
+
+}
+
+/**
+  @brief Reset the watchdog timer to prevent a system reset
+*/
+static inline void watchdog_pat(){
+  //IWDG_KR register must be written with 0x0000AAAA
+  IWDG->KR = 0xAAAA;
+
+}
+
+#pragma endregion watchdog
