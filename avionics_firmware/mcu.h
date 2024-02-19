@@ -463,8 +463,12 @@ static inline void pwr_vdd2_init() {
   @brief Starts the watchdog timer
 */
 static inline void watchdog_init(){
-  //set the IWDG_SW option bit //doesn't seem needed
-  
+  //Set the IWDG_SW option bit, This is to hardware enable the watchdog instead of enabling it each time like below
+  //pretty sure the option register is write protected, there are steps to unlock. In reference manual: 3.4.2 pg141
+  //FLASH->OPTR &= ~FLASH_OPTR_IWDG_SW;       //turn the hardware IWDG on by setting bit to off
+  //FLASH->OPTR |= FLASH_OPTR_IWDG_STDBY;     //run IWDG (1 turns off stand by)
+  //FLASH->OPTR |= FLASH_OPTR_IWDG_STOP;     //run IWDG (1 turns off stop)
+
   /*The first step is to write the Key register with value 0x0000 CCCC which starts the watchdog.
     Then remove the independent watchdog register protection by writing 0x0000 5555 to unlock the key.
     Set the independent watchdog prescaler in the IWDG_PR register by selecting the prescaler divider feeding the counter clock.
@@ -472,9 +476,18 @@ static inline void watchdog_init(){
   */
   IWDG->KR = 0xCCCC;
   IWDG->KR = 0x5555;
+  while(IWDG->SR & ~IWDG_SR_PVU_Msk){}; //prescalar can only be set when PVU bit is reset, so hold until = 0
   IWDG->PR = 0x0001;  //Prescalar is 3 bits, 000 = /4, 001 = /8, 010 = /16, 011 = /32... Divides the 32kHz clock signal
-  //IWDG->RLR = //value to be reloaded into the counter on reset, IWDG->SR must be set to change this value.
 
+  /*
+  To calculate the counter reload value to achieve the desired reset time limit the following formula is used:
+  RL = (Desired_Time_ms * 32,000)/(4 * 2^PR * 1000) -1
+  RL has a limit of 4095, so choose a PR to get a value less than this
+  So for a 0.25s time:
+  RL = (250 * 32,000)/(4 * 2^(1) * 1000) - 1 = 999
+  */
+  while(IWDG->SR & ~IWDG_SR_RVU_Msk){};  //reload value can only be set when RVU bit is reset, so hold until = 0
+  IWDG->RLR = 0x3E7;  //999, value to be reloaded into the counter on reset
 }
 
 /**

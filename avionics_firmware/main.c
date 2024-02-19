@@ -52,7 +52,7 @@ void run_test_routine() {
     delay_microseconds(500);  
     counter = counter + 1;
     if (counter < 20){
-      watchdog_pat();    
+      //watchdog_pat();    
       if (on){
         STM32_led_on(); 
       }else{
@@ -74,7 +74,7 @@ int main(void) {
   //printf("==================== PROGRAM START ==================\r\n");
   //cs_init();
   watchdog_init();
-  
+  watchdog_pat();
   STM32_indicate_on_buzzer();
   STM32_indicate_on_led();
   watchdog_pat();
