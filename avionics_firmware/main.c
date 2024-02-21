@@ -39,8 +39,46 @@ void toggle_timeout_flag()
 }
 
 /**
-  @brief Initial Routine to run on hardware. Should trigger RGB blink sequence
-  and Serial printing via LUART1  
+  @brief Buzzer sound
+  @param onDurationMs
+  @param offDurationMs
+  @param noOfBeeps
+*/
+void STM32_beep_buzzer(uint32_t onDurationMs, uint32_t offDurationMs, uint16_t noOfBeeps)
+{
+  for (int i = 0; i < noOfBeeps; i++) {
+      gpio_write(_buzzer, HIGH);
+      delay_ms(onDurationMs);
+      gpio_write(_buzzer, LOW); 
+      delay_ms(offDurationMs);
+  }
+}
+
+/**
+  @brief Buzzer sound to indicate power on
+*/
+void STM32_indicate_on_buzzer()
+{
+  STM32_beep_buzzer(100, 100, 3);
+}
+
+/**
+  @brief Led light to indicate power on
+*/
+void STM32_indicate_on_led()
+{
+  STM32_led_on();
+  delay_ms(200);
+  STM32_led_off();
+  delay_ms(100);
+  STM32_led_on();
+  delay_ms(200);
+  STM32_led_off();
+}
+
+
+/**
+  @brief Test Routine
 */
 void run_test_routine2() {
   char buf[] = "test";
@@ -53,10 +91,10 @@ void run_test_routine() {
   static bool on = true;
   int counter = 0;
   while (1){
-    delay(500);  
+    delay_ms(50);  
     counter = counter + 1;
     if (counter < 20){
-      watchdog_pat();    
+      watchdog_pat();
       if (on){
         STM32_led_on(); 
       }else{
@@ -66,18 +104,6 @@ void run_test_routine() {
     }
   }
 }
-
-void run_test_routine3() {
-  watchdog_pat();
-  while (1){
-    if (s_ticks % 1000 > 500){
-        STM32_led_on(); 
-    }else{
-      STM32_led_off();
-    }
-  }
-}
-
 
 /**
   @brief Main entry point for the Flight Computer (HFC) firmware
@@ -92,9 +118,8 @@ int main(void) {
   //watchdog_init();
   watchdog_pat();
   STM32_led_off();
-  //delay_microseconds(1);
-  //STM32_indicate_on_buzzer();
-  //STM32_indicate_on_led();
+  STM32_indicate_on_buzzer();
+  STM32_indicate_on_led();
   
 
   watchdog_pat();

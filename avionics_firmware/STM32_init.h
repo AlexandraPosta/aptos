@@ -72,10 +72,10 @@ extern int FREQ;
 #define NAND_D6     PIN('D', 9)
 #define NAND_D7     PIN('D', 8)
 #define NAND_ALE    PIN('D', 0)
-#define NAND_WE#    PIN('D', 1)
-#define NAND_WP#    PIN('D', 2)
-#define NAND_RB#    PIN('C', 10)
-#define NAND_RE#    PIN('C', 11)
+#define NAND_WE    PIN('D', 1)
+#define NAND_WP    PIN('D', 2)
+#define NAND_RB    PIN('C', 10)
+#define NAND_RE    PIN('C', 11)
 #define NAND_CLE    PIN('C', 12)
 
 #include "mcu.h"
@@ -129,25 +129,6 @@ void STM32_init_internals(void);
 void STM32_init_peripherals(void);
 
 
-/**
-  @brief TODO
-  @param onDurationMs
-  @param offDurationMs
-  @param noOfBeeps
-*/
-void STM32_beep_buzzer(uint32_t onDurationMs, uint32_t offDurationMs, uint16_t noOfBeeps);
-
-
-/**
-  @brief TODO
-*/
-void STM32_indicate_on_buzzer();
-
-
-/**
-  @brief TODO
-*/
-void STM32_indicate_on_led();
 
 
 /**

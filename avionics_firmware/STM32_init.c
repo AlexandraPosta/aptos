@@ -16,8 +16,8 @@ FREQ = (uint32_t) 4000000;
 void STM32_init()
 {
   STM32_init_clock(RCC_CFGR_SW_HSI); // set clock to 16MHz internal HSI
-  uint32_t ticks_per_ms= FREQ / 1000;
-  systick_init(ticks_per_ms);     // Tick every 1 us
+  uint32_t ticks_per_ms = FREQ / 1000;
+  systick_init(ticks_per_ms);   // Tick every 1 us
   STM32_init_peripherals();
   STM32_init_internals();
 }
@@ -79,6 +79,13 @@ void STM32_init_peripherals()
   gpio_set_mode(RGB2_G, GPIO_MODE_OUTPUT);
   gpio_set_mode(RGB2_B, GPIO_MODE_OUTPUT);
 
+  //cs pins
+  gpio_set_mode(CS0, GPIO_MODE_OUTPUT);
+  gpio_set_mode(CS1, GPIO_MODE_OUTPUT);
+  gpio_set_mode(CS2, GPIO_MODE_OUTPUT);
+  gpio_set_mode(CS3, GPIO_MODE_OUTPUT);
+  gpio_set_mode(CS4, GPIO_MODE_OUTPUT);
+
   // Initialise
   gpio_write(_blueLED, HIGH);
   gpio_write(_buzzer, LOW);
@@ -104,40 +111,9 @@ void STM32_led_off()
 }
 
 
-/**
-  @brief Buzzer sound
-*/
-void STM32_beep_buzzer(uint32_t onDurationMs, uint32_t offDurationMs, uint16_t noOfBeeps)
-{
-  for (int i = 0; i < noOfBeeps; i++) {
-      gpio_write(_buzzer, HIGH);
-      delay(onDurationMs);
-      gpio_write(_buzzer, LOW); 
-      delay(offDurationMs);
-  }
-}
 
 
-/**
-  @brief Buzzer sound to indicate power on
-*/
-void STM32_indicate_on_buzzer()
-{
-  STM32_beep_buzzer(100, 50, 3);
-}
 
 
-/**
-  @brief Led light to indicate power on
-*/
-void STM32_indicate_on_led()
-{
-  STM32_led_on();
-  delay_microseconds(200);
-  STM32_led_off();
-  delay_microseconds(200);
-  STM32_led_on();
-  delay_microseconds(200);
-  STM32_led_off();
-}
+
 

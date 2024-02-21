@@ -68,12 +68,14 @@ static inline void delay_microseconds(uint32_t time) {
   @brief Delay in miliseconds
   @param time Time in miliseconds
 */
-static inline void delay(uint32_t time) {
-  //delay_microseconds(time*1000);
+static inline void delay_ms(uint32_t time) {
   uint32_t initial_ticks = s_ticks; 
   while (s_ticks - initial_ticks < time); //hold until that many ticks have passed
 }
 
+static inline uint32_t get_time_ms(){
+  return s_ticks;
+}
 
 /**
   @brief Enable system clocks by setting frequency
@@ -250,16 +252,7 @@ static inline void set_cs(uint16_t pin_cs)
   unset_cs();
   gpio_write(pin_cs, LOW);
 }
-/*
-void cs_init()
-{
-  gpio_set_mode(CS0, GPIO_MODE_OUTPUT);
-  gpio_set_mode(CS1, GPIO_MODE_OUTPUT);
-  gpio_set_mode(CS2, GPIO_MODE_OUTPUT);
-  gpio_set_mode(CS3, GPIO_MODE_OUTPUT);
-  gpio_set_mode(CS4, GPIO_MODE_OUTPUT);
-}
-*/
+
 #pragma endregion CS
 
 
@@ -268,41 +261,46 @@ void cs_init()
   @brief Initialisation of the SPI
   @param spi
 */
-// TODO check pins
 static inline void spi_init(SPI_TypeDef *spi) {
-  // STM32L4R5 Reference manual SPI Documentation (from page ):
-  //  - RM0351, pg 78-82: Memory map and peripheral register boundary
+  //  STM32L4R5 Reference manual SPI Documentation:
+  //  - RM0351,  pg 78-82: Memory map and peripheral register boundary
   //  - DS10198, pg 68: Pinout
-  //  - RM0351, pg 1459: Configuration of SPI
-  //  - RM0351, pg 1484: SPI register map
-  //  - RM0351, pg 1476: SPI registers
-  //  - NUCLEO Pinout: https://os.mbed.com/platforms/ST-Nucleo-L476RG/#nucleo-pinout)
+  //  - RM0351,  pg 1459: Configuration of SPI
+  //  - RM0351,  pg 1484: SPI register map
+  //  - RM0351,  pg 1476: SPI registers
+  //  STM32L4R5 alternative functions map: https://www.st.com/resource/en/datasheet/stm32l4r5vi.pdf
 
   uint8_t af;
-  uint16_t /*ss,*/ sclk, miso, mosi;
+  uint16_t ss, sclk, miso, mosi;
 
-  //TODO is SS needed and what for??
+  #ifdef FLIGHT_COMPUTER
+  // Flight Computer pins maybe A4 or B0 or E12 or G5 or A15
   if (spi == SPI1)
-    RCC->APB2ENR |= BIT(12);
-    af = 5;
-    //ss = PIN('A', 4);
-    sclk = SPI1_sclk;
-    miso = SPI1_miso;
-    mosi = SPI1_mosi;
+    RCC->APB2ENR |= BIT(12), af = 5, ss = PIN('A', 4), sclk = PIN('E', 13), miso = PIN('E', 14), mosi = PIN('E', 15);
+  //if (spi == SPI2)
+  //  RCC->APB1ENR1 |= BIT(14), af = 5, ss = PIN('B', 12), sclk = PIN('B', 13), miso = PIN('B', 14), mosi = PIN('B', 15);
+  //if (spi == SPI3)
+  //  RCC->APB1ENR1 |= BIT(15), af = 6, ss = PIN('A', 15), sclk = PIN('C', 10), miso = PIN('C', 11), mosi = PIN('C', 12);
+
+  #else
+  // Nucleo pins
+  if (spi == SPI1)
+    RCC->APB2ENR |= BIT(12), af = 5, ss = PIN('A', 4), sclk = PIN('A', 5), miso = PIN('A', 6), mosi = PIN('A', 7);
   if (spi == SPI2)
-    RCC->APB1ENR1 |= BIT(14);
-    af = 5;
-    //ss = PIN('B', 12);
-    sclk = SPI2_sclk;
-    miso = SPI2_miso;
-    mosi = SPI2_mosi;
-  
-  //gpio_set_mode(ss, GPIO_MODE_OUTPUT);
+    RCC->APB1ENR1 |= BIT(14), af = 5, ss = PIN('B', 12), sclk = PIN('B', 13), miso = PIN('B', 14), mosi = PIN('B', 15);
+  if (spi == SPI3)
+    RCC->APB1ENR1 |= BIT(15), af = 6, ss = PIN('A', 15), sclk = PIN('C', 10), miso = PIN('C', 11), mosi = PIN('C', 12);
+
+  #endif
+
+  // ss was originally set to GPIO_MODE_AF, which seems correct but needs to be set to output to actually work?
+  // investigate !!!
+  gpio_set_mode(ss, GPIO_MODE_OUTPUT);
   gpio_set_mode(sclk, GPIO_MODE_AF);
   gpio_set_mode(miso, GPIO_MODE_AF);
   gpio_set_mode(mosi, GPIO_MODE_AF);
 
-  //gpio_set_af(ss, af);
+  gpio_set_af(ss, af);
   gpio_set_af(sclk, af);
   gpio_set_af(miso, af);
   gpio_set_af(mosi, af);
@@ -311,7 +309,7 @@ static inline void spi_init(SPI_TypeDef *spi) {
   spi->CR1 &= ~(7U << 3);
 
   // CPOL (clk polarity) and CPHA (clk phase) defaults  to produce the desired clock/data relationship
-  // CPOL (clock polarity) bit controls the idle state value of the clock when no data is being transferred. 
+  // CPOL (clock polarity) bit controls the idle state value of the clock when no data is being transferred.
   spi->CR1 &= ~BIT(0);
   spi->CR1 &= ~BIT(1);
 
@@ -321,7 +319,7 @@ static inline void spi_init(SPI_TypeDef *spi) {
   spi->CR1 &= ~BIT(10);
   spi->CR1 &= ~BIT(15);
 
-  // Datasheet: "The MSB of a byte is transmitted first" 
+  // Datasheet: "The MSB of a byte is transmitted first"
   spi->CR1 &= ~BIT(7);
 
   // CRC not needed so ignoring CRCL and CRCEN
@@ -334,9 +332,13 @@ static inline void spi_init(SPI_TypeDef *spi) {
 
   // Frame size is 8 bits
   spi->CR2 |= (7U << 8);
+  // spi->CR2 |= (15u << 8);
 
   // Activating SS output enable
-  spi->CR2 |= BIT(2); 
+  spi->CR2 |= BIT(2);
+  // spi->CR2 |= BIT(3);
+
+  spi->CR2 |= BIT(12);
 
   // Not using TI protocol so not bothered by FRF bit
   // Not using NSSP protocol so not bothered by NSS bit
@@ -348,50 +350,46 @@ static inline void spi_init(SPI_TypeDef *spi) {
   spi->CR1 |= BIT(6);
 }
 
-
-/**
-  @brief Write via SPI
-  @param spi `SPI1`, `SPI2` or `SPI3`
-  @param byte Byte to write
-*/
-static inline void spi_write_byte(SPI_TypeDef *spi, uint8_t byte) {
-  spi->DR = byte;
-  while ((spi->SR & BIT(7)) != 0) spin(1);
-}
-
-/**
-  @brief Write to SPI buffer
-  @param spi Selected SPI (1, 2 or 3)
-  @param buf Buffer to write to
-  @param len Length of the message
-*/
-static inline void spi_write_buf(SPI_TypeDef *spi, char *buf, size_t len) {
-  while (len-- > 0) spi_write_byte(spi, *(uint8_t *) buf++);
-}
-
-
 /**
   @brief Get the SPI ready for reading
   @param spi Selected SPI (1, 2 or 3)
   @return True when ready
 */
 static inline int spi_ready_read(SPI_TypeDef *spi) {
-  while (!(spi->SR & BIT(1)));    // Wait until transmit buffer is empty
-  while (!(spi->SR & BIT(0)));    // Wait until receive buffer is not empty (RxNE, 52.4.9)
+  while (!(spi->SR & BIT(1)))
+    ; // Wait until transmit buffer is empty
+  while (!(spi->SR & BIT(0)))
+    ; // Wait until receive buffer is not empty (RxNE, 52.4.9)
 
-  return 1;                       // data is ready
+  return 1; // data is ready
 }
 
+static inline int spi_ready_write(SPI_TypeDef *spi) {
+  while ((spi->SR & BIT(7)))
+    ; // Wait until SPI is not busy
+  return 1; // data is ready
+}
 
 /**
-  @brief Read from the selected SPI
+  @brief Enable chip select line for spi
   @param spi Selected SPI (1, 2 or 3)
-  @return Byte from SPI
+  @note currently ONLY works for spi for testing
 */
-static inline uint16_t spi_read_byte(SPI_TypeDef *spi) {
-  return (uint16_t) (spi->DR & 255);
+static inline void spi_enable_cs(SPI_TypeDef *spi, uint8_t cs) {
+  set_cs(cs); 
+  cs = 0;
 }
 
+/**
+  @brief Enable chip select line for spi
+  @param spi Selected SPI (1, 2 or 3)
+  @note currently ONLY works for spi for testing
+*/
+static inline void spi_disable_cs(SPI_TypeDef *spi, uint8_t cs)
+{
+  unset_cs(cs);
+  cs = 0;
+}
 
 /**
   @brief Transmit single byte to and from SPI peripheral
@@ -399,12 +397,21 @@ static inline uint16_t spi_read_byte(SPI_TypeDef *spi) {
   @param send_byte Byte to be sent via SPI
   @return Byte from SPI
 */
-static inline uint8_t spi_transmit(SPI_TypeDef *spi, uint8_t send_byte)
+static inline uint8_t spi_write_byte(SPI_TypeDef *spi, uint8_t send_byte)
 {
-  uint8_t recieve_byte = 0;
-  spi_ready_read(spi);
+  printf("spi_writing_byte....");
+  spi_ready_write(spi);
+  printf("SPI ready to write....");
   //*((volatile uint8_t *)&(spi->DR)) = send_byte << 8;
   *(volatile uint8_t *)&spi->DR = send_byte;
+  printf("byte_sent\r\n");
+  return 0; // TODO check if transmit successful? (maybe in driver)
+}
+
+static inline uint8_t spi_read_byte(SPI_TypeDef *spi)
+{
+  uint8_t recieve_byte = 123;
+  spi_write_byte(spi,0);
   spi_ready_read(spi);
   recieve_byte = *((volatile uint8_t *)&(spi->DR));
   return recieve_byte;
@@ -415,31 +422,29 @@ static inline uint8_t spi_transmit(SPI_TypeDef *spi, uint8_t send_byte)
   @param spi Selected SPI (1, 2 or 3)
   @param send_byte Byte to be sent via SPI
   @param transmit_size Number of bytes to be sent (Not currently implemented)
-  @param receive_size Number of bytes to be recieved
-  @return Byte from SPI
+  @return error checking
 */
-static inline uint32_t spi_transmit_receive(SPI_TypeDef *spi, uint16_t pin_cs, uint8_t *send_bytes, uint8_t transmit_size, uint8_t receive_size)
+static inline uint8_t spi_write_buf(SPI_TypeDef *spi, uint8_t *send_bytes, uint8_t transmit_size)
 {
-  set_cs(pin_cs);
-  spi_ready_read(spi);
-
-  // Not currently implemented
-  for(int i=0; i<transmit_size; i++) {
-    spi_transmit(spi, ((uint8_t *)send_bytes)[i]);
+  printf("writing buff....\r\n");
+  for(int i = 0; i < transmit_size; i++) {
+    spi_write_byte(spi, send_bytes[i]);
   }
+  printf("completed!\r\n");
+  return 0;
+}
 
-  uint32_t result = 0;
-  while (receive_size > 0)
+
+static inline uint8_t spi_read_buf(SPI_TypeDef *spi, uint8_t *recieve_bytes, uint8_t receive_size){
+  uint8_t retval = 0;
+  uint8_t i = 0;
+  while (i < receive_size)
   {
-    uint8_t received = spi_transmit(spi, 0x00);
-    result = (result << 8);
-    result = result | received;
-    receive_size--;
-    //printf("Received Value: %u  %u  %u \r\n", received, receive_size, result);
-    spi_ready_write(spi);
+    *(recieve_bytes + i) = spi_read_byte(spi); // dereference to get element
+    i++;
+    // printf("Received Value: %u  %u  %u \r\n", received, receive_size, result);
   }
-  unset_cs();
-  return result;
+  return retval; // TODO error checking
 }
 
 #pragma endregion SPI
