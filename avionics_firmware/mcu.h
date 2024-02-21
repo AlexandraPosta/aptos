@@ -4,6 +4,8 @@
   Created on: 27 Feb 2023
   Description: Main header file for the HFC firmware; suitable for STM32L4R5
 */
+#ifndef MCU_H
+#define MCU_H
 
 #pragma once
 
@@ -17,15 +19,15 @@
 #include "stm32l4r5xx.h"
 #include "STM32_init.h"
 
-#define FREQ 48000000  //why isn't this higher? couldn't it be 48MHz?
+
 #define BIT(x) (1UL << (x))
 #define PIN(bank, num) ((((bank) - 'A') << 8) | (num))
 #define PINNO(pin) (pin & 255)
 #define PINBANK(pin) (pin >> 8)
-
 #define LOW 0
 #define HIGH 1
 
+static volatile uint32_t s_ticks;
 
 #pragma region System Clk
 /**
@@ -41,7 +43,14 @@ static inline void spin(volatile uint32_t count) {
   @param time Time in nanoseconds
 */
 static inline void delay_nanoseconds(uint32_t time) {
-  spin(time);
+  //spin(time);
+
+  uint32_t initial_ticks = DWT->CYCCNT; //cycle count register
+  //uint32_t initial_ticks = SysTick->VAL;
+  uint32_t ticks_length = FREQ*time/1000000000; //how many ticks in that many nanoseconds
+
+  while (DWT->CYCCNT - initial_ticks < ticks_length); //hold until that many ticks have passed
+  
 }
 
 
@@ -50,7 +59,8 @@ static inline void delay_nanoseconds(uint32_t time) {
   @param time Time in microseconds
 */
 static inline void delay_microseconds(uint32_t time) {
-  delay_nanoseconds(time*1000);
+  uint32_t initial_ticks = s_ticks; 
+  while (s_ticks - initial_ticks < time); //hold until that many ticks have passed
 }
 
 
@@ -59,7 +69,9 @@ static inline void delay_microseconds(uint32_t time) {
   @param time Time in miliseconds
 */
 static inline void delay(uint32_t time) {
-  delay_microseconds(time*1000);
+  //delay_microseconds(time*1000);
+  uint32_t initial_ticks = s_ticks; 
+  while (s_ticks - initial_ticks < time); //hold until that many ticks have passed
 }
 
 
@@ -71,9 +83,11 @@ static inline void systick_init(uint32_t ticks) {
   if ((ticks - 1) > 0xffffff) return;         // Systick timer is 24 bit
   SysTick->LOAD = ticks - 1;
   SysTick->VAL = 0;
-  SysTick->CTRL = BIT(0) | BIT(1) | BIT(2);   // Enable systick
+  SysTick->CTRL |= BIT(0) | BIT(1) | BIT(2);   // Enable systick, enable call back, set clk source to AHB
+  s_ticks = 0;
   RCC->APB2ENR |= BIT(0);                     // Enable SYSCFG
 }
+
 #pragma endregion System Clk
 
 
@@ -148,7 +162,7 @@ static inline bool gpio_read(uint16_t pin) {
 */
 static inline void uart_init(USART_TypeDef *uart, unsigned long baud) {
   uint8_t af = 8;           // Alternate function
-  uint16_t rx = 0, tx = 0;  // pins
+  uint16_t rx, tx;  // pins
 
   if (uart == UART1) RCC->APB2ENR  |= BIT(14);   //TODO find what needs to be done here
   if (uart == UART2) RCC->APB1ENR1 |= BIT(17);   //TODO find what needs to be done here
@@ -477,17 +491,17 @@ static inline void watchdog_init(){
   IWDG->KR = 0xCCCC;
   IWDG->KR = 0x5555;
   while(IWDG->SR & ~IWDG_SR_PVU_Msk){}; //prescalar can only be set when PVU bit is reset, so hold until = 0
-  IWDG->PR = 0x0001;  //Prescalar is 3 bits, 000 = /4, 001 = /8, 010 = /16, 011 = /32... Divides the 32kHz clock signal
-
+  //IWDG->PR = 0x0001;  //Prescalar is 3 bits, 000 = /4, 001 = /8, 010 = /16, 011 = /32... Divides the 32kHz clock signal
+  IWDG->PR = 0x0002;
   /*
   To calculate the counter reload value to achieve the desired reset time limit the following formula is used:
   RL = (Desired_Time_ms * 32,000)/(4 * 2^PR * 1000) -1
   RL has a limit of 4095, so choose a PR to get a value less than this
-  So for a 0.25s time:
-  RL = (250 * 32,000)/(4 * 2^(1) * 1000) - 1 = 999
+  So for a 0.5s time:
+  RL = (500 * 32,000)/(4 * 2^(1) * 1000) - 1 = 1999
   */
   while(IWDG->SR & ~IWDG_SR_RVU_Msk){};  //reload value can only be set when RVU bit is reset, so hold until = 0
-  IWDG->RLR = 0x3E7;  //999, value to be reloaded into the counter on reset
+  IWDG->RLR = 0x7CF;  //1999, value to be reloaded into the counter on reset
 }
 
 /**
@@ -500,3 +514,5 @@ static inline void watchdog_pat(){
 }
 
 #pragma endregion watchdog
+
+#endif

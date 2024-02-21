@@ -7,6 +7,8 @@
 #ifndef STM32_INIT_H
 #define STM32_INIT_H
 
+extern int FREQ;
+
 // ------------ Pin Assignments -------------
 #define _buzzer     PIN('B', 1)   //assigned for aptos board
 #define _blueLED    PIN('E', 7)   //assigned for aptos board
@@ -107,6 +109,12 @@ typedef struct Time
   @brief TODO
 */
 void STM32_init(void);
+
+/**
+  @brief Sets the system clock frequency 
+  @param frequency - Pass either RCC_CFGR_SW_MSI, RCC_CFGR_SW_HSI, or RCC_CFGR_SW_PLL
+*/
+void STM32_init_clock(unsigned long frequency);
 
 
 /**

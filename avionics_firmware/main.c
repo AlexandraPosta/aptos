@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "mcu.h"
 #include "STM32_init.h"
+#include "mcu.h"
 #include "stm32l4r5xx.h"
 
 
@@ -10,12 +10,10 @@ FlightStages flightStage = LAUNCHPAD;
 /**
   @brief Required for compilation
 */
-static volatile uint32_t s_ticks;
-void SysTick_Handler(void) {
+
+extern void SysTick_Handler(void) {
   s_ticks++;
 }
-
-
 /**
   @brief TODO
 */
@@ -44,21 +42,38 @@ void toggle_timeout_flag()
   @brief Initial Routine to run on hardware. Should trigger RGB blink sequence
   and Serial printing via LUART1  
 */
-// TODO check pins
-void run_test_routine() {  
+void run_test_routine2() {
+  char buf[] = "test";
+  uart_write_buf(UART1, buf, 4);
+  watchdog_pat();
+}
+
+void run_test_routine() {
+  watchdog_pat();
   static bool on = true;
   int counter = 0;
   while (1){
-    delay_microseconds(500);  
+    delay(500);  
     counter = counter + 1;
     if (counter < 20){
-      //watchdog_pat();    
+      watchdog_pat();    
       if (on){
         STM32_led_on(); 
       }else{
         STM32_led_off();
       }               
       on = !on;     // Toggle LED state
+    }
+  }
+}
+
+void run_test_routine3() {
+  watchdog_pat();
+  while (1){
+    if (s_ticks % 1000 > 500){
+        STM32_led_on(); 
+    }else{
+      STM32_led_off();
     }
   }
 }
@@ -73,16 +88,20 @@ int main(void) {
   //This is included in stm32_init() if needed uart_init(LUART1, 9600);
   //printf("==================== PROGRAM START ==================\r\n");
   //cs_init();
-  watchdog_init();
+  
+  //watchdog_init();
   watchdog_pat();
-  STM32_indicate_on_buzzer();
-  STM32_indicate_on_led();
-  watchdog_pat();
-  STM32_led_on();
+  STM32_led_off();
+  //delay_microseconds(1);
+  //STM32_indicate_on_buzzer();
+  //STM32_indicate_on_led();
+  
 
+  watchdog_pat();
   gpio_write(RGB1_G, HIGH);
   gpio_write(RGB2_R, HIGH);
-  //delay_microseconds(10000);
+
   run_test_routine();
+
   return 0;
 }
