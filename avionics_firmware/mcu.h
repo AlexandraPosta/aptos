@@ -166,16 +166,16 @@ static inline void uart_init(USART_TypeDef *uart, unsigned long baud) {
   uint8_t af = 8;           // Alternate function
   uint16_t rx, tx;  // pins
 
-  if (uart == UART1) RCC->APB2ENR  |= BIT(14);   //TODO find what needs to be done here
-  if (uart == UART2) RCC->APB1ENR1 |= BIT(17);   //TODO find what needs to be done here
+  if (uart == USART1) RCC->APB2ENR  |= RCC_APB2ENR_USART1EN; // BIT(14);   //Enables clock for UART 1
+  if (uart == USART2) RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;// BIT(17);   //TODO find what needs to be done here
 
   // UART
-  if (uart == UART1){   //SERVO USART1
+  if (uart == USART1){   //SERVO USART1
     af = 7;
     tx = USART1_tx;
     rx = USART1_rx; 
   }  
-  if (uart == UART2){   //GNSS USART2
+  if (uart == USART2){   //GNSS USART2
     af = 7; 
     tx = USART2_tx;
     rx = USART2_rx; 
@@ -186,7 +186,7 @@ static inline void uart_init(USART_TypeDef *uart, unsigned long baud) {
   gpio_set_mode(rx, GPIO_MODE_AF);
   gpio_set_af(rx, af);
   uart->CR1 = 0;                                // Disable this UART                              
-  uart->BRR = 256*FREQ / baud;                  // FREQ is a CPU frequency
+  uart->BRR = FREQ / baud;//256*FREQ / baud;                  // FREQ is a CPU frequency
   uart->CR1 |= BIT(0) | BIT(2) | BIT(3);        // Set UE, RE, TE Datasheet 50.8.1 
 }
 

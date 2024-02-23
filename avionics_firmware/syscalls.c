@@ -79,6 +79,6 @@ int mkdir(const char *path, mode_t mode) {
 
 int _write(int fd, char *data, int len) {
   (void) fd, (void) data, (void) len;
-  if (fd == 1) uart_write_buf(LUART1, data, (size_t) len);
+  if (fd == 1) uart_write_buf(USART1, data, (size_t) len);
   return -1; 
 }
