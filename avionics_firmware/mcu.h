@@ -233,6 +233,7 @@ static inline uint8_t uart_read_byte(USART_TypeDef *uart) {
 }
 #pragma endregion UART
 
+
 #pragma region CS
 
 // Set all CS pins to high
@@ -271,53 +272,35 @@ static inline void spi_init(SPI_TypeDef *spi) {
   //  STM32L4R5 alternative functions map: https://www.st.com/resource/en/datasheet/stm32l4r5vi.pdf
 
   uint8_t af;
-  uint16_t ss, sclk, miso, mosi;
-
-  #ifdef FLIGHT_COMPUTER
-  // Flight Computer pins maybe A4 or B0 or E12 or G5 or A15
-  if (spi == SPI1)
-    RCC->APB2ENR |= BIT(12), af = 5, ss = PIN('A', 4), sclk = PIN('E', 13), miso = PIN('E', 14), mosi = PIN('E', 15);
-  //if (spi == SPI2)
-  //  RCC->APB1ENR1 |= BIT(14), af = 5, ss = PIN('B', 12), sclk = PIN('B', 13), miso = PIN('B', 14), mosi = PIN('B', 15);
-  //if (spi == SPI3)
-  //  RCC->APB1ENR1 |= BIT(15), af = 6, ss = PIN('A', 15), sclk = PIN('C', 10), miso = PIN('C', 11), mosi = PIN('C', 12);
-
-  #else
-  // Nucleo pins
-  if (spi == SPI1)
-    RCC->APB2ENR |= BIT(12), af = 5, ss = PIN('A', 4), sclk = PIN('A', 5), miso = PIN('A', 6), mosi = PIN('A', 7);
-  if (spi == SPI2)
-    RCC->APB1ENR1 |= BIT(14), af = 5, ss = PIN('B', 12), sclk = PIN('B', 13), miso = PIN('B', 14), mosi = PIN('B', 15);
-  if (spi == SPI3)
-    RCC->APB1ENR1 |= BIT(15), af = 6, ss = PIN('A', 15), sclk = PIN('C', 10), miso = PIN('C', 11), mosi = PIN('C', 12);
-
-  #endif
-
-  // ss was originally set to GPIO_MODE_AF, which seems correct but needs to be set to output to actually work?
-  // investigate !!!
-  gpio_set_mode(ss, GPIO_MODE_OUTPUT);
+  uint16_t sclk, miso, mosi;
+  
+  if (spi == SPI1){
+    RCC->APB2ENR |= RCC_APB2ENR_SPI1EN, af = 5, sclk = PIN('A', 5), miso = PIN('A', 6), mosi = PIN('A', 7);
+  }else if (spi == SPI2){
+    RCC->APB1ENR1 |= RCC_APB1ENR1_SPI2EN, af = 5, sclk = PIN('B', 13), miso = PIN('B', 14), mosi = PIN('B', 15);
+  }
   gpio_set_mode(sclk, GPIO_MODE_AF);
   gpio_set_mode(miso, GPIO_MODE_AF);
   gpio_set_mode(mosi, GPIO_MODE_AF);
 
-  gpio_set_af(ss, af);
   gpio_set_af(sclk, af);
   gpio_set_af(miso, af);
   gpio_set_af(mosi, af);
 
-  // MCU clock speed (FREQ) is 4 MHz and max MCU SPI speed is FREQ / 2.
-  spi->CR1 &= ~(7U << 3);
+  // MCU clock speed (FREQ) is 16 MHz and max MCU SPI speed is FREQ / 2.
+  spi->CR1 &= ~(7U << 3); //Clears BR (bits 5:3) to 000 which is = system clock/2
+  spi->CR1 |= (3U << 3); //Sets BR to 011, systemclk/16, so 1MHz
 
   // CPOL (clk polarity) and CPHA (clk phase) defaults  to produce the desired clock/data relationship
   // CPOL (clock polarity) bit controls the idle state value of the clock when no data is being transferred.
-  spi->CR1 &= ~BIT(0);
-  spi->CR1 &= ~BIT(1);
+  spi->CR1 &= ~BIT(0); //First clock transition is first data capture
+  spi->CR1 &= ~BIT(1); //sets CK to 0 when idle
 
   // MCU datasheet "Select simplex or half-duplex mode by configuring
   // RXONLY or BIDIMODE and BIDIOE (RXONLY and BIDIMODE cannot be set
   // at the same time)"
-  spi->CR1 &= ~BIT(10);
-  spi->CR1 &= ~BIT(15);
+  spi->CR1 &= ~BIT(10); //full duplex
+  spi->CR1 &= ~BIT(15); //2line unidirectional data mode
 
   // Datasheet: "The MSB of a byte is transmitted first"
   spi->CR1 &= ~BIT(7);
@@ -325,7 +308,7 @@ static inline void spi_init(SPI_TypeDef *spi) {
   // CRC not needed so ignoring CRCL and CRCEN
 
   // Software slave management seems required
-  spi->CR1 |= BIT(9);
+  spi->CR1 |= BIT(9); //manually do ss
 
   // Configuring the mcu as SPI master
   spi->CR1 |= BIT(2);
@@ -338,6 +321,7 @@ static inline void spi_init(SPI_TypeDef *spi) {
   spi->CR2 |= BIT(2);
   // spi->CR2 |= BIT(3);
 
+  //generate RXNE event when FIFO level is >= 8bits
   spi->CR2 |= BIT(12);
 
   // Not using TI protocol so not bothered by FRF bit

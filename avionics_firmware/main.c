@@ -82,8 +82,7 @@ void STM32_indicate_on_led()
 */
 void run_test_routine2() {
   char buf[] = "test";
-  printf("hello");
-  uart_write_byte(USART1, 'H');
+  printf("hello\r\n");
   uart_write_buf(USART1, buf, 4);
   watchdog_pat();
 }
@@ -108,11 +107,22 @@ void run_test_routine() {
 }
 
 /**
+  @brief Test Routine
+*/
+void run_test_routine3() {
+  
+}
+
+
+/**
   @brief Main entry point for the Flight Computer (HFC) firmware
 */
 int main(void) {
   STM32_init();
   uart_init(USART1, 115200);
+
+  spi_init(SPI2);
+
   printf("==================== PROGRAM START ==================\r\n");
   
   watchdog_init();
