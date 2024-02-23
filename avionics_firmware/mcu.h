@@ -27,7 +27,7 @@
 #define LOW 0
 #define HIGH 1
 
-static volatile uint32_t s_ticks;
+extern volatile uint32_t s_ticks;
 
 #pragma region System Clk
 /**
@@ -43,14 +43,7 @@ static inline void spin(volatile uint32_t count) {
   @param time Time in nanoseconds
 */
 static inline void delay_nanoseconds(uint32_t time) {
-  //spin(time);
-
-  uint32_t initial_ticks = DWT->CYCCNT; //cycle count register
-  //uint32_t initial_ticks = SysTick->VAL;
-  uint32_t ticks_length = FREQ*time/1000000000; //how many ticks in that many nanoseconds
-
-  while (DWT->CYCCNT - initial_ticks < ticks_length); //hold until that many ticks have passed
-  
+  spin(time);
 }
 
 
@@ -59,8 +52,7 @@ static inline void delay_nanoseconds(uint32_t time) {
   @param time Time in microseconds
 */
 static inline void delay_microseconds(uint32_t time) {
-  uint32_t initial_ticks = s_ticks; 
-  while (s_ticks - initial_ticks < time); //hold until that many ticks have passed
+  delay_nanoseconds(time * 1000);
 }
 
 
@@ -340,40 +332,17 @@ static inline void spi_init(SPI_TypeDef *spi) {
   @return True when ready
 */
 static inline int spi_ready_read(SPI_TypeDef *spi) {
-  while (!(spi->SR & BIT(1)))
-    ; // Wait until transmit buffer is empty
-  while (!(spi->SR & BIT(0)))
-    ; // Wait until receive buffer is not empty (RxNE, 52.4.9)
-
+  while (!(spi->SR & BIT(1))); // Wait until transmit buffer is empty
+  while (!(spi->SR & BIT(0))); // Wait until receive buffer is not empty (RxNE, 52.4.9)
   return 1; // data is ready
 }
 
 static inline int spi_ready_write(SPI_TypeDef *spi) {
-  while ((spi->SR & BIT(7)))
-    ; // Wait until SPI is not busy
+  while ((spi->SR & BIT(7))); // Wait until SPI is not busy
   return 1; // data is ready
 }
 
-/**
-  @brief Enable chip select line for spi
-  @param spi Selected SPI (1, 2 or 3)
-  @note currently ONLY works for spi for testing
-*/
-static inline void spi_enable_cs(SPI_TypeDef *spi, uint8_t cs) {
-  set_cs(cs); 
-  cs = 0;
-}
 
-/**
-  @brief Enable chip select line for spi
-  @param spi Selected SPI (1, 2 or 3)
-  @note currently ONLY works for spi for testing
-*/
-static inline void spi_disable_cs(SPI_TypeDef *spi, uint8_t cs)
-{
-  unset_cs(cs);
-  cs = 0;
-}
 
 /**
   @brief Transmit single byte to and from SPI peripheral
@@ -383,21 +352,22 @@ static inline void spi_disable_cs(SPI_TypeDef *spi, uint8_t cs)
 */
 static inline uint8_t spi_write_byte(SPI_TypeDef *spi, uint8_t send_byte)
 {
-  printf("spi_writing_byte....");
+  //printf("spi_writing_byte....");
   spi_ready_write(spi);
-  printf("SPI ready to write....");
+  //printf("SPI ready to write....");
   //*((volatile uint8_t *)&(spi->DR)) = send_byte << 8;
   *(volatile uint8_t *)&spi->DR = send_byte;
-  printf("byte_sent\r\n");
+  //printf("byte_sent\r\n");
   return 0; // TODO check if transmit successful? (maybe in driver)
 }
 
 static inline uint8_t spi_read_byte(SPI_TypeDef *spi)
 {
-  uint8_t recieve_byte = 123;
-  spi_write_byte(spi,0);
+  uint8_t recieve_byte = 0x00;
+  spi_write_byte(spi, 0x00);
   spi_ready_read(spi);
   recieve_byte = *((volatile uint8_t *)&(spi->DR));
+  printf("READ:%x\r\n", recieve_byte);
   return recieve_byte;
 }
 
@@ -419,9 +389,10 @@ static inline uint8_t spi_write_buf(SPI_TypeDef *spi, uint8_t *send_bytes, uint8
 }
 
 
-static inline uint8_t spi_read_buf(SPI_TypeDef *spi, uint8_t *recieve_bytes, uint8_t receive_size){
+static inline uint8_t spi_read_buf(SPI_TypeDef *spi, uint8_t* recieve_bytes, uint8_t receive_size){
   uint8_t retval = 0;
   uint8_t i = 0;
+  printf("READ BUF:\r\n");
   while (i < receive_size)
   {
     *(recieve_bytes + i) = spi_read_byte(spi); // dereference to get element
@@ -430,6 +401,19 @@ static inline uint8_t spi_read_buf(SPI_TypeDef *spi, uint8_t *recieve_bytes, uin
   }
   return retval; // TODO error checking
 }
+
+static inline uint8_t spi_clear_read_buf(SPI_TypeDef *spi){
+  uint8_t junk;
+  uint8_t retval = 0;
+  while (!(spi->SR & BIT(1))); // Wait until transmit buffer is empty
+  while ((spi->SR & SPI_SR_RXNE)) //while recieve buffer not empty
+  {
+    junk = *((volatile uint8_t *)&(spi->DR));; // dereference to get element
+    printf("Clear junk");
+  }
+  return retval; // TODO error checking
+}
+
 
 #pragma endregion SPI
 

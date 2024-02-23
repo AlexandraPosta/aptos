@@ -2,10 +2,11 @@
 #include "STM32_init.h"
 #include "mcu.h"
 #include "stm32l4r5xx.h"
-
+#include "drivers/MS5611_driver.h"
 
 // Flags
 FlightStages flightStage = LAUNCHPAD;
+volatile uint32_t s_ticks;
 
 /**
   @brief Required for compilation
@@ -111,6 +112,12 @@ void run_test_routine() {
 */
 void run_test_routine3() {
   
+  MS5611_init(SPI2);
+  while (1){
+    MS5611_get_data_test();
+    watchdog_pat();
+    delay_ms(500);
+  }
 }
 
 
@@ -138,7 +145,7 @@ int main(void) {
   gpio_write(RGB1_G, HIGH);
   gpio_write(RGB2_R, HIGH);
 
-  run_test_routine2();
+  run_test_routine3();
 
   return 0;
 }

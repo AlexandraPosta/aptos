@@ -6,11 +6,9 @@ This repository holds the required files for the avionics firmware, control algo
 
 Flight Computer Firmware:
 TODO:
-- Better understanding of the timers, clock speed, delays etc
+- Better understanding of the timers, delays etc
 - Start testing SPI & drivers. SPI needs to be copied from Hamilton firmware
-- UART using servo uart port and TTL adapter
 - PWM would allow full RGB LED coverage
-- Watchdog timer - working but not reliable
 
 
 Electrical properties datasheet:
