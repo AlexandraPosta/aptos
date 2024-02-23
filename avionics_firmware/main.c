@@ -112,7 +112,7 @@ void run_test_routine() {
 */
 int main(void) {
   STM32_init();
-  uart_init(USART1, 9600);
+  uart_init(USART1, 115200);
   printf("==================== PROGRAM START ==================\r\n");
   
   watchdog_init();
