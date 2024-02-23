@@ -342,7 +342,24 @@ static inline int spi_ready_write(SPI_TypeDef *spi) {
   return 1; // data is ready
 }
 
+/**
+  @brief Enable chip select line for spi
+  @param 
+  @note Not needed but keeps compatibility with drivers
+*/
+static inline void spi_enable_cs(SPI_TypeDef *spi, uint8_t cs) {
+  set_cs(cs); 
+}
 
+/**
+  @brief Enable chip select line for spi
+  @param 
+  @note Not needed but keeps compatibility with drivers
+*/
+static inline void spi_disable_cs(SPI_TypeDef *spi, uint8_t cs)
+{
+  unset_cs(cs);
+}
 
 /**
   @brief Transmit single byte to and from SPI peripheral
@@ -352,22 +369,19 @@ static inline int spi_ready_write(SPI_TypeDef *spi) {
 */
 static inline uint8_t spi_write_byte(SPI_TypeDef *spi, uint8_t send_byte)
 {
-  //printf("spi_writing_byte....");
+  printf("you want to send: %d", send_byte);
   spi_ready_write(spi);
-  //printf("SPI ready to write....");
   //*((volatile uint8_t *)&(spi->DR)) = send_byte << 8;
   *(volatile uint8_t *)&spi->DR = send_byte;
-  //printf("byte_sent\r\n");
   return 0; // TODO check if transmit successful? (maybe in driver)
 }
 
 static inline uint8_t spi_read_byte(SPI_TypeDef *spi)
 {
-  uint8_t recieve_byte = 0x00;
-  spi_write_byte(spi, 0x00);
+  uint8_t recieve_byte = 123;
+  spi_write_byte(spi,0);
   spi_ready_read(spi);
   recieve_byte = *((volatile uint8_t *)&(spi->DR));
-  printf("READ:%x\r\n", recieve_byte);
   return recieve_byte;
 }
 
@@ -380,19 +394,16 @@ static inline uint8_t spi_read_byte(SPI_TypeDef *spi)
 */
 static inline uint8_t spi_write_buf(SPI_TypeDef *spi, uint8_t *send_bytes, uint8_t transmit_size)
 {
-  printf("writing buff....\r\n");
   for(int i = 0; i < transmit_size; i++) {
     spi_write_byte(spi, send_bytes[i]);
   }
-  printf("completed!\r\n");
   return 0;
 }
 
 
-static inline uint8_t spi_read_buf(SPI_TypeDef *spi, uint8_t* recieve_bytes, uint8_t receive_size){
+static inline uint8_t spi_read_buf(SPI_TypeDef *spi, uint8_t *recieve_bytes, uint8_t receive_size){
   uint8_t retval = 0;
   uint8_t i = 0;
-  printf("READ BUF:\r\n");
   while (i < receive_size)
   {
     *(recieve_bytes + i) = spi_read_byte(spi); // dereference to get element
@@ -402,16 +413,55 @@ static inline uint8_t spi_read_buf(SPI_TypeDef *spi, uint8_t* recieve_bytes, uin
   return retval; // TODO error checking
 }
 
-static inline uint8_t spi_clear_read_buf(SPI_TypeDef *spi){
-  uint8_t junk;
-  uint8_t retval = 0;
-  while (!(spi->SR & BIT(1))); // Wait until transmit buffer is empty
-  while ((spi->SR & SPI_SR_RXNE)) //while recieve buffer not empty
+static inline uint8_t spi_transmit(SPI_TypeDef *spi, uint8_t send_byte)
+{
+  uint8_t recieve_byte = 0;
+  spi_ready_write(spi);
+  //*((volatile uint8_t *)&(spi->DR)) = send_byte << 8;
+  *(volatile uint8_t *)&spi->DR = send_byte;
+  spi_ready_read(spi);
+  recieve_byte = *((volatile uint8_t *)&(spi->DR));
+  return recieve_byte;
+}
+
+static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t cs, uint8_t send_byte, uint8_t transmit_size, uint8_t receive_size, void* result_ptr)
+{
+  uint8_t ret_value = 0;
+  //spi_enable_cs(spi, cs);
+  spi_ready_write(spi);
+
+  // Not currently implemented
+  while (transmit_size > 0)
   {
-    junk = *((volatile uint8_t *)&(spi->DR));; // dereference to get element
-    printf("Clear junk");
+    spi_transmit(spi, send_byte);
+    transmit_size--;
   }
-  return retval; // TODO error checking
+
+  uint32_t result = 0;
+  int8_t rs = receive_size;
+  while (rs > 0)
+  {
+    uint8_t received = spi_transmit(spi, 0x00);
+    result = (result << 8);
+    result = result | received;
+    rs--;
+    //printf("Received Value: %u  %u  %u \r\n", received, receive_size, result);
+    spi_ready_write(spi);
+  }
+  //spi_disable_cs(spi, cs);
+  //printf("RESULT: %d\r\n", result);
+  if(receive_size == 1)
+  {
+    *((uint8_t*)result_ptr) = result;
+  } else if (receive_size == 2)
+  {
+    *((uint16_t*)result_ptr) = result;
+  } else if (receive_size > 2)
+  {
+    *((uint32_t*)result_ptr) = result;
+  }
+
+  return ret_value;
 }
 
 

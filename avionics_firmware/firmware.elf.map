@@ -1,21 +1,21 @@
 Archive member included to satisfy reference by file (symbol)
 
 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-printf.o)
-                              C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o (printf)
+                              C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o (printf)
 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-puts.o)
-                              C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o (puts)
+                              C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o (puts)
 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-wbuf.o)
                               c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-puts.o) (__swbuf_r)
 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-wsetup.o)
                               c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-puts.o) (__swsetup_r)
 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
-                              C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o (memset)
+                              C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o (memset)
 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-impure.o)
                               c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-printf.o) (_impure_ptr)
 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
                               c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-puts.o) (__retarget_lock_acquire_recursive)
 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memcpy-stub.o)
-                              C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o (memcpy)
+                              C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o (memcpy)
 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-freer.o)
                               c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-wsetup.o) (_free_r)
 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mallocr.o)
@@ -62,446 +62,460 @@ c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/
                               c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fvwrite.o) (_realloc_r)
 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-msizer.o)
                               c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-reallocr.o) (_malloc_usable_size_r)
+c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldf3.o)
+                              C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o (__aeabi_dmul)
+c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
+                              C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o (__aeabi_dsub)
+c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
+                              C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o (__aeabi_d2iz)
+c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixdfdi.o)
+                              C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o (__aeabi_d2lz)
+c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixunsdfdi.o)
+                              c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixdfdi.o) (__aeabi_d2ulz)
+c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
+                              c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixdfdi.o) (__aeabi_dcmplt)
+c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixunsdfsi.o)
+                              c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixunsdfdi.o) (__aeabi_d2uiz)
 
 Discarded input sections
 
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .text          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .data          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .bss           0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .text          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .data          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .bss           0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .text.update_sensors
-                0x00000000        0x2 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x00000000        0x2 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .text.send_data
-                0x00000000        0x2 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x00000000        0x2 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .text.toggle_timeout_flag
-                0x00000000        0x2 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x00000000        0x2 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .rodata.run_test_routine2.str1.1
-                0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .text.run_test_routine2
-                0x00000000       0x54 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x00000000       0x54 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .text.run_test_routine
-                0x00000000       0x40 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .data.on.0     0x00000000        0x1 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x00000000       0x40 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .data.on.0     0x00000000        0x1 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .bss.flightStage
-                0x00000000        0x1 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
- .text          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
- .data          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
- .bss           0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
- .debug_macro   0x00000000      0xaa8 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .text          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .data          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .bss           0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .text._open    0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .text._exit    0x00000000        0x4 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .text._kill    0x00000000        0x2 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .text._getpid  0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .text._link    0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .text._unlink  0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .text._stat    0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .text.mkdir    0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000      0xaa8 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x5b C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x2a C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x94 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000      0x103 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x57 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x6a C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000      0x1df C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000      0x460 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x9e C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000      0x369 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x34 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x58 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x8e C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000      0x177 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000      0x146 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x29 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0xc1 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x3d C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000      0x12c C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x28 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0xd9 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000     0x102d C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000      0x11f C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000    0x1cb71 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00000000       0x4a C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .text          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .data          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .bss           0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000      0xaa8 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000      0x130 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x5b C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x2a C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x94 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000      0x103 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x3a C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x57 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x6a C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000      0x1df C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x89 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000      0x460 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x9e C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000      0x369 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x94 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x34 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x58 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x8e C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000      0x177 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000      0x146 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x29 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0xc1 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x3d C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000      0x12c C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x28 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0xd9 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000     0x102d C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000      0x11f C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000    0x1cb71 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x4a C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .text          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .data          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .bss           0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x00000000        0x1 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+ .text          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+ .data          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+ .bss           0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+ .debug_macro   0x00000000      0xaa8 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .text          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .data          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .bss           0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .text._open    0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .text._exit    0x00000000        0x4 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .text._kill    0x00000000        0x2 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .text._getpid  0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .text._link    0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .text._unlink  0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .text._stat    0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .text.mkdir    0x00000000        0x6 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000      0xaa8 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x5b C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x2a C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x94 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000      0x103 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x57 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x6a C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000      0x1df C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000      0x460 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x9e C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000      0x369 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x34 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x58 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x8e C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000      0x177 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000      0x146 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x29 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0xc1 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x3d C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000      0x12c C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x28 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0xd9 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000     0x102d C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000      0x11f C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000    0x1cb71 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00000000       0x4a C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .text          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .data          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .bss           0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000      0xaa8 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000      0x130 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x5b C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x2a C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x94 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000      0x103 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x3a C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x57 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x6a C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000      0x1df C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x89 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000      0x460 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x9e C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000      0x369 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x94 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x34 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x58 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x8e C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000      0x177 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000      0x146 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x29 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0xc1 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x3d C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000      0x12c C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x28 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0xd9 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000     0x102d C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000      0x11f C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000    0x1cb71 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x4a C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .group         0x00000000        0xc C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .text          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .data          0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .bss           0x00000000        0x0 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
  .bss.PROM_values
-                0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000      0xaa8 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000      0x103 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x6a C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000      0x1df C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x2a C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x3a C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x89 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000      0x460 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x9e C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000      0x369 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x94 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x34 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x58 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x8e C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000      0x177 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000      0x146 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x29 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0xc1 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x3d C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000      0x12c C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x28 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0xd9 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000     0x102d C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000      0x11f C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000    0x1cb71 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000      0x13c C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00000000       0x4a C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000      0xaa8 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000      0x103 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x6a C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000      0x1df C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x2a C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x3a C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x89 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000      0x460 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x9e C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000      0x369 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x94 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x43 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x34 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x58 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x8e C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000      0x177 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000      0x146 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x29 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x16 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x10 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x52 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0xc1 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x3d C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x35 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000      0x12c C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x28 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x1c C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x22 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0xd9 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000     0x102d C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000      0x11f C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000    0x1cb71 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000      0x13c C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00000000       0x4a C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
  .text          0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-printf.o)
  .data          0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-printf.o)
  .bss           0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-printf.o)
@@ -662,6 +676,22 @@ Discarded input sections
  .debug_frame   0x00000000       0x20 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-msizer.o)
  .ARM.attributes
                 0x00000000       0x34 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-msizer.o)
+ .data          0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldf3.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldf3.o)
+ .data          0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
+ .data          0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
+ .text          0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixdfdi.o)
+ .data          0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixdfdi.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixdfdi.o)
+ .text          0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixunsdfdi.o)
+ .data          0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixunsdfdi.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixunsdfdi.o)
+ .data          0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
+ .data          0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixunsdfsi.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixunsdfsi.o)
 
 Memory Configuration
 
@@ -672,272 +702,322 @@ sram             0x20000000         0x00030000         xrw
 
 Linker script and memory map
 
-LOAD C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
-LOAD C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
-LOAD C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
-LOAD C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
-LOAD C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+LOAD C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+LOAD C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+LOAD C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+LOAD C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+LOAD C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
 LOAD c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a
 LOAD c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a
                 0x20030000                        _estack = (ORIGIN (sram) + LENGTH (sram))
 
 .vectors        0x08000000      0x1bc
  *(.vectors)
- .vectors       0x08000000      0x1bc C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
+ .vectors       0x08000000      0x1bc C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
                 0x08000000                tab
 
-.text           0x080001c0     0x1940
+.text           0x080001c0     0x2108
  *(.text*)
  .text.delay_ms
-                0x080001c0       0x14 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x080001c0       0x14 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .text.gpio_set_af
-                0x080001d4       0x2e C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x080001d4       0x2e C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  *fill*         0x08000202        0x2 
  .text.gpio_set_mode.constprop.0
-                0x08000204       0x38 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x08000204       0x38 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .text.SysTick_Handler
-                0x0800023c       0x10 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x0800023c       0x10 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
                 0x0800023c                SysTick_Handler
  .text.STM32_beep_buzzer
-                0x0800024c       0x3c C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x0800024c       0x3c C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
                 0x0800024c                STM32_beep_buzzer
  .text.STM32_indicate_on_buzzer
-                0x08000288        0xa C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x08000288        0xa C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
                 0x08000288                STM32_indicate_on_buzzer
  .text.STM32_indicate_on_led
-                0x08000292       0x28 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x08000292       0x28 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
                 0x08000292                STM32_indicate_on_led
  *fill*         0x080002ba        0x2 
  .text.run_test_routine3
-                0x080002bc       0x28 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x080002bc       0x28 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
                 0x080002bc                run_test_routine3
  .text.startup.main
-                0x080002e4      0x16c C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x080002e4      0x16c C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
                 0x080002e4                main
- .text._reset   0x08000450       0x50 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
+ .text._reset   0x08000450       0x50 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
                 0x08000450                _reset
- .text._fstat   0x080004a0       0x12 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+ .text._fstat   0x080004a0       0x12 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
                 0x080004a0                _fstat
  *fill*         0x080004b2        0x2 
- .text._sbrk    0x080004b4       0x1c C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+ .text._sbrk    0x080004b4       0x1c C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
                 0x080004b4                _sbrk
- .text._close   0x080004d0        0x6 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+ .text._close   0x080004d0        0x6 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
                 0x080004d0                _close
- .text._isatty  0x080004d6        0x4 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+ .text._isatty  0x080004d6        0x4 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
                 0x080004d6                _isatty
- .text._lseek   0x080004da        0x4 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+ .text._lseek   0x080004da        0x4 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
                 0x080004da                _lseek
- .text._read    0x080004de        0x6 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+ .text._read    0x080004de        0x6 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
                 0x080004de                _read
- .text._write   0x080004e4       0x34 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+ .text._write   0x080004e4       0x34 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
                 0x080004e4                _write
  .text.gpio_set_mode
-                0x08000518       0x34 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x08000518       0x34 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
  .text.gpio_set_af
-                0x0800054c       0x2e C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x0800054c       0x2e C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
  *fill*         0x0800057a        0x2 
  .text.spi_init
-                0x0800057c       0xe4 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x0800057c       0xe4 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
  .text.STM32_init_clock
-                0x08000660       0x78 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x08000660       0x78 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
                 0x08000660                STM32_init_clock
  .text.STM32_init_internals
-                0x080006d8       0x88 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x080006d8       0x88 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
                 0x080006d8                STM32_init_internals
  .text.STM32_init_peripherals
-                0x08000760       0xa8 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x08000760       0xa8 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
                 0x08000760                STM32_init_peripherals
  .text.STM32_init
-                0x08000808       0x58 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x08000808       0x58 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
                 0x08000808                STM32_init
  .text.STM32_led_on
-                0x08000860       0x10 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x08000860       0x10 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
                 0x08000860                STM32_led_on
  .text.STM32_led_off
-                0x08000870       0x10 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x08000870       0x10 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
                 0x08000870                STM32_led_off
+ .text.delay_ms
+                0x08000880       0x14 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
  .text.unset_cs
-                0x08000880       0x3c C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x08000894       0x3c C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
  .text.set_cs.constprop.0
-                0x080008bc       0x14 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .text.spi_ready_write.isra.0
-                0x080008d0        0x8 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .text.spi_read_buf.isra.0
-                0x080008d8       0x50 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x080008d0       0x14 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .text.spi_transmit
+                0x080008e4       0x18 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .text.spi_transmit_receive.constprop.0.isra.0
+                0x080008fc       0x58 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
  .text.MS5611_read_PROM
-                0x08000928       0x4c C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
-                0x08000928                MS5611_read_PROM
+                0x08000954       0x40 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+                0x08000954                MS5611_read_PROM
  .text.MS5611_get_data
-                0x08000974      0x17c C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
-                0x08000974                MS5611_get_data
+                0x08000994      0x154 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+                0x08000994                MS5611_get_data
  .text.MS5611_init
-                0x08000af0       0x54 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
-                0x08000af0                MS5611_init
+                0x08000ae8       0x40 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+                0x08000ae8                MS5611_init
  .text.MS5611_get_data_test
-                0x08000b44       0x20 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
-                0x08000b44                MS5611_get_data_test
- .text.printf   0x08000b64       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-printf.o)
-                0x08000b64                iprintf
-                0x08000b64                printf
- .text._puts_r  0x08000b88       0xaa c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-puts.o)
-                0x08000b88                _puts_r
- *fill*         0x08000c32        0x2 
- .text.puts     0x08000c34       0x10 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-puts.o)
-                0x08000c34                puts
+                0x08000b28       0x20 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+                0x08000b28                MS5611_get_data_test
+ .text.printf   0x08000b48       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-printf.o)
+                0x08000b48                iprintf
+                0x08000b48                printf
+ .text._puts_r  0x08000b6c       0xaa c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-puts.o)
+                0x08000b6c                _puts_r
+ *fill*         0x08000c16        0x2 
+ .text.puts     0x08000c18       0x10 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-puts.o)
+                0x08000c18                puts
  .text.__swbuf_r
-                0x08000c44       0x7c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-wbuf.o)
-                0x08000c44                __swbuf_r
+                0x08000c28       0x7c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-wbuf.o)
+                0x08000c28                __swbuf_r
  .text.__swsetup_r
-                0x08000cc0       0xac c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-wsetup.o)
-                0x08000cc0                __swsetup_r
- .text.memset   0x08000d6c       0x10 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
-                0x08000d6c                memset
+                0x08000ca4       0xac c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-wsetup.o)
+                0x08000ca4                __swsetup_r
+ .text.memset   0x08000d50       0x10 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
+                0x08000d50                memset
  .text.__retarget_lock_init_recursive
-                0x08000d7c        0x2 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
-                0x08000d7c                __retarget_lock_init_recursive
+                0x08000d60        0x2 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
+                0x08000d60                __retarget_lock_init_recursive
  .text.__retarget_lock_acquire_recursive
-                0x08000d7e        0x2 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
-                0x08000d7e                __retarget_lock_acquire_recursive
+                0x08000d62        0x2 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
+                0x08000d62                __retarget_lock_acquire_recursive
  .text.__retarget_lock_release_recursive
-                0x08000d80        0x2 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
-                0x08000d80                __retarget_lock_release_recursive
- .text.memcpy   0x08000d82       0x1c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memcpy-stub.o)
-                0x08000d82                memcpy
- *fill*         0x08000d9e        0x2 
- .text._free_r  0x08000da0       0x94 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-freer.o)
-                0x08000da0                _free_r
+                0x08000d64        0x2 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
+                0x08000d64                __retarget_lock_release_recursive
+ .text.memcpy   0x08000d66       0x1c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memcpy-stub.o)
+                0x08000d66                memcpy
+ *fill*         0x08000d82        0x2 
+ .text._free_r  0x08000d84       0x94 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-freer.o)
+                0x08000d84                _free_r
  .text.sbrk_aligned
-                0x08000e34       0x44 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mallocr.o)
+                0x08000e18       0x44 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mallocr.o)
  .text._malloc_r
-                0x08000e78      0x100 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mallocr.o)
-                0x08000e78                _malloc_r
+                0x08000e5c      0x100 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mallocr.o)
+                0x08000e5c                _malloc_r
  .text.__malloc_lock
-                0x08000f78        0xc c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mlock.o)
-                0x08000f78                __malloc_lock
+                0x08000f5c        0xc c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mlock.o)
+                0x08000f5c                __malloc_lock
  .text.__malloc_unlock
-                0x08000f84        0xc c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mlock.o)
-                0x08000f84                __malloc_unlock
+                0x08000f68        0xc c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mlock.o)
+                0x08000f68                __malloc_unlock
  .text.__sfputc_r
-                0x08000f90       0x2e c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
+                0x08000f74       0x2e c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
  .text.__sfputs_r
-                0x08000fbe       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
-                0x08000fbe                __sfputs_r
- *fill*         0x08000fe2        0x2 
+                0x08000fa2       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
+                0x08000fa2                __sfputs_r
+ *fill*         0x08000fc6        0x2 
  .text._vfprintf_r
-                0x08000fe4      0x230 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
-                0x08000fe4                _vfprintf_r
-                0x08000fe4                _vfiprintf_r
+                0x08000fc8      0x230 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
+                0x08000fc8                _vfprintf_r
+                0x08000fc8                _vfiprintf_r
  .text._printf_common
-                0x08001214       0xda c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf_i.o)
-                0x08001214                _printf_common
- *fill*         0x080012ee        0x2 
+                0x080011f8       0xda c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf_i.o)
+                0x080011f8                _printf_common
+ *fill*         0x080012d2        0x2 
  .text._printf_i
-                0x080012f0      0x258 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf_i.o)
-                0x080012f0                _printf_i
+                0x080012d4      0x258 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf_i.o)
+                0x080012d4                _printf_i
  .text.__sflush_r
-                0x08001548      0x108 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fflush.o)
-                0x08001548                __sflush_r
+                0x0800152c      0x108 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fflush.o)
+                0x0800152c                __sflush_r
  .text._fflush_r
-                0x08001650       0x50 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fflush.o)
-                0x08001650                _fflush_r
- .text.std      0x080016a0       0x6c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
+                0x08001634       0x50 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fflush.o)
+                0x08001634                _fflush_r
+ .text.std      0x08001684       0x6c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
  .text.stdio_exit_handler
-                0x0800170c       0x18 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
+                0x080016f0       0x18 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
  .text.cleanup_stdio
-                0x08001724       0x40 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
+                0x08001708       0x40 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
  .text.global_stdio_init.part.0
-                0x08001764       0x3c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
+                0x08001748       0x3c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
  .text.__sfp_lock_acquire
-                0x080017a0        0xc c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
-                0x080017a0                __sfp_lock_acquire
+                0x08001784        0xc c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
+                0x08001784                __sfp_lock_acquire
  .text.__sfp_lock_release
-                0x080017ac        0xc c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
-                0x080017ac                __sfp_lock_release
- .text.__sinit  0x080017b8       0x30 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
-                0x080017b8                __sinit
+                0x08001790        0xc c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
+                0x08001790                __sfp_lock_release
+ .text.__sinit  0x0800179c       0x30 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
+                0x0800179c                __sinit
  .text._fwalk_sglue
-                0x080017e8       0x3c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fwalk.o)
-                0x080017e8                _fwalk_sglue
+                0x080017cc       0x3c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fwalk.o)
+                0x080017cc                _fwalk_sglue
  .text.__swhatbuf_r
-                0x08001824       0x4c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-makebuf.o)
-                0x08001824                __swhatbuf_r
+                0x08001808       0x4c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-makebuf.o)
+                0x08001808                __swhatbuf_r
  .text.__smakebuf_r
-                0x08001870       0x78 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-makebuf.o)
-                0x08001870                __smakebuf_r
- .text.__sread  0x080018e8       0x22 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-stdio.o)
-                0x080018e8                __sread
+                0x08001854       0x78 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-makebuf.o)
+                0x08001854                __smakebuf_r
+ .text.__sread  0x080018cc       0x22 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-stdio.o)
+                0x080018cc                __sread
  .text.__swrite
-                0x0800190a       0x38 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-stdio.o)
-                0x0800190a                __swrite
- .text.__sseek  0x08001942       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-stdio.o)
-                0x08001942                __sseek
+                0x080018ee       0x38 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-stdio.o)
+                0x080018ee                __swrite
+ .text.__sseek  0x08001926       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-stdio.o)
+                0x08001926                __sseek
  .text.__sclose
-                0x08001966        0x8 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-stdio.o)
-                0x08001966                __sclose
- *fill*         0x0800196e        0x2 
+                0x0800194a        0x8 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-stdio.o)
+                0x0800194a                __sclose
+ *fill*         0x08001952        0x2 
  .text._close_r
-                0x08001970       0x20 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-closer.o)
-                0x08001970                _close_r
+                0x08001954       0x20 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-closer.o)
+                0x08001954                _close_r
  .text._fstat_r
-                0x08001990       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fstatr.o)
-                0x08001990                _fstat_r
+                0x08001974       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fstatr.o)
+                0x08001974                _fstat_r
  .text._isatty_r
-                0x080019b4       0x20 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-isattyr.o)
-                0x080019b4                _isatty_r
+                0x08001998       0x20 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-isattyr.o)
+                0x08001998                _isatty_r
  .text._lseek_r
-                0x080019d4       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lseekr.o)
-                0x080019d4                _lseek_r
- .text._read_r  0x080019f8       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-readr.o)
-                0x080019f8                _read_r
- .text._sbrk_r  0x08001a1c       0x20 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-sbrkr.o)
-                0x08001a1c                _sbrk_r
+                0x080019b8       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lseekr.o)
+                0x080019b8                _lseek_r
+ .text._read_r  0x080019dc       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-readr.o)
+                0x080019dc                _read_r
+ .text._sbrk_r  0x08001a00       0x20 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-sbrkr.o)
+                0x08001a00                _sbrk_r
  .text._write_r
-                0x08001a3c       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-writer.o)
-                0x08001a3c                _write_r
- .text          0x08001a60       0xa0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memchr.o)
-                0x08001a60                memchr
+                0x08001a20       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-writer.o)
+                0x08001a20                _write_r
+ *fill*         0x08001a44        0xc 
+ .text          0x08001a50       0xa0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memchr.o)
+                0x08001a50                memchr
+ .text          0x08001af0      0x254 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldf3.o)
+                0x08001af0                __muldf3
+                0x08001af0                __aeabi_dmul
+ .text          0x08001d44      0x378 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
+                0x08001d44                __aeabi_drsub
+                0x08001d4c                __aeabi_dsub
+                0x08001d4c                __subdf3
+                0x08001d50                __aeabi_dadd
+                0x08001d50                __adddf3
+                0x08001fc8                __floatunsidf
+                0x08001fc8                __aeabi_ui2d
+                0x08001fe8                __floatsidf
+                0x08001fe8                __aeabi_i2d
+                0x0800200c                __aeabi_f2d
+                0x0800200c                __extendsfdf2
+                0x08002050                __floatundidf
+                0x08002050                __aeabi_ul2d
+                0x08002060                __floatdidf
+                0x08002060                __aeabi_l2d
+ .text          0x080020bc       0x50 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
+                0x080020bc                __aeabi_d2iz
+                0x080020bc                __fixdfsi
+ .text.__fixdfdi
+                0x0800210c       0x30 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixdfdi.o)
+                0x0800210c                __fixdfdi
+                0x0800210c                __aeabi_d2lz
+ .text.__fixunsdfdi
+                0x0800213c       0x3c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixunsdfdi.o)
+                0x0800213c                __fixunsdfdi
+                0x0800213c                __aeabi_d2ulz
+ .text          0x08002178      0x110 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
+                0x08002178                __gtdf2
+                0x08002178                __gedf2
+                0x08002180                __ltdf2
+                0x08002180                __ledf2
+                0x08002188                __nedf2
+                0x08002188                __eqdf2
+                0x08002188                __cmpdf2
+                0x08002204                __aeabi_cdrcmple
+                0x08002214                __aeabi_cdcmpeq
+                0x08002214                __aeabi_cdcmple
+                0x08002224                __aeabi_dcmpeq
+                0x08002238                __aeabi_dcmplt
+                0x0800224c                __aeabi_dcmple
+                0x08002260                __aeabi_dcmpge
+                0x08002274                __aeabi_dcmpgt
+ .text          0x08002288       0x40 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixunsdfsi.o)
+                0x08002288                __aeabi_d2uiz
+                0x08002288                __fixunsdfsi
 
-.glue_7         0x08001b00        0x0
- .glue_7        0x08001b00        0x0 linker stubs
+.glue_7         0x080022c8        0x0
+ .glue_7        0x080022c8        0x0 linker stubs
 
-.glue_7t        0x08001b00        0x0
- .glue_7t       0x08001b00        0x0 linker stubs
+.glue_7t        0x080022c8        0x0
+ .glue_7t       0x080022c8        0x0 linker stubs
 
-.vfp11_veneer   0x08001b00        0x0
- .vfp11_veneer  0x08001b00        0x0 linker stubs
+.vfp11_veneer   0x080022c8        0x0
+ .vfp11_veneer  0x080022c8        0x0 linker stubs
 
-.v4_bx          0x08001b00        0x0
- .v4_bx         0x08001b00        0x0 linker stubs
+.v4_bx          0x080022c8        0x0
+ .v4_bx         0x080022c8        0x0 linker stubs
 
-.iplt           0x08001b00        0x0
- .iplt          0x08001b00        0x0 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+.iplt           0x080022c8        0x0
+ .iplt          0x080022c8        0x0 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
 
-.rodata         0x08001b00       0xbb
+.rodata         0x080022c8       0x90
  *(.rodata*)
  .rodata.main.str1.1
-                0x08001b00       0x37 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .rodata.spi_read_buf.isra.0.str1.1
-                0x08001b37       0x15 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .rodata.MS5611_get_data.str1.1
-                0x08001b4c       0x15 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x080022c8       0x37 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .rodata.MS5611_init.str1.1
-                0x08001b61       0x27 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x080022ff        0xd C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .rodata.MS5611_get_data_test.str1.1
+                0x0800230c       0x19 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
  .rodata._vfprintf_r.str1.1
-                0x08001b88       0x11 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
+                0x08002325       0x11 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
  .rodata._printf_i.str1.1
-                0x08001b99       0x22 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf_i.o)
+                0x08002336       0x22 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf_i.o)
 
-.ARM.exidx      0x08001bbc        0x8
- .ARM.exidx     0x08001bbc        0x8 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memchr.o)
+.ARM.exidx      0x08002358        0x8
+ .ARM.exidx     0x08002358        0x8 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memchr.o)
 
-.rel.dyn        0x08001bc4        0x0
- .rel.iplt      0x08001bc4        0x0 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+.rel.dyn        0x08002360        0x0
+ .rel.iplt      0x08002360        0x0 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
 
-.data           0x20000000       0x60 load address 0x08001bc4
+.data           0x20000000       0x60 load address 0x08002360
                 0x20000000                        _sdata = .
  *(.first_data)
  *(.data SORT_BY_NAME(.data.*))
- .data.FREQ     0x20000000        0x4 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+ .data.FREQ     0x20000000        0x4 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
                 0x20000000                FREQ
  .data.__sglue  0x20000004        0xc c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
                 0x20000004                __sglue
@@ -948,16 +1028,16 @@ LOAD c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib
                 0x2000005c        0x4 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-impure.o)
                 0x2000005c                _impure_ptr
                 0x20000060                        _edata = .
-                0x08001bc4                        _sidata = LOADADDR (.data)
+                0x08002360                        _sidata = LOADADDR (.data)
 
-.igot.plt       0x20000060        0x0 load address 0x08001c24
- .igot.plt      0x20000060        0x0 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+.igot.plt       0x20000060        0x0 load address 0x080023c0
+ .igot.plt      0x20000060        0x0 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
 
-.bss            0x20000060      0x168 load address 0x08001c24
+.bss            0x20000060      0x168 load address 0x080023c0
                 0x20000060                        _sbss = .
  *(.bss SORT_BY_NAME(.bss.*) COMMON)
  .bss.MS5611_SPI
-                0x20000060        0x4 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x20000060        0x4 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
                 0x20000060                MS5611_SPI
  .bss.__lock___malloc_recursive_mutex
                 0x20000064        0x1 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
@@ -979,11 +1059,11 @@ LOAD c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib
                 0x200001a8                __stdio_exit_handler
  .bss.errno     0x200001ac        0x4 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-reent.o)
                 0x200001ac                errno
- .bss.heap.0    0x200001b0        0x4 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+ .bss.heap.0    0x200001b0        0x4 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
  .bss.ms5611_prom_data
-                0x200001b4       0x10 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x200001b4       0x10 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
                 0x200001b4                ms5611_prom_data
- .bss.s_ticks   0x200001c4        0x4 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+ .bss.s_ticks   0x200001c4        0x4 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
                 0x200001c4                s_ticks
                 0x200001c8                        _ebss = .
                 0x200001c8                        . = ALIGN (0x8)
@@ -991,169 +1071,169 @@ LOAD c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib
 OUTPUT(firmware.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x00000000     0x3499
- .debug_info    0x00000000      0xf19 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_info    0x00000f19      0x139 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
- .debug_info    0x00001052      0x7fb C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_info    0x0000184d      0xe83 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_info    0x000026d0      0xdc9 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+.debug_info     0x00000000     0x3634
+ .debug_info    0x00000000      0xf19 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_info    0x00000f19      0x139 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+ .debug_info    0x00001052      0x7fb C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_info    0x0000184d      0xe83 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_info    0x000026d0      0xf64 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
 
-.debug_abbrev   0x00000000      0xec4
- .debug_abbrev  0x00000000      0x463 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_abbrev  0x00000463       0xe8 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
- .debug_abbrev  0x0000054b      0x29e C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_abbrev  0x000007e9      0x31b C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_abbrev  0x00000b04      0x3c0 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+.debug_abbrev   0x00000000      0xfa3
+ .debug_abbrev  0x00000000      0x463 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_abbrev  0x00000463       0xe8 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+ .debug_abbrev  0x0000054b      0x29e C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_abbrev  0x000007e9      0x31b C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_abbrev  0x00000b04      0x49f C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
 
 .debug_loclists
-                0x00000000      0xce5
+                0x00000000      0xbc5
  .debug_loclists
-                0x00000000      0x354 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x00000000      0x354 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .debug_loclists
-                0x00000354      0x1cb C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+                0x00000354      0x1cb C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
  .debug_loclists
-                0x0000051f      0x33c C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x0000051f      0x33c C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
  .debug_loclists
-                0x0000085b      0x48a C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x0000085b      0x36a C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
 
-.debug_aranges  0x00000000      0x1f0
+.debug_aranges  0x00000000      0x1f8
  .debug_aranges
-                0x00000000       0x88 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x00000000       0x88 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .debug_aranges
-                0x00000088       0x20 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
+                0x00000088       0x20 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
  .debug_aranges
-                0x000000a8       0x90 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+                0x000000a8       0x90 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
  .debug_aranges
-                0x00000138       0x60 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x00000138       0x60 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
  .debug_aranges
-                0x00000198       0x58 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x00000198       0x60 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
 
 .debug_rnglists
-                0x00000000      0x2c5
+                0x00000000      0x2bc
  .debug_rnglists
-                0x00000000      0x108 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x00000000      0x108 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .debug_rnglists
-                0x00000108       0x13 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
+                0x00000108       0x13 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
  .debug_rnglists
-                0x0000011b       0x7f C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+                0x0000011b       0x7f C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
  .debug_rnglists
-                0x0000019a       0x61 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x0000019a       0x61 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
  .debug_rnglists
-                0x000001fb       0xca C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x000001fb       0xc1 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
 
 .debug_macro    0x00000000    0x2124c
- .debug_macro   0x00000000      0x2df C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000002df      0xaa8 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00000d87       0x22 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00000da9       0x5b C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00000e04       0x2a C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00000e2e       0x94 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00000ec2       0x43 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00000f05       0x34 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00000f39       0x16 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00000f4f       0x57 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00000fa6       0x9e C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00001044      0x369 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000013ad      0x10b C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000014b8       0x10 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000014c8       0x16 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000014de       0x43 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00001521       0x34 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00001555       0x10 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00001565       0x58 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000015bd       0x8e C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x0000164b       0x1c C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00001667      0x177 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000017de       0x16 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000017f4       0x16 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x0000180a      0x146 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00001950      0x130 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00001a80      0x103 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00001b83       0x6a C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00001bed      0x1df C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00001dcc       0x35 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00001e01      0x460 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00002261       0x22 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00002283       0x16 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00002299       0x16 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000022af       0x29 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000022d8       0x16 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000022ee       0x10 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000022fe       0x10 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x0000230e       0x10 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x0000231e       0x1c C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x0000233a       0x52 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x0000238c       0x22 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000023ae       0x10 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000023be       0x52 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00002410       0xc1 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000024d1       0x1c C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000024ed       0x3d C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x0000252a       0x35 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x0000255f      0x12c C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x0000268b       0x28 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000026b3       0x1c C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000026cf       0x22 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000026f1       0xd9 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000027ca     0x102d C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000037f7      0x11f C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00003916    0x1cb71 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00020487       0x4a C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000204d1       0x10 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x000204e1       0x88 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_macro   0x00020569       0x11 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
- .debug_macro   0x0002057a      0x2c1 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x0002083b       0x3a C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00020875       0x89 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x000208fe       0x1c C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x0002091a       0x94 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x000209ae      0x13c C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_macro   0x00020aea      0x2ca C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_macro   0x00020db4      0x2d6 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x0002108a       0x8e C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00021118       0x51 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x00021169       0x61 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_macro   0x000211ca       0x82 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+ .debug_macro   0x00000000      0x2df C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000002df      0xaa8 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00000d87       0x22 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00000da9       0x5b C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00000e04       0x2a C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00000e2e       0x94 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00000ec2       0x43 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00000f05       0x34 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00000f39       0x16 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00000f4f       0x57 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00000fa6       0x9e C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00001044      0x369 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000013ad      0x10b C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000014b8       0x10 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000014c8       0x16 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000014de       0x43 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00001521       0x34 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00001555       0x10 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00001565       0x58 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000015bd       0x8e C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x0000164b       0x1c C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00001667      0x177 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000017de       0x16 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000017f4       0x16 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x0000180a      0x146 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00001950      0x130 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00001a80      0x103 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00001b83       0x6a C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00001bed      0x1df C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00001dcc       0x35 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00001e01      0x460 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00002261       0x22 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00002283       0x16 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00002299       0x16 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000022af       0x29 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000022d8       0x16 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000022ee       0x10 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000022fe       0x10 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x0000230e       0x10 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x0000231e       0x1c C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x0000233a       0x52 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x0000238c       0x22 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000023ae       0x10 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000023be       0x52 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00002410       0xc1 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000024d1       0x1c C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000024ed       0x3d C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x0000252a       0x35 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x0000255f      0x12c C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x0000268b       0x28 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000026b3       0x1c C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000026cf       0x22 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000026f1       0xd9 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000027ca     0x102d C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000037f7      0x11f C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00003916    0x1cb71 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00020487       0x4a C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000204d1       0x10 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x000204e1       0x88 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_macro   0x00020569       0x11 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+ .debug_macro   0x0002057a      0x2c1 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x0002083b       0x3a C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00020875       0x89 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x000208fe       0x1c C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x0002091a       0x94 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x000209ae      0x13c C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_macro   0x00020aea      0x2ca C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_macro   0x00020db4      0x2d6 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x0002108a       0x8e C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00021118       0x51 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x00021169       0x61 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_macro   0x000211ca       0x82 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
 
-.debug_line     0x00000000     0x254b
- .debug_line    0x00000000      0xab3 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_line    0x00000ab3       0x67 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
- .debug_line    0x00000b1a      0x6ef C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_line    0x00001209      0x8f4 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_line    0x00001afd      0xa4e C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+.debug_line     0x00000000     0x24fd
+ .debug_line    0x00000000      0xab3 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_line    0x00000ab3       0x67 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+ .debug_line    0x00000b1a      0x6ef C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_line    0x00001209      0x8f4 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_line    0x00001afd      0xa00 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
 
-.debug_str      0x00000000    0xb324b
- .debug_str     0x00000000    0xb2da5 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+.debug_str      0x00000000    0xb3275
+ .debug_str     0x00000000    0xb2da5 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
                               0xb2fff (size before relaxing)
- .debug_str     0x000b2da5       0x5d C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
+ .debug_str     0x000b2da5       0x5d C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
                                0x2e44 (size before relaxing)
- .debug_str     0x000b2e02      0x160 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+ .debug_str     0x000b2e02      0x160 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
                               0xb2b5a (size before relaxing)
- .debug_str     0x000b2f62      0x11a C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+ .debug_str     0x000b2f62      0x11a C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
                               0xb2ccc (size before relaxing)
- .debug_str     0x000b307c      0x1cf C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
-                              0xb2e2a (size before relaxing)
+ .debug_str     0x000b307c      0x1f9 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+                              0xb2e5a (size before relaxing)
 
 .comment        0x00000000       0x45
- .comment       0x00000000       0x45 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+ .comment       0x00000000       0x45 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
                                  0x46 (size before relaxing)
- .comment       0x00000045       0x46 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
- .comment       0x00000045       0x46 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .comment       0x00000045       0x46 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .comment       0x00000045       0x46 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+ .comment       0x00000045       0x46 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+ .comment       0x00000045       0x46 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .comment       0x00000045       0x46 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .comment       0x00000045       0x46 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
 
 .ARM.attributes
                 0x00000000       0x32
  .ARM.attributes
-                0x00000000       0x34 C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
+                0x00000000       0x34 C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
  .ARM.attributes
-                0x00000034       0x34 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
+                0x00000034       0x34 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
  .ARM.attributes
-                0x00000068       0x34 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
+                0x00000068       0x34 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
  .ARM.attributes
-                0x0000009c       0x34 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
+                0x0000009c       0x34 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
  .ARM.attributes
-                0x000000d0       0x34 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
+                0x000000d0       0x34 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
  .ARM.attributes
                 0x00000104       0x34 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-printf.o)
  .ARM.attributes
@@ -1208,40 +1288,71 @@ LOAD linker stubs
                 0x00000618       0x34 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-writer.o)
  .ARM.attributes
                 0x0000064c       0x1c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memchr.o)
+ .ARM.attributes
+                0x00000668       0x22 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldf3.o)
+ .ARM.attributes
+                0x0000068a       0x22 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
+ .ARM.attributes
+                0x000006ac       0x22 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
+ .ARM.attributes
+                0x000006ce       0x34 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixdfdi.o)
+ .ARM.attributes
+                0x00000702       0x34 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixunsdfdi.o)
+ .ARM.attributes
+                0x00000736       0x22 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
+ .ARM.attributes
+                0x00000758       0x22 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixunsdfsi.o)
 
-.debug_frame    0x00000000      0xc30
- .debug_frame   0x00000000      0x14c C:\Users\lukem\AppData\Local\Temp\ccrD7GBz.o
- .debug_frame   0x0000014c       0x20 C:\Users\lukem\AppData\Local\Temp\ccbaZ4z9.o
- .debug_frame   0x0000016c      0x108 C:\Users\lukem\AppData\Local\Temp\cctwWQPe.o
- .debug_frame   0x00000274       0xe0 C:\Users\lukem\AppData\Local\Temp\ccoeJGiU.o
- .debug_frame   0x00000354       0xf0 C:\Users\lukem\AppData\Local\Temp\cc4TirQh.o
- .debug_frame   0x00000444       0x6c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-printf.o)
- .debug_frame   0x000004b0       0x3c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-puts.o)
- .debug_frame   0x000004ec       0x40 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-wbuf.o)
- .debug_frame   0x0000052c       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-wsetup.o)
- .debug_frame   0x00000558       0x20 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
- .debug_frame   0x00000578       0xb0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
- .debug_frame   0x00000628       0x28 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memcpy-stub.o)
- .debug_frame   0x00000650       0x38 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-freer.o)
- .debug_frame   0x00000688       0x50 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mallocr.o)
- .debug_frame   0x000006d8       0x30 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mlock.o)
- .debug_frame   0x00000708       0xa8 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
- .debug_frame   0x000007b0       0x60 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf_i.o)
- .debug_frame   0x00000810       0x5c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fflush.o)
- .debug_frame   0x0000086c      0x144 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
- .debug_frame   0x000009b0       0x34 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fwalk.o)
- .debug_frame   0x000009e4       0x58 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-makebuf.o)
- .debug_frame   0x00000a3c       0x88 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-stdio.o)
- .debug_frame   0x00000ac4       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-closer.o)
- .debug_frame   0x00000af0       0x38 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-reent.o)
- .debug_frame   0x00000b28       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fstatr.o)
- .debug_frame   0x00000b54       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-isattyr.o)
- .debug_frame   0x00000b80       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lseekr.o)
- .debug_frame   0x00000bac       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-readr.o)
- .debug_frame   0x00000bd8       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-sbrkr.o)
- .debug_frame   0x00000c04       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-writer.o)
+.debug_frame    0x00000000      0xe80
+ .debug_frame   0x00000000      0x14c C:\Users\lukem\AppData\Local\Temp\ccpVo8QC.o
+ .debug_frame   0x0000014c       0x20 C:\Users\lukem\AppData\Local\Temp\ccW5SISb.o
+ .debug_frame   0x0000016c      0x108 C:\Users\lukem\AppData\Local\Temp\ccF4hfT1.o
+ .debug_frame   0x00000274       0xe0 C:\Users\lukem\AppData\Local\Temp\ccFvh5Cb.o
+ .debug_frame   0x00000354       0xf4 C:\Users\lukem\AppData\Local\Temp\ccfDXmD8.o
+ .debug_frame   0x00000448       0x6c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-printf.o)
+ .debug_frame   0x000004b4       0x3c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-puts.o)
+ .debug_frame   0x000004f0       0x40 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-wbuf.o)
+ .debug_frame   0x00000530       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-wsetup.o)
+ .debug_frame   0x0000055c       0x20 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
+ .debug_frame   0x0000057c       0xb0 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
+ .debug_frame   0x0000062c       0x28 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memcpy-stub.o)
+ .debug_frame   0x00000654       0x38 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-freer.o)
+ .debug_frame   0x0000068c       0x50 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mallocr.o)
+ .debug_frame   0x000006dc       0x30 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mlock.o)
+ .debug_frame   0x0000070c       0xa8 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
+ .debug_frame   0x000007b4       0x60 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf_i.o)
+ .debug_frame   0x00000814       0x5c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fflush.o)
+ .debug_frame   0x00000870      0x144 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
+ .debug_frame   0x000009b4       0x34 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fwalk.o)
+ .debug_frame   0x000009e8       0x58 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-makebuf.o)
+ .debug_frame   0x00000a40       0x88 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-stdio.o)
+ .debug_frame   0x00000ac8       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-closer.o)
+ .debug_frame   0x00000af4       0x38 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-reent.o)
+ .debug_frame   0x00000b2c       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-fstatr.o)
+ .debug_frame   0x00000b58       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-isattyr.o)
+ .debug_frame   0x00000b84       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lseekr.o)
+ .debug_frame   0x00000bb0       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-readr.o)
+ .debug_frame   0x00000bdc       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-sbrkr.o)
+ .debug_frame   0x00000c08       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-writer.o)
+ .debug_frame   0x00000c34       0x30 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldf3.o)
+ .debug_frame   0x00000c64       0xac c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
+ .debug_frame   0x00000d10       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
+ .debug_frame   0x00000d34       0x38 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixdfdi.o)
+ .debug_frame   0x00000d6c       0x2c c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_fixunsdfdi.o)
+ .debug_frame   0x00000d98       0xc4 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
+ .debug_frame   0x00000e5c       0x24 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixunsdfsi.o)
 
 .debug_line_str
-                0x00000000       0xe1
+                0x00000000      0x1af
  .debug_line_str
                 0x00000000       0xe1 c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memchr.o)
+ .debug_line_str
+                0x000000e1       0xce c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldf3.o)
+ .debug_line_str
+                0x000001af       0xce c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
+ .debug_line_str
+                0x000001af       0xce c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
+ .debug_line_str
+                0x000001af       0xce c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
+ .debug_line_str
+                0x000001af       0xce c:/program files (x86)/arm gnu toolchain arm-none-eabi/12.3 rel1/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixunsdfsi.o)

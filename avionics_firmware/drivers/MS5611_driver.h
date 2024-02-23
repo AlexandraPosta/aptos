@@ -15,7 +15,7 @@
 #pragma region Macros
 /** @name Commands */
 #define MS5611_CMD_READ_ADC       				0x00
-#define MS5611_CMD_READ_PROM(address)          (0xA0 | ((address) << 1))
+#define MS5611_CMD_READ_PROM(address)                      (0xA0 | ((address) << 1))
 #define MS5611_CMD_RESET          				0x1E
 #define MS5611_CMD_CONVERT_D1     				0x40
 #define MS5611_CMD_CONVERT_D2     				0x50	
@@ -54,25 +54,6 @@ typedef enum MS5611_OSR {
 	MS5611_OSR_2048,
 	MS5611_OSR_4096
 }MS5611_OSR;
-
-typedef struct PROM_data
-{
-    uint16_t blank;         // "factory data and the setup" ???
-    uint16_t SENS;          // C1 - Pressure Sensitivity
-    uint16_t OFF;           // C2 - Pressure Offset
-    uint16_t TCS;           // C3 - Temperature coefficient of pressure sensitivity
-    uint16_t TCO;           // C4 - Temperature coefficient of pressure offset
-    uint16_t T_REF;         // C5 - Reference temperature
-    uint16_t TEMPSENS;      // C6 - Temperature coefficient of the temperature 
-    uint16_t SC_CRC         // Serial code and CRC
-} PROM_data;
-
-typedef struct M5611_data
-{
-    int32_t temp;
-    int32_t pressure;
-} M5611_data;
-
 #pragma endregion Structs/Emun
 
 /**
@@ -85,13 +66,6 @@ uint8_t MS5611_init(SPI_TypeDef* spi);
   @brief TEST
 */
 int32_t MS5611_get_data_test();
-
-/**
-  @brief Get data from MS5611 Barometer
-  @note remove MS5611_get_temperature() and MS5611_get_pressure()?
-  @param data return struct for temperature and pressure
-*/
-int32_t MS5611_get_data(M5611_data* data);
 
 
 /**
@@ -108,7 +82,7 @@ void MS5611_set_OSR (MS5611_OSR osr);
 	@param calculate True if value needs to be updated. It will update the threes values
 	@return The temperature in Celcius
 */
-int32_t MS5611_get_temperature(int32_t* temp);
+int32_t MS5611_get_temperature(bool calculate);
 
 
 /**
@@ -117,7 +91,7 @@ int32_t MS5611_get_temperature(int32_t* temp);
 	@param calculate True if value needs to be updated. It will update the threes values
 	@return The pressure in mbar
 */
-int32_t MS5611_get_pressure(int32_t* pressure);
+int32_t MS5611_get_pressure(bool calculate);
 
 
 /**
