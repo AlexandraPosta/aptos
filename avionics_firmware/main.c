@@ -126,12 +126,17 @@ void run_test_routine3() {
   @brief Test Routine
 */
 void run_test_routine4() {
+  printf("----STARTING BME280 TEST----\r\n");
   BME280_dev BME_dev;
   BME280_data BME_data;
-  BME280_init(&BME_dev, SPI2);
-
+  int8_t rslt = BME280_init(&BME_dev, SPI2);
+  BME280_error_codes_print_result("bme280_interface_selection", rslt);
   while (1){
-    BME280_get_data(BME280_TEMP, &BME_data, &BME_DEV);
+    rslt = BME280_get_data(BME280_TEMP, &BME_data, &BME_dev);
+    BME280_error_codes_print_result("Get data:", rslt);
+
+    printf("Return: %i\r\n", rslt);
+    printf("TEMP: %u, \tPressure: %u, \tHumidity: %u\r\n", (&BME_data)->temperature, (&BME_data)->pressure, (&BME_data)->humidity);
     watchdog_pat();
     delay_ms(500);
   }
@@ -162,7 +167,7 @@ int main(void) {
   gpio_write(RGB1_G, HIGH);
   gpio_write(RGB2_R, HIGH);
 
-  run_test_routine3();
+  run_test_routine4();
 
   return 0;
 }

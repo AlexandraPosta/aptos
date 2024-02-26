@@ -1,6 +1,6 @@
 /*
 	Leeds University Rocketry Organisation - LURA
-    Author Name: Alexandra Posta
+    Author Name: Alexandra Posta, Oliver Martin
     Created on: 10 June 2023
     Description: Driver file for the Pressure/Temp/humidity module BME280 
 */
@@ -11,10 +11,10 @@
 
 #pragma region Public
 int8_t BME280_init(BME280_dev *dev, SPI_TypeDef *spi) {
-    int8_t ret_val;
+    int8_t ret_val = 0;
     uint8_t chip_ID = 0;
 
-    BME280_SPI = spi;
+    dev->BME280_SPI = spi;
 
     // Read the chip-id of bme280 sensor
     ret_val = BME280_get_regs(BME280_REG_CHIP_ID, &chip_ID, 1, dev);
@@ -22,8 +22,10 @@ int8_t BME280_init(BME280_dev *dev, SPI_TypeDef *spi) {
     // Check for chip id validity
     if (ret_val == 1)
     {
+        printf("chip id response: %x", chip_ID);
         if (chip_ID == BME280_CHIP_ID)
-        {
+        {   
+            printf("Got chip ID\r\n");
             dev->chip_ID = chip_ID;
             ret_val = BME280_soft_reset(dev);      // Reset the sensor
             if (ret_val == 1)
@@ -32,6 +34,7 @@ int8_t BME280_init(BME280_dev *dev, SPI_TypeDef *spi) {
             }
         }
     }
+    return ret_val;
 };
 
 
@@ -64,16 +67,16 @@ int8_t BME280_soft_reset(BME280_dev *dev)
 }
 
 
-int8_t BME280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, BME280_dev *dev)
+int8_t BME280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, BME280_dev *dev)
 {
     int8_t ret_val;
     ret_val = null_ptr_check(dev); // Check for null pointer in the device structure
 
     if ((ret_val == 1) && (reg_data != NULL))
     {        
-        reg_addr = reg_addr | 0x80;                           // SPI
-        spi_transmit_receive(BME280_SPI, BME280_CS, reg_addr, 1, len, reg_data); //SPI READ
-        dev->intf_rslt = reg_data;
+        reg_addr = reg_addr | 0x80; // SPI
+        spi_transmit_receive(dev->BME280_SPI, BME280_CS, reg_addr, 1, len, reg_data); //SPI READ
+        //dev->intf_rslt = reg_data;
         //dev->intf_rslt = dev->read(reg_addr, reg_data, len);   // Read the data ****Replace this line with spi_transmit_receive()
 
         // Check for communication error
@@ -86,12 +89,12 @@ int8_t BME280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, BME280
 }
 
 
-int8_t BME280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint32_t len, BME280_dev *dev)
+int8_t BME280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint16_t len, BME280_dev *dev)
 {
     int8_t ret_val;
     uint8_t temp_buff[20]; // Typically not to write more than 10 registers
-    uint32_t temp_len;
-    uint32_t reg_addrCnt;
+    uint16_t temp_len;
+    uint16_t reg_addrCnt;
 
     if (len > 10) // max allowed length is 10
     {
@@ -126,7 +129,7 @@ int8_t BME280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint32_t len,
             
             //figure out what data needs to be sent
 
-            spi_transmit_receive(BME280_SPI, BME280_CS, temp_buff, temp_len, 1,  &dev->intf_rslt);
+            spi_transmit_receive(dev->BME280_SPI, BME280_CS, temp_buff, temp_len, 1,  &dev->intf_rslt);
 
             //dev->intf_rslt = spi_transmit_receive(BME280_SPI, BME280_CS, temp_buff, temp_len, 1);
             //dev->intf_rslt = dev->write(reg_addr[0], temp_buff, temp_len, dev->intf_rslt); //****Replace this line with spi_transmit_receive()
@@ -138,13 +141,13 @@ int8_t BME280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint32_t len,
 
 int8_t BME280_get_data(uint8_t sensor_comp, BME280_data *compData, BME280_dev *dev)
 {
-    int8_t ret_val;
+    int8_t ret_val = 0;
 
     // Array to store the pressure, temperature and humidity data 
     uint8_t reg_data[BME280_LEN_P_T_H_DATA] = { 0 };
     BME280_uncomp_data uncomp_data = { 0 };
 
-    if (comp_data != NULL)
+    if (compData != NULL)
     {
         /* Read the pressure and temperature data from the sensor */
         ret_val = BME280_get_regs(BME280_REG_DATA, reg_data, BME280_LEN_P_T_H_DATA, dev);
@@ -155,7 +158,7 @@ int8_t BME280_get_data(uint8_t sensor_comp, BME280_data *compData, BME280_dev *d
             parse_sensor_data(reg_data, &uncomp_data);
 
             // Compensate the pressure and/or temperature and/or humidity data from the sensor
-            ret_val = BME280_compensate_data(sensor_comp, &uncomp_data, comp_data, &dev->calib_data);
+            ret_val = BME280_compensate_data(sensor_comp, &uncomp_data, compData, &dev->calib);
         }
     }
     return ret_val;
@@ -208,7 +211,7 @@ int8_t BME280_compensate_data(uint8_t sensor_comp, const BME280_uncomp_data *unc
  @brief This private function is used to validate the device structure pointer for
  null conditions.
 */
-static int8_t null_ptr_check(BME280_dev *dev)
+int8_t null_ptr_check(BME280_dev *dev)
 {
     int8_t ret_val;
 
@@ -216,6 +219,7 @@ static int8_t null_ptr_check(BME280_dev *dev)
     {
         // Device structure pointer is not valid 
         ret_val = BME280_E_NULL_PTR;
+        printf("BME280 NULL Pointer Error.\r\n");
     }
     else
     {
@@ -231,7 +235,7 @@ static int8_t null_ptr_check(BME280_dev *dev)
  @brief This private function reads the calibration data from the sensor, parse
  it and store in the device structure.
 */
-static int8_t get_calib_data(BME280_dev *dev)
+int8_t get_calib_data(BME280_dev *dev)
 {
     int8_t ret_val;
     uint8_t reg_addr = BME280_REG_TEMP_PRESS_CALIB_DATA;
@@ -261,12 +265,40 @@ static int8_t get_calib_data(BME280_dev *dev)
     return ret_val;
 }
 
+/*!
+ *  @brief This API is used to parse the pressure, temperature and
+ *  humidity data and store it in the bme280_uncomp_data structure instance.
+ */
+static void parse_sensor_data(const uint8_t *reg_data, struct BME280_uncomp_data *uncomp_data)
+{
+    /* Variables to store the sensor data */
+    uint32_t data_xlsb;
+    uint32_t data_lsb;
+    uint32_t data_msb;
+
+    /* Store the parsed register values for pressure data */
+    data_msb = (uint32_t)reg_data[0] << 12;
+    data_lsb = (uint32_t)reg_data[1] << 4;
+    data_xlsb = (uint32_t)reg_data[2] >> 4;
+    uncomp_data->pressure = data_msb | data_lsb | data_xlsb;
+
+    /* Store the parsed register values for temperature data */
+    data_msb = (uint32_t)reg_data[3] << 12;
+    data_lsb = (uint32_t)reg_data[4] << 4;
+    data_xlsb = (uint32_t)reg_data[5] >> 4;
+    uncomp_data->temperature = data_msb | data_lsb | data_xlsb;
+
+    /* Store the parsed register values for humidity data */
+    data_msb = (uint32_t)reg_data[6] << 8;
+    data_lsb = (uint32_t)reg_data[7];
+    uncomp_data->humidity = data_msb | data_lsb;
+}
 
 /**
  @brief This private function is used to parse the temperature and
  pressure calibration data and store it in device structure.
 */
-static void parse_temp_press_calib_data(const uint8_t *reg_data, BME280_dev *dev)
+void parse_temp_press_calib_data(const uint8_t *reg_data, BME280_dev *dev)
 {
     BME280_calib_data *calib_data = &(dev->calib);
 
@@ -290,9 +322,9 @@ static void parse_temp_press_calib_data(const uint8_t *reg_data, BME280_dev *dev
  @brief This private function is used to parse the humidity calibration data
  and store it in device structure.
 */
-static void parse_humidity_calib_data(const uint8_t *reg_data, BME280_dev *dev)
+void parse_humidity_calib_data(const uint8_t *reg_data, BME280_dev* dev)
 {
-    struct bme280_calib_data *calib_data = &(dev->calib);
+    struct BME280_calib_data* calib_data = &(dev->calib);
     int16_t dig_h4_lsb;
     int16_t dig_h4_msb;
     int16_t dig_h5_lsb;
@@ -314,9 +346,9 @@ static void parse_humidity_calib_data(const uint8_t *reg_data, BME280_dev *dev)
     @brief This private function interleaves the register address between the
     register data buffer for burst write operation.
 */
-static void interleave_reg_addr(const uint8_t *reg_addr, uint8_t *tempBuff, const uint8_t *reg_data, uint32_t len)
+void interleave_reg_addr(const uint8_t *reg_addr, uint8_t *tempBuff, const uint8_t *reg_data, uint16_t len)
 {
-    uint32_t index;
+    uint16_t index;
 
     for (index = 1; index < len; index++)
     {
@@ -330,7 +362,7 @@ static void interleave_reg_addr(const uint8_t *reg_addr, uint8_t *tempBuff, cons
     @brief This private function is used to compensate the raw temperature data and
     return the compensated temperature data in integer data type.
 */
-static int32_t compensate_temperature(const BME280_uncomp_data *uncomp_data, BME280_calib_data *calib_data)
+int32_t compensate_temperature(const BME280_uncomp_data *uncomp_data, BME280_calib_data *calib_data)
 {
     int32_t var1;
     int32_t var2;
@@ -361,7 +393,7 @@ static int32_t compensate_temperature(const BME280_uncomp_data *uncomp_data, BME
     @brief This private function is used to compensate the raw pressure data and
     return the compensated pressure data in integer data type with high accuracy.
 */
-static uint32_t compensate_pressure(const BME280_uncomp_data *uncomp_data, const BME280_calib_data *calib_data)
+uint32_t compensate_pressure(const BME280_uncomp_data *uncomp_data, const BME280_calib_data *calib_data)
 {
     int64_t var1;
     int64_t var2;
@@ -408,7 +440,7 @@ static uint32_t compensate_pressure(const BME280_uncomp_data *uncomp_data, const
     @brief This internal API is used to compensate the raw humidity data and
     return the compensated humidity data in integer data type.
 */
-static uint32_t compensate_humidity(const BME280_uncomp_data *uncomp_data, const BME280_calib_data *calib_data)
+uint32_t compensate_humidity(const BME280_uncomp_data *uncomp_data, const BME280_calib_data *calib_data)
 {
     int32_t var1;
     int32_t var2;
@@ -441,4 +473,39 @@ static uint32_t compensate_humidity(const BME280_uncomp_data *uncomp_data, const
 
     return humidity;
 }
+
+/*!
+ *  @brief Prints the execution status of the APIs.
+ */
+void BME280_error_codes_print_result(const char api_name[], int8_t rslt)
+{
+    if (rslt != BME280_OK)
+    {
+        printf("%s\t", api_name);
+
+        switch (rslt)
+        {
+            case BME280_E_NULL_PTR:
+                printf("Error [%d] : Null pointer error.", rslt);
+                printf(
+                    "It occurs when the user tries to assign value (not address) to a pointer, which has been initialized to NULL.\r\n");
+                break;
+
+            case BME280_E_COMM_FAIL:
+                printf("Error [%d] : Communication failure error.", rslt);
+                printf(
+                    "It occurs due to read/write operation failure and also due to power failure during communication\r\n");
+                break;
+
+            case BME280_E_DEV_NOT_FOUND:
+                printf("Error [%d] : Device not found error. It occurs when the device chip id is incorrectly read\r\n",
+                       rslt);
+                break;
+            default:
+                printf("Error [%d]\r\n", rslt);
+        }
+    }
+}
+
+
 #pragma endregion Private
