@@ -3,6 +3,7 @@
 #include "mcu.h"
 #include "stm32l4r5xx.h"
 #include "drivers/MS5611_driver.h"
+#include "drivers/BME280_driver.h"
 
 // Flags
 FlightStages flightStage = LAUNCHPAD;
@@ -49,8 +50,10 @@ void STM32_beep_buzzer(uint32_t onDurationMs, uint32_t offDurationMs, uint16_t n
 {
   for (int i = 0; i < noOfBeeps; i++) {
       gpio_write(_buzzer, HIGH);
+      STM32_led_on();
       delay_ms(onDurationMs);
       gpio_write(_buzzer, LOW); 
+      STM32_led_off();
       delay_ms(offDurationMs);
   }
 }
@@ -60,7 +63,7 @@ void STM32_beep_buzzer(uint32_t onDurationMs, uint32_t offDurationMs, uint16_t n
 */
 void STM32_indicate_on_buzzer()
 {
-  STM32_beep_buzzer(100, 100, 3);
+  STM32_beep_buzzer(50, 30, 3);
 }
 
 /**
@@ -69,11 +72,11 @@ void STM32_indicate_on_buzzer()
 void STM32_indicate_on_led()
 {
   STM32_led_on();
-  delay_ms(200);
+  delay_ms(100);
   STM32_led_off();
   delay_ms(100);
   STM32_led_on();
-  delay_ms(200);
+  delay_ms(100);
   STM32_led_off();
 }
 
@@ -119,6 +122,20 @@ void run_test_routine3() {
     delay_ms(500);
   }
 }
+/**
+  @brief Test Routine
+*/
+void run_test_routine4() {
+  BME280_dev BME_dev;
+  BME280_data BME_data;
+  BME280_init(&BME_dev, SPI2);
+
+  while (1){
+    BME280_get_data(BME280_TEMP, &BME_data, &BME_DEV);
+    watchdog_pat();
+    delay_ms(500);
+  }
+}
 
 
 /**
@@ -126,7 +143,8 @@ void run_test_routine3() {
 */
 int main(void) {
   STM32_init();
-  uart_init(USART1, 115200);
+  //uart_init(USART1, 115200);
+  uart_init(USART1, 921600);
 
   spi_init(SPI2);
 
@@ -139,9 +157,8 @@ int main(void) {
 
   STM32_indicate_on_buzzer();
   watchdog_pat();
-  STM32_indicate_on_led();
+  STM32_led_on();
 
-  watchdog_pat();
   gpio_write(RGB1_G, HIGH);
   gpio_write(RGB2_R, HIGH);
 
