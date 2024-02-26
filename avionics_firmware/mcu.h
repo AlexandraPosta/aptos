@@ -434,6 +434,7 @@ static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t cs, uint8_t
   while (transmit_size > 0)
   {
     spi_transmit(spi, send_byte);
+    printf("SENT: %x\r\n", send_byte);
     transmit_size--;
   }
 
@@ -449,7 +450,7 @@ static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t cs, uint8_t
     spi_ready_write(spi);
   }
   //spi_disable_cs(spi, cs);
-  //printf("RESULT: %d\r\n", result);
+  printf("RESULT: %x\r\n", result);
   if(receive_size == 1)
   {
     *((uint8_t*)result_ptr) = result;
