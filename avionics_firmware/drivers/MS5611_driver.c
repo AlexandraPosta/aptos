@@ -71,7 +71,7 @@ uint8_t MS5611_read_PROM()
     {
         uint16_t result;
         spi_enable_cs(MS5611_SPI, MS5611_CS);
-        spi_transmit_receive(MS5611_SPI, MS5611_CS, MS5611_CMD_READ_PROM(i), 1, 2, &result);
+        spi_transmit_receive(MS5611_SPI, MS5611_CMD_READ_PROM(i), 1, 2, &result);
         spi_disable_cs(MS5611_SPI, MS5611_CS);
         // Fill struct using ptr arithmatic
         *(prom_ptr + i) = result;
@@ -84,27 +84,27 @@ int MS5611_get_data(M5611_data* data)
 {
     // check if the device has a register that checks if the conversion is complete?
     spi_enable_cs(MS5611_SPI, MS5611_CS);
-    spi_transmit_receive(MS5611_SPI, MS5611_CS, MS5611_CMD_CONVERT_D2, 1, 0, NULL);
+    spi_transmit_receive(MS5611_SPI, MS5611_CMD_CONVERT_D2, 1, 0, NULL);
     spi_disable_cs(MS5611_SPI, MS5611_CS);
 
     delay_ms(8);
     uint32_t D2;
     spi_enable_cs(MS5611_SPI, MS5611_CS);
-    spi_transmit_receive(MS5611_SPI, MS5611_CS, MS5611_CMD_READ_ADC, 1, 3, &D2);
+    spi_transmit_receive(MS5611_SPI, MS5611_CMD_READ_ADC, 1, 3, &D2);
     spi_disable_cs(MS5611_SPI, MS5611_CS);
 
     int32_t dT = (D2) - ((int32_t)ms5611_prom_data.T_REF << 8);
     int32_t TEMP = 2000 + dT * ms5611_prom_data.TEMPSENS / (2<<23);
 
     spi_enable_cs(MS5611_SPI, MS5611_CS);
-    spi_transmit_receive(MS5611_SPI, MS5611_CS, MS5611_CMD_CONVERT_D1, 1, 0, NULL);
+    spi_transmit_receive(MS5611_SPI, MS5611_CMD_CONVERT_D1, 1, 0, NULL);
     spi_disable_cs(MS5611_SPI, MS5611_CS);
 
     delay_ms(8);
 
     uint32_t D1;
     spi_enable_cs(MS5611_SPI, MS5611_CS);
-    spi_transmit_receive(MS5611_SPI, MS5611_CS, MS5611_CMD_READ_ADC, 1, 3, &D1);
+    spi_transmit_receive(MS5611_SPI, MS5611_CMD_READ_ADC, 1, 3, &D1);
     spi_disable_cs(MS5611_SPI, MS5611_CS);
 
     int64_t OFF = (ms5611_prom_data.OFF * pow(2,16)) + (ms5611_prom_data.TCO*dT)/pow(2,7);

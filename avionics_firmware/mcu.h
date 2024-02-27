@@ -367,85 +367,22 @@ static inline void spi_disable_cs(SPI_TypeDef *spi, uint8_t cs)
   @param send_byte Byte to be sent via SPI
   @return Byte from SPI
 */
-static inline uint8_t spi_ReadWrite_byte(SPI_TypeDef *spi, uint8_t send_byte)
+static inline uint8_t spi_transmit(SPI_TypeDef *spi, uint8_t send_byte)
 {
   uint8_t recieve_byte = 123;
-  printf("Sent: %d\r\n", send_byte);
+  //printf("you want to send: %d", send_byte);
   spi_ready_write(spi);
   //*((volatile uint8_t *)&(spi->DR)) = send_byte << 8;
   *(volatile uint8_t *)&spi->DR = send_byte;
+  printf("Sent: %x\r\n", send_byte);
   // since SPI is asyncronous communication, we gotta recieve a bit aswell....
   spi_ready_read(spi);
   recieve_byte = *((volatile uint8_t *)&(spi->DR)); 
-  printf("Recieved: %d\r\n", recieve_byte);
+  printf("Received: %x\r\n", recieve_byte);
   return recieve_byte;
 }
 
-/**
-  @brief Transmit single byte to SPI peripheral
-  @param spi Selected SPI (1, 2 or 3)
-  @param send_byte Byte to be sent via SPI
-  @return data recieved whilst byte is being transmitted
-*/
-static inline uint8_t spi_write_byte(SPI_TypeDef *spi, uint8_t send_byte)
-{
-  uint8_t recieve_byte = 123;
-  recieve_byte = spi_ReadWrite_byte(spi, send_byte);
-  return recieve_byte;
-}
-
-/**
-  @brief Transmit single byte to and from SPI peripheral
-  @param spi Selected SPI (1, 2 or 3)
-  @return Byte from SPI
-*/
-static inline uint8_t spi_read_byte(SPI_TypeDef *spi)
-{
-  uint8_t recieve_byte = 123;
-  recieve_byte = spi_ReadWrite_byte(spi, 0x00);
-  return recieve_byte;
-}
-
-/**
-  @brief Transmit multiple bytes to and from SPI peripheral
-  @param spi Selected SPI (1, 2 or 3)
-  @param send_byte Byte to be sent via SPI
-  @param transmit_size Number of bytes to be sent (Not currently implemented)
-  @return error checking
-*/
-static inline uint8_t spi_write_buf(SPI_TypeDef *spi, uint8_t *send_bytes, uint8_t transmit_size)
-{
-  for(int i = 0; i < transmit_size; i++) {
-    spi_write_byte(spi, send_bytes[i]);
-  }
-  return 0;
-}
-
-
-static inline uint8_t spi_read_buf(SPI_TypeDef *spi, uint8_t *recieve_bytes, uint8_t receive_size){
-  uint8_t retval = 0;
-  uint8_t i = 0;
-  while (i < receive_size)
-  {
-    *(recieve_bytes + i) = spi_read_byte(spi); // dereference to get element
-    i++;
-    // printf("Received Value: %u  %u  %u \r\n", received, receive_size, result);
-  }
-  return retval; // TODO error checking
-}
-
-static inline uint8_t spi_transmit(SPI_TypeDef *spi, uint8_t send_byte)
-{
-  uint8_t recieve_byte = 0;
-  spi_ready_write(spi);
-  printf("SENT: %x\r\n", send_byte);
-  *(volatile uint8_t *)&spi->DR = send_byte;
-  spi_ready_read(spi);
-  recieve_byte = *((volatile uint8_t *)&(spi->DR));
-  return recieve_byte;
-}
-
-static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t cs, uint8_t send_byte, uint8_t transmit_size, uint8_t receive_size, void* result_ptr)
+static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t send_byte, uint8_t transmit_size, uint8_t receive_size, void* result_ptr)
 {
   uint8_t ret_value = 0;
   //spi_enable_cs(spi, cs);
@@ -466,11 +403,10 @@ static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t cs, uint8_t
     result = (result << 8);
     result = result | received;
     rs--;
-    printf("Received Value: %x \r\n", received);
     spi_ready_write(spi);
   }
   //spi_disable_cs(spi, cs);
-  printf("RESULT: %x\r\n", result);
+  printf("RESULT: %d\r\n", result);
   if(receive_size == 1)
   {
     *((uint8_t*)result_ptr) = result;
@@ -483,6 +419,47 @@ static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t cs, uint8_t
   }
 
   return ret_value;
+}
+
+/**
+  @brief Transmit single byte to and from SPI peripheral
+  @param spi Selected SPI (1, 2 or 3)
+  @return Byte from SPI
+*/
+static inline uint8_t spi_read_byte(SPI_TypeDef *spi)
+{
+  uint8_t recieve_byte = 99;
+  recieve_byte = spi_transmit(spi, 0x00);
+  return recieve_byte;
+}
+
+/**
+  @brief Transmit multiple bytes to and from SPI peripheral
+  @param spi Selected SPI (1, 2 or 3)
+  @param send_byte Byte to be sent via SPI
+  @param transmit_size Number of bytes to be sent (Not currently implemented)
+  @return error checking
+*/
+static inline uint8_t spi_write_buf(SPI_TypeDef *spi, uint8_t *send_bytes, uint8_t transmit_size)
+{
+  for(int i = 0; i < transmit_size; i++) {
+    spi_transmit(spi, send_bytes[i]);
+  }
+  return 0;
+}
+
+
+static inline uint8_t spi_read_buf(SPI_TypeDef *spi, uint8_t *recieve_bytes, uint8_t receive_size){
+  uint8_t retval = 0;
+  uint8_t i = 0;
+  while (i < receive_size)
+  {
+    *(recieve_bytes + i) = spi_read_byte(spi); // dereference to get element
+    printf("Received: %x\r\n", *(recieve_bytes + i));
+    i++;
+    // printf("Received Value: %u  %u  %u \r\n", received, receive_size, result);
+  }
+  return retval; // TODO error checking
 }
 
 

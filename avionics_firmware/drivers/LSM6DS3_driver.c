@@ -20,9 +20,20 @@ int8_t LSM6DS3_init(SPI_TypeDef *spi){
     LSM6DS3_retVal = LSM6DS3_read_reg(LSM6DS3_WHO_AM_I_ADRS);
     if(LSM6DS3_retVal == LSM6DS3_WHO_AM_I_EXP){
         printf("LSM6DS3 knows who it is...");
+
+        //soft reset of device
+        LSM6DS3_write_reg(LSM6DS3_CTRL3_C_ADRS, LSM6DS3_CTRL3_C_RESET);
+        delay_ms(10);
+
+        //disable I2C
+        uint8_t data = LSM6DS3_read_reg(LSM6DS3_CTRL4_C_ADRS);
+        data |= LSM6DS3_CTRL4_C_DISABLE_I2C;
+        LSM6DS3_write_reg(LSM6DS3_CTRL4_C_ADRS, data);
+
         // power on the accelerometer
-        LSM6DS3_write_reg(LSM6DS3_CTRL1_XL_ADRS, 0b01000000);
-        LSM6DS3_write_reg(LSM6DS3_CTRL2_G_ADRS, 0b01000000);
+        LSM6DS3_write_reg(LSM6DS3_CTRL1_XL_ADRS, 0b01000000);   //set 
+
+        LSM6DS3_write_reg(LSM6DS3_CTRL2_G_ADRS, 0b01000000);    //set angular rate to 104hz
     }
     else{
         printf(" LSM6DS3 thinks its %x ",LSM6DS3_retVal);
@@ -35,7 +46,7 @@ int8_t LSM6DS3_init(SPI_TypeDef *spi){
 int8_t LSM6DS3_get_data(LSM6DS3_DATA *data){
     int8_t LSM6DS3_retVal = 1;
     spi_enable_cs(LSM6DS3_SPI, LSM6DS3_CS);
-    spi_write_byte(LSM6DS3_SPI, LSM6DS3_TEMP_ADDRESS);
+    spi_transmit(LSM6DS3_SPI, LSM6DS3_TEMP_ADDRESS);
     data->LSM6DS3_TEMP = LSM6DS3_get_sens_val();
     data->LSM6DS3_GYRO_X = LSM6DS3_get_sens_val();
     data->LSM6DS3_GYRO_Y = LSM6DS3_get_sens_val();
@@ -65,8 +76,8 @@ static uint8_t LSM6DS3_write_reg(uint8_t address, uint8_t data){
     //spi_transmit_receive(LSM6DS3_SPI, LSM6DS3_CS, address, 1, 0, &response);
     
     spi_enable_cs(LSM6DS3_SPI,LSM6DS3_CS);
-    spi_write_byte(LSM6DS3_SPI,address);
-    spi_write_byte(LSM6DS3_SPI,data);
+    spi_transmit(LSM6DS3_SPI,address);
+    spi_transmit(LSM6DS3_SPI,data);
     spi_disable_cs(LSM6DS3_SPI,LSM6DS3_CS);
     
     return 1;
@@ -74,12 +85,12 @@ static uint8_t LSM6DS3_write_reg(uint8_t address, uint8_t data){
 
 static uint8_t LSM6DS3_read_reg(uint8_t address){
     printf("address to write to is: %d\r\n",address);
-    address = address ^ 0x80;   // make sure first bit is 1
+    address = address | 0x80;   // make sure first bit is 1
     printf("appending a 1, it becomes: %d\r\n",address);
     uint8_t LSM6DS3_retVal = 0;
 
     set_cs(LSM6DS3_CS);
-    spi_transmit_receive(LSM6DS3_SPI, LSM6DS3_CS, address, 1, 1, &LSM6DS3_retVal);
+    spi_transmit_receive(LSM6DS3_SPI, address, 1, 1, &LSM6DS3_retVal);
     unset_cs(LSM6DS3_CS);
     /*
     spi_enable_cs(LSM6DS3_SPI, LSM6DS3_CS);

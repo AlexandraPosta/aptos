@@ -5,7 +5,7 @@
 #include "drivers/MS5611_driver.h"
 #include "drivers/BME280_driver.h"
 #include "drivers/LSM6DS3_driver.h"
-#include "drivers/ADXL375_driver.h"
+//#include "drivers/ADXL375_driver.h"
 
 // Flags
 FlightStages flightStage = LAUNCHPAD;
@@ -159,7 +159,7 @@ void run_test_routine_LSM6DS3()
     delay_ms(500);
   }
 }
-
+/*
 void run_test_routine_ADXL375()
 {
   int8_t ret_val = 123;
@@ -176,7 +176,7 @@ void run_test_routine_ADXL375()
   }
 }
 
-
+*/
 
 /**
   @brief Main entry point for the Flight Computer (HFC) firmware
@@ -203,9 +203,9 @@ int main(void) {
   gpio_write(RGB2_R, HIGH);
   
   delay_ms(100);
-  run_test_routine_BME280();
+  //run_test_routine_BME280();
   //run_test_routine_ADXL375();
-  //run_test_routine_LSM6DS3();
+  run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   
 

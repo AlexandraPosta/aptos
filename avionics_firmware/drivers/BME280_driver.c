@@ -79,10 +79,21 @@ int8_t BME280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, BME280
     if ((ret_val == 1) && (reg_data != NULL))
     {        
         reg_addr = reg_addr | 0x80; // SPI
-        printf("Sending data to get register\r\n");
-        spi_enable_cs(dev->BME280_SPI, BME280_CS);
-        spi_transmit_receive(dev->BME280_SPI, BME280_CS, reg_addr, 1, len, reg_data); //SPI READ
-        spi_disable_cs(dev->BME280_SPI, BME280_CS);
+        printf("REG ADDRESS %x\r\n", reg_addr);
+        //printf("Sending data to get register\r\n");
+        
+        //spi_transmit_receive(dev->BME280_SPI, BME280_CS, reg_addr, 1, len, reg_data); //SPI READ
+        
+        for (uint8_t i = 0; i < len; i ++){
+            spi_enable_cs(dev->BME280_SPI, BME280_CS);
+            spi_transmit(dev->BME280_SPI, reg_addr+i);
+            reg_data[i] = spi_read_byte(dev->BME280_SPI);
+            spi_disable_cs(dev->BME280_SPI, BME280_CS);
+        }
+        
+        
+        //spi_read_buf(dev->BME280_SPI, reg_data, len);
+        
         //dev->intf_rslt = reg_data;
         //dev->intf_rslt = dev->read(reg_addr, reg_data, len);   // Read the data ****Replace this line with spi_transmit_receive()
 
@@ -139,7 +150,7 @@ int8_t BME280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint16_t len,
             //figure out what data needs to be sent
             printf("Sending data to set register\r\n");
             spi_enable_cs(dev->BME280_SPI, BME280_CS);
-            spi_transmit_receive(dev->BME280_SPI, BME280_CS, temp_buff, temp_len, 1,  &dev->intf_rslt);
+            spi_transmit_receive(dev->BME280_SPI, temp_buff, temp_len, 1,  &dev->intf_rslt);
             spi_disable_cs(dev->BME280_SPI, BME280_CS);
             //dev->intf_rslt = spi_transmit_receive(BME280_SPI, BME280_CS, temp_buff, temp_len, 1);
             //dev->intf_rslt = dev->write(reg_addr[0], temp_buff, temp_len, dev->intf_rslt); //****Replace this line with spi_transmit_receive()
@@ -162,15 +173,15 @@ int8_t BME280_get_data(uint8_t sensor_comp, BME280_data *compData, BME280_dev *d
     if (compData != NULL)
     {
         /* Read the pressure and temperature data from the sensor */
-        ret_val = BME280_get_regs(BME280_REG_DATA, reg_data, BME280_LEN_P_T_H_DATA, dev);
+        ret_val = BME280_get_regs(BME280_REG_DATA, &reg_data, BME280_LEN_P_T_H_DATA, dev);
 
         if (ret_val == 1)
         {
             // Parse the read data from the sensor 
-            parse_sensor_data(reg_data, &uncomp_data);
+            parse_sensor_data(&reg_data, &uncomp_data);
 
             // Compensate the pressure and/or temperature and/or humidity data from the sensor
-            ret_val = BME280_compensate_data(sensor_comp, &uncomp_data, compData, &dev->calib);
+            ret_val = BME280_compensate_data(sensor_comp, &uncomp_data, compData, &(dev->calib));
         }
     }
     return ret_val;
@@ -256,21 +267,21 @@ int8_t get_calib_data(BME280_dev *dev)
     uint8_t calib_data[BME280_LEN_TEMP_PRESS_CALIB_DATA] = { 0 };
 
     /* Read the calibration data from the sensor */
-    ret_val = BME280_get_regs(reg_addr, calib_data, BME280_LEN_TEMP_PRESS_CALIB_DATA, dev);
+    ret_val = BME280_get_regs(reg_addr, &calib_data, BME280_LEN_TEMP_PRESS_CALIB_DATA, dev);
 
     if (ret_val == 1)
     {
         // Parse temperature and pressure calibration data and store it in device structure
-        parse_temp_press_calib_data(calib_data, dev);
+        parse_temp_press_calib_data(&calib_data, dev);
         reg_addr = BME280_REG_HUMIDITY_CALIB_DATA;
 
         // Read the humidity calibration data from the sensor
-        ret_val = BME280_get_regs(reg_addr, calib_data, BME280_LEN_HUMIDITY_CALIB_DATA, dev);
+        ret_val = BME280_get_regs(reg_addr, &calib_data, BME280_LEN_HUMIDITY_CALIB_DATA, dev);
 
         if (ret_val == 1)
         {
             // Parse humidity calibration data and store in device structure
-            parse_humidity_calib_data(calib_data, dev);
+            parse_humidity_calib_data(&calib_data, dev);
         }
     }
 

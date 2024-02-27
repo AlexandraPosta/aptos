@@ -14,6 +14,9 @@
 
 #define LSM6DS3_CTRL1_XL_ADRS                0x10
 #define LSM6DS3_CTRL2_G_ADRS                 0x11
+#define LSM6DS3_CTRL3_C_ADRS                 0x12
+#define LSM6DS3_CTRL4_C_ADRS                 0x13
+
 
 #define LSM6DS3_TEMP_ADDRESS                 0x20
 
@@ -21,6 +24,8 @@
 #define LSM6DS3_WHO_AM_I_EXP                 0b01101010 //expected val if who reg is read
 #define LSM6DS3_CTRL1_XL_ON                  0b01000000
 #define LSM6DS3_CTRL2_G_ON                   0b01000000
+#define LSM6DS3_CTRL3_C_RESET                0b00000101
+#define LSM6DS3_CTRL4_C_DISABLE_I2C          0b00000100
 
 #define LSM6DS3_CS                           CS1
 
