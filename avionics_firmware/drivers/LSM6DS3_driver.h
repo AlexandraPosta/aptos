@@ -18,11 +18,11 @@
 #define LSM6DS3_TEMP_ADDRESS                 0x20
 
 //chip settings
-#define LSM6DS3_WHO_AM_I_EXP                 0b01101001 //expected val if who reg is read
+#define LSM6DS3_WHO_AM_I_EXP                 0b01101010 //expected val if who reg is read
 #define LSM6DS3_CTRL1_XL_ON                  0b01000000
 #define LSM6DS3_CTRL2_G_ON                   0b01000000
 
-#define LSM6DS3_CS                           7
+#define LSM6DS3_CS                           CS1
 
 #pragma endregion Macros
 

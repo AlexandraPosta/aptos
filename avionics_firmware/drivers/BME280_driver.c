@@ -80,7 +80,9 @@ int8_t BME280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, BME280
     {        
         reg_addr = reg_addr | 0x80; // SPI
         printf("Sending data to get register\r\n");
+        spi_enable_cs(dev->BME280_SPI, BME280_CS);
         spi_transmit_receive(dev->BME280_SPI, BME280_CS, reg_addr, 1, len, reg_data); //SPI READ
+        spi_disable_cs(dev->BME280_SPI, BME280_CS);
         //dev->intf_rslt = reg_data;
         //dev->intf_rslt = dev->read(reg_addr, reg_data, len);   // Read the data ****Replace this line with spi_transmit_receive()
 
@@ -136,8 +138,9 @@ int8_t BME280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint16_t len,
             
             //figure out what data needs to be sent
             printf("Sending data to set register\r\n");
+            spi_enable_cs(dev->BME280_SPI, BME280_CS);
             spi_transmit_receive(dev->BME280_SPI, BME280_CS, temp_buff, temp_len, 1,  &dev->intf_rslt);
-
+            spi_disable_cs(dev->BME280_SPI, BME280_CS);
             //dev->intf_rslt = spi_transmit_receive(BME280_SPI, BME280_CS, temp_buff, temp_len, 1);
             //dev->intf_rslt = dev->write(reg_addr[0], temp_buff, temp_len, dev->intf_rslt); //****Replace this line with spi_transmit_receive()
         }

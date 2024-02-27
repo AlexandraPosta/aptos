@@ -5,6 +5,7 @@
 #include "drivers/MS5611_driver.h"
 #include "drivers/BME280_driver.h"
 #include "drivers/LSM6DS3_driver.h"
+#include "drivers/ADXL375_driver.h"
 
 // Flags
 FlightStages flightStage = LAUNCHPAD;
@@ -146,7 +147,7 @@ void run_test_routine_BME280() {
 void run_test_routine_LSM6DS3()
 {
   int8_t ret_val = 123;
-  ret_val = LSM6DS3_init(SPI1);
+  ret_val = LSM6DS3_init(SPI2);
   printf("completed: %d \r\n ", ret_val);
 
   LSM6DS3_DATA imu_data;
@@ -154,10 +155,27 @@ void run_test_routine_LSM6DS3()
     LSM6DS3_get_data(&imu_data);
 
     printf("Gyro X: %d \tGyro Y: %d, Gyro Z: %d\r\n ", (&imu_data)->LSM6DS3_GYRO_X, (&imu_data)->LSM6DS3_GYRO_Y, (&imu_data)->LSM6DS3_GYRO_Z);
-
+    watchdog_pat();
     delay_ms(500);
   }
 }
+
+void run_test_routine_ADXL375()
+{
+  int8_t ret_val = 123;
+  ret_val = ADXL375_init(SPI2);
+  printf("INIT completed: %d \r\n ", ret_val);
+
+  ADXL375_data accel_data;
+  while(1){
+    accel_data = ADXL375_get_data();
+
+    printf("X: %d\tY: %d, Z: %d\r\n ", (&accel_data)->x, (&accel_data)->y, (&accel_data)->z);
+    watchdog_pat();
+    delay_ms(500);
+  }
+}
+
 
 
 /**
@@ -183,8 +201,13 @@ int main(void) {
 
   gpio_write(RGB1_G, HIGH);
   gpio_write(RGB2_R, HIGH);
-
-  run_test_routine_LSM6DS3();
+  
+  delay_ms(100);
+  run_test_routine_BME280();
+  //run_test_routine_ADXL375();
+  //run_test_routine_LSM6DS3();
+  //run_test_routine_MS5611();
+  
 
   return 0;
 }
