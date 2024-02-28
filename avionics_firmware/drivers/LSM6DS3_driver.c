@@ -77,7 +77,9 @@ static uint8_t LSM6DS3_write_reg(uint8_t address, uint8_t data){
     
     spi_enable_cs(LSM6DS3_SPI,LSM6DS3_CS);
     spi_transmit(LSM6DS3_SPI,address);
-    spi_transmit(LSM6DS3_SPI,data);
+    //spi_transmit(LSM6DS3_SPI,data);
+    uint8_t pointless;
+    spi_transmit_receive(LSM6DS3_SPI, data, 1, 0, &pointless);
     spi_disable_cs(LSM6DS3_SPI,LSM6DS3_CS);
     
     return 1;

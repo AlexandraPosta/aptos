@@ -285,8 +285,8 @@ static inline void spi_init(SPI_TypeDef *spi) {
 
   // CPOL (clk polarity) and CPHA (clk phase) defaults  to produce the desired clock/data relationship
   // CPOL (clock polarity) bit controls the idle state value of the clock when no data is being transferred.
-  spi->CR1 &= ~BIT(0); //First clock transition is first data capture
-  spi->CR1 &= ~BIT(1); //sets CK to 0 when idle
+  spi->CR1 &= ~BIT(0);
+  spi->CR1 &= ~BIT(1);
 
   // MCU datasheet "Select simplex or half-duplex mode by configuring
   // RXONLY or BIDIMODE and BIDIOE (RXONLY and BIDIMODE cannot be set
