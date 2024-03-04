@@ -7,6 +7,8 @@
 #include "drivers/LSM6DS3_driver.h"
 //#include "drivers/ADXL375_driver.h"
 
+#include "drivers/NAND_flash_driver.h"
+
 // Flags
 FlightStages flightStage = LAUNCHPAD;
 volatile uint32_t s_ticks;
@@ -178,6 +180,31 @@ void run_test_routine_ADXL375()
 
 */
 
+void run_nand_flash_test(){
+  init_flash();
+  set_control_pins(WRITE_PROTECT_OFF);
+  watchdog_pat();
+  read_flash_status();
+  watchdog_pat();
+  read_flash_ID();
+  watchdog_pat();
+  
+  FrameArray testFrame;
+  (&testFrame)->temp = 21;
+  (&testFrame)->barometer = 10000;
+  log_frame(testFrame);
+  write_protection();
+  printf("Write complete");
+
+  watchdog_pat();
+  delay_ms(300);
+  watchdog_pat();
+  print_frame_array(recall_frame(0));
+
+  //read_all();
+  watchdog_pat();
+}
+
 /**
   @brief Main entry point for the Flight Computer (HFC) firmware
 */
@@ -190,7 +217,7 @@ int main(void) {
 
   printf("==================== PROGRAM START ==================\r\n");
   
-  watchdog_init();
+  //watchdog_init();
   watchdog_pat();
 
   STM32_led_off();
@@ -205,8 +232,9 @@ int main(void) {
   delay_ms(100);
   //run_test_routine_BME280();
   //run_test_routine_ADXL375();
-  run_test_routine_LSM6DS3();
+  //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
+  run_nand_flash_test();
   
 
   return 0;

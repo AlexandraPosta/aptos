@@ -55,7 +55,6 @@ static inline void delay_microseconds(uint32_t time) {
   delay_nanoseconds(time * 1000);
 }
 
-
 /**
   @brief Delay in miliseconds
   @param time Time in miliseconds
@@ -63,6 +62,10 @@ static inline void delay_microseconds(uint32_t time) {
 static inline void delay_ms(uint32_t time) {
   uint32_t initial_ticks = s_ticks; 
   while (s_ticks - initial_ticks < time); //hold until that many ticks have passed
+}
+
+static inline void delay(uint32_t time){
+  delay_ms(time);
 }
 
 static inline uint32_t get_time_ms(){
