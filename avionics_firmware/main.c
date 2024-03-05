@@ -8,6 +8,7 @@
 //#include "drivers/ADXL375_driver.h"
 
 #include "drivers/NAND_flash_driver.h"
+#include "test_routines.h"
 
 // Flags
 FlightStages flightStage = LAUNCHPAD;

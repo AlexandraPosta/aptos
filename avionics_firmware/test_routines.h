@@ -8,8 +8,10 @@
 
 #include "mcu.h"
 #include "drivers/MS5611_driver.h"
+#include "drivers/BME280_driver.h"
 //#include "drivers/ADXL375_driver.h"
 #include "drivers/LSM6DS3_driver.h"
+#include "drivers/NAND_flash_driver.h"
 
 /**
   @brief Test Routine
