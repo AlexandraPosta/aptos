@@ -109,7 +109,7 @@ uint8_t globalPinMode = GPIO_MODE_OUTPUT;
   @param pos
   @return
 */
-bool get_bit_arr(uint8_t *arr, int pos) {
+static inline bool get_bit_arr(uint8_t *arr, int pos) {
   return (bool)(arr[pos/8] & (1 << (7-(pos%8))));
 }
 
@@ -119,7 +119,7 @@ bool get_bit_arr(uint8_t *arr, int pos) {
   @param pos
   @return
 */
-bool get_bit(uint8_t byte, int pos) {
+static inline bool get_bit(uint8_t byte, int pos) {
   return (bool)(byte & (1 << (7-(pos%8))));
 }
 
@@ -129,7 +129,7 @@ bool get_bit(uint8_t byte, int pos) {
   @param zippedData
   @return
 */
-void zip(FrameArray unzippedData, uint8_t *zippedData) {
+static inline void zip(FrameArray unzippedData, uint8_t *zippedData) {
   int i = -1;
 
   zippedData[i++] = unzippedData.date.year;
@@ -224,7 +224,7 @@ void zip(FrameArray unzippedData, uint8_t *zippedData) {
 }
 
 // Array to FrameArray
-FrameArray unzip(uint8_t *zippedData) {
+static inline FrameArray unzip(uint8_t *zippedData) {
   FrameArray unzippedData;
   int i = -1;
 
@@ -326,7 +326,7 @@ FrameArray unzip(uint8_t *zippedData) {
   @brief Prints a byte in binary format
   @param myByte: byte to be printed
 */
-void print_byte(uint8_t myByte) {
+static inline void print_byte(uint8_t myByte) {
   printf("0b");
   for (int i = 7; i >= 0; i--) {
     printf("%i", (myByte >> i) & 0b1);
@@ -338,7 +338,7 @@ void print_byte(uint8_t myByte) {
   @brief Prints a byte in hex format
   @param dataArray: frame to be printed
 */
-void print_frame(uint8_t dataArray[]) {
+static inline void print_frame(uint8_t dataArray[]) {
   printf("u");
   for (int i = 0; i < 128; i++) {
     /*if(dataArray[i] < 16) {
@@ -353,7 +353,7 @@ void print_frame(uint8_t dataArray[]) {
   @brief Prints a byte in hex format
   @param dataArray: frame to be printed
 */	
-void print_frameHex(uint8_t dataArray[]) {
+static inline void print_frameHex(uint8_t dataArray[]) {
   for (int i = 0; i < 128; i++) {
     if (dataArray[i] < 16) {
       printf("0");
@@ -373,7 +373,7 @@ void print_frameHex(uint8_t dataArray[]) {
   @note in C, you only define a pointer and won't allocate the bytes (as C++),
   you need to do it manually. We also need to fill the array with 0s
 */
-void _memset(uint8_t *arr, uint8_t val, int num){
+static inline void _memset(uint8_t *arr, uint8_t val, int num){
   for (int i = 0; i < num; i++) {
     arr[i] = val;
   }
@@ -383,7 +383,7 @@ void _memset(uint8_t *arr, uint8_t val, int num){
   @brief TODO
   @param frameFormat
 */
-void print_frame_array(FrameArray frameFormat) {
+static inline void print_frame_array(FrameArray frameFormat) {
   uint8_t dataArray[128];
   _memset(dataArray, 0, 128);
   zip(frameFormat, dataArray);
@@ -393,7 +393,7 @@ void print_frame_array(FrameArray frameFormat) {
 /**
   @brief Wait for the ready flag to be set 
 */
-void wait_for_ready_flag() {
+static inline void wait_for_ready_flag() {
   int count = 1000*100; // Try for 1 second before giving error
   while (gpio_read(RB) == LOW && count > 0) {
     delay_nanoseconds(10);
@@ -407,7 +407,7 @@ void wait_for_ready_flag() {
 /**
   @brief TODO 
 */
-void set_pin_modes() {
+static inline void set_pin_modes() {
   gpio_set_mode(data0, globalPinMode);
   gpio_set_mode(data1, globalPinMode);
   gpio_set_mode(data2, globalPinMode);
@@ -422,7 +422,7 @@ void set_pin_modes() {
 /**
   @brief TODO 
 */
-void set_control_pins(uint8_t controlRegister) {  // CE# CLE ALE WE# RE# WP#
+static inline void set_control_pins(uint8_t controlRegister) {  // CE# CLE ALE WE# RE# WP#
   //gpio_write(CE, get_bit(controlRegister, 0));
   gpio_write(CLE, get_bit(controlRegister, 1));
   gpio_write(ALE, get_bit(controlRegister, 2));
@@ -434,7 +434,7 @@ void set_control_pins(uint8_t controlRegister) {  // CE# CLE ALE WE# RE# WP#
 /**
   @brief TODO 
 */
-void set_data_pins(uint8_t Byte) {
+static inline void set_data_pins(uint8_t Byte) {
   if (globalPinMode == GPIO_MODE_INPUT) {
     globalPinMode = GPIO_MODE_OUTPUT;
     set_pin_modes();
@@ -455,7 +455,7 @@ void set_data_pins(uint8_t Byte) {
   @param cmd: composed of the data bits
   @param mode: composed of the control pins
 */
-void send_byte_to_flash(uint8_t cmd, uint8_t mode) {
+static inline void send_byte_to_flash(uint8_t cmd, uint8_t mode) {
   //delayNanoseconds(DELAY); // include if needed 
   //(pins were swicthed too quickly 600MHZ)
   set_control_pins(mode);
@@ -469,7 +469,7 @@ void send_byte_to_flash(uint8_t cmd, uint8_t mode) {
   @brief TODO
   @return 
 */
-uint8_t receive_byte_from_flash() {
+static inline uint8_t receive_byte_from_flash() {
   delay_nanoseconds(DELAY);
   set_control_pins(DATA_OUTPUT);
   delay_nanoseconds(DELAY);
@@ -498,7 +498,7 @@ uint8_t receive_byte_from_flash() {
   @param frameAddr
   @param byteAddr 
 */
-void send_addr_to_flash(uint32_t frameAddr, uint8_t byteAddr) {
+static inline void send_addr_to_flash(uint32_t frameAddr, uint8_t byteAddr) {
   Address addr = {(frameAddr >> 11) & 0b0000111111111111,                      // block
                   (frameAddr >> 5) & 0b00111111,                                // page
                   ((frameAddr & 0b00011111) << 7) | (byteAddr & 0b01111111)}; // column 
@@ -514,7 +514,7 @@ void send_addr_to_flash(uint32_t frameAddr, uint8_t byteAddr) {
   @brief TODO
   @param blockAddr 
 */
-void send_block_addr_to_flash(uint32_t blockAddr) {
+static inline void send_block_addr_to_flash(uint32_t blockAddr) {
   send_byte_to_flash((uint8_t)(((blockAddr & 0b0000000000000011) << 6) | (0b00000000 & 0b00111111)), ADDRESS_INPUT);
   send_byte_to_flash((uint8_t)((blockAddr & 0b0000001111111100) >> 2), ADDRESS_INPUT);
   send_byte_to_flash((uint8_t)((blockAddr & 0b0000110000000000) >> 10), ADDRESS_INPUT);
@@ -524,7 +524,7 @@ void send_block_addr_to_flash(uint32_t blockAddr) {
   @brief Read the status register from the nand flash
   @return 
 */
-uint8_t read_flash_status() {
+static inline uint8_t read_flash_status() {
   wait_for_ready_flag();
   send_byte_to_flash(0x70, COMMAND_INPUT);
   return receive_byte_from_flash();
@@ -534,7 +534,7 @@ uint8_t read_flash_status() {
   @brief Read the ID register from the nand flash
   @return 
 */
-uint64_t read_flash_ID() {
+static inline uint64_t read_flash_ID() {
   uint64_t id = 0;
 
   wait_for_ready_flag();
@@ -556,7 +556,7 @@ uint64_t read_flash_ID() {
 /**
   @brief TODO
 */
-void write_protection() {
+static inline void write_protection() {
   wait_for_ready_flag();
   set_control_pins(WRITE_PROTECT);  // Write Protection
 }
@@ -564,7 +564,7 @@ void write_protection() {
 /**
   @brief Code to read 1 frame from flash
 */
-void read_frame(uint32_t frameAddr, uint8_t *readFrameBytes, uint8_t _length) {
+static inline void read_frame(uint32_t frameAddr, uint8_t *readFrameBytes, uint8_t _length) {
   wait_for_ready_flag();
   send_byte_to_flash(0x00, COMMAND_INPUT);
   send_addr_to_flash(frameAddr, 0);
@@ -579,7 +579,7 @@ void read_frame(uint32_t frameAddr, uint8_t *readFrameBytes, uint8_t _length) {
 /**
   @brief Code to write 1 frame to the flash
 */
-void write_frame(uint32_t frameAddr, uint8_t *bytes) {
+static inline void write_frame(uint32_t frameAddr, uint8_t *bytes) {
   wait_for_ready_flag();
   send_byte_to_flash(0x80, COMMAND_INPUT);
   send_addr_to_flash(frameAddr, 0);  // Address Input
@@ -594,7 +594,7 @@ void write_frame(uint32_t frameAddr, uint8_t *bytes) {
 /**
   @brief A blocking function which will erase a block on the flash
 */
-void erase_block(uint32_t blockAddr) {
+static inline void erase_block(uint32_t blockAddr) {
   wait_for_ready_flag();
   send_byte_to_flash(0x60, COMMAND_INPUT);
   send_block_addr_to_flash(blockAddr);
@@ -605,7 +605,7 @@ void erase_block(uint32_t blockAddr) {
 /**
   @brief A blocking function which will erase a block on the flash
 */
-void erase_all(){
+static inline void erase_all(){
   printf("WARNING: ERASING ALL DATA (UNPLUG NAND FLASH TO ABORT)\r\n");
 
   // you have 10 seconds to unplug the nand flash
@@ -639,21 +639,21 @@ void erase_all(){
 /**
   @brief TODO
 */
-uint16_t max(uint16_t x1, uint16_t x2){
+static inline uint16_t max(uint16_t x1, uint16_t x2){
   return (x1 > x2) ? x1 : x2;
 }
 
 /**
   @brief TODO
 */
-uint16_t min(uint16_t x1, uint16_t x2){
+static inline uint16_t min(uint16_t x1, uint16_t x2){
   return (x1 < x2) ? x1 : x2;
 }
 
 /**
   @brief TODO
 */
-uint16_t diff(uint16_t x1, uint16_t x2) {
+static inline uint16_t diff(uint16_t x1, uint16_t x2) {
   return (uint16_t)abs((int)((int)x1 - (int)x2));
 }
 
@@ -661,7 +661,7 @@ uint16_t diff(uint16_t x1, uint16_t x2) {
   @brief Function which searches for next available block and returns the first frame address of that block
   @return how many frames were writte (e.g. 0 means flash is empty)
 */
-uint32_t get_next_available_frame_addr() {
+static inline uint32_t get_next_available_frame_addr() {
   uint16_t prevPointer = 4096;
   uint16_t pointer = prevPointer / 2;
   uint8_t _check = 0;
