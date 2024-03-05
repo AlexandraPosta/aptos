@@ -746,7 +746,7 @@ void test_routine() {
 /**
   @brief TODO
 */
-void init_flash() {
+static inline void init_flash() {
   gpio_set_mode(data0, GPIO_MODE_OUTPUT);
   gpio_set_mode(data1, GPIO_MODE_OUTPUT);
   gpio_set_mode(data2, GPIO_MODE_OUTPUT);
@@ -778,7 +778,7 @@ void init_flash() {
   @brief Calculates CRC16-CCITT Checksum
   @return CRC16-CCITT Checksum
 */
-uint16_t calculate_CRC(uint8_t* data, uint8_t length) {
+static inline uint16_t calculate_CRC(uint8_t* data, uint8_t length) {
   const uint16_t CRC_POLY = 0x1021;
   uint16_t crc = 0xFFFF;
 
@@ -794,7 +794,7 @@ uint16_t calculate_CRC(uint8_t* data, uint8_t length) {
 /**
   @brief Hamming code hashing
 */
-void hash(uint8_t *_input, uint8_t *_output) {
+static inline void hash(uint8_t *_input, uint8_t *_output) {
   _memset(_output, 0, 120);
 
   for (int i = 0; i < 8*120; i++) {
@@ -807,14 +807,14 @@ void hash(uint8_t *_input, uint8_t *_output) {
   @brief TODO
   @return
 */
-bool is_power_of_two(int x) {
+static inline bool is_power_of_two(int x) {
     return (x != 0) && ((x & (x - 1)) == 0);
 }
 
 /**
   @brief Calculate parity bits for a given encoded data frame
 */
-void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
+static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
   uint8_t hashedData[120];
   _memset(hashedData, 0, 120);
 
@@ -860,7 +860,7 @@ void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
   @brief Hamming and CRC Checking
   @return bytes
 */
-void encode_parity(FrameArray dataFrame, uint8_t *bytes) {
+static inline void encode_parity(FrameArray dataFrame, uint8_t *bytes) {
   zip(dataFrame, bytes);
 
   uint8_t parities[8];
@@ -876,7 +876,7 @@ void encode_parity(FrameArray dataFrame, uint8_t *bytes) {
 /**
   @brief TODO
 */
-void print_capacity_info() {
+static inline void print_capacity_info() {
   uint32_t lastFrameUsed = get_next_available_frame_addr();
   printf("Used: ");
   uint32_t usedInMB = (lastFrameUsed*128)/1000000;
@@ -902,7 +902,7 @@ void print_capacity_info() {
 /**
   @brief TODO
 */
-int log_frame(FrameArray _input) {
+static inline int log_frame(FrameArray _input) {
   //printf("LOGFRAME addr ");
   //printfln(frameAddressPointer);
 
@@ -929,7 +929,7 @@ int log_frame(FrameArray _input) {
 /**
   @brief Outputs the frame array
 */
-FrameArray recall_frame(uint32_t frameAddr) {
+static inline FrameArray recall_frame(uint32_t frameAddr) {
   uint8_t encoded[128];
   _memset(encoded, 0, 128);
   FrameArray _output;
@@ -954,7 +954,7 @@ FrameArray recall_frame(uint32_t frameAddr) {
 /**
   @brief TODO
 */
-void read_all(){
+static inline void read_all(){
   FrameArray _output;
   _output.successFlag = NONE;
 
