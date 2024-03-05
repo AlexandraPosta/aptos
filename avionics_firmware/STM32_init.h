@@ -129,8 +129,6 @@ void STM32_init_internals(void);
 void STM32_init_peripherals(void);
 
 
-
-
 /**
   @brief TODO
 */
@@ -142,5 +140,21 @@ void STM32_led_on();
 */
 void STM32_led_off();
 
+/**
+  @brief Buzzer sound
+  @param onDurationMs
+  @param offDurationMs
+  @param noOfBeeps
+*/
+void STM32_beep_buzzer(uint32_t onDurationMs, uint32_t offDurationMs, uint16_t noOfBeeps);
+
+/**
+  @brief Buzzer sound to indicate power on
+*/
+void STM32_indicate_on_buzzer();
+/**
+  @brief Led light to indicate power on
+*/
+void STM32_indicate_on_led();
 
 #endif /* STM32_init_H */

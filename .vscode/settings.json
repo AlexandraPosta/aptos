@@ -2,6 +2,10 @@
     "files.associations": {
         "stm32l4r5xx.h": "c",
         "adxl375_driver.h": "c",
-        "ms5611_driver.h": "c"
+        "ms5611_driver.h": "c",
+        "cstddef": "c",
+        "limits": "c",
+        "xutility": "c",
+        "lsm6ds3_driver.h": "c"
     }
 }

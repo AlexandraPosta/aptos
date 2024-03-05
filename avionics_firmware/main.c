@@ -44,45 +44,6 @@ void toggle_timeout_flag()
 
 }
 
-/**
-  @brief Buzzer sound
-  @param onDurationMs
-  @param offDurationMs
-  @param noOfBeeps
-*/
-void STM32_beep_buzzer(uint32_t onDurationMs, uint32_t offDurationMs, uint16_t noOfBeeps)
-{
-  for (int i = 0; i < noOfBeeps; i++) {
-      gpio_write(_buzzer, HIGH);
-      STM32_led_on();
-      delay_ms(onDurationMs);
-      gpio_write(_buzzer, LOW); 
-      STM32_led_off();
-      delay_ms(offDurationMs);
-  }
-}
-
-/**
-  @brief Buzzer sound to indicate power on
-*/
-void STM32_indicate_on_buzzer()
-{
-  STM32_beep_buzzer(50, 30, 3);
-}
-
-/**
-  @brief Led light to indicate power on
-*/
-void STM32_indicate_on_led()
-{
-  STM32_led_on();
-  delay_ms(100);
-  STM32_led_off();
-  delay_ms(100);
-  STM32_led_on();
-  delay_ms(100);
-  STM32_led_off();
-}
 
 
 /**
@@ -148,17 +109,17 @@ void run_test_routine_BME280() {
 
 void run_test_routine_LSM6DS3()
 {
-  int8_t ret_val = 123;
-  ret_val = LSM6DS3_init(SPI2);
-  printf("completed: %d \r\n ", ret_val);
-
-  LSM6DS3_DATA imu_data;
-  while(1){
-    LSM6DS3_get_data(&imu_data);
-
-    printf("Gyro X: %d \tGyro Y: %d, Gyro Z: %d\r\n ", (&imu_data)->LSM6DS3_GYRO_X, (&imu_data)->LSM6DS3_GYRO_Y, (&imu_data)->LSM6DS3_GYRO_Z);
+  delay_ms(500);
+  lsm6dsoDetect(SPI2);
+  delay_ms(1000);
+  lsm6dsoConfig(SPI2);
+  watchdog_pat();
+  delay_ms(1000);
+  while (1){
     watchdog_pat();
-    delay_ms(500);
+    lsm6dsoGyroRead(SPI2);
+    lsm6dsoAccRead(SPI2);
+    delay_ms(200);
   }
 }
 /*
@@ -190,7 +151,7 @@ void run_nand_flash_test(){
   watchdog_pat();
   
   FrameArray testFrame;
-  (&testFrame)->temp = 21;
+  (&testFrame)->temp = 0xAA;
   (&testFrame)->barometer = 10000;
   log_frame(testFrame);
   write_protection();
@@ -199,9 +160,9 @@ void run_nand_flash_test(){
   watchdog_pat();
   delay_ms(300);
   watchdog_pat();
-  print_frame_array(recall_frame(0));
+  //print_frame_array(recall_frame(0));
 
-  //read_all();
+  read_all();
   watchdog_pat();
 }
 
@@ -232,9 +193,9 @@ int main(void) {
   delay_ms(100);
   //run_test_routine_BME280();
   //run_test_routine_ADXL375();
-  //run_test_routine_LSM6DS3();
+  run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
-  run_nand_flash_test();
+  //run_nand_flash_test();
   
 
   return 0;

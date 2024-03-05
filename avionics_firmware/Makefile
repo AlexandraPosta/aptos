@@ -5,7 +5,6 @@ CFLAGS  ?=  -W -Wall -Wextra -Wundef -Wshadow -Wdouble-promotion \
 LDFLAGS ?= -Tlink.ld -nostartfiles -nostdlib --specs nano.specs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$@.map
 SOURCES = main.c startup.c syscalls.c STM32_init.c drivers/MS5611_driver.c drivers/BME280_driver.c drivers/LSM6DS3_driver.c
 
-
 build: firmware.bin
 
 firmware.elf: $(SOURCES)

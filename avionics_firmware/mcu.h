@@ -288,8 +288,10 @@ static inline void spi_init(SPI_TypeDef *spi) {
 
   // CPOL (clk polarity) and CPHA (clk phase) defaults  to produce the desired clock/data relationship
   // CPOL (clock polarity) bit controls the idle state value of the clock when no data is being transferred.
-  spi->CR1 &= ~BIT(0);
-  spi->CR1 &= ~BIT(1);
+  //spi->CR1 &= ~BIT(0);
+  //spi->CR1 &= ~BIT(1);
+  spi->CR1 |= BIT(0);
+  spi->CR1 |= BIT(1);
 
   // MCU datasheet "Select simplex or half-duplex mode by configuring
   // RXONLY or BIDIMODE and BIDIOE (RXONLY and BIDIMODE cannot be set
@@ -350,7 +352,7 @@ static inline int spi_ready_write(SPI_TypeDef *spi) {
   @param 
   @note Not needed but keeps compatibility with drivers
 */
-static inline void spi_enable_cs(SPI_TypeDef *spi, uint8_t cs) {
+static inline void spi_enable_cs(SPI_TypeDef *spi, uint16_t cs) {
   set_cs(cs); 
 }
 
@@ -359,7 +361,7 @@ static inline void spi_enable_cs(SPI_TypeDef *spi, uint8_t cs) {
   @param 
   @note Not needed but keeps compatibility with drivers
 */
-static inline void spi_disable_cs(SPI_TypeDef *spi, uint8_t cs)
+static inline void spi_disable_cs(SPI_TypeDef *spi, uint16_t cs)
 {
   unset_cs();
 }
@@ -385,18 +387,16 @@ static inline uint8_t spi_transmit(SPI_TypeDef *spi, uint8_t send_byte)
   return recieve_byte;
 }
 
-static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t send_byte, uint8_t transmit_size, uint8_t receive_size, void* result_ptr)
+static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t *send_byte, uint8_t transmit_size, uint8_t receive_size, void* result_ptr)
 {
   uint8_t ret_value = 0;
   //spi_enable_cs(spi, cs);
   spi_ready_write(spi);
 
-  // Not currently implemented
-  while (transmit_size > 0)
-  {
-    spi_transmit(spi, send_byte);
-    transmit_size--;
+  for (int i = 0; i<transmit_size; i++) {
+    spi_transmit(spi, send_byte[i]);
   }
+
 
   uint32_t result = 0;
   int8_t rs = receive_size;
