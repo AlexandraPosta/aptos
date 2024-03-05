@@ -1,9 +1,7 @@
-/*
-	Leeds University Rocketry Organisation - LURA
-  Author Name: Thomas Groom, Alexnadra Posta
-  Created on: 09 March 2023
-  Description: NAND Flash driver
-*/
+#pragma once
+
+#ifndef NAND_DRIVER_H
+#define NAND_DRIVER_H
 
 #include "mcu.h"
 
@@ -20,17 +18,18 @@
 #define DELAY 1
 #define DELAY_PINMODE 50
 
-#define STANDBY 0b10001100 // CE# CLE ALE WE# RE# WP# X X
-#define COMMAND_INPUT  0b01001100 // CE# CLE ALE WE# RE# WP# X X
-#define ADDRESS_INPUT  0b00101100 // CE# CLE ALE WE# RE# WP# X X
-#define DATA_INPUT     0b00001100 // CE# CLE ALE WE# RE# WP# X X
-#define DATA_OUTPUT    0b00011100 // CE# CLE ALE WE# RE# WP# X X
-#define WRITE_PROTECT  0b00001000 // CE# CLE ALE WE# RE# WP# X X
-#define WRITE_PROTECT_OFF   0b00001100 // CE# CLE ALE WE# RE# WP# X X
+// Manipulate control pins for commands
+#define STANDBY           0b10001100 // CE# CLE ALE WE# RE# WP# X X
+#define COMMAND_INPUT     0b01001100 // CE# CLE ALE WE# RE# WP# X X
+#define ADDRESS_INPUT     0b00101100 // CE# CLE ALE WE# RE# WP# X X
+#define DATA_INPUT        0b00001100 // CE# CLE ALE WE# RE# WP# X X
+#define DATA_OUTPUT       0b00011100 // CE# CLE ALE WE# RE# WP# X X
+#define WRITE_PROTECT     0b00001000 // CE# CLE ALE WE# RE# WP# X X
+#define WRITE_PROTECT_OFF 0b00001100 // CE# CLE ALE WE# RE# WP# X X
 
-#define WE_HIGH        0b00010000  // CE# CLE ALE WE# RE# WP# X X
-#define RE_HIGH       0b00001000
-
+// In case you need to send more than one byte
+#define WE_HIGH           0b00010000  // CE# CLE ALE WE# RE# WP# X X
+#define RE_HIGH           0b00001000
 
 typedef struct DateTime {
   uint8_t year;          // 0 - 128
@@ -43,13 +42,11 @@ typedef struct DateTime {
   uint16_t microsecond;  // 0 - 999
 } DateTime;
 
-
 typedef struct Vector3 {
   uint16_t x;
   uint16_t y;
   uint16_t z;
 } Vector3;
-
 
 typedef struct GNSS_Data{
   uint16_t latitude;
@@ -58,10 +55,10 @@ typedef struct GNSS_Data{
   uint32_t velocity;
 } GNSS_Data;
 
-
+// 128 bytes
 typedef struct FrameArray {
   DateTime date;
-  uint16_t changeFlag;  //IS THIS NEEDED? CAN THIS BE DONE BETTER?
+  uint16_t changeFlag;  // IS THIS NEEDED? CAN THIS BE DONE BETTER?
   Vector3 accelHighG;
   Vector3 accelLowG;
   Vector3 gyroscope;
@@ -77,14 +74,13 @@ typedef struct FrameArray {
   int successFlag; // Not used in zip
 } FrameArray;
 
-
 typedef struct Address {
     uint16_t block;  // 12 bits
     uint8_t page;    // 6 bits
     uint16_t column; // 13 bits (12 used)
 } Address;
 
-
+// Data Pins
 uint16_t data0 = PIN('D', 15);
 uint16_t data1 = PIN('D', 14);
 uint16_t data2 = PIN('D', 13);
@@ -94,21 +90,18 @@ uint16_t data5 = PIN('D', 10);
 uint16_t data6 = PIN('D', 9);
 uint16_t data7 = PIN('D', 8); 
 
-uint16_t WP  = PIN('D', 2);
-uint16_t WE  = PIN('D', 1);
-uint16_t ALE = PIN('D', 0);
-uint16_t CLE = PIN('C', 12);
+// Control Pins
+uint16_t WP  = PIN('D', 2);     // Write Protection;
+uint16_t WE  = PIN('D', 1);     // Write Enable;
+uint16_t ALE = PIN('D', 0);     // Address latch enable (where in the memory to store);
+uint16_t CLE = PIN('C', 12);    // Command latch enable (When on, you can sent command);
 // CE is controlled by jumper 
-// uint16_t CE  = PIN('E', 9);
-uint16_t RE  = PIN('C', 11);
-uint16_t RB  = PIN('C', 10);
-
+// uint16_t CE  = PIN('E', 9);  // Check Enable (in case we want to test separatly);
+uint16_t RE  = PIN('C', 11);    // Read Enable;
+uint16_t RB  = PIN('C', 10);    // Ready/Busy;
 
 uint32_t frameAddressPointer = 0;
-
-
 uint8_t globalPinMode = GPIO_MODE_OUTPUT;
-
 
 /**
   @brief TODO
@@ -120,7 +113,6 @@ bool get_bit_arr(uint8_t *arr, int pos) {
   return (bool)(arr[pos/8] & (1 << (7-(pos%8))));
 }
 
-
 /**
   @brief TODO
   @param byte
@@ -131,9 +123,8 @@ bool get_bit(uint8_t byte, int pos) {
   return (bool)(byte & (1 << (7-(pos%8))));
 }
 
-
 /**
-  @brief TODO
+  @brief FrameArray to Array
   @param unzippedData
   @param zippedData
   @return
@@ -232,6 +223,7 @@ void zip(FrameArray unzippedData, uint8_t *zippedData) {
   zippedData[127] = (uint8_t)(unzippedData.CRC_Check & 0xFF);
 }
 
+// Array to FrameArray
 FrameArray unzip(uint8_t *zippedData) {
   FrameArray unzippedData;
   int i = -1;
@@ -330,7 +322,6 @@ FrameArray unzip(uint8_t *zippedData) {
   return unzippedData;
 }
 
-
 /**
   @brief Prints a byte in binary format
   @param myByte: byte to be printed
@@ -343,7 +334,6 @@ void print_byte(uint8_t myByte) {
   printf("\r\n");
 }
 
-
 /**
   @brief Prints a byte in hex format
   @param dataArray: frame to be printed
@@ -354,11 +344,10 @@ void print_frame(uint8_t dataArray[]) {
     /*if(dataArray[i] < 16) {
       printf("0");
     }*/
-    printf("%02X", dataArray[i]);
+    printf("%02X", dataArray[i]); // adds a paddings of 0
   }
-  //printfln("");
+  printf("\n\n");
 }
-
 
 /**
   @brief Prints a byte in hex format
@@ -377,17 +366,18 @@ void print_frameHex(uint8_t dataArray[]) {
 
 
 /**
-  @brief TODO
+  @brief Allocates the space for the frame and fills it with 0
   @param arr: array to be filled
   @param val: value to fill array with
   @param num: number of elements to fill
+  @note in C, you only define a pointer and won't allocate the bytes (as C++),
+  you need to do it manually. We also need to fill the array with 0s
 */
 void _memset(uint8_t *arr, uint8_t val, int num){
   for (int i = 0; i < num; i++) {
     arr[i] = val;
   }
 }
-
 
 /**
   @brief TODO
@@ -400,9 +390,8 @@ void print_frame_array(FrameArray frameFormat) {
   print_frame(dataArray);
 }
 
-
 /**
-  @brief TODO 
+  @brief Wait for the ready flag to be set 
 */
 void wait_for_ready_flag() {
   int count = 1000*100; // Try for 1 second before giving error
@@ -414,7 +403,6 @@ void wait_for_ready_flag() {
     printf("waitForReadyFlag: TIMEOUT\r\n");
   } 
 }
-
 
 /**
   @brief TODO 
@@ -431,7 +419,6 @@ void set_pin_modes() {
   delay_microseconds(DELAY_PINMODE);
 }
 
-
 /**
   @brief TODO 
 */
@@ -443,7 +430,6 @@ void set_control_pins(uint8_t controlRegister) {  // CE# CLE ALE WE# RE# WP#
   gpio_write(RE, get_bit(controlRegister, 4));
   gpio_write(WP, get_bit(controlRegister, 5));
 }
-
 
 /**
   @brief TODO 
@@ -464,21 +450,20 @@ void set_data_pins(uint8_t Byte) {
   gpio_write(data7, get_bit(Byte, 0));
 }
 
-
 /**
   @brief TODO
-  @param cmd
-  @param mode 
+  @param cmd: composed of the data bits
+  @param mode: composed of the control pins
 */
 void send_byte_to_flash(uint8_t cmd, uint8_t mode) {
-  //delayNanoseconds(DELAY);
+  //delayNanoseconds(DELAY); // include if needed 
+  //(pins were swicthed too quickly 600MHZ)
   set_control_pins(mode);
   set_data_pins(cmd);
   //delayNanoseconds(DELAY);
-  set_control_pins(mode | WE_HIGH);
+  set_control_pins(mode | WE_HIGH); // lanch what is in the data bus in the memory
   //delayNanoseconds(DELAY);
 }
-
 
 /**
   @brief TODO
@@ -507,7 +492,6 @@ uint8_t receive_byte_from_flash() {
   return data;
 }
 
-
 /**
   @brief sends the 5-byte-address to the nand using the frame and byte address as input
   @note 8,388,608 frames each with 128 bytes. frameAddr has 23 valid bits. byteAddr has 7 valid bits
@@ -526,7 +510,6 @@ void send_addr_to_flash(uint32_t frameAddr, uint8_t byteAddr) {
   send_byte_to_flash((uint8_t)((addr.block & 0b0000110000000000) >> 10), ADDRESS_INPUT);
 }
 
-
 /**
   @brief TODO
   @param blockAddr 
@@ -537,7 +520,6 @@ void send_block_addr_to_flash(uint32_t blockAddr) {
   send_byte_to_flash((uint8_t)((blockAddr & 0b0000110000000000) >> 10), ADDRESS_INPUT);
 }
 
-
 /**
   @brief Read the status register from the nand flash
   @return 
@@ -547,7 +529,6 @@ uint8_t read_flash_status() {
   send_byte_to_flash(0x70, COMMAND_INPUT);
   return receive_byte_from_flash();
 }
-
 
 /**
   @brief Read the ID register from the nand flash
@@ -572,7 +553,6 @@ uint64_t read_flash_ID() {
   return id;
 }
 
-
 /**
   @brief TODO
 */
@@ -580,7 +560,6 @@ void write_protection() {
   wait_for_ready_flag();
   set_control_pins(WRITE_PROTECT);  // Write Protection
 }
-
 
 /**
   @brief Code to read 1 frame from flash
@@ -597,7 +576,6 @@ void read_frame(uint32_t frameAddr, uint8_t *readFrameBytes, uint8_t _length) {
   }
 }
 
-
 /**
   @brief Code to write 1 frame to the flash
 */
@@ -605,14 +583,13 @@ void write_frame(uint32_t frameAddr, uint8_t *bytes) {
   wait_for_ready_flag();
   send_byte_to_flash(0x80, COMMAND_INPUT);
   send_addr_to_flash(frameAddr, 0);  // Address Input
-  delay(1);
+  delay_ms(1);
   for (int byteAddr = 0; byteAddr < 128; byteAddr++) {
     send_byte_to_flash(bytes[byteAddr], DATA_INPUT);
   }
   
   send_byte_to_flash(0x10, COMMAND_INPUT);
 }
-
 
 /**
   @brief A blocking function which will erase a block on the flash
@@ -625,18 +602,18 @@ void erase_block(uint32_t blockAddr) {
   wait_for_ready_flag();  // Blocking Function
 }
 
-
 /**
   @brief A blocking function which will erase a block on the flash
 */
 void erase_all(){
   printf("WARNING: ERASING ALL DATA (UNPLUG NAND FLASH TO ABORT)\r\n");
 
+  // you have 10 seconds to unplug the nand flash
   for (int countDown = 10; countDown > 0; countDown--) {
     printf("ERASING DATA IN: ");
     printf("%i", countDown);
     printf(" Seconds\r\n");
-    delay(1);
+    delay_ms(1000);
   }
 
   for (uint32_t block = 0; block < 64*4096; block++) {
@@ -659,7 +636,6 @@ void erase_all(){
   printf("ERASING COMPLETE \r\n");
 }
 
-
 /**
   @brief TODO
 */
@@ -667,14 +643,12 @@ uint16_t max(uint16_t x1, uint16_t x2){
   return (x1 > x2) ? x1 : x2;
 }
 
-
 /**
   @brief TODO
 */
 uint16_t min(uint16_t x1, uint16_t x2){
   return (x1 < x2) ? x1 : x2;
 }
-
 
 /**
   @brief TODO
@@ -685,7 +659,7 @@ uint16_t diff(uint16_t x1, uint16_t x2) {
 
 /**
   @brief Function which searches for next available block and returns the first frame address of that block
-  @return
+  @return how many frames were writte (e.g. 0 means flash is empty)
 */
 uint32_t get_next_available_frame_addr() {
   uint16_t prevPointer = 4096;
@@ -697,7 +671,9 @@ uint32_t get_next_available_frame_addr() {
     uint16_t difference = diff(pointer, prevPointer);
     prevPointer = pointer;
 
-    if (_check == 0xFF) {
+    // 0xFF is empty space
+    // tree search
+    if (_check == 0xFF) {  
       pointer -= difference / 2;
     } else {
       pointer += difference / 2;
@@ -767,7 +743,6 @@ void test_routine() {
 }
 */
 
-
 /**
   @brief TODO
 */
@@ -816,7 +791,6 @@ uint16_t calculate_CRC(uint8_t* data, uint8_t length) {
   return crc;
 }
 
-
 /**
   @brief Hamming code hashing
 */
@@ -829,7 +803,6 @@ void hash(uint8_t *_input, uint8_t *_output) {
   }
 }
 
-
 /**
   @brief TODO
   @return
@@ -837,7 +810,6 @@ void hash(uint8_t *_input, uint8_t *_output) {
 bool is_power_of_two(int x) {
     return (x != 0) && ((x & (x - 1)) == 0);
 }
-
 
 /**
   @brief Calculate parity bits for a given encoded data frame
@@ -884,10 +856,9 @@ void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
   }
 }
 
-
 /**
-  @brief TODO
-  @return
+  @brief Hamming and CRC Checking
+  @return bytes
 */
 void encode_parity(FrameArray dataFrame, uint8_t *bytes) {
   zip(dataFrame, bytes);
@@ -901,7 +872,6 @@ void encode_parity(FrameArray dataFrame, uint8_t *bytes) {
   bytes[126] = (uint8_t)((CRC_Check >> 8) & 0xFF);
   bytes[127] = (uint8_t)(CRC_Check & 0xFF);
 }
-
 
 /**
   @brief TODO
@@ -929,17 +899,14 @@ void print_capacity_info() {
   printf("\r\n");
 }
 
-
 /**
-  @param _input is a frame of data. Unsure if anything needs to be done to it first.
-  @brief enocdes parity and then writes fram to current pointer address.
-  @returns Success or storage full warning.
+  @brief TODO
 */
 int log_frame(FrameArray _input) {
   //printf("LOGFRAME addr ");
   //printfln(frameAddressPointer);
 
-  // frameArray to array of bytes
+  // frameArray to array of bytes; 8388607 is 2Gb end
   if (frameAddressPointer <= 8388607) {
     uint8_t encoded[128];
     _memset(encoded, 0, 128);
@@ -959,9 +926,8 @@ int log_frame(FrameArray _input) {
   return SUCCESS;  // Successfully written
 }
 
-
 /**
-  @brief TODO
+  @brief Outputs the frame array
 */
 FrameArray recall_frame(uint32_t frameAddr) {
   uint8_t encoded[128];
@@ -985,11 +951,10 @@ FrameArray recall_frame(uint32_t frameAddr) {
   return _output;
 }
 
-
 /**
-  @brief Reads all data from the NAND flash.
+  @brief TODO
 */
-void read_all (){
+void read_all(){
   FrameArray _output;
   _output.successFlag = NONE;
 
@@ -1002,6 +967,8 @@ void read_all (){
 
   for(uint32_t i = 0; i < lastFrameToRead; i++) {
     _output = recall_frame(i);
+    // TODO: _output is a FrameArray convert to csv
+
     /*int flag = _output.successFlag;
     if(flag == DATA_INTACT){
       data_intact += 1;
@@ -1031,3 +998,5 @@ void read_all (){
   printf("%i", (data_intact + data_fixed)/(4096*64*(4096/128)));
   printf("%%\r\n");
 }
+
+#endif /* NAND_DRIVER_H */
