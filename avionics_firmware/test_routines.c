@@ -84,23 +84,21 @@ void run_test_routine_LSM6DS3()
     delay_ms(200);
   }
 }
-/*
-void run_test_routine_ADXL375()
+/**
+  @brief Routine to test the ADXL375 accelerometer.
+*/
+void run_ADXL375_routine()
 {
-  int8_t ret_val = 123;
-  ret_val = ADXL375_init(SPI2);
-  printf("INIT completed: %d \r\n ", ret_val);
-
-  ADXL375_data accel_data;
+  printf("================ ADXL375_routine ================\r\n");
+  ADXL375_data _data;
+  
   while(1){
-    accel_data = ADXL375_get_data();
-
-    printf("X: %d\tY: %d, Z: %d\r\n ", (&accel_data)->x, (&accel_data)->y, (&accel_data)->z);
-    watchdog_pat();
-    delay_ms(500);
+    delay_ms(100);
+    
+    ADXL375_get_data(&_data);
+    printf("X:%i, Y:%i, Z:%i\r\n", _data.x, _data.y, _data.z);
+    
   }
 }
-
-*/
 
 

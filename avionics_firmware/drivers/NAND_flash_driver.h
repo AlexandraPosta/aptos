@@ -344,9 +344,9 @@ static inline void print_frame(uint8_t dataArray[]) {
     /*if(dataArray[i] < 16) {
       printf("0");
     }*/
-    printf("%02X", dataArray[i]); // adds a paddings of 0
+    printf("%X,", dataArray[i]); // %02X adds a paddings of 0
   }
-  printf("\n\n");
+  printf("\r\n");
 }
 
 /**
@@ -396,7 +396,7 @@ static inline void print_frame_array(FrameArray frameFormat) {
 static inline void wait_for_ready_flag() {
   int count = 1000*100; // Try for 1 second before giving error
   while (gpio_read(RB) == LOW && count > 0) {
-    delay_nanoseconds(10);
+    delay_nanoseconds(1);
     count--;
   }
   if (count < 1) {
@@ -583,7 +583,7 @@ static inline void write_frame(uint32_t frameAddr, uint8_t *bytes) {
   wait_for_ready_flag();
   send_byte_to_flash(0x80, COMMAND_INPUT);
   send_addr_to_flash(frameAddr, 0);  // Address Input
-  delay_ms(1);
+  delay_nanoseconds(10); //was 1 ms but I think that needs decreasing
   for (int byteAddr = 0; byteAddr < 128; byteAddr++) {
     send_byte_to_flash(bytes[byteAddr], DATA_INPUT);
   }
@@ -766,6 +766,7 @@ static inline void init_flash() {
   gpio_set_mode(RB,  GPIO_MODE_INPUT);
   
   frameAddressPointer = get_next_available_frame_addr();
+  printf("FRAME ADDRESS POINTER %i.\r\n", frameAddressPointer);
 
   if (read_flash_ID() != 0){
     printf("Flash Working Correctly\r\n");
@@ -981,6 +982,7 @@ static inline void read_all(){
     } else {
       data_error += 1;
     }*/
+    printf("FN:%i\r\n", i);
     print_frame_array(_output);
   }
   

@@ -54,6 +54,12 @@ typedef enum MS5611_OSR {
 	MS5611_OSR_2048,
 	MS5611_OSR_4096
 }MS5611_OSR;
+
+typedef struct M5611_data
+{
+    int32_t temp;
+    int32_t pressure;
+} M5611_data;
 #pragma endregion Structs/Emun
 
 /**

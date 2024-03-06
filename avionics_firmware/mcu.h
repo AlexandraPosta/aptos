@@ -379,11 +379,11 @@ static inline uint8_t spi_transmit(SPI_TypeDef *spi, uint8_t send_byte)
   spi_ready_write(spi);
   //*((volatile uint8_t *)&(spi->DR)) = send_byte << 8;
   *(volatile uint8_t *)&spi->DR = send_byte;
-  printf("Sent: %x\r\n", send_byte);
+  //printf("Sent: %x\r\n", send_byte);
   // since SPI is asyncronous communication, we gotta recieve a bit aswell....
   spi_ready_read(spi);
   recieve_byte = *((volatile uint8_t *)&(spi->DR)); 
-  printf("Received: %x\r\n", recieve_byte);
+  //printf("Received: %x\r\n", recieve_byte);
   return recieve_byte;
 }
 
@@ -409,7 +409,7 @@ static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t *send_byte,
     spi_ready_write(spi);
   }
   //spi_disable_cs(spi, cs);
-  printf("RESULT: %d\r\n", result);
+  //printf("RESULT: %d\r\n", result);
   if(receive_size == 1)
   {
     *((uint8_t*)result_ptr) = result;
