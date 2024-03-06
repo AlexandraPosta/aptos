@@ -26,7 +26,7 @@ uint8_t ADXL375_init(SPI_TypeDef* spi) {
     spi_enable_cs(ADXL375_SPI, ADXL375_CS);
     uint8_t devid;
     uint8_t cmd = ADXL375_DEVID;
-    spi_transmit_receive(ADXL375_SPI, &cmd , 1, 1, &devid);
+    spi_transmit_receive(ADXL375_SPI, &cmd, 1, 1, &devid);
     spi_disable_cs(ADXL375_SPI, ADXL375_CS);
     if (devid != ADXL375_DEVID_ID){
         printf("ADXL375 wrong device ID: %d\r\n", devid);

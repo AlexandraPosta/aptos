@@ -960,6 +960,8 @@ static inline void read_all(){
   _output.successFlag = NONE;
 
   uint32_t lastFrameToRead = get_next_available_frame_addr();
+
+  uint8_t _check = 0;
   
   int data_intact = 0;
   int data_fixed = 0;
@@ -967,7 +969,18 @@ static inline void read_all(){
   int data_empty = 0;
 
   for(uint32_t i = 0; i < lastFrameToRead; i++) {
-    _output = recall_frame(i);
+    read_frame(i, &_check, 1);
+    if (_check == 0xFF){
+      printf("End of data in block.");
+      i += 2048; //move to the next block
+      i = i - (i%2048) - 1;
+
+    }else{
+      _output = recall_frame(i);
+       printf("FN:%i\r\n", i);
+      print_frame_array(_output);
+    }
+
     // TODO: _output is a FrameArray convert to csv
 
     /*int flag = _output.successFlag;
@@ -981,9 +994,7 @@ static inline void read_all(){
       data_empty += 1;
     } else {
       data_error += 1;
-    }*/
-    printf("FN:%i\r\n", i);
-    print_frame_array(_output);
+    }*/   
   }
   
   printf("----------------------------------------------\r\n");

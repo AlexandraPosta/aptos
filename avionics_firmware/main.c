@@ -66,7 +66,7 @@ void NAND_flash_test_routine()
   _memset(dataArray, 0x0, 128);
 
   for (uint8_t i = 0; i < 128; i ++) {
-    dataArray[i] = 128-i;
+    dataArray[i] = i;
   }
 
   FrameArray _input = unzip(dataArray);
@@ -75,7 +75,7 @@ void NAND_flash_test_routine()
   int numOfFramesToTest = 5;
   for (int i = 0; i < numOfFramesToTest; i++) {
     for (uint8_t j = 0; j < 128; j ++) {
-      dataArray[j] = 128-j;
+      dataArray[j] = j;
     }
 
     dataArray[0] = 0;
@@ -118,12 +118,12 @@ int main(void) {
   
   delay_ms(200);
   //run_test_routine_BME280();
-  ADXL375_init(SPI2);
-  run_ADXL375_routine();
+  //ADXL375_init(SPI2);
+  //run_ADXL375_routine();
   //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
-  //NAND_flash_test_routine();
+  NAND_flash_test_routine();
   
 
   return 0;
