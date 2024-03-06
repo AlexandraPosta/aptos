@@ -596,9 +596,9 @@ static inline void write_frame(uint32_t frameAddr, uint8_t *bytes) {
 */
 static inline void erase_block(uint32_t blockAddr) {
   wait_for_ready_flag();
-  send_byte_to_flash(0x60, COMMAND_INPUT);
+  send_byte_to_flash(0x60, COMMAND_INPUT); //0x60 is erase command.
   send_block_addr_to_flash(blockAddr);
-  send_byte_to_flash(0xD0, COMMAND_INPUT);
+  send_byte_to_flash(0xD0, COMMAND_INPUT); 
   wait_for_ready_flag();  // Blocking Function
 }
 
@@ -979,6 +979,9 @@ static inline void read_all(){
       _output = recall_frame(i);
        printf("FN:%i\r\n", i);
       print_frame_array(_output);
+
+      //output in more useful format, as bits of data not just bytes.
+      
     }
 
     // TODO: _output is a FrameArray convert to csv

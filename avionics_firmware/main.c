@@ -72,16 +72,25 @@ void NAND_flash_test_routine()
   FrameArray _input = unzip(dataArray);
   FrameArray _output;
 
+  Vector3 accelData;
+  
+
   int numOfFramesToTest = 5;
   for (int i = 0; i < numOfFramesToTest; i++) {
+    /*
     for (uint8_t j = 0; j < 128; j ++) {
       dataArray[j] = j;
     }
 
     dataArray[0] = 0;
     dataArray[1] = 0;
-
     _input = unzip(dataArray);
+    */
+   accelData.x = i;
+   accelData.y = i*50;
+   accelData.z = 100 + i*20;
+   _input.accelHighG = accelData;
+
     log_frame(_input);
     printf("======================== DONE ========================\r\n");
   }
@@ -119,7 +128,6 @@ int main(void) {
 
   
   delay_ms(200);
-  timer_test();
   //run_test_routine_BME280();
   //ADXL375_init(SPI2);
   //run_ADXL375_routine();

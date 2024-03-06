@@ -161,7 +161,7 @@ void STM32_beep_buzzer(uint32_t onDurationMs, uint32_t offDurationMs, uint16_t n
 void STM32_indicate_on_buzzer()
 {
   //STM32_beep_buzzer(50, 30, 3);
-  STM32_beep_buzzer(1000, 1000, 3);
+  STM32_beep_buzzer(50, 50, 3);
 }
 
 /**
