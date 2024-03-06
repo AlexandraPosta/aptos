@@ -101,4 +101,10 @@ void run_ADXL375_routine()
   }
 }
 
+void timer_test(){
+  while(1){
+    printf("%d\r\n",get_time_us());
+    delay_ms(50);
+  }
 
+}

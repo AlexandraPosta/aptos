@@ -18,6 +18,7 @@ void STM32_init()
   STM32_init_clock(RCC_CFGR_SW_HSI); // set clock to 16MHz internal HSI
   uint32_t ticks_per_ms = FREQ / 1000;
   systick_init(ticks_per_ms);   // Tick every 1 us
+  init_delay_timer();
   STM32_init_peripherals();
   STM32_init_internals();
 }
@@ -41,6 +42,27 @@ void STM32_init_clock(unsigned long frequency){
   }
 }
 
+void init_delay_timer(){
+  //use general purpose timer 2 which is a 32bit auto-reload timer
+  RCC->APB1ENR1 = RCC_APB1ENR1_TIM2EN;
+
+  RCC->APB1RSTR1 |= RCC_APB1RSTR1_TIM2RST;
+  RCC->APB1RSTR1 &= ~RCC_APB1RSTR1_TIM2RST;
+
+  //prescaler must make clock period = 1ns from system clock of (16MHz)
+  uint32_t prescaler = FREQ/1000000 - 1; //should be 15
+  TIM2->PSC = 15; 
+
+  // Send an update event to reset the timer and apply settings.
+  TIM2->EGR  |= TIM_EGR_UG;
+
+  //reload value
+  //TIM2->ARR = 999;
+  
+  //enable timer
+  TIM2->CR1 = (1 << 0);
+  
+}
 
 /**
   @brief Initialisation of the STM32L4R5 board internals (UART, SPI, Power, etc.)
@@ -126,10 +148,10 @@ void STM32_beep_buzzer(uint32_t onDurationMs, uint32_t offDurationMs, uint16_t n
   for (int i = 0; i < noOfBeeps; i++) {
       gpio_write(_buzzer, HIGH);
       STM32_led_on();
-      delay_ms(onDurationMs);
+      delay(onDurationMs);
       gpio_write(_buzzer, LOW); 
       STM32_led_off();
-      delay_ms(offDurationMs);
+      delay(offDurationMs);
   }
 }
 
@@ -138,7 +160,8 @@ void STM32_beep_buzzer(uint32_t onDurationMs, uint32_t offDurationMs, uint16_t n
 */
 void STM32_indicate_on_buzzer()
 {
-  STM32_beep_buzzer(50, 30, 3);
+  //STM32_beep_buzzer(50, 30, 3);
+  STM32_beep_buzzer(1000, 1000, 3);
 }
 
 /**

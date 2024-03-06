@@ -37,6 +37,13 @@ static inline void spin(volatile uint32_t count) {
   while (count--) asm("nop");
 }
 
+static inline uint32_t get_time_us(){
+  return TIM2->CNT;
+}
+
+static inline uint32_t get_time_ms(){
+  return s_ticks;
+}
 
 /**
   @brief Delay in nanoseconds
@@ -52,7 +59,8 @@ static inline void delay_nanoseconds(uint32_t time) {
   @param time Time in microseconds
 */
 static inline void delay_microseconds(uint32_t time) {
-  delay_nanoseconds(time * 1000);
+  uint32_t startTime = get_time_us();
+  while ((get_time_us() - startTime) < time);
 }
 
 /**
@@ -65,12 +73,12 @@ static inline void delay_ms(uint32_t time) {
 }
 
 static inline void delay(uint32_t time){
-  delay_ms(time);
+  uint32_t startTime = get_time_us();
+  uint32_t delayPeriod = time*1000;
+  while ((get_time_us() - startTime) < delayPeriod);
 }
 
-static inline uint32_t get_time_ms(){
-  return s_ticks;
-}
+
 
 /**
   @brief Enable system clocks by setting frequency

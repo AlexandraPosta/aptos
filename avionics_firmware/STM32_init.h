@@ -116,6 +116,10 @@ void STM32_init(void);
 */
 void STM32_init_clock(unsigned long frequency);
 
+/**
+  @brief Sets up addition timers
+*/
+void init_delay_timer();
 
 /**
   @brief TODO

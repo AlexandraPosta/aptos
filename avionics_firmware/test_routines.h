@@ -40,5 +40,6 @@ void run_ADXL375_routine();
 */
 //void NAND_flash_test_routine();
 
+void timer_test();
 
 #endif /*TESTING_ROUTINE_H*/

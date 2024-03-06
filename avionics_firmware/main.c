@@ -115,8 +115,11 @@ int main(void) {
 
   gpio_write(RGB1_G, HIGH);
   gpio_write(RGB2_R, HIGH);
+
+
   
   delay_ms(200);
+  timer_test();
   //run_test_routine_BME280();
   //ADXL375_init(SPI2);
   //run_ADXL375_routine();
