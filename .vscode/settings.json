@@ -7,6 +7,7 @@
         "limits": "c",
         "xutility": "c",
         "lsm6ds3_driver.h": "c",
-        "nand_flash_driver.h": "c"
+        "nand_flash_driver.h": "c",
+        "utility": "c"
     }
 }

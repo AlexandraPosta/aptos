@@ -77,7 +77,7 @@ void NAND_flash_test_routine()
 
   int numOfFramesToTest = 5;
   for (int i = 0; i < numOfFramesToTest; i++) {
-    /*
+    
     for (uint8_t j = 0; j < 128; j ++) {
       dataArray[j] = j;
     }
@@ -85,18 +85,18 @@ void NAND_flash_test_routine()
     dataArray[0] = 0;
     dataArray[1] = 0;
     _input = unzip(dataArray);
-    */
-   accelData.x = i;
-   accelData.y = i*50;
-   accelData.z = 100 + i*20;
-   _input.accelHighG = accelData;
-
+  
+    accelData.x = i;
+    accelData.y = i*50;
+    accelData.z = 100 + i*20;
+    _input.accelHighG = accelData;
+  
     log_frame(_input);
     printf("======================== DONE ========================\r\n");
   }
   printf("==================== DONE WRITING ====================\r\n");
   
-  read_all();
+  read_all_frame();
   print_capacity_info();
 }
 

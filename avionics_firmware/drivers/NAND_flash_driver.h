@@ -384,10 +384,13 @@ static inline void _memset(uint8_t *arr, uint8_t val, int num){
   @param frameFormat
 */
 static inline void print_frame_array(FrameArray frameFormat) {
+  /*
   uint8_t dataArray[128];
   _memset(dataArray, 0, 128);
   zip(frameFormat, dataArray);
   print_frame(dataArray);
+  */
+  printf("Accel:\tX: %i,\tY: %i,\tZ: %i\t\r\n", frameFormat.accelHighG.x, frameFormat.accelHighG.y, frameFormat.accelHighG.z);
 }
 
 /**
@@ -953,6 +956,68 @@ static inline FrameArray recall_frame(uint32_t frameAddr) {
 }
 
 /**
+  @brief Outputs all data in byte format
+*/
+static inline void read_all_raw(){
+  uint32_t lastFrameToRead = get_next_available_frame_addr();
+  uint8_t _check = 0;
+
+  uint8_t array[128];
+  _memset(&array, 0, 128);
+  
+  bool skipBlank = true;
+
+  for(uint32_t i = 0; i < lastFrameToRead; i++) {
+
+    //check if frame has no data written to it
+    read_frame(i, &_check, 1);
+    if (_check == 0xFF && skipBlank){
+      printf("End of data in block.\r\n");
+      i += 2048; //move to the next block
+      i = i - (i%2048) - 1;
+
+    }else{
+      //read as a uint8_t array
+      read_frame(i, &array, 128);
+      print_frame(array);
+    } 
+  }
+}
+
+/**
+  @brief Outputs all data in frame format
+*/
+static inline void read_all_frame(){
+  FrameArray _output;
+  _output.successFlag = NONE;
+
+  uint32_t lastFrameToRead = get_next_available_frame_addr();
+  uint8_t _check = 0;
+
+  uint8_t array[128];
+  _memset(&array, 0, 128);
+  
+  bool skipBlank = true;
+
+  for(uint32_t i = 0; i < lastFrameToRead; i++) {
+
+    //check if frame has no data written to it
+    read_frame(i, &_check, 1);
+    if (_check == 0xFF && skipBlank){
+      printf("End of data in block.\r\n");
+      i += 2048; //move to the next block
+      i = i - (i%2048) - 1;
+
+    }else{
+      //rpint out as a frame
+      _output = recall_frame(i);
+       printf("FN:%i\r\n", i);
+      print_frame_array(_output);
+    } 
+  }
+}
+
+/**
   @brief TODO
 */
 static inline void read_all(){
@@ -968,18 +1033,27 @@ static inline void read_all(){
   int data_error = 0;
   int data_empty = 0;
 
+  uint8_t array[128];
+  _memset(&array, 0, 128);
+
   for(uint32_t i = 0; i < lastFrameToRead; i++) {
     read_frame(i, &_check, 1);
-    if (_check == 0xFF){
-      printf("End of data in block.");
+    if (_check == 0xFF && false){
+      printf("End of data in block.\r\n");
       i += 2048; //move to the next block
       i = i - (i%2048) - 1;
 
     }else{
+      //read as a uint8_t array
+      read_frame(i, &array, 128);
+      print_frame(array);
+
+      //read as a FrameArray
+      /*
       _output = recall_frame(i);
        printf("FN:%i\r\n", i);
       print_frame_array(_output);
-
+      */
       //output in more useful format, as bits of data not just bytes.
       
     }
