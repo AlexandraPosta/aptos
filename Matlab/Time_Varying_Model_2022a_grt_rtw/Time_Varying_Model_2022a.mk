@@ -2,7 +2,7 @@
 ## Makefile generated for component 'Time_Varying_Model_2022a'. 
 ## 
 ## Makefile     : Time_Varying_Model_2022a.mk
-## Generated on : Thu Mar 07 23:10:44 2024
+## Generated on : Thu Mar 07 23:27:32 2024
 ## Final product: $(RELATIVE_PATH_TO_ANCHOR)/Time_Varying_Model_2022a.exe
 ## Product type : executable
 ## 
@@ -15,6 +15,7 @@
 # Macro Descriptions:
 # PRODUCT_NAME            Name of the system to build
 # MAKEFILE                Name of this makefile
+# COMPILER_COMMAND_FILE   Compiler command listing model reference header paths
 # CMD_FILE                Command file
 
 PRODUCT_NAME              = Time_Varying_Model_2022a
@@ -22,58 +23,74 @@ MAKEFILE                  = Time_Varying_Model_2022a.mk
 MATLAB_ROOT               = C:/PROGRA~1/MATLAB/R2023b
 MATLAB_BIN                = C:/PROGRA~1/MATLAB/R2023b/bin
 MATLAB_ARCH_BIN           = $(MATLAB_BIN)/win64
-START_DIR                 = C:/Users/sambr/OneDrive/DOCUME~1/FY5/MECH50~1/MATLAB~1
+START_DIR                 = C:/Users/sambr/Workspace/aptos/Matlab
 SOLVER                    = 
 SOLVER_OBJ                = 
 CLASSIC_INTERFACE         = 0
 TGT_FCN_LIB               = ISO_C
 MODEL_HAS_DYNAMICALLY_LOADED_SFCNS = 0
 RELATIVE_PATH_TO_ANCHOR   = ..
+COMPILER_COMMAND_FILE     = Time_Varying_Model_2022a_comp.rsp
 CMD_FILE                  = Time_Varying_Model_2022a.rsp
-C_STANDARD_OPTS           = 
-CPP_STANDARD_OPTS         = 
+C_STANDARD_OPTS           = -fwrapv
+CPP_STANDARD_OPTS         = -fwrapv
 
 ###########################################################################
 ## TOOLCHAIN SPECIFICATIONS
 ###########################################################################
 
-# Toolchain Name:          LCC-win64 v2.4.1 | gmake (64-bit Windows)
-# Supported Version(s):    2.4.1
+# Toolchain Name:          MinGW64 | gmake (64-bit Windows)
+# Supported Version(s):    8.x
 # ToolchainInfo Version:   2023b
 # Specification Revision:  1.0
 # 
+#-------------------------------------------
+# Macros assumed to be defined elsewhere
+#-------------------------------------------
+
+# C_STANDARD_OPTS
+# CPP_STANDARD_OPTS
+# MINGW_ROOT
+# MINGW_C_STANDARD_OPTS
 
 #-----------
 # MACROS
 #-----------
 
-SHELL              = cmd
-LCC_ROOT           = $(MATLAB_ROOT)/sys/lcc64/lcc64
-LCC_BUILDLIB       = $(LCC_ROOT)/bin/buildlib
-LCC_LIB            = $(LCC_ROOT)/lib64
-MW_EXTERNLIB_DIR   = $(MATLAB_ROOT)/extern/lib/win64/microsoft
-MW_LIB_DIR         = $(MATLAB_ROOT)/lib/win64
-TOOLCHAIN_INCLUDES = -I$(LCC_ROOT)/include64
+WARN_FLAGS            = -Wall -W -Wwrite-strings -Winline -Wstrict-prototypes -Wnested-externs -Wpointer-arith -Wcast-align
+WARN_FLAGS_MAX        = $(WARN_FLAGS) -Wcast-qual -Wshadow
+CPP_WARN_FLAGS        = -Wall -W -Wwrite-strings -Winline -Wpointer-arith -Wcast-align
+CPP_WARN_FLAGS_MAX    = $(CPP_WARN_FLAGS) -Wcast-qual -Wshadow
+MW_EXTERNLIB_DIR      = $(MATLAB_ROOT)/extern/lib/win64/mingw64
+SHELL                 = %SystemRoot%/system32/cmd.exe
 
 TOOLCHAIN_SRCS = 
 TOOLCHAIN_INCS = 
-TOOLCHAIN_LIBS = 
+TOOLCHAIN_LIBS = -lws2_32
 
 #------------------------
 # BUILD TOOL COMMANDS
 #------------------------
 
-# C Compiler: Lcc-win64 C Compiler
-CC_PATH = $(LCC_ROOT)/bin
-CC = "$(CC_PATH)/lcc64"
+# C Compiler: GNU C Compiler
+CC_PATH = $(MINGW_ROOT)
+CC = "$(CC_PATH)/gcc"
 
-# Linker: Lcc-win64 Linker
-LD_PATH = $(LCC_ROOT)/bin
-LD = "$(LD_PATH)/lcclnk64"
+# Linker: GNU Linker
+LD_PATH = $(MINGW_ROOT)
+LD = "$(LD_PATH)/g++"
 
-# Archiver: Lcc-win64 Archiver
-AR_PATH = $(LCC_ROOT)/bin
-AR = "$(AR_PATH)/lcclib64"
+# C++ Compiler: GNU C++ Compiler
+CPP_PATH = $(MINGW_ROOT)
+CPP = "$(CPP_PATH)/g++"
+
+# C++ Linker: GNU C++ Linker
+CPP_LD_PATH = $(MINGW_ROOT)
+CPP_LD = "$(CPP_LD_PATH)/g++"
+
+# Archiver: GNU Archiver
+AR_PATH = $(MINGW_ROOT)
+AR = "$(AR_PATH)/ar"
 
 # MEX Tool: MEX Tool
 MEX_PATH = $(MATLAB_ARCH_BIN)
@@ -86,8 +103,8 @@ DOWNLOAD =
 EXECUTE = $(PRODUCT)
 
 # Builder: GMAKE Utility
-MAKE_PATH = %MATLAB%\bin\win64
-MAKE = "$(MAKE_PATH)/gmake"
+MAKE_PATH = $(MINGW_ROOT)
+MAKE = "$(MAKE_PATH)/mingw32-make.exe"
 
 
 #-------------------------
@@ -95,13 +112,17 @@ MAKE = "$(MAKE_PATH)/gmake"
 #-------------------------
 
 CDEBUG              = -g
-C_OUTPUT_FLAG       = -Fo
-LDDEBUG             =
+C_OUTPUT_FLAG       = -o
+LDDEBUG             = -g
+OUTPUT_FLAG         = -o
+CPPDEBUG            = -g
+CPP_OUTPUT_FLAG     = -o
+CPPLDDEBUG          = -g
 OUTPUT_FLAG         = -o
 ARDEBUG             =
-STATICLIB_OUTPUT_FLAG = /out:
+STATICLIB_OUTPUT_FLAG =
 MEX_DEBUG           = -g
-RM                  = @del /F
+RM                  = @del
 ECHO                = @echo
 MV                  = @move
 RUN                 =
@@ -110,20 +131,31 @@ RUN                 =
 # "Debug" Build Configuration
 #--------------------------------
 
-ARFLAGS              = $(ARDEBUG)
-CFLAGS               = -c -w -noregistrylookup -nodeclspec -I$(LCC_ROOT)/include64 \
+ARFLAGS              = ruvs \
+                       $(ARDEBUG)
+CFLAGS               = -c $(MINGW_C_STANDARD_OPTS) -m64 \
+                       -O0 \
                        $(CDEBUG)
+CPPFLAGS             = -c $(CPP_STANDARD_OPTS) -m64 \
+                       -O0 \
+                       $(CPPDEBUG)
+CPP_LDFLAGS          =  -static -m64 \
+                       $(CPPLDDEBUG)
+CPP_SHAREDLIB_LDFLAGS  = -shared -Wl,--no-undefined \
+                         $(CPPLDDEBUG) \
+                         -Wl,--out-implib,$(notdir $(basename $(PRODUCT))).lib
 DOWNLOAD_FLAGS       =
 EXECUTE_FLAGS        =
-LDFLAGS              = -s -L$(LCC_LIB) $(LDFLAGS_ADDITIONAL) \
+LDFLAGS              =  -static -m64 \
                        $(LDDEBUG)
 MEX_CPPFLAGS         =
 MEX_CPPLDFLAGS       =
 MEX_CFLAGS           =
 MEX_LDFLAGS          =
 MAKE_FLAGS           = -f $(MAKEFILE)
-SHAREDLIB_LDFLAGS    = -dll -entry LibMain -s -L$(LCC_LIB) $(LDFLAGS_ADDITIONAL) $(DEF_FILE) \
-                       $(LDDEBUG)
+SHAREDLIB_LDFLAGS    = -shared -Wl,--no-undefined \
+                       $(LDDEBUG) \
+                       -Wl,--out-implib,$(notdir $(basename $(PRODUCT))).lib
 
 
 
@@ -139,7 +171,7 @@ BUILD_TYPE = "Top-Level Standalone Executable"
 ## INCLUDE PATHS
 ###########################################################################
 
-INCLUDES_BUILDINFO = -I$(START_DIR) -I$(START_DIR)/Time_Varying_Model_2022a_grt_rtw -I$(MATLAB_ROOT)/extern/include -I$(MATLAB_ROOT)/simulink/include -I$(MATLAB_ROOT)/rtw/c/src -I$(MATLAB_ROOT)/rtw/c/src/ext_mode/common
+INCLUDES_BUILDINFO = 
 
 INCLUDES = $(INCLUDES_BUILDINFO)
 
@@ -200,13 +232,43 @@ SYSTEM_LIBS =
 # C Compiler
 #---------------
 
-CFLAGS_BASIC = $(DEFINES) $(INCLUDES)
+CFLAGS_TFL = -msse2
+CFLAGS_BASIC = $(DEFINES) $(INCLUDES) @$(COMPILER_COMMAND_FILE)
 
-CFLAGS += $(CFLAGS_BASIC)
+CFLAGS += $(CFLAGS_TFL) $(CFLAGS_BASIC)
+
+#-----------------
+# C++ Compiler
+#-----------------
+
+CPPFLAGS_TFL = -msse2
+CPPFLAGS_BASIC = $(DEFINES) $(INCLUDES) @$(COMPILER_COMMAND_FILE)
+
+CPPFLAGS += $(CPPFLAGS_TFL) $(CPPFLAGS_BASIC)
+
+#---------------------
+# MEX C++ Compiler
+#---------------------
+
+MEX_CPP_Compiler_BASIC =  @$(COMPILER_COMMAND_FILE)
+
+MEX_CPPFLAGS += $(MEX_CPP_Compiler_BASIC)
+
+#-----------------
+# MEX Compiler
+#-----------------
+
+MEX_Compiler_BASIC =  @$(COMPILER_COMMAND_FILE)
+
+MEX_CFLAGS += $(MEX_Compiler_BASIC)
 
 ###########################################################################
 ## INLINED COMMANDS
 ###########################################################################
+
+
+MINGW_C_STANDARD_OPTS = $(C_STANDARD_OPTS)
+
 
 ###########################################################################
 ## PHONY TARGETS
@@ -248,7 +310,7 @@ execute : download
 
 $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(MAIN_OBJ)
 	@echo "### Creating standalone executable "$(PRODUCT)" ..."
-	$(LD) $(LDFLAGS) -o $(PRODUCT) @$(CMD_FILE) $(subst /,\,$(SYSTEM_LIBS)) $(subst /,\,$(TOOLCHAIN_LIBS))
+	$(LD) $(LDFLAGS) -o $(PRODUCT) @$(CMD_FILE) $(SYSTEM_LIBS) $(TOOLCHAIN_LIBS)
 	@echo "### Created: $(PRODUCT)"
 
 
@@ -261,66 +323,234 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(MAIN_OBJ)
 #---------------------
 
 %.obj : %.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : %.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : %.cc
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : %.cp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : %.cxx
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : %.CPP
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : %.c++
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 %.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.cc
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.cp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.cxx
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.CPP
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.c++
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 %.obj : $(START_DIR)/%.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/%.cc
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/%.cp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/%.cxx
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/%.CPP
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/%.c++
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 %.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/%.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/%.cc
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/%.cp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/%.cxx
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/%.CPP
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/%.c++
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 %.obj : $(MATLAB_ROOT)/rtw/c/src/%.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/rtw/c/src/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/rtw/c/src/%.cc
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/rtw/c/src/%.cp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/rtw/c/src/%.cxx
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/rtw/c/src/%.CPP
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/rtw/c/src/%.c++
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 %.obj : $(MATLAB_ROOT)/simulink/src/%.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/simulink/src/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/simulink/src/%.cc
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/simulink/src/%.cp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/simulink/src/%.cxx
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/simulink/src/%.CPP
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/simulink/src/%.c++
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 %.obj : $(MATLAB_ROOT)/toolbox/simulink/blocks/src/%.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/toolbox/simulink/blocks/src/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/toolbox/simulink/blocks/src/%.cc
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/toolbox/simulink/blocks/src/%.cp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/toolbox/simulink/blocks/src/%.cxx
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/toolbox/simulink/blocks/src/%.CPP
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/toolbox/simulink/blocks/src/%.c++
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 rt_logging.obj : $(MATLAB_ROOT)/rtw/c/src/rt_logging.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
 Time_Varying_Model_2022a.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/Time_Varying_Model_2022a.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
 Time_Varying_Model_2022a_data.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/Time_Varying_Model_2022a_data.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
 rtGetInf.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/rtGetInf.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
 rtGetNaN.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/rtGetNaN.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
 rt_nonfinite.obj : $(START_DIR)/Time_Varying_Model_2022a_grt_rtw/rt_nonfinite.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
 rt_main.obj : $(MATLAB_ROOT)/rtw/c/src/common/rt_main.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
 ###########################################################################
 ## DEPENDENCIES
 ###########################################################################
 
-$(ALL_OBJS) : rtw_proj.tmw $(MAKEFILE)
+$(ALL_OBJS) : rtw_proj.tmw $(COMPILER_COMMAND_FILE) $(MAKEFILE)
 
 
 ###########################################################################
@@ -342,6 +572,9 @@ info :
 	@echo "### CFLAGS = $(CFLAGS)"
 	@echo "### LDFLAGS = $(LDFLAGS)"
 	@echo "### SHAREDLIB_LDFLAGS = $(SHAREDLIB_LDFLAGS)"
+	@echo "### CPPFLAGS = $(CPPFLAGS)"
+	@echo "### CPP_LDFLAGS = $(CPP_LDFLAGS)"
+	@echo "### CPP_SHAREDLIB_LDFLAGS = $(CPP_SHAREDLIB_LDFLAGS)"
 	@echo "### ARFLAGS = $(ARFLAGS)"
 	@echo "### MEX_CFLAGS = $(MEX_CFLAGS)"
 	@echo "### MEX_CPPFLAGS = $(MEX_CPPFLAGS)"

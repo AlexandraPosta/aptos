@@ -1,11 +1,11 @@
 
-set MATLAB=C:\Program Files\MATLAB\R2023b
+call "setup_mingw.bat"
 
 cd .
 
 chcp 1252
 
-if "%1"=="" ("C:\PROGRA~1\MATLAB\R2023b\bin\win64\gmake"  -f Time_Varying_Model_2022a.mk all) else ("C:\PROGRA~1\MATLAB\R2023b\bin\win64\gmake"  -f Time_Varying_Model_2022a.mk %1)
+if "%1"=="" ("%MINGW_ROOT%\mingw32-make.exe"  -f Time_Varying_Model_2022a.mk all) else ("%MINGW_ROOT%\mingw32-make.exe"  -f Time_Varying_Model_2022a.mk %1)
 @if errorlevel 1 goto error_exit
 
 exit /B 0
