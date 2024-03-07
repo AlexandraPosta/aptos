@@ -62,35 +62,26 @@ void NAND_flash_test_routine()
 {
   printf("==================== START WRITING ====================\r\n");
   init_flash();
+  
   uint8_t dataArray[128];
   _memset(dataArray, 0x0, 128);
-
+  /*
   for (uint8_t i = 0; i < 128; i ++) {
     dataArray[i] = i;
   }
-
+  */
   FrameArray _input = unzip(dataArray);
-  FrameArray _output;
-
-  Vector3 accelData;
-  
 
   int numOfFramesToTest = 5;
   for (int i = 0; i < numOfFramesToTest; i++) {
-    
-    for (uint8_t j = 0; j < 128; j ++) {
-      dataArray[j] = j;
-    }
 
     dataArray[0] = 0;
     dataArray[1] = 0;
-    _input = unzip(dataArray);
-  
-    accelData.x = i;
-    accelData.y = i*50;
-    accelData.z = 100 + i*20;
-    _input.accelHighG = accelData;
-  
+
+    _input.accelHighG.x = i;
+    _input.accelHighG.y = i*50;
+    _input.accelHighG.z = 100 + i*20;
+    
     log_frame(_input);
     printf("======================== DONE ========================\r\n");
   }
