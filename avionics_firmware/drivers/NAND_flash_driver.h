@@ -390,7 +390,27 @@ static inline void print_frame_array(FrameArray frameFormat) {
   zip(frameFormat, dataArray);
   print_frame(dataArray);
   */
+
+  print("")
   printf("Accel:\tX: %i,\tY: %i,\tZ: %i\t\r\n", frameFormat.accelHighG.x, frameFormat.accelHighG.y, frameFormat.accelHighG.z);
+
+  DateTime date;
+  uint16_t changeFlag;  // IS THIS NEEDED? CAN THIS BE DONE BETTER?
+  //Vector3 accelHighG;
+  Vector3 accelLowG;
+  Vector3 gyroscope;
+  uint32_t barometer;
+  uint16_t thermocouple[4];
+  uint16_t humidity;
+  uint32_t temp;
+  uint16_t magneticFieldStrength;
+  GNSS_Data GNSS;
+  uint16_t ADC[2];
+  uint8_t hammingCode[8];
+  uint16_t CRC_Check;
+  int successFlag; // Not used in zip
+
+
 }
 
 /**
