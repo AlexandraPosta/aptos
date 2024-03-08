@@ -87,7 +87,7 @@ void NAND_flash_test_routine()
   }
   printf("==================== DONE WRITING ====================\r\n");
   
-  read_all_frame();
+  read_all_csv();
   print_capacity_info();
 }
 

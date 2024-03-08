@@ -380,7 +380,7 @@ static inline void _memset(uint8_t *arr, uint8_t val, int num){
 }
 
 /**
-  @brief TODO
+  @brief Prints to serial in a readable way
   @param frameFormat
 */
 static inline void print_frame_array(FrameArray frameFormat) {
@@ -404,7 +404,47 @@ static inline void print_frame_array(FrameArray frameFormat) {
   //printf("Magnetic field: %i\r\n", frameFormat.magneticFieldStrength);
   //printf("GNSS:\tLat: %i,\tLong: %i,\tHead: %i,\tVel: %i\r\n", frameFormat.GNSS.latitude, frameFormat.GNSS.longitude, frameFormat.GNSS.heading1, frameFormat.GNSS.velocity);
   //printf("ADC: %i\r\n", frameFormat.ADC);
-  
+}
+
+/**
+  @brief Prints to serial in a readable way
+  @param frameFormat
+*/
+static inline void print_csv_header() {
+  printf("DATE,");
+  printf("TIME,");
+  printf("ChangeFlag,");
+  printf("AccelH X,AccelH Y,AccelH Z,");
+  printf("AccelL X,AccelL Y,AccelL Z,");
+  printf("GyroX,GyroY,GyroZ,");
+  printf("Barometer,");
+  printf("Thermocouple 1,Thermocouple 2,Thermocouple 3,Thermocouple 4,");
+  printf("Humidity,");
+  printf("Temp,");
+  printf("MagneticField,");
+  printf("GNSS 1,GNSS 2,GNSS 3,GNSS 4,");
+  printf("ADC,");
+  printf("\r\n");
+}
+/**
+  @brief Prints to serial in a readable way
+  @param frameFormat
+*/
+static inline void print_frame_csv(FrameArray frameFormat) {
+  printf("%i/%i/%i, %i:%i:%i:%i:%i,", frameFormat.date.day, frameFormat.date.month, frameFormat.date.year,
+          frameFormat.date.hour, frameFormat.date.minute, frameFormat.date.second, frameFormat.date.millisecond, frameFormat.date.microsecond );
+  printf("%i,", frameFormat.changeFlag);
+  printf("%i,%i,%i,", frameFormat.accelHighG.x, frameFormat.accelHighG.y, frameFormat.accelHighG.z);
+  printf("%i,%i,%i,", frameFormat.accelLowG.x, frameFormat.accelLowG.y, frameFormat.accelLowG.z);
+  printf("%i,%i,%i,", frameFormat.gyroscope.x, frameFormat.gyroscope.y, frameFormat.gyroscope.z);
+  printf("%i,", frameFormat.barometer);
+  printf("%i,%i,%i,%i,", frameFormat.thermocouple[0], frameFormat.thermocouple[1], frameFormat.thermocouple[2], frameFormat.thermocouple[3]);
+  printf("%i,", frameFormat.humidity);
+  printf("%i,", frameFormat.temp);
+  printf("%i,", frameFormat.magneticFieldStrength);
+  printf("%i,%i,%i,%i,", frameFormat.GNSS.latitude, frameFormat.GNSS.longitude, frameFormat.GNSS.heading1, frameFormat.GNSS.velocity);
+  printf("%i,", frameFormat.ADC);
+  printf("\r\n");
 }
 
 /**
@@ -1027,6 +1067,40 @@ static inline void read_all_frame(){
       _output = recall_frame(i);
        printf("FN:%i\r\n", i);
       print_frame_array(_output);
+    } 
+  }
+}
+
+/**
+  @brief Outputs all data in frame format
+*/
+static inline void read_all_csv(){
+  FrameArray _output;
+  _output.successFlag = NONE;
+
+  uint32_t lastFrameToRead = get_next_available_frame_addr();
+  uint8_t _check = 0;
+
+  uint8_t array[128];
+  _memset(&array, 0, 128);
+  
+  bool skipBlank = true;
+  print_csv_header();
+
+  for(uint32_t i = 0; i < lastFrameToRead; i++) {
+
+    //check if frame has no data written to it
+    read_frame(i, &_check, 1);
+    if (_check == 0xFF && skipBlank){
+      printf("End of data in block.\r\n");
+      i += 2048; //move to the next block
+      i = i - (i%2048) - 1;
+
+    }else{
+      //rpint out as a frame
+      _output = recall_frame(i);
+      //printf("FN:%i\r\n", i);
+      print_frame_csv(_output);
     } 
   }
 }
