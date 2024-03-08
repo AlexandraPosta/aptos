@@ -393,17 +393,17 @@ static inline void print_frame_array(FrameArray frameFormat) {
 
   printf("Date: %i/%i/%i, %i:%i:%i:%i:%i\r\n", frameFormat.date.day, frameFormat.date.month, frameFormat.date.year,
           frameFormat.date.hour, frameFormat.date.minute, frameFormat.date.second, frameFormat.date.millisecond, frameFormat.date.microsecond );
-  printf("ChangeFlag: %i\r\n", frameFormat.changeFlag);
+  //printf("ChangeFlag: %i\r\n", frameFormat.changeFlag);
   printf("Accel HG:\tX: %i,\tY: %i,\tZ: %i\t\r\n", frameFormat.accelHighG.x, frameFormat.accelHighG.y, frameFormat.accelHighG.z);
-  printf("Accel LG:\tX: %i,\tY: %i,\tZ: %i\r\n", frameFormat.accelLowG.x, frameFormat.accelLowG.y, frameFormat.accelLowG.z);
-  printf("Gyro: \tX: %i,\tY: %i,\tZ: %i\r\n", frameFormat.gyroscope.x, frameFormat.gyroscope.y, frameFormat.gyroscope.z);
+  //printf("Accel LG:\tX: %i,\tY: %i,\tZ: %i\r\n", frameFormat.accelLowG.x, frameFormat.accelLowG.y, frameFormat.accelLowG.z);
+  //printf("Gyro: \t\tX: %i,\tY: %i,\tZ: %i\r\n", frameFormat.gyroscope.x, frameFormat.gyroscope.y, frameFormat.gyroscope.z);
   printf("Barometer: %i\r\n", frameFormat.barometer);
-  printf("Therocouples: \t1: %i,\t2: %i,\t3: %i,\t4: %i\r\n", frameFormat.thermocouple[0], frameFormat.thermocouple[1], frameFormat.thermocouple[2], frameFormat.thermocouple[3]);
-  printf("Humidity: %i\r\n", frameFormat.humidity);
+  //printf("Therocouples: \t1: %i,\t2: %i,\t3: %i,\t4: %i\r\n", frameFormat.thermocouple[0], frameFormat.thermocouple[1], frameFormat.thermocouple[2], frameFormat.thermocouple[3]);
+  //printf("Humidity: %i\r\n", frameFormat.humidity);
   printf("Temp: %i\r\n", frameFormat.temp);
-  printf("Magnetic field: %i\r\n", frameFormat.magneticFieldStrength);
-  printf("GNSS:\tLat: %i,\tLong: %i,\tHead: %i,\tVel: %i\r\n", frameFormat.GNSS.latitude, frameFormat.GNSS.longitude, frameFormat.GNSS.heading1, , frameFormat.GNSS.velocity);
-  printf("ADC: %i\r\n", frameFormat.ADC);
+  //printf("Magnetic field: %i\r\n", frameFormat.magneticFieldStrength);
+  //printf("GNSS:\tLat: %i,\tLong: %i,\tHead: %i,\tVel: %i\r\n", frameFormat.GNSS.latitude, frameFormat.GNSS.longitude, frameFormat.GNSS.heading1, frameFormat.GNSS.velocity);
+  //printf("ADC: %i\r\n", frameFormat.ADC);
   
 }
 
