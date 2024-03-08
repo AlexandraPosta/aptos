@@ -44,8 +44,9 @@ static void lsm6ds6WriteRegister(SPI_TypeDef *spi, uint8_t registerID, uint8_t v
 {
     uint8_t send_data[2] =  {registerID, value};
     spi_enable_cs(spi, LSM6DS3_CS);
-    delay_microseconds(1);
-    spi_transmit_receive(spi, &send_data, 2, 0, &send_data);
+    delay_microseconds(10);
+    spi_transmit_receive(spi, &(send_data[0]), 1, 0, &send_data);
+    spi_transmit_receive(spi, &(send_data[1]), 1, 0, &send_data);
     delay_microseconds(1);
     spi_disable_cs(spi, LSM6DS3_CS);
     if (delayMs) {
@@ -57,25 +58,27 @@ static void lsm6ds6WriteRegisterBits(SPI_TypeDef *spi, uint8_t registerID, uint8
 {
     uint8_t newValue = 0;
     spi_enable_cs(spi, LSM6DS3_CS);
-    delay_microseconds(1);
-    spi_transmit_receive(spi, &registerID, 1, 1, &newValue); //get current data
+    delay_microseconds(10);
+    uint8_t send_data = registerID | 80;
+    spi_transmit_receive(spi, &send_data, 1, 1, &newValue); //get current data
     delay_microseconds(1);
     spi_disable_cs(spi, LSM6DS3_CS);
     
     delay_microseconds(delayMs);
     newValue = (newValue & ~mask) | value;
     lsm6ds6WriteRegister(spi, registerID, newValue, delayMs);
+    delay_microseconds(delayMs);
 }
 
 void lsm6ds6Config(SPI_TypeDef *spi){
     // Reset the device (wait 100ms before continuing config)
     lsm6ds6WriteRegisterBits(spi, LSM6DSO_REG_CTRL3_C, LSM6DSO_MASK_CTRL3_C_RESET, BIT(0), 100);
-
+    delay_ms(500);
     // Configure interrupt pin 1 for gyro data ready only
     //lsm6ds6WriteRegister(spi, LSM6DSO_REG_INT1_CTRL, LSM6DSO_VAL_INT1_CTRL, 1);
 
     // Disable interrupt pin 2
-    lsm6ds6WriteRegister(spi, LSM6DSO_REG_INT2_CTRL, LSM6DSO_VAL_INT2_CTRL, 1);
+    //lsm6ds6WriteRegister(spi, LSM6DSO_REG_INT2_CTRL, LSM6DSO_VAL_INT2_CTRL, 1);
 
     // Configure the accelerometer
     // 833hz ODR, 16G scale, use LPF1 output
@@ -83,7 +86,7 @@ void lsm6ds6Config(SPI_TypeDef *spi){
 
     // Configure the gyro
     // 6664hz ODR, 2000dps scale
-    lsm6ds6WriteRegister(spi, LSM6DSO_REG_CTRL2_G, (LSM6DSO_VAL_CTRL2_G_ODR6664 << 4) | (LSM6DSO_VAL_CTRL2_G_2000DPS << 2), 1);
+    lsm6ds6WriteRegister(spi, LSM6DSO_REG_CTRL2_G, (LSM6DSO_VAL_CTRL2_G_ODR26 << 4) | (LSM6DSO_VAL_CTRL2_G_245DPS << 2), 1);
 
     // Configure control register 3
     // latch LSB/MSB during reads; set interrupt pins active high; set interrupt pins push/pull; set 4-wire SPI; enable auto-increment burst reads
@@ -174,7 +177,7 @@ bool lsm6ds6GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     gyro->xRate = ((lsm6ds6_rx_buf[IDX_GYRO_XOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_XOUT_L]) - gyro->xOffset;
     gyro->yRate = ((lsm6ds6_rx_buf[IDX_GYRO_YOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_YOUT_L]) - gyro->yOffset;
     gyro->zRate = ((lsm6ds6_rx_buf[IDX_GYRO_ZOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_ZOUT_L]) - gyro->zOffset;
-    //printf("GryoR: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->xRate, gyro->yRate, gyro->zRate);
+    printf("GryoR: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->xRate, gyro->yRate, gyro->zRate);
 
     return true;
 }
@@ -188,7 +191,7 @@ bool lsm6ds6GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     gyro->y += gyro->yRate*dt/1000000;
     gyro->z += gyro->zRate*dt/1000000;
     gyro->time = currentTime;
-    printf("GryoA: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->x, gyro->y, gyro->z);
+    //printf("GryoA: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->x, gyro->y, gyro->z);
     return 1;
 }
 
@@ -206,7 +209,7 @@ bool lsm6ds6GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
         avg[1] += buff[i].yRate;
         avg[2] += buff[i].zRate;
         printf("Offset Sums: %i, %i, %i\r\n", avg[0], avg[1], avg[2]);
-        delay_ms(100);
+        delay_microseconds(1000000/833);
     }
     gyro->xOffset = (int16_t) (avg[0] / LSM6DSO_OFFSET_BUFF_LEN);
     gyro->yOffset = (int16_t) (avg[1] / LSM6DSO_OFFSET_BUFF_LEN);

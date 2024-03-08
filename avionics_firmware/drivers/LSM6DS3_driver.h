@@ -62,7 +62,9 @@
 #define LSM6DSO_VAL_CTRL1_XL_LPF1 0x00         // accelerometer output from LPF1
 #define LSM6DSO_VAL_CTRL1_XL_LPF2 0x01         // accelerometer output from LPF2
 #define LSM6DSO_VAL_CTRL2_G_ODR6664 0x0A       // gyro 6664hz output data rate
+#define LSM6DSO_VAL_CTRL2_G_ODR26 0x02         // gyro 26hz output data rate
 #define LSM6DSO_VAL_CTRL2_G_2000DPS 0x03       // gyro 2000dps scale
+#define LSM6DSO_VAL_CTRL2_G_245DPS 0x00       // gyro 245dps scale
 #define LSM6DSO_VAL_CTRL3_C_BDU BIT(6)         // (bit 6) output registers are not updated until MSB and LSB have been read (prevents MSB from being updated while burst reading LSB/MSB)
 #define LSM6DSO_VAL_CTRL3_C_H_LACTIVE 0        // (bit 5) interrupt pins active high
 #define LSM6DSO_VAL_CTRL3_C_PP_OD 0            // (bit 4) interrupt pins push/pull
@@ -87,7 +89,7 @@
 #define LSM6DSO_MASK_CTRL6_C 0x17         // 0b00010111
 #define LSM6DSO_MASK_CTRL9_XL 0x02        // 0b00000010
 
-#define LSM6DSO_OFFSET_BUFF_LEN 10
+#define LSM6DSO_OFFSET_BUFF_LEN 50
 
 typedef struct LSM6DS3_data
 {

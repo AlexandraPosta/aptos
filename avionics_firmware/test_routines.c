@@ -74,12 +74,17 @@ void run_test_routine_LSM6DS3()
   LSM6DS3_data gyro_data;
   delay_ms(50);
   lsm6ds6_init(SPI2, &gyro_data);
-
+  uint32_t startTime = get_time_us();
+  uint32_t currentTime;
   while (1){
+    currentTime = get_time_us();
+    if(currentTime - startTime > 1000000/26){
+      startTime = currentTime;
+      lsm6ds6GyroReadAngle(SPI2, &gyro_data);
+      //lsm6dsoAccRead(SPI2);
+    }
     watchdog_pat();
-    lsm6ds6GyroReadAngle(SPI2, &gyro_data);
-    //lsm6dsoAccRead(SPI2);
-    delay_ms(100);
+    
   }
 }
 /**
