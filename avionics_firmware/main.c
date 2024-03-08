@@ -77,7 +77,10 @@ void NAND_flash_test_routine()
 
     dataArray[0] = 0;
     dataArray[1] = 0;
-
+    _input.date.minute = (get_time_us()/(1000000*60))%60; //minuts
+    _input.date.second = (get_time_us()/1000000)%60; //seconds
+    _input.date.millisecond = (get_time_us()/1000)%1000; //milli seconds
+    _input.date.microsecond = get_time_us()%1000; //Mirco seconds
     _input.accelHighG.x = i;
     _input.accelHighG.y = i*50;
     _input.accelHighG.z = 100 + i*20;
@@ -119,6 +122,7 @@ int main(void) {
 
   
   delay_ms(200);
+  delay_ms(1000);
   //run_test_routine_BME280();
   //ADXL375_init(SPI2);
   //run_ADXL375_routine();
