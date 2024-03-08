@@ -71,17 +71,15 @@ void run_test_routine_BME280() {
 
 void run_test_routine_LSM6DS3()
 {
-  delay_ms(500);
-  lsm6dsoDetect(SPI2);
-  delay_ms(1000);
-  lsm6dsoConfig(SPI2);
-  watchdog_pat();
-  delay_ms(1000);
+  LSM6DS3_data gyro_data;
+  delay_ms(50);
+  lsm6ds6_init(SPI2, &gyro_data);
+
   while (1){
     watchdog_pat();
-    lsm6dsoGyroRead(SPI2);
-    lsm6dsoAccRead(SPI2);
-    delay_ms(200);
+    lsm6ds6GyroReadAngle(SPI2, &gyro_data);
+    //lsm6dsoAccRead(SPI2);
+    delay_ms(100);
   }
 }
 /**

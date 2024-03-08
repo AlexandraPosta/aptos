@@ -87,20 +87,39 @@
 #define LSM6DSO_MASK_CTRL6_C 0x17         // 0b00010111
 #define LSM6DSO_MASK_CTRL9_XL 0x02        // 0b00000010
 
+#define LSM6DSO_OFFSET_BUFF_LEN 10
+
+typedef struct LSM6DS3_data
+{
+  int16_t x;
+  int16_t y;
+  int16_t z;
+  int16_t xRate;
+  int16_t yRate;
+  int16_t zRate;
+  int16_t xOffset;
+  int16_t yOffset;
+  int16_t zOffset;
+  uint32_t time;
+} LSM6DS3_data;
+
 //init functions
-uint8_t lsm6dsoDetect(SPI_TypeDef *spi);
-static void lsm6dsoWriteRegister(SPI_TypeDef *spi, uint8_t registerID, uint8_t value, unsigned delayMs);
-static void lsm6dsoWriteRegisterBits(SPI_TypeDef *spi, uint8_t registerID, uint8_t mask, uint8_t value, unsigned delayMs);
-void lsm6dsoConfig(SPI_TypeDef *spi);
+uint8_t lsm6ds6_init(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+static void lsm6ds6WriteRegister(SPI_TypeDef *spi, uint8_t registerID, uint8_t value, unsigned delayMs);
+static void lsm6ds6WriteRegisterBits(SPI_TypeDef *spi, uint8_t registerID, uint8_t mask, uint8_t value, unsigned delayMs);
+void lsm6ds6Config(SPI_TypeDef *spi);
 
-// Contained in accgyro_spi_lsm6dso_init.c which is size-optimized
-//uint8_t lsm6dsoDetect(SPI_TypeDef *spi);
-//bool lsm6dsoSpiAccDetect(SPI_TypeDef *spi);
-//bool lsm6dsoSpiGyroDetect(SPI_TypeDef *spi);
+// Contained in accgyro_spi_lsm6ds6_init.c which is size-optimized
+//uint8_t lsm6ds6Detect(SPI_TypeDef *spi);
+//bool lsm6ds6SpiAccDetect(SPI_TypeDef *spi);
+//bool lsm6ds6SpiGyroDetect(SPI_TypeDef *spi);
 
-// Contained in accgyro_spi_lsm6dso.c which is speed-optimized
-//void lsm6dsoExtiHandler(extiCallbackRec_t *cb);
-bool lsm6dsoAccRead(SPI_TypeDef *spi);
-bool lsm6dsoGyroRead(SPI_TypeDef *spi);
+// Contained in accgyro_spi_lsm6ds6.c which is speed-optimized
+//void lsm6ds6ExtiHandler(extiCallbackRec_t *cb);
+bool lsm6ds6AccRead(SPI_TypeDef *spi);
+bool lsm6ds6GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+bool lsm6ds6GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+//calculates the gyro offset values
+bool lsm6ds6GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro);
 
 #endif /* LSM6DS3_DRIVER_H */
