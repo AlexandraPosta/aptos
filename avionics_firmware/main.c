@@ -106,7 +106,7 @@ int main(void) {
   FrameArray frame;                         // initialise the frameArray that keeps updating
   uint8_t dataArray[128];                   // dummy array to store the frame data
   _memset(dataArray, 0, sizeof(dataArray)); // set the necessary memory and set values to 0
-  zip(frame, dataArray);                    // convert from normal array into FrameArray
+  frame = unzip(&dataArray);                    // convert from normal array into FrameArray
   dataBuffer frame_buffer;                  // contains FrameArrays
   init_buffer(&frame_buffer);               // initialise the buffer
 
