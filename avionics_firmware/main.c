@@ -84,7 +84,6 @@ int main(void) {
   STM32_indicate_on_buzzer();
   watchdog_pat();
   STM32_led_on();
-  gpio_write(RGB1_G, HIGH);
   gpio_write(RGB2_R, HIGH);
 
   printf("============ INITIALISE NAND FLASH ============\r\n");
@@ -125,9 +124,10 @@ int main(void) {
   //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
-  NAND_flash_read();
+  //NAND_flash_read();
 
   //delay_ms(1000);
+  gpio_write(RGB1_G, HIGH);
   
   printf("============= ENTER MAIN PROCEDURE ============\r\n");
   uint32_t newTime = get_time_us();
