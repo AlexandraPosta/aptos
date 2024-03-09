@@ -89,7 +89,7 @@
 #define LSM6DSO_MASK_CTRL6_C 0x17         // 0b00010111
 #define LSM6DSO_MASK_CTRL9_XL 0x02        // 0b00000010
 
-#define LSM6DSO_OFFSET_BUFF_LEN 50
+#define LSM6DSO_OFFSET_BUFF_LEN 100
 
 typedef struct LSM6DS3_data
 {
@@ -102,7 +102,7 @@ typedef struct LSM6DS3_data
   int16_t xOffset;
   int16_t yOffset;
   int16_t zOffset;
-  uint32_t time;
+  int32_t time;
 } LSM6DS3_data;
 
 //init functions

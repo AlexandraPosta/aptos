@@ -78,7 +78,7 @@ void run_test_routine_LSM6DS3()
   uint32_t currentTime;
   while (1){
     currentTime = get_time_us();
-    if(currentTime - startTime > 1000000/26){
+    if(currentTime - startTime > 1000000/26){//26hz
       startTime = currentTime;
       lsm6ds6GyroReadAngle(SPI2, &gyro_data);
       //lsm6dsoAccRead(SPI2);

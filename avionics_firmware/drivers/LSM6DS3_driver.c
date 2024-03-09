@@ -73,7 +73,7 @@ static void lsm6ds6WriteRegisterBits(SPI_TypeDef *spi, uint8_t registerID, uint8
 void lsm6ds6Config(SPI_TypeDef *spi){
     // Reset the device (wait 100ms before continuing config)
     lsm6ds6WriteRegisterBits(spi, LSM6DSO_REG_CTRL3_C, LSM6DSO_MASK_CTRL3_C_RESET, BIT(0), 100);
-    delay_ms(500);
+    delay_ms(100);
     // Configure interrupt pin 1 for gyro data ready only
     //lsm6ds6WriteRegister(spi, LSM6DSO_REG_INT1_CTRL, LSM6DSO_VAL_INT1_CTRL, 1);
 
@@ -86,7 +86,7 @@ void lsm6ds6Config(SPI_TypeDef *spi){
 
     // Configure the gyro
     // 6664hz ODR, 2000dps scale
-    lsm6ds6WriteRegister(spi, LSM6DSO_REG_CTRL2_G, (LSM6DSO_VAL_CTRL2_G_ODR26 << 4) | (LSM6DSO_VAL_CTRL2_G_245DPS << 2), 1);
+    lsm6ds6WriteRegister(spi, LSM6DSO_REG_CTRL2_G, (LSM6DSO_VAL_CTRL2_G_ODR26 << 4) | (LSM6DSO_VAL_CTRL2_G_2000DPS << 2), 1);
 
     // Configure control register 3
     // latch LSB/MSB during reads; set interrupt pins active high; set interrupt pins push/pull; set 4-wire SPI; enable auto-increment burst reads
@@ -166,18 +166,24 @@ bool lsm6ds6GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
 
     spi_enable_cs(spi, LSM6DS3_CS);
     delay_microseconds(1);
+    /*
     for (int i = 0; i < BUFFER_SIZE; i ++){
         send_data = (LSM6DSO_REG_OUTX_L_G+i) | 0x80;
         spi_transmit_receive(spi, &(send_data), 1, 1, &(lsm6ds6_rx_buf[i]));
+    }*/
+    send_data = (LSM6DSO_REG_OUTX_L_G) | 0x80;
+    spi_transmit_receive(spi, &(send_data), 1, 1, &(lsm6ds6_rx_buf[0]));
+    for (int i = 1; i < BUFFER_SIZE; i ++){
+        send_data = (LSM6DSO_REG_OUTX_L_G+i) | 0x80;
+        spi_transmit_receive(spi, &(send_data), 0, 1, &(lsm6ds6_rx_buf[i]));
     }
     delay_microseconds(1);
     spi_disable_cs(spi, LSM6DS3_CS);
 
-    
-    gyro->xRate = ((lsm6ds6_rx_buf[IDX_GYRO_XOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_XOUT_L]) - gyro->xOffset;
-    gyro->yRate = ((lsm6ds6_rx_buf[IDX_GYRO_YOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_YOUT_L]) - gyro->yOffset;
-    gyro->zRate = ((lsm6ds6_rx_buf[IDX_GYRO_ZOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_ZOUT_L]) - gyro->zOffset;
-    printf("GryoR: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->xRate, gyro->yRate, gyro->zRate);
+    gyro->xRate = 70*((lsm6ds6_rx_buf[IDX_GYRO_XOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_XOUT_L]) - gyro->xOffset;
+    gyro->yRate = 70*((lsm6ds6_rx_buf[IDX_GYRO_YOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_YOUT_L]) - gyro->yOffset;
+    gyro->zRate = 70*((lsm6ds6_rx_buf[IDX_GYRO_ZOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_ZOUT_L]) - gyro->zOffset;
+    //printf("GryoR: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->xRate, gyro->yRate, gyro->zRate);
 
     return true;
 }
@@ -185,13 +191,18 @@ bool lsm6ds6GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
 bool lsm6ds6GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro)
 {
     lsm6ds6GyroRead(spi, gyro);
-    uint32_t currentTime = get_time_us();
-    uint32_t dt = (currentTime - gyro->time);
-    gyro->x += gyro->xRate*dt/1000000;
-    gyro->y += gyro->yRate*dt/1000000;
-    gyro->z += gyro->zRate*dt/1000000;
+    int32_t currentTime = get_time_us() & 0x7FFFFFFF; //convert time to signed number but don't let it be negative.
+    int32_t dt = (currentTime - gyro->time);
+
+    int32_t dx = gyro->xRate*dt/1000000;  //mdeg
+    int32_t dy = gyro->yRate*dt/1000000;
+    int32_t dz = gyro->zRate*dt/1000000;
+    //printf("Gryo d: X:%6i, \tY:%6i,\tZ:%6i\r\n", dx, dy, dz);
+    gyro->x += dx;
+    gyro->y += dy;
+    gyro->z += dz;
     gyro->time = currentTime;
-    //printf("GryoA: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->x, gyro->y, gyro->z);
+    printf("GryoA: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->x/100, gyro->y/100, gyro->z/100);
     return 1;
 }
 
@@ -209,7 +220,7 @@ bool lsm6ds6GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
         avg[1] += buff[i].yRate;
         avg[2] += buff[i].zRate;
         printf("Offset Sums: %i, %i, %i\r\n", avg[0], avg[1], avg[2]);
-        delay_microseconds(1000000/833);
+        delay_microseconds(1000000/26);
     }
     gyro->xOffset = (int16_t) (avg[0] / LSM6DSO_OFFSET_BUFF_LEN);
     gyro->yOffset = (int16_t) (avg[1] / LSM6DSO_OFFSET_BUFF_LEN);
