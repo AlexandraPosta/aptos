@@ -220,14 +220,20 @@ bool lsm6ds6GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     int32_t dt = (currentTime - gyro->time);
 
     //calculate downsample value and then integrate.
-    dx = (dx/LSM6DS6_DOWNSAMPLE_SIZE) *dt/1000000;
-    dy = (dy/LSM6DS6_DOWNSAMPLE_SIZE) *dt/1000000;
-    dz = (dz/LSM6DS6_DOWNSAMPLE_SIZE) *dt/1000000;
+    dx = (dx/LSM6DS6_DOWNSAMPLE_SIZE) *dt;
+    dy = (dy/LSM6DS6_DOWNSAMPLE_SIZE) *dt;
+    dz = (dz/LSM6DS6_DOWNSAMPLE_SIZE) *dt;
     
     //printf("Gryo d: X:%6i, \tY:%6i,\tZ:%6i\r\n", dx, dy, dz);
-    gyro->x += dx;
-    gyro->y += dy;
-    gyro->z += dz;
+    dx = dx/1000000;
+    dy = dy/1000000;
+    dz = dz/1000000;
+
+    //add angle change
+    gyro->x = LSM6DS3_angle_overflow(gyro->x + dx);  
+    gyro->y = LSM6DS3_angle_overflow(gyro->y + dy);
+    gyro->z = LSM6DS3_angle_overflow(gyro->z + dz);
+    
     gyro->time = currentTime;
     printf("GryoA: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->x/100, gyro->y/100, gyro->z/100);
     return 1;
@@ -255,4 +261,14 @@ bool lsm6ds6GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     printf("Gyro Offsets: %i, %i, %i\r\n", gyro->xOffset, gyro->yOffset, gyro->zOffset);
 
     return 1;
+}
+
+//keeps angle between +-180,000 mDeg
+int32_t LSM6DS3_angle_overflow(int32_t mDeg){
+    if (mDeg > 180000){
+        mDeg = mDeg - 360000;
+    }else if (mDeg < -180000){
+        mDeg = mDeg + 360000;
+    }
+    return mDeg;
 }
