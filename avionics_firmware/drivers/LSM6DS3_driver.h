@@ -127,4 +127,7 @@ bool lsm6ds6GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro);
 //calculates the gyro offset values
 bool lsm6ds6GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro);
 
+//keeps angle between +-180,000 mDeg
+int32_t LSM6DS3_angle_overflow(int32_t mDeg);
+
 #endif /* LSM6DS3_DRIVER_H */
