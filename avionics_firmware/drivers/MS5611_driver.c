@@ -47,7 +47,7 @@ int32_t MS5611_get_data_test()
 {
     M5611_data data;
     MS5611_get_data(&data);
-    printf("Temp: %u Pressure: %u \r\n", data.temp, data.pressure);
+    //printf("Temp: %u Pressure: %u \r\n", data.temp, data.pressure);
 	return 0;
 }
 
@@ -114,7 +114,7 @@ int MS5611_get_data(M5611_data* data)
     int32_t PRESSURE = (D1 * SENS / pow(2,21) - OFF) / pow(2,15);
     data->temp = TEMP;
     data->pressure = PRESSURE;
-    printf("TEMP: %d PRESSURE: %d \r\n", TEMP, PRESSURE);
+    //printf("TEMP: %d PRESSURE: %d \r\n", TEMP, PRESSURE);
 
     return 0;
 }

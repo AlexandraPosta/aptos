@@ -10,6 +10,11 @@
 #include "test_routines.h"
 #include "data_buffer.h"
 
+#define PADREADFREQ 100 //frequency to read data during ascent
+#define ASCENTREADFREQ 1000 //frequency to read data during ascent
+#define APOGEEREADFREQ 1000 //frequency to read data during ascent
+#define DESCENTREADFREQ 100 //frequency to read data during descent
+
 // Flags
 FlightStages flightStage = LAUNCHPAD;
 volatile uint32_t s_ticks;
@@ -43,49 +48,17 @@ void update_sensors(M5611_data* _M5611_data,
 #pragma endregion Updates
 
 void run_nand_flash_erase(){
-  init_flash();
   watchdog_pat();
-  read_flash_ID();
-  watchdog_pat();
-
   erase_all();
+  while(1);
 }
 
 /**
   @brief Routine to test NAND Flash reading and writing.
 */
-void NAND_flash_test_routine()
+void NAND_flash_read()
 {
-  printf("==================== START WRITING ====================\r\n");
-  init_flash();
-  
-  uint8_t dataArray[128];
-  _memset(dataArray, 0x0, 128);
-  /*
-  for (uint8_t i = 0; i < 128; i ++) {
-    dataArray[i] = i;
-  }
-  */
-  FrameArray _input = unzip(dataArray);
-
-  int numOfFramesToTest = 5;
-  for (int i = 0; i < numOfFramesToTest; i++) {
-
-    dataArray[0] = 0;
-    dataArray[1] = 0;
-    _input.date.minute = (get_time_us()/(1000000*60))%60; //minuts
-    _input.date.second = (get_time_us()/1000000)%60; //seconds
-    _input.date.millisecond = (get_time_us()/1000)%1000; //milli seconds
-    _input.date.microsecond = get_time_us()%1000; //Mirco seconds
-    _input.accelHighG.x = i;
-    _input.accelHighG.y = i*50;
-    _input.accelHighG.z = 100 + i*20;
-    
-    log_frame(_input);
-    printf("======================== DONE ========================\r\n");
-  }
-  printf("==================== DONE WRITING ====================\r\n");
-  
+  printf("==================== Reading NAND FLASH ====================\r\n");
   read_all_csv();
   print_capacity_info();
 }
@@ -114,9 +87,10 @@ int main(void) {
 
   printf("============== INITIALISE DRIVERS =============\r\n");
   // Sensor initialisation
-  MS5611_init(SPI1);          // Barometer
-  ADXL375_init(SPI1);         // Accelerometer
+  MS5611_init(SPI2);          // Barometer
+  ADXL375_init(SPI2);         // Accelerometer
   
+  delay_ms(1000);
   // Buffer
   FrameArray frame;                         // initialise the frameArray that keeps updating
   uint8_t dataArray[128];                   // dummy array to store the frame data
@@ -145,107 +119,133 @@ int main(void) {
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
   //NAND_flash_test_routine();
+
+  //delay_ms(1000);
   
   printf("============= ENTER MAIN PROCEDURE ============\r\n");
+  uint32_t newTime = get_time_us();
+  uint32_t oldTime = get_time_us();
   for (;;) {
     switch (flightStage) {
         case LAUNCHPAD:
-          // Get the sensor readings
-          update_sensors(&_M5611_data, &_ADXL375_data);
-          get_frame_array(&frame, &_M5611_data, &_ADXL375_data); 
+          newTime = get_time_us();  //get current time
+          if (newTime - oldTime > 1000000/PADREADFREQ){
+            oldTime = newTime;  //old time = new time
+            // Get the sensor readings
+            update_sensors(&_M5611_data, &_ADXL375_data);
+            get_frame_array(&frame, &_M5611_data, &_ADXL375_data); 
 
-          // Update buffer and window
-          update_buffer(&frame, &frame_buffer);
-          if (frame_buffer.count > WINDOW_SIZE*2) {
-            // Get the window barometer median
-            for (int i = 0; i < WINDOW_SIZE; i++) {
-              _data[i] = frame_buffer.window[i].barometer;
-            }
-            current_value = get_median(_data, WINDOW_SIZE); // get pressure median
+            // Update buffer and window
+            update_buffer(&frame, &frame_buffer);
+            if (frame_buffer.count > WINDOW_SIZE*2) {
+              // Get the window barometer median
+              for (int i = 0; i < WINDOW_SIZE; i++) {
+                _data[i] = frame_buffer.window[i].barometer;
+              }
+              current_value = get_median(_data, WINDOW_SIZE); // get pressure median
 
-            // Check for launch given pressure decrease
-            if ((frame_buffer.ground_ref - current_value) > LAUNCH_THRESHOLD) {
-              flightStage = ASCENT;
-
-              // Log all data from the buffer
-              for (int i = 0; i < BUFFER_SIZE; i++) {
-                log_frame(frame_buffer.frames[i]);
+              // Check for launch given pressure decrease
+              printf("Diff: %i\r\n", frame_buffer.ground_ref - current_value);
+              if ((frame_buffer.ground_ref - current_value) > LAUNCH_THRESHOLD) {
+                flightStage = ASCENT;
+                printf("FLIGHT STAGE = ASCENT\r\n");
+                // Log all data from the buffer
+                for (int i = 0; i < BUFFER_SIZE; i++) {
+                  log_frame(frame_buffer.frames[i]);
+                }
               }
             }
           }
           break;
         
         case ASCENT:
-          // TODO: set the sampling rate
+          newTime = get_time_us();  //get current time
+          if (newTime - oldTime > 1000000/ASCENTREADFREQ){
+            oldTime = newTime;  //old time = new time
 
-          // Get the sensor readings
-          update_sensors(&_M5611_data, &_ADXL375_data);
-          get_frame_array(&frame, &_M5611_data, &_ADXL375_data);
+            // Get the sensor readings
+            update_sensors(&_M5611_data, &_ADXL375_data);
+            get_frame_array(&frame, &_M5611_data, &_ADXL375_data);
 
-          // Log data
-          log_frame(frame);
+            // Log data
+            log_frame(frame);
 
-          // Update buffer and window  
-          update_buffer(&frame, &frame_buffer);
+            // Update buffer and window  
+            update_buffer(&frame, &frame_buffer);
 
-          // Get window median readings
-          for (int i = 0; i < WINDOW_SIZE; i++) {
-            _data[i] = frame_buffer.window[i].barometer;
+            // Get window median readings
+            for (int i = 0; i < WINDOW_SIZE; i++) {
+              _data[i] = frame_buffer.window[i].barometer;
+            }
+            current_value = get_median(_data, WINDOW_SIZE); // get pressure median
+
+            // Check for apogee given pressure increase
+            if (current_value - previous_value > APOGEE_THRESHOLD){
+              flightStage = APOGEE;
+              printf("FLIGHT STAGE = APOGEE\r\n");
+            }else if (previous_value < current_value){  //storing the maximum (median) value during ascent
+              previous_value = current_value;
+            }
           }
-          current_value = get_median(_data, WINDOW_SIZE); // get pressure median
-
-          // Check for apogee given pressure increase
-          if (current_value - previous_value > 0)
-            flightStage = APOGEE;
-          else
-            previous_value = current_value;
           break;
 
         case APOGEE:
-          // Get the sensor readings
-          update_sensors(&_M5611_data, &_ADXL375_data);
-          get_frame_array(&frame, &_M5611_data, &_ADXL375_data); 
+          newTime = get_time_us();  //get current time
+          if (newTime - oldTime > 1000000/APOGEEREADFREQ){
+            oldTime = newTime;  //old time = new time
+            // Get the sensor readings
+            update_sensors(&_M5611_data, &_ADXL375_data);
+            get_frame_array(&frame, &_M5611_data, &_ADXL375_data); 
 
-          // Log data
-          log_frame(frame);
+            // Log data
+            log_frame(frame);
 
-          // Update buffer and window  
-          update_buffer(&frame, &frame_buffer);
+            // Update buffer and window  
+            update_buffer(&frame, &frame_buffer);
 
-          // Run for a few cycles to record apogee when switch to descent
-          if (apogee_incr == 0)
-            flightStage = DESCENT;
-          else
-            apogee_incr--;
+            // Run for a few cycles to record apogee when switch to descent
+            if (apogee_incr == 0){
+              flightStage = DESCENT;
+              printf("FLIGHT STAGE = DESCENT\r\n");
+            }else{
+              apogee_incr--;
+            }
+          }
           break;
 
         case DESCENT:
           // TODO: reduce the sampling rate
+          newTime = get_time_us();  //get current time
+          if (newTime - oldTime > 1000000/DESCENTREADFREQ){
+            oldTime = newTime;  //old time = new time
+            
+            // Get the sensor readings
+            update_sensors(&_M5611_data, &_ADXL375_data);
+            get_frame_array(&frame, &_M5611_data, &_ADXL375_data); 
 
-          // Get the sensor readings
-          update_sensors(&_M5611_data, &_ADXL375_data);
-          get_frame_array(&frame, &_M5611_data, &_ADXL375_data); 
+            // Log data
+            log_frame(frame);
 
-          // Log data
-          log_frame(frame);
+            // Update buffer and window  
+            update_buffer(&frame, &frame_buffer);
+            
+            // Get window median readings
+            int _data[WINDOW_SIZE];
+            for (int i = 0; i < WINDOW_SIZE; i++) {
+              _data[i] = frame_buffer.window[i].barometer;
+            }
 
-          // Update buffer and window  
-          update_buffer(&frame, &frame_buffer);
-          
-          // Get window median readings
-          int _data[WINDOW_SIZE];
-          for (int i = 0; i < WINDOW_SIZE; i++) {
-            _data[i] = frame_buffer.window[i].barometer;
-          }
-
-          // Check for landing
-          if (is_stationary(_data)) {
-            flightStage = LANDING;
+            // Check for landing
+            if (is_stationary(_data)) {
+              flightStage = LANDING;
+              printf("FLIGHT STAGE = LANDING\r\n");
+            }
           }
           break;
 
       case LANDING:
         // Beep continuously
+        STM32_beep_buzzer(200, 200, 10);
         break;
     }
   }
