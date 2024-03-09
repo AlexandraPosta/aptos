@@ -1,6 +1,6 @@
 /*
   Leeds University Rocketry Organisation - LURA
-  Author Name: Alexandra Posta
+  Author Name: Oliver Martin
   Created on: 01 February 2024
   Description: header file for the IMU module LSM6DS3
 */
@@ -89,13 +89,16 @@
 #define LSM6DSO_MASK_CTRL6_C 0x17         // 0b00010111
 #define LSM6DSO_MASK_CTRL9_XL 0x02        // 0b00000010
 
+// Calibration parameters
 #define LSM6DSO_OFFSET_BUFF_LEN 100
+#define LSM6DS6_DOWNSAMPLE_SIZE 4
+#define LMS6DS6_ANGULAR_RATE_SENSITIVITY  70 //for +-2000dps sensitivity is 70mdps/LSB
 
 typedef struct LSM6DS3_data
 {
-  int16_t x;
-  int16_t y;
-  int16_t z;
+  int32_t x;
+  int32_t y;
+  int32_t z;
   int16_t xRate;
   int16_t yRate;
   int16_t zRate;

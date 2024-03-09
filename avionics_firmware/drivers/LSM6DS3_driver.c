@@ -1,8 +1,19 @@
 /*
     Leeds University Rocketry Organisation - LURA
-    Author Name: Tyler Green
+    Author Name: Oliver Martin
     Created on: 01 February 2024
     Description: Driver file for the IMU module LSM6DS3 (https://www.mouser.co.uk/datasheet/2/389/dm00133076-1798402.pdf)
+
+    ---------------------------------------
+    Some basis for this logic comes from the open source Betaflight lsm6dso driver.
+
+
+    TODO:
+        Use Betaflight code as inspiration - produces rock solid gyro data in drones.
+        Implement downsampling
+        Low pass filter
+        Notch filter as well?
+
 */
 
 #include "LSM6DS3_driver.h"
@@ -86,7 +97,7 @@ void lsm6ds6Config(SPI_TypeDef *spi){
 
     // Configure the gyro
     // 6664hz ODR, 2000dps scale
-    lsm6ds6WriteRegister(spi, LSM6DSO_REG_CTRL2_G, (LSM6DSO_VAL_CTRL2_G_ODR26 << 4) | (LSM6DSO_VAL_CTRL2_G_2000DPS << 2), 1);
+    lsm6ds6WriteRegister(spi, LSM6DSO_REG_CTRL2_G, (LSM6DSO_VAL_CTRL2_G_ODR6664 << 4) | (LSM6DSO_VAL_CTRL2_G_2000DPS << 2), 1);
 
     // Configure control register 3
     // latch LSB/MSB during reads; set interrupt pins active high; set interrupt pins push/pull; set 4-wire SPI; enable auto-increment burst reads
@@ -173,16 +184,16 @@ bool lsm6ds6GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     }*/
     send_data = (LSM6DSO_REG_OUTX_L_G) | 0x80;
     spi_transmit_receive(spi, &(send_data), 1, 1, &(lsm6ds6_rx_buf[0]));
-    for (int i = 1; i < BUFFER_SIZE; i ++){
+    for (uint8_t i = 1; i < BUFFER_SIZE; i ++){
         send_data = (LSM6DSO_REG_OUTX_L_G+i) | 0x80;
         spi_transmit_receive(spi, &(send_data), 0, 1, &(lsm6ds6_rx_buf[i]));
     }
     delay_microseconds(1);
     spi_disable_cs(spi, LSM6DS3_CS);
 
-    gyro->xRate = 70*((lsm6ds6_rx_buf[IDX_GYRO_XOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_XOUT_L]) - gyro->xOffset;
-    gyro->yRate = 70*((lsm6ds6_rx_buf[IDX_GYRO_YOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_YOUT_L]) - gyro->yOffset;
-    gyro->zRate = 70*((lsm6ds6_rx_buf[IDX_GYRO_ZOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_ZOUT_L]) - gyro->zOffset;
+    gyro->xRate = LMS6DS6_ANGULAR_RATE_SENSITIVITY*((lsm6ds6_rx_buf[IDX_GYRO_XOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_XOUT_L]) - gyro->xOffset;
+    gyro->yRate = LMS6DS6_ANGULAR_RATE_SENSITIVITY*((lsm6ds6_rx_buf[IDX_GYRO_YOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_YOUT_L]) - gyro->yOffset;
+    gyro->zRate = LMS6DS6_ANGULAR_RATE_SENSITIVITY*((lsm6ds6_rx_buf[IDX_GYRO_ZOUT_H] << 8) | lsm6ds6_rx_buf[IDX_GYRO_ZOUT_L]) - gyro->zOffset;
     //printf("GryoR: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->xRate, gyro->yRate, gyro->zRate);
 
     return true;
@@ -190,13 +201,29 @@ bool lsm6ds6GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
 
 bool lsm6ds6GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro)
 {
+    //first reading
     lsm6ds6GyroRead(spi, gyro);
+    int32_t dx = gyro->xRate;  //mdeg/s
+    int32_t dy = gyro->yRate;
+    int32_t dz = gyro->zRate;
+
+    //subsequent readings for downsampling
+    for (uint8_t i = 1; i < LSM6DS6_DOWNSAMPLE_SIZE; i ++){
+        lsm6ds6GyroRead(spi, gyro);
+        dx += gyro->xRate;  //mdeg/s
+        dy += gyro->yRate;
+        dz += gyro->zRate;
+        delay_microseconds(1);
+    }
+
     int32_t currentTime = get_time_us() & 0x7FFFFFFF; //convert time to signed number but don't let it be negative.
     int32_t dt = (currentTime - gyro->time);
 
-    int32_t dx = gyro->xRate*dt/1000000;  //mdeg
-    int32_t dy = gyro->yRate*dt/1000000;
-    int32_t dz = gyro->zRate*dt/1000000;
+    //calculate downsample value and then integrate.
+    dx = (dx/LSM6DS6_DOWNSAMPLE_SIZE) *dt/1000000;
+    dy = (dy/LSM6DS6_DOWNSAMPLE_SIZE) *dt/1000000;
+    dz = (dz/LSM6DS6_DOWNSAMPLE_SIZE) *dt/1000000;
+    
     //printf("Gryo d: X:%6i, \tY:%6i,\tZ:%6i\r\n", dx, dy, dz);
     gyro->x += dx;
     gyro->y += dy;
@@ -213,14 +240,14 @@ bool lsm6ds6GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     int32_t avg[3] = {0,0,0};
     lsm6ds6GyroRead(spi, gyro);
     delay_ms(100);
-    for (int i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i++){
+    for (uint8_t i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i++){
         lsm6ds6GyroRead(spi, gyro);
         buff[i] = *gyro;
         avg[0] += buff[i].xRate;
         avg[1] += buff[i].yRate;
         avg[2] += buff[i].zRate;
         printf("Offset Sums: %i, %i, %i\r\n", avg[0], avg[1], avg[2]);
-        delay_microseconds(1000000/26);
+        delay_microseconds(1000000/100);
     }
     gyro->xOffset = (int16_t) (avg[0] / LSM6DSO_OFFSET_BUFF_LEN);
     gyro->yOffset = (int16_t) (avg[1] / LSM6DSO_OFFSET_BUFF_LEN);
