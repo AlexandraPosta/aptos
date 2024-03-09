@@ -235,7 +235,7 @@ bool lsm6ds6GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     gyro->z = LSM6DS3_angle_overflow(gyro->z + dz);
     
     gyro->time = currentTime;
-    printf("GryoA: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->x/100, gyro->y/100, gyro->z/100);
+    //printf("GryoA: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->x/100, gyro->y/100, gyro->z/100);
     return 1;
 }
 
@@ -252,7 +252,7 @@ bool lsm6ds6GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
         avg[0] += buff[i].xRate;
         avg[1] += buff[i].yRate;
         avg[2] += buff[i].zRate;
-        printf("Offset Sums: %i, %i, %i\r\n", avg[0], avg[1], avg[2]);
+        //printf("Offset Sums: %i, %i, %i\r\n", avg[0], avg[1], avg[2]);
         delay_microseconds(1000000/100);
     }
     gyro->xOffset = (int16_t) (avg[0] / LSM6DSO_OFFSET_BUFF_LEN);

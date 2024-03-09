@@ -6,6 +6,16 @@ void init_buffer(dataBuffer* buffer) {
   buffer->count = 0;
 
   // TODO: Allocate memory for the buffer array
+  /*
+  FrameArray frame;                         // initialise the frameArray that keeps updating
+  uint8_t dataArray[128];                   // dummy array to store the frame data
+  _memset(dataArray, 0, sizeof(dataArray)); // set the necessary memory and set values to 0
+  zip(frame, dataArray);                    // convert from normal array into FrameArray
+
+  for (uint8_t i = 0; i < BUFFER_SIZE; i ++){
+    buffer->frames[i] = 
+  }
+  */
   // TODO: Allocate memory for the window array
 }
 

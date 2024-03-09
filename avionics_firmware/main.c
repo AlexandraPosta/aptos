@@ -25,7 +25,7 @@ extern void SysTick_Handler(void) {
 #pragma region Updates
 void get_frame_array(FrameArray* _frameArray, 
                     M5611_data* _M5611_data, 
-                    ADXL375_data* _ADXL375_data) {
+                    ADXL375_data* _ADXL375_data, LSM6DS3_data* _LSM6DS3_data) {
   // Convert data to frame TODO
   Vector3 _acc_high_g = { _ADXL375_data->x, _ADXL375_data->y, _ADXL375_data->z };
 
@@ -35,15 +35,20 @@ void get_frame_array(FrameArray* _frameArray,
   _frameArray->date.millisecond = (get_time_us()/1000)%1000; //milli seconds
   _frameArray->date.microsecond = get_time_us()%1000; //Mirco seconds
   // Add data to the frame
+  _frameArray->changeFlag = flightStage;
   _frameArray->barometer = _M5611_data->pressure;
   _frameArray->temp = _M5611_data->temp;
-  _frameArray->accelHighG = _acc_high_g;  
+  _frameArray->accelHighG = _acc_high_g;
+  _frameArray->gyroscope.x = (uint16_t) (_LSM6DS3_data->x/10+18000);
+  _frameArray->gyroscope.y = (uint16_t) (_LSM6DS3_data->y/10+18000);
+  _frameArray->gyroscope.z = (uint16_t) (_LSM6DS3_data->z/10+18000);
 }
 
 void update_sensors(M5611_data* _M5611_data, 
-                    ADXL375_data* _ADXL375_data) {
+                    ADXL375_data* _ADXL375_data, LSM6DS3_data* _LSM6DS3_data) {
   MS5611_get_data(_M5611_data);
   ADXL375_get_data(_ADXL375_data);
+  lsm6ds6GyroReadAngle(SPI2, _LSM6DS3_data);
 }
 #pragma endregion Updates
 
@@ -86,9 +91,15 @@ int main(void) {
   init_flash();
 
   printf("============== INITIALISE DRIVERS =============\r\n");
+  // Buffer data
+  M5611_data _M5611_data;
+  ADXL375_data _ADXL375_data;
+  LSM6DS3_data _LSM6DS3_data;
+
   // Sensor initialisation
   MS5611_init(SPI2);          // Barometer
   ADXL375_init(SPI2);         // Accelerometer
+  lsm6ds6_init(SPI2, &_LSM6DS3_data);
   
   delay_ms(1000);
   // Buffer
@@ -98,10 +109,6 @@ int main(void) {
   zip(frame, dataArray);                    // convert from normal array into FrameArray
   dataBuffer frame_buffer;                  // contains FrameArrays
   init_buffer(&frame_buffer);               // initialise the buffer
-
-  // Buffer data
-  M5611_data _M5611_data;
-  ADXL375_data _ADXL375_data;
 
   // Additional variables
   int _data[WINDOW_SIZE];
@@ -118,7 +125,7 @@ int main(void) {
   //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
-  //NAND_flash_test_routine();
+  NAND_flash_read();
 
   //delay_ms(1000);
   
@@ -132,8 +139,8 @@ int main(void) {
           if (newTime - oldTime > 1000000/PADREADFREQ){
             oldTime = newTime;  //old time = new time
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data);
-            get_frame_array(&frame, &_M5611_data, &_ADXL375_data); 
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
+            get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data); 
 
             // Update buffer and window
             update_buffer(&frame, &frame_buffer);
@@ -164,8 +171,8 @@ int main(void) {
             oldTime = newTime;  //old time = new time
 
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data);
-            get_frame_array(&frame, &_M5611_data, &_ADXL375_data);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
+            get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
 
             // Log data
             log_frame(frame);
@@ -183,7 +190,7 @@ int main(void) {
             if (current_value - previous_value > APOGEE_THRESHOLD){
               flightStage = APOGEE;
               printf("FLIGHT STAGE = APOGEE\r\n");
-            }else if (previous_value < current_value){  //storing the maximum (median) value during ascent
+            }else if (previous_value > current_value){  //storing the minimum, (median), pressure value during ascent
               previous_value = current_value;
             }
           }
@@ -194,8 +201,8 @@ int main(void) {
           if (newTime - oldTime > 1000000/APOGEEREADFREQ){
             oldTime = newTime;  //old time = new time
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data);
-            get_frame_array(&frame, &_M5611_data, &_ADXL375_data); 
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
+            get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data); 
 
             // Log data
             log_frame(frame);
@@ -220,8 +227,8 @@ int main(void) {
             oldTime = newTime;  //old time = new time
             
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data);
-            get_frame_array(&frame, &_M5611_data, &_ADXL375_data); 
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
+            get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data); 
 
             // Log data
             log_frame(frame);
