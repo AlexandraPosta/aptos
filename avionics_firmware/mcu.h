@@ -201,6 +201,11 @@ static inline bool gpio_read(uint16_t pin) {
 //supposed to put MCU into DFU mode without having to pull boot0 pin high.
 
 static inline void jump_to_bootloader(){
+  //set LED 2 to blue
+  gpio_write(RGB2_R, LOW);
+  gpio_write(RGB2_G, LOW);
+  gpio_write(RGB2_B, HIGH);
+
   //__enable_irq(); 
   asm volatile ("cpsie i" : : : "memory");
   //HAL_RCC_DeInit();

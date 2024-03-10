@@ -112,6 +112,22 @@ void timer_test(){
 
 }
 
+void DFU_programming_check(){
+  printf("============== DFU flash check ===========\r\n");
+  delay_ms(500);
+  while (uart_read_ready(USART1)){
+    uint8_t recieve = uart_read_byte(USART1);
+    delay(1);
+    //printf("%x\r\n", recieve);
+    if (recieve == 'f'){
+      printf("Flash command recieved!\r\n");
+      delay_ms(500);
+      jump_to_bootloader();
+    }
+  }
+  printf("No flash request\r\n");
+}
+
 
 void DFU_programming_test(){
   
@@ -126,7 +142,7 @@ void DFU_programming_test(){
       //printf("%x\r\n", recieve);
       if (recieve == 'f'){
         printf("Flash command recieved!\r\n");
-        delay_ms(2000);
+        delay_ms(500);
         jump_to_bootloader();
       }
     }

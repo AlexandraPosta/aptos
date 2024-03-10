@@ -76,7 +76,7 @@ int main(void) {
   STM32_init();
   uart_init(USART1, 921600);
   spi_init(SPI2);
-
+  DFU_programming_check();
   printf("==================== PROGRAM START ==================\r\n");
   //watchdog_init();
   watchdog_pat();
@@ -86,6 +86,7 @@ int main(void) {
   STM32_led_on();
   gpio_write(RGB2_R, HIGH);
   printf("THIS CODE WAS FLASHED USING THE USB CONNECTION!!!!\r\n");
+
   printf("============ INITIALISE NAND FLASH ============\r\n");
   init_flash();
 
@@ -125,7 +126,7 @@ int main(void) {
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
   //NAND_flash_read();
-  DFU_programming_test();
+  //DFU_programming_test();
 
   //delay_ms(1000);
   gpio_write(RGB1_G, HIGH);
