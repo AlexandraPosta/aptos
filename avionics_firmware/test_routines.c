@@ -111,3 +111,25 @@ void timer_test(){
   }
 
 }
+
+
+void DFU_programming_test(){
+  
+  printf("============== DFU Routine ===========\r\n");
+  uint8_t recieve = 0;
+  delay(10);
+  while(1){
+    delay_ms(100);
+    if (uart_read_ready(USART1)){
+      recieve = uart_read_byte(USART1);
+      delay(1);
+      //printf("%x\r\n", recieve);
+      if (recieve == 'f'){
+        printf("Flash command recieved!\r\n");
+        delay_ms(2000);
+        jump_to_bootloader();
+      }
+    }
+    
+  }
+}
