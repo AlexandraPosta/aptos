@@ -197,9 +197,9 @@ int main(void) {
           break;
 
         case APOGEE:
-          newTime = get_time_us();  //get current time
-          if (newTime - oldTime > 1000000/APOGEEREADFREQ){
-            oldTime = newTime;  //old time = new time
+          newTime = get_time_us();  // Get current time
+          if ((newTime - oldTime) > (1000000 / APOGEEREADFREQ)) {
+            oldTime = newTime;  // Old time = new time
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
             get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data); 
@@ -221,7 +221,6 @@ int main(void) {
           break;
 
         case DESCENT:
-          // TODO: reduce the sampling rate
           newTime = get_time_us();  //get current time
           if (newTime - oldTime > 1000000/DESCENTREADFREQ){
             oldTime = newTime;  //old time = new time

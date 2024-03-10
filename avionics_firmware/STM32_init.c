@@ -45,7 +45,6 @@ void STM32_init_clock(unsigned long frequency){
 void init_delay_timer(){
   //use general purpose timer 2 which is a 32bit auto-reload timer
   RCC->APB1ENR1 = RCC_APB1ENR1_TIM2EN;
-
   RCC->APB1RSTR1 |= RCC_APB1RSTR1_TIM2RST;
   RCC->APB1RSTR1 &= ~RCC_APB1RSTR1_TIM2RST;
 
@@ -61,7 +60,6 @@ void init_delay_timer(){
   
   //enable timer
   TIM2->CR1 = (1 << 0);
-  
 }
 
 /**
