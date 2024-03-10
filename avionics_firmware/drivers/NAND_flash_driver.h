@@ -410,7 +410,7 @@ static inline void print_frame_csv(FrameArray frameFormat) {
 static inline void wait_for_ready_flag() {
   int count = 1000*100; // Try for 1 second before giving error
   while (gpio_read(RB) == LOW && count > 0) {
-    delay_nanoseconds(1);
+    delay_microseconds(1);
     count--;
   }
   if (count < 1) {
@@ -484,11 +484,11 @@ static inline void send_byte_to_flash(uint8_t cmd, uint8_t mode) {
   @return 
 */
 static inline uint8_t receive_byte_from_flash() {
-  delay_nanoseconds(DELAY);
+  delay_microseconds(DELAY);
   set_control_pins(DATA_OUTPUT);
-  delay_nanoseconds(DELAY);
+  delay_microseconds(DELAY);
   set_control_pins(DATA_OUTPUT & (~RE_HIGH));  // setting RE LOW
-  delay_nanoseconds(DELAY);
+  delay_microseconds(DELAY);
 
   if (globalPinMode != GPIO_MODE_INPUT) {
     globalPinMode = GPIO_MODE_INPUT;
@@ -597,7 +597,7 @@ static inline void write_frame(uint32_t frameAddr, uint8_t *bytes) {
   wait_for_ready_flag();
   send_byte_to_flash(0x80, COMMAND_INPUT);
   send_addr_to_flash(frameAddr, 0);  // Address Input
-  delay_nanoseconds(10); //was 1 ms but I think that needs decreasing
+  delay_microseconds(10); //was 1 ms but I think that needs decreasing
   for (int byteAddr = 0; byteAddr < 128; byteAddr++) {
     send_byte_to_flash(bytes[byteAddr], DATA_INPUT);
   }
