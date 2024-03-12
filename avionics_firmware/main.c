@@ -10,6 +10,8 @@
 #include "test_routines.h"
 #include "data_buffer.h"
 
+//#include "drivers/USB/usbd_cdc_if.h"
+
 #define PADREADFREQ 100 //frequency to read data during ascent
 #define ASCENTREADFREQ 1000 //frequency to read data during ascent
 #define APOGEEREADFREQ 1000 //frequency to read data during ascent
@@ -85,7 +87,7 @@ int main(void) {
   watchdog_pat();
   STM32_led_on();
   gpio_write(RGB2_R, HIGH);
-  printf("THIS CODE WAS FLASHED USING THE USB CONNECTION!!!!\r\n");
+  printf("THIS CODE WAS FLASHED USING USB omman lin intrfa!\r\n");
 
   printf("============ INITIALISE NAND FLASH ============\r\n");
   init_flash();

@@ -16,6 +16,9 @@ firmware.bin: firmware.elf
 flash: firmware.bin
 	st-flash --reset write $< 0x8000000
 
+dfu:
+	STM32_Programmer_CLI -c port=usb1 --download firmware.bin 0x8000000
+
 clean:
 	del -rf firmware.*
 
