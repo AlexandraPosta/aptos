@@ -10,6 +10,9 @@
         "nand_flash_driver.h": "c",
         "utility": "c",
         "test_routines.h": "c",
-        "usbd_cdc_if.h": "c"
+        "usbd_cdc_if.h": "c",
+        "bme280_driver.h": "c",
+        "mcu.h": "c",
+        "filters.h": "c"
     }
 }
