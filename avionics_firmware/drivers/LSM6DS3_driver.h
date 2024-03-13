@@ -7,6 +7,7 @@
 #ifndef LSM6DS3_DRIVER_H
 #define LSM6DS3_DRIVER_H
 #include "mcu.h"
+#include "filters.h"
 
 #pragma once
 
@@ -94,20 +95,27 @@
 #define LSM6DS6_DOWNSAMPLE_SIZE 4
 #define LMS6DS6_ANGULAR_RATE_SENSITIVITY  70 //for +-2000dps sensitivity is 70mdps/LSB
 
+// Constants for filter tuning
+#define GYRO_WEIGHT 1//0.98
+#define ACCEL_WEIGHT 0//0.02
+
 typedef struct LSM6DS3_data
 {
-  int32_t x;
-  int32_t y;
-  int32_t z;
-  int16_t xRate;
-  int16_t yRate;
-  int16_t zRate;
-  int16_t xOffset;
-  int16_t yOffset;
-  int16_t zOffset;
-  int16_t xAccel;
-  int16_t yAccel;
-  int16_t zAccel;
+  fixed_point_t x;
+  fixed_point_t y;
+  fixed_point_t z;
+  fixed_point_t roll;
+  fixed_point_t pitch;
+  fixed_point_t yaw;
+  fixed_point_t xRate;
+  fixed_point_t yRate;
+  fixed_point_t zRate;
+  fixed_point_t xOffset;
+  fixed_point_t yOffset;
+  fixed_point_t zOffset;
+  fixed_point_t xAccel;
+  fixed_point_t yAccel;
+  fixed_point_t zAccel;
   int32_t time;
 } LSM6DS3_data;
 
@@ -127,6 +135,7 @@ void lsm6ds3Config(SPI_TypeDef *spi);
 bool lsm6ds3AccRead(SPI_TypeDef *spi, LSM6DS3_data* gyro);
 bool lsm6ds3GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro);
 bool lsm6ds3GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+void lsm6ds3CalculateOrientation(SPI_TypeDef *spi, LSM6DS3_data* gyro);
 //calculates the gyro offset values
 bool lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro);
 

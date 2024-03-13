@@ -82,7 +82,9 @@ void run_test_routine_LSM6DS3()
     if(currentTime - startTime > 1000000/100){
       startTime = currentTime;
       //lsm6ds3GyroReadAngle(SPI2, &gyro_data);
-      lsm6ds3AccRead(SPI2, &gyro_data);
+      //lsm6ds3AccRead(SPI2, &gyro_data);
+      //lsm6ds3GyroRead(SPI2, &gyro_data);
+      lsm6ds3CalculateOrientation(SPI2, &gyro_data);
     }
     watchdog_pat();
     
