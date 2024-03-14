@@ -73,13 +73,13 @@ void run_test_routine_LSM6DS3()
 {
   printf("----------- IMU TEST -----------\r\n");
   LSM6DS3_data gyro_data;
-  delay_ms(50);
+  //delay_ms(50);
   lsm6ds3_init(SPI2, &gyro_data);
   uint32_t startTime = get_time_us();
   uint32_t currentTime;
   while (1){
     currentTime = get_time_us();
-    if(currentTime - startTime > 1000000/100){
+    if(currentTime - startTime > 1000000/500){
       startTime = currentTime;
       //lsm6ds3GyroReadAngle(SPI2, &gyro_data);
       //lsm6ds3AccRead(SPI2, &gyro_data);

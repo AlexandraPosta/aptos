@@ -14,9 +14,6 @@
 
 #define M_PI 205887 //3.14159 << 16   // Value of pi in fixed point 
 
-// Fixed-point representation: Q25.6 format (25 bits for integer part, 6 bits for fractional part)
-typedef int32_t fixed_point_t;
-
 #pragma region simple low pass filters
 
 /**
@@ -30,6 +27,6 @@ typedef int32_t fixed_point_t;
 int32_t LPF1(int32_t input, int32_t output_prev, uint8_t alpha);
 #pragma endregion
 
-fixed_point_t atan2_fixed(fixed_point_t y, fixed_point_t x);
-fixed_point_t sqrt_fixed(fixed_point_t x);
+int32_t atan2_fixed(int32_t y, int32_t x);
+int32_t sqrt_fixed(int32_t x);
 #endif

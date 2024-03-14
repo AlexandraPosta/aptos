@@ -91,7 +91,7 @@
 #define LSM6DSO_MASK_CTRL9_XL 0x02        // 0b00000010
 
 // Calibration parameters
-#define LSM6DSO_OFFSET_BUFF_LEN 100
+#define LSM6DSO_OFFSET_BUFF_LEN 50
 #define LSM6DS6_DOWNSAMPLE_SIZE 4
 #define LMS6DS6_ANGULAR_RATE_SENSITIVITY  70 //for +-2000dps sensitivity is 70mdps/LSB
 
@@ -101,18 +101,18 @@
 
 typedef struct LSM6DS3_data
 {
-  int16_t x;
-  int16_t y;
-  int16_t z;
-  int16_t roll;
-  int16_t pitch;
-  int16_t yaw;
-  int16_t xRate;
-  int16_t yRate;
-  int16_t zRate;
-  int16_t xOffset;
-  int16_t yOffset;
-  int16_t zOffset;
+  int32_t x;
+  int32_t y;
+  int32_t z;
+  int32_t roll;
+  int32_t pitch;
+  int32_t yaw;
+  int32_t xRate;
+  int32_t yRate;
+  int32_t zRate;
+  int32_t xOffset;
+  int32_t yOffset;
+  int32_t zOffset;
   int16_t xAccel;
   int16_t yAccel;
   int16_t zAccel;
