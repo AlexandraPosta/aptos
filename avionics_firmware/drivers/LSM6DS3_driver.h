@@ -101,21 +101,21 @@
 
 typedef struct LSM6DS3_data
 {
-  fixed_point_t x;
-  fixed_point_t y;
-  fixed_point_t z;
-  fixed_point_t roll;
-  fixed_point_t pitch;
-  fixed_point_t yaw;
-  fixed_point_t xRate;
-  fixed_point_t yRate;
-  fixed_point_t zRate;
-  fixed_point_t xOffset;
-  fixed_point_t yOffset;
-  fixed_point_t zOffset;
-  fixed_point_t xAccel;
-  fixed_point_t yAccel;
-  fixed_point_t zAccel;
+  int16_t x;
+  int16_t y;
+  int16_t z;
+  int16_t roll;
+  int16_t pitch;
+  int16_t yaw;
+  int16_t xRate;
+  int16_t yRate;
+  int16_t zRate;
+  int16_t xOffset;
+  int16_t yOffset;
+  int16_t zOffset;
+  int16_t xAccel;
+  int16_t yAccel;
+  int16_t zAccel;
   int32_t time;
 } LSM6DS3_data;
 

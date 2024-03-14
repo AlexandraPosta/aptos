@@ -147,9 +147,9 @@ bool lsm6ds3AccRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     delay_microseconds(1);
     spi_disable_cs(spi, LSM6DS3_CS);
 
-    gyro->xAccel = (((lsm6ds3_rx_buf[IDX_ACCEL_XOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_XOUT_L]) << 16) /1000;
-    gyro->yAccel = (((lsm6ds3_rx_buf[IDX_ACCEL_YOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_YOUT_L]) << 16) /1000;
-    gyro->zAccel = (((lsm6ds3_rx_buf[IDX_ACCEL_ZOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_ZOUT_L]) << 16) /1000;
+    gyro->xAccel = ((lsm6ds3_rx_buf[IDX_ACCEL_XOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_XOUT_L]);
+    gyro->yAccel = ((lsm6ds3_rx_buf[IDX_ACCEL_YOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_YOUT_L]);
+    gyro->zAccel = ((lsm6ds3_rx_buf[IDX_ACCEL_ZOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_ZOUT_L]);
     //printf("Accel: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->xAccel, gyro->yAccel, gyro->zAccel);
 
     return true;
@@ -180,9 +180,9 @@ bool lsm6ds3GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     delay_microseconds(1);
     spi_disable_cs(spi, LSM6DS3_CS);
 
-    gyro->xRate = ((LMS6DS6_ANGULAR_RATE_SENSITIVITY*((lsm6ds3_rx_buf[IDX_GYRO_XOUT_H] << 8) | lsm6ds3_rx_buf[IDX_GYRO_XOUT_L])) << 16) /1000 - gyro->xOffset;
-    gyro->yRate = ((LMS6DS6_ANGULAR_RATE_SENSITIVITY*((lsm6ds3_rx_buf[IDX_GYRO_YOUT_H] << 8) | lsm6ds3_rx_buf[IDX_GYRO_YOUT_L])) << 16) /1000 - gyro->yOffset;
-    gyro->zRate = ((LMS6DS6_ANGULAR_RATE_SENSITIVITY*((lsm6ds3_rx_buf[IDX_GYRO_ZOUT_H] << 8) | lsm6ds3_rx_buf[IDX_GYRO_ZOUT_L])) << 16) /1000 - gyro->zOffset;
+    gyro->xRate = (LMS6DS6_ANGULAR_RATE_SENSITIVITY*((lsm6ds3_rx_buf[IDX_GYRO_XOUT_H] << 8) | lsm6ds3_rx_buf[IDX_GYRO_XOUT_L])) - gyro->xOffset;
+    gyro->yRate = (LMS6DS6_ANGULAR_RATE_SENSITIVITY*((lsm6ds3_rx_buf[IDX_GYRO_YOUT_H] << 8) | lsm6ds3_rx_buf[IDX_GYRO_YOUT_L])) - gyro->yOffset;
+    gyro->zRate = (LMS6DS6_ANGULAR_RATE_SENSITIVITY*((lsm6ds3_rx_buf[IDX_GYRO_ZOUT_H] << 8) | lsm6ds3_rx_buf[IDX_GYRO_ZOUT_L])) - gyro->zOffset;
     //printf("GryoR: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->xRate>>16, gyro->yRate>>16, gyro->zRate>>16);
 
     return true;
@@ -235,21 +235,27 @@ void lsm6ds3CalculateOrientation(SPI_TypeDef *spi, LSM6DS3_data* gyro) {
     lsm6ds3AccRead(spi, gyro);
     //time 
     int32_t currentTime = get_time_us() & 0x7FFFFFFF; //convert time to signed number but don't let it be negative.
-    fixed_point_t dt = ((currentTime - gyro->time)<<16)/1000000;
-    //printf("DT:%i", dt);
+    fixed_point_t dt = ((currentTime - gyro->time));
+    printf("DT:%i", dt);
     gyro->time = currentTime;
 
     // Convert accelerometer data to roll and pitch angles
     fixed_point_t accelRoll = atan2_fixed(gyro->yAccel, gyro->xAccel);
-    fixed_point_t accelPitch = atan2_fixed(-gyro->xAccel, sqrt_fixed((gyro->yAccel * gyro->yAccel)>>16 + (gyro->zAccel * gyro->zAccel)>>16));
+    fixed_point_t accelPitch = atan2_fixed(-gyro->xAccel, sqrt_fixed((gyro->yAccel * gyro->yAccel)>>6 + (gyro->zAccel * gyro->zAccel)>>6));
+
+
+    int32_t gyroRoll = (((int32_t)(gyro->xRate)) * dt);
+    gyroRoll = gyroRoll/1000000;
+    int32_t gyroPitch = (((int32_t)(gyro->xRate)) * dt);
+    gyroPitch = gyroPitch/1000000;
 
     // Integrate gyro data for yaw
-    gyro->yaw += (gyro->zRate * dt >> 16); // dt is the time difference between sensor updates
+    gyro->yaw += ((gyro->zRate) * dt >> 6); // dt is the time difference between sensor updates
 
     // Apply complementary filter
-    gyro->roll = ACCEL_WEIGHT * (accelRoll) + GYRO_WEIGHT * (gyro->roll + ((gyro->xRate * dt)>>16));
-    gyro->pitch = ACCEL_WEIGHT * (accelPitch) + GYRO_WEIGHT * (gyro->pitch + ((gyro->yRate * dt)>>16));
-    printf("P:%6i, \tR:%6i,\tY:%6i\r\n", gyro->pitch>>16, gyro->roll>>16, gyro->yaw>>16);
+    gyro->roll = (int16_t) ACCEL_WEIGHT * (accelRoll) + GYRO_WEIGHT * (gyro->roll + gyroRoll);
+    gyro->pitch = (int16_t) ACCEL_WEIGHT * (accelPitch) + GYRO_WEIGHT * (gyro->pitch + gyroPitch);
+    printf("P:%6i, \tR:%6i,\tY:%6i\r\n", gyro->pitch/1000, gyro->roll/1000, gyro->yaw/1000);
 }
 
 //calculates the gyro offset values
