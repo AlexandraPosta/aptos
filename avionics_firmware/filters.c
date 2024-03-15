@@ -27,36 +27,60 @@ int32_t LPF1(int32_t input, int32_t output_prev, uint8_t alpha){
 
 #pragma endregion
 
-// Fixed-point arctangent function, returns degrees in fixed point
-int32_t atan2_fixed(int32_t y, int32_t x) {
-    const int32_t PI_DIV_4 = M_PI / 4;
-    const int32_t RAD_TO_DEG = 0x005748B3; // 180/π in Q15.16 format
+#define ATAN2_PRECISION 1000 // Define the precision for the angle calculation (milli degrees)
+//
+int32_t atan2_milli(int32_t y, int32_t x) {
+    // Constants for scaling
+    const int32_t atan2_denominator = 1000000; // Denominator for scaling the fraction
+    const int32_t atan2_max = 2000000; // Maximum value for scaling
 
-    int32_t abs_y = y < 0 ? -y : y;
-    int32_t angle;
+    // Quadrant check and absolute value
+    int8_t neg = (y < 0) ? -1 : 1;
+    y = (y < 0) ? -y : y;
 
+    int32_t angle = 0; // Initialize angle
+
+    // Special cases
+    if (x == 0 && y == 0) return 0; // Undefined, return 0
+
+    if (x == 0 && y > 0) return 900000; // 90 degrees (in milli degrees)
+    if (x == 0 && y < 0) return -900000; // -90 degrees (in milli degrees)
+
+    if (y == 0 && x > 0) return 0; // 0 degrees
+    if (y == 0 && x < 0) return 1800000; // 180 degrees
+
+    // Compute the angle using a simple arctan approximation
     if (x >= 0) {
-        int32_t r = (x - abs_y) / (x + abs_y);
-        angle = PI_DIV_4 - (r >> 1);
+        angle = ((y * atan2_denominator) / (x + y));
     } else {
-        int32_t r = (x + abs_y) / (abs_y - x);
-        angle = 3 * PI_DIV_4 - (r >> 1);
+        angle = atan2_max - ((y * atan2_denominator) / (y - x));
     }
-    angle = y < 0 ? -angle : angle;
-    
-    // Convert radians to degrees
-    return (angle * RAD_TO_DEG) >> 16;
+
+    // Quadrant adjustments
+    if (x < 0) {
+        angle += 900000; // 90 degrees
+    } else if (y < 0) {
+        angle += 1800000; // 180 degrees
+    }
+
+    // Adjust for negative values
+    angle *= neg;
+
+    return angle;
 }
 
-// Fixed-point square root function
-int32_t sqrt_fixed(int32_t x){
-    int32_t guess = 1 << 16; // 1 in fixed-point representation
-    int32_t delta;
+int32_t sqrt_int(int32_t x) {
+    if (x <= 1) return x; // Base case for 0 and 1
 
-    do {
-        delta = (x - (guess * guess)) / (2 * guess);
-        guess += delta;
-    } while (delta != 0);
+    // Initial guess for the square root
+    int32_t root = x / 2;
+    int32_t root_prev = 0;
 
-    return guess;
+    // Iterate until convergence
+    while (root != root_prev) {
+        root_prev = root;
+        root = (root + x / root) / 2; // Apply Newton's method
+    }
+
+    return root;
 }

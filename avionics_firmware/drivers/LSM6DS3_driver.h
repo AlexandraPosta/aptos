@@ -94,9 +94,10 @@
 #define LSM6DSO_OFFSET_BUFF_LEN 50
 #define LSM6DS6_DOWNSAMPLE_SIZE 4
 #define LMS6DS6_ANGULAR_RATE_SENSITIVITY  70 //for +-2000dps sensitivity is 70mdps/LSB
+#define LMS6DS6_ACCEL_SENSITIVITY  488 //for +-16G, sensitivity is 0.488 mg/LSB
 
 // Constants for filter tuning
-#define GYRO_WEIGHT 1//0.98
+#define GYRO_WEIGHT 100//0.98
 #define ACCEL_WEIGHT 0//0.02
 
 typedef struct LSM6DS3_data

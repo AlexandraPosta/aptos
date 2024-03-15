@@ -150,9 +150,9 @@ bool lsm6ds3AccRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     delay_microseconds(1);
     spi_disable_cs(spi, LSM6DS3_CS);
 
-    gyro->xAccel = ((lsm6ds3_rx_buf[IDX_ACCEL_XOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_XOUT_L]);
-    gyro->yAccel = ((lsm6ds3_rx_buf[IDX_ACCEL_YOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_YOUT_L]);
-    gyro->zAccel = ((lsm6ds3_rx_buf[IDX_ACCEL_ZOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_ZOUT_L]);
+    gyro->xAccel = LMS6DS6_ACCEL_SENSITIVITY*(int32_t)((int16_t)((lsm6ds3_rx_buf[IDX_ACCEL_XOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_XOUT_L]))/1000;
+    gyro->yAccel = LMS6DS6_ACCEL_SENSITIVITY*(int32_t)((int16_t)((lsm6ds3_rx_buf[IDX_ACCEL_YOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_YOUT_L]))/1000;
+    gyro->zAccel = LMS6DS6_ACCEL_SENSITIVITY*(int32_t)((int16_t)((lsm6ds3_rx_buf[IDX_ACCEL_ZOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_ZOUT_L]))/1000;
     //printf("Accel: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->xAccel, gyro->yAccel, gyro->zAccel);
 
     return true;
@@ -265,9 +265,9 @@ void lsm6ds3CalculateOrientation(SPI_TypeDef *spi, LSM6DS3_data* gyro) {
     lsm6ds3AccRead(spi, gyro);
 
     // Convert accelerometer data to roll and pitch angles
-    int32_t accelRoll = atan2_fixed(gyro->yAccel, gyro->xAccel);
-    int32_t accelPitch = atan2_fixed(-gyro->xAccel, sqrt_fixed((gyro->yAccel * gyro->yAccel)>>6 + (gyro->zAccel * gyro->zAccel)>>6));
-
+    int32_t accelRoll = atan2_milli(gyro->yAccel,sqrt_int((gyro->xAccel * gyro->xAccel) + (gyro->zAccel * gyro->zAccel)));
+    int32_t accelPitch = atan2_milli(-gyro->xAccel, sqrt_int((gyro->yAccel * gyro->yAccel) + (gyro->zAccel * gyro->zAccel)));
+    printf("AP:%6i, \tAR:%6i\r\n", accelPitch, accelRoll);
 
     int32_t gyroRoll = (gyro->xRate * dt);
     gyroRoll = gyroRoll/1000000;
@@ -278,8 +278,8 @@ void lsm6ds3CalculateOrientation(SPI_TypeDef *spi, LSM6DS3_data* gyro) {
     gyro->yaw += ((gyro->zRate) * dt)/1000000; // dt is the time difference between sensor updates
 
     // Apply complementary filter
-    gyro->roll = LSM6DS3_angle_overflow(ACCEL_WEIGHT * (accelRoll) + GYRO_WEIGHT * (gyro->roll + gyroRoll));
-    gyro->pitch = LSM6DS3_angle_overflow(ACCEL_WEIGHT * (accelPitch) + GYRO_WEIGHT * (gyro->pitch + gyroPitch));
+    gyro->roll = LSM6DS3_angle_overflow((ACCEL_WEIGHT * (accelRoll) + GYRO_WEIGHT * (gyro->roll + gyroRoll))/100);
+    gyro->pitch = LSM6DS3_angle_overflow((ACCEL_WEIGHT * (accelPitch) + GYRO_WEIGHT * (gyro->pitch + gyroPitch))/100);
     //keeps angle between +-180,000 mDeg
 
     printf("P:%6i, \tR:%6i,\tY:%6i\r\n", gyro->pitch/1000, gyro->roll/1000, gyro->yaw/1000);
