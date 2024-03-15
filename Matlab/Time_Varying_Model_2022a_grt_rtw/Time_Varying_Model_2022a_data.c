@@ -7,9 +7,9 @@
  *
  * Code generation for model "Time_Varying_Model_2022a".
  *
- * Model version              : 4.12
+ * Model version              : 4.13
  * Simulink Coder version : 23.2 (R2023b) 01-Aug-2023
- * C source code generated on : Thu Mar  7 23:27:27 2024
+ * C source code generated on : Thu Mar  7 23:32:27 2024
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -22,213 +22,243 @@
 
 /* Block parameters (default storage) */
 P_Time_Varying_Model_2022a_T Time_Varying_Model_2022a_P = {
+  /* Mask Parameter: BandLimitedWhiteNoise2_Cov
+   * Referenced by: '<S54>/Output'
+   */
+  1.0,
+
+  /* Mask Parameter: BandLimitedWhiteNoise1_Cov
+   * Referenced by: '<S53>/Output'
+   */
+  0.0,
+
+  /* Mask Parameter: BandLimitedWhiteNoise_Cov
+   * Referenced by: '<S52>/Output'
+   */
+  1.0,
+
   /* Mask Parameter: DrydenWindTurbulenceModelContin
-   * Referenced by: '<S149>/Medium//High Altitude'
+   * Referenced by: '<S152>/Medium//High Altitude'
    */
   533.4,
 
   /* Mask Parameter: DrydenWindTurbulenceModelCont_a
-   * Referenced by: '<S123>/White Noise'
+   * Referenced by: '<S126>/White Noise'
    */
   { 23341.0, 23342.0, 23343.0, 23344.0 },
 
   /* Mask Parameter: DrydenWindTurbulenceModelCont_c
    * Referenced by:
-   *   '<S113>/Constant1'
-   *   '<S113>/Constant2'
-   *   '<S113>/Constant3'
-   *   '<S114>/Constant'
+   *   '<S116>/Constant1'
+   *   '<S116>/Constant2'
+   *   '<S116>/Constant3'
+   *   '<S117>/Constant'
    */
   0.0,
 
   /* Mask Parameter: WhiteNoise_Ts
-   * Referenced by: '<S123>/Constant1'
+   * Referenced by: '<S126>/Constant1'
    */
   0.5,
 
   /* Mask Parameter: DrydenWindTurbulenceModelCon_au
-   * Referenced by: '<S130>/Probability of  Exceedance'
+   * Referenced by: '<S133>/Probability of  Exceedance'
    */
   3.0,
 
   /* Mask Parameter: DrydenWindTurbulenceModelCont_i
-   * Referenced by: '<S110>/Windspeed at 20ft (6m)'
+   * Referenced by: '<S113>/Windspeed at 20ft (6m)'
    */
   15.0,
 
   /* Mask Parameter: DrydenWindTurbulenceModelCont_m
-   * Referenced by: '<S110>/Wind direction'
+   * Referenced by: '<S113>/Wind direction'
    */
   0.0,
 
   /* Mask Parameter: DrydenWindTurbulenceModelCont_j
-   * Referenced by: '<S110>/Wingspan'
+   * Referenced by: '<S113>/Wingspan'
    */
   0.103,
 
   /* Mask Parameter: WhiteNoise_pwr
-   * Referenced by: '<S123>/Constant'
+   * Referenced by: '<S126>/Constant'
    */
   { 3.1415926535897931, 3.1415926535897931, 3.1415926535897931,
     3.1415926535897931 },
 
+  /* Mask Parameter: BandLimitedWhiteNoise2_seed
+   * Referenced by: '<S54>/White Noise'
+   */
+  23341.0,
+
+  /* Mask Parameter: BandLimitedWhiteNoise1_seed
+   * Referenced by: '<S53>/White Noise'
+   */
+  23341.0,
+
+  /* Mask Parameter: BandLimitedWhiteNoise_seed
+   * Referenced by: '<S52>/White Noise'
+   */
+  23341.0,
+
   /* Expression: 0
-   * Referenced by: '<S104>/L*(y[k]-yhat[k|k-1])'
+   * Referenced by: '<S107>/L*(y[k]-yhat[k|k-1])'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S106>/deltax'
+   * Referenced by: '<S109>/deltax'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S124>/pgw'
+   * Referenced by: '<S127>/pgw'
    */
   0.0,
 
   /* Expression: 1/3
-   * Referenced by: '<S124>/Constant1'
+   * Referenced by: '<S127>/Constant1'
    */
   0.33333333333333331,
 
   /* Expression: 1/6
-   * Referenced by: '<S124>/Constant2'
+   * Referenced by: '<S127>/Constant2'
    */
   0.16666666666666666,
 
   /* Expression: pi/4
-   * Referenced by: '<S124>/Constant3'
+   * Referenced by: '<S127>/Constant3'
    */
   0.78539816339744828,
 
   /* Expression: 0
-   * Referenced by: '<S124>/pgw_p'
+   * Referenced by: '<S127>/pgw_p'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S125>/qgw'
+   * Referenced by: '<S128>/qgw'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S125>/qgw_p'
+   * Referenced by: '<S128>/qgw_p'
    */
   0.0,
 
   /* Expression: pi/4
-   * Referenced by: '<S125>/pi//4'
+   * Referenced by: '<S128>/pi//4'
    */
   0.78539816339744828,
 
   /* Expression: 0
-   * Referenced by: '<S126>/rgw'
+   * Referenced by: '<S129>/rgw'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S126>/rgw_p'
+   * Referenced by: '<S129>/rgw_p'
    */
   0.0,
 
   /* Expression: pi/3
-   * Referenced by: '<S126>/pi//3'
+   * Referenced by: '<S129>/pi//3'
    */
   1.0471975511965976,
 
   /* Expression: 0
-   * Referenced by: '<S127>/ugw'
+   * Referenced by: '<S130>/ugw'
    */
   0.0,
 
   /* Expression: 2/pi
-   * Referenced by: '<S127>/(2//pi)'
+   * Referenced by: '<S130>/(2//pi)'
    */
   0.63661977236758138,
 
   /* Expression: 0
-   * Referenced by: '<S127>/ug_p'
+   * Referenced by: '<S130>/ug_p'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S128>/vgw'
+   * Referenced by: '<S131>/vgw'
    */
   0.0,
 
   /* Expression: 1/pi
-   * Referenced by: '<S128>/(1//pi)'
+   * Referenced by: '<S131>/(1//pi)'
    */
   0.31830988618379069,
 
   /* Expression: 0
-   * Referenced by: '<S128>/vg_p1'
+   * Referenced by: '<S131>/vg_p1'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S128>/vgw_p2'
+   * Referenced by: '<S131>/vgw_p2'
    */
   0.0,
 
   /* Expression: sqrt(3)
-   * Referenced by: '<S128>/sqrt(3)'
+   * Referenced by: '<S131>/sqrt(3)'
    */
   1.7320508075688772,
 
   /* Expression: 0
-   * Referenced by: '<S129>/wgw'
+   * Referenced by: '<S132>/wgw'
    */
   0.0,
 
   /* Expression: 1/pi
-   * Referenced by: '<S129>/1//pi'
+   * Referenced by: '<S132>/1//pi'
    */
   0.31830988618379069,
 
   /* Expression: 3
-   * Referenced by: '<S129>/Constant'
+   * Referenced by: '<S132>/Constant'
    */
   3.0,
 
   /* Expression: 0
-   * Referenced by: '<S129>/wg_p1'
+   * Referenced by: '<S132>/wg_p1'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S129>/wg_p2'
+   * Referenced by: '<S132>/wg_p2'
    */
   0.0,
 
   /* Expression: 1
-   * Referenced by: '<S134>/Gain'
+   * Referenced by: '<S137>/Gain'
    */
   1.0,
 
   /* Expression: max_height_low
-   * Referenced by: '<S132>/max_height_low'
+   * Referenced by: '<S135>/max_height_low'
    */
   1000.0,
 
   /* Expression: min_height_high
-   * Referenced by: '<S132>/min_height_high'
+   * Referenced by: '<S135>/min_height_high'
    */
   2000.0,
 
   /* Expression: 1
-   * Referenced by: '<S142>/Gain'
+   * Referenced by: '<S145>/Gain'
    */
   1.0,
 
   /* Expression: max_height_low
-   * Referenced by: '<S140>/max_height_low'
+   * Referenced by: '<S143>/max_height_low'
    */
   1000.0,
 
   /* Expression: min_height_high
-   * Referenced by: '<S140>/min_height_high'
+   * Referenced by: '<S143>/min_height_high'
    */
   2000.0,
 
@@ -930,43 +960,43 @@ P_Time_Varying_Model_2022a_T Time_Varying_Model_2022a_P = {
     10.838000000000001, 10.888, 10.938, 10.988000000000001 },
 
   /* Expression: max_height_low
-   * Referenced by: '<S148>/Limit Function 10ft to 1000ft'
+   * Referenced by: '<S151>/Limit Function 10ft to 1000ft'
    */
   1000.0,
 
   /* Expression: 10
-   * Referenced by: '<S148>/Limit Function 10ft to 1000ft'
+   * Referenced by: '<S151>/Limit Function 10ft to 1000ft'
    */
   10.0,
 
   /* Expression: max_height_low
-   * Referenced by: '<S131>/Limit Height h<1000ft'
+   * Referenced by: '<S134>/Limit Height h<1000ft'
    */
   1000.0,
 
   /* Expression: 0
-   * Referenced by: '<S131>/Limit Height h<1000ft'
+   * Referenced by: '<S134>/Limit Height h<1000ft'
    */
   0.0,
 
   /* Expression: 0.1
-   * Referenced by: '<S131>/sigma_wg '
+   * Referenced by: '<S134>/sigma_wg '
    */
   0.1,
 
   /* Expression: h_vec
-   * Referenced by: '<S130>/PreLook-Up Index Search  (altitude)'
+   * Referenced by: '<S133>/PreLook-Up Index Search  (altitude)'
    */
   { 500.0, 1750.0, 3750.0, 7500.0, 15000.0, 25000.0, 35000.0, 45000.0, 55000.0,
     65000.0, 75000.0, 80000.0 },
 
   /* Expression: [1:7]
-   * Referenced by: '<S130>/PreLook-Up Index Search  (prob of exceed)'
+   * Referenced by: '<S133>/PreLook-Up Index Search  (prob of exceed)'
    */
   { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0 },
 
   /* Expression: sigma_vec'
-   * Referenced by: '<S130>/Medium//High Altitude Intensity'
+   * Referenced by: '<S133>/Medium//High Altitude Intensity'
    */
   { 3.2, 2.2, 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.2, 3.6, 3.3,
     1.6, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 6.6, 6.9, 7.4, 6.7, 4.6, 2.7,
@@ -976,22 +1006,22 @@ P_Time_Varying_Model_2022a_T Time_Varying_Model_2022a_P = {
     18.7, 21.5, 28.4, 30.2, 30.7, 31.0, 25.2, 23.1, 17.5, 10.7, 8.4, 7.2 },
 
   /* Expression: 0
-   * Referenced by: '<S123>/White Noise'
+   * Referenced by: '<S126>/White Noise'
    */
   0.0,
 
   /* Computed Parameter: WhiteNoise_StdDev
-   * Referenced by: '<S123>/White Noise'
+   * Referenced by: '<S126>/White Noise'
    */
   1.0,
 
   /* Expression: 1
-   * Referenced by: '<S120>/Lv'
+   * Referenced by: '<S123>/Lv'
    */
   1.0,
 
   /* Expression: 1
-   * Referenced by: '<S120>/Lw'
+   * Referenced by: '<S123>/Lw'
    */
   1.0,
 
@@ -1252,18 +1282,48 @@ P_Time_Varying_Model_2022a_T Time_Varying_Model_2022a_P = {
    */
   2.0,
 
+  /* Expression: 0
+   * Referenced by: '<S54>/White Noise'
+   */
+  0.0,
+
+  /* Computed Parameter: WhiteNoise_StdDev_a
+   * Referenced by: '<S54>/White Noise'
+   */
+  1.0,
+
+  /* Expression: 0
+   * Referenced by: '<S53>/White Noise'
+   */
+  0.0,
+
+  /* Computed Parameter: WhiteNoise_StdDev_o
+   * Referenced by: '<S53>/White Noise'
+   */
+  1.0,
+
+  /* Expression: 0
+   * Referenced by: '<S52>/White Noise'
+   */
+  0.0,
+
+  /* Computed Parameter: WhiteNoise_StdDev_m
+   * Referenced by: '<S52>/White Noise'
+   */
+  1.0,
+
   /* Expression: pInitialization.M
-   * Referenced by: '<S53>/KalmanGainM'
+   * Referenced by: '<S56>/KalmanGainM'
    */
   0.56639110926865932,
 
   /* Expression: pInitialization.C
-   * Referenced by: '<S52>/C'
+   * Referenced by: '<S55>/C'
    */
   1.5,
 
   /* Expression: pInitialization.X0
-   * Referenced by: '<S52>/X0'
+   * Referenced by: '<S55>/X0'
    */
   0.0,
 
@@ -1273,27 +1333,27 @@ P_Time_Varying_Model_2022a_T Time_Varying_Model_2022a_P = {
   0.5,
 
   /* Expression: pInitialization.A
-   * Referenced by: '<S52>/A'
+   * Referenced by: '<S55>/A'
    */
   2.0,
 
   /* Expression: pInitialization.B
-   * Referenced by: '<S52>/B'
+   * Referenced by: '<S55>/B'
    */
   0.5,
 
   /* Expression: pInitialization.Z
-   * Referenced by: '<S53>/CovarianceZ'
+   * Referenced by: '<S56>/CovarianceZ'
    */
   0.3775940728457729,
 
   /* Expression: pInitialization.L
-   * Referenced by: '<S53>/KalmanGainL'
+   * Referenced by: '<S56>/KalmanGainL'
    */
   1.1327822185373198,
 
   /* Expression: pInitialization.D
-   * Referenced by: '<S52>/D'
+   * Referenced by: '<S55>/D'
    */
   0.0,
 
@@ -1759,17 +1819,17 @@ P_Time_Varying_Model_2022a_T Time_Varying_Model_2022a_P = {
   0.0,
 
   /* Computed Parameter: MediumHighAltitudeIntensity_max
-   * Referenced by: '<S130>/Medium//High Altitude Intensity'
+   * Referenced by: '<S133>/Medium//High Altitude Intensity'
    */
   { 11U, 6U },
 
   /* Expression: true()
-   * Referenced by: '<S52>/Enable'
+   * Referenced by: '<S55>/Enable'
    */
   true,
 
   /* Expression: pInitialization.isSqrtUsed
-   * Referenced by: '<S102>/isSqrtUsed'
+   * Referenced by: '<S105>/isSqrtUsed'
    */
   false,
 
