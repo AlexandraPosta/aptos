@@ -48,7 +48,7 @@ void update_sensors(M5611_data* _M5611_data,
                     ADXL375_data* _ADXL375_data, LSM6DS3_data* _LSM6DS3_data) {
   MS5611_get_data(_M5611_data);
   ADXL375_get_data(_ADXL375_data);
-  lsm6ds6GyroReadAngle(SPI2, _LSM6DS3_data);
+  lsm6ds3GyroReadAngle(SPI2, _LSM6DS3_data);
 }
 #pragma endregion Updates
 
@@ -76,7 +76,7 @@ int main(void) {
   STM32_init();
   uart_init(USART1, 921600);
   spi_init(SPI2);
-
+  DFU_programming_check();
   printf("==================== PROGRAM START ==================\r\n");
   //watchdog_init();
   watchdog_pat();
@@ -84,8 +84,8 @@ int main(void) {
   STM32_indicate_on_buzzer();
   watchdog_pat();
   STM32_led_on();
-  gpio_write(RGB1_G, HIGH);
   gpio_write(RGB2_R, HIGH);
+  printf("FLASHED ON PC USB!\r\n");
 
   printf("============ INITIALISE NAND FLASH ============\r\n");
   init_flash();
@@ -99,7 +99,7 @@ int main(void) {
   // Sensor initialisation
   MS5611_init(SPI2);          // Barometer
   ADXL375_init(SPI2);         // Accelerometer
-  lsm6ds6_init(SPI2, &_LSM6DS3_data);
+  lsm6ds3_init(SPI2, &_LSM6DS3_data);
   
   delay_ms(1000);
   // Buffer
@@ -122,12 +122,14 @@ int main(void) {
   //run_test_routine_BME280();
   //ADXL375_init(SPI2);
   //run_ADXL375_routine();
-  //run_test_routine_LSM6DS3();
+  run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
-  NAND_flash_read();
+  //NAND_flash_read();
+  //DFU_programming_test();
 
   //delay_ms(1000);
+  gpio_write(RGB1_G, HIGH);
   
   printf("============= ENTER MAIN PROCEDURE ============\r\n");
   uint32_t newTime = get_time_us();

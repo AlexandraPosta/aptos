@@ -7,9 +7,9 @@
  *
  * Code generation for model "Time_Varying_Model_2022a".
  *
- * Model version              : 4.12
+ * Model version              : 4.13
  * Simulink Coder version : 23.2 (R2023b) 01-Aug-2023
- * C source code generated on : Thu Mar  7 23:27:27 2024
+ * C source code generated on : Thu Mar  7 23:32:27 2024
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -918,38 +918,38 @@ void Time_Varying_Model_2022a_step(void)
      Time_Varying_Model_2022a_P.OpenRocketalt_bp01Data,
      Time_Varying_Model_2022a_P.OpenRocketalt_tableData, 222U);
 
-  /* UnitConversion: '<S115>/Unit Conversion' */
+  /* UnitConversion: '<S118>/Unit Conversion' */
   /* Unit Conversion - from: m to: ft
      Expression: output = (3.28084*input) + (0) */
   Time_Varying_Model_2022a_B.UnitConversion = 3.280839895013123 *
     Time_Varying_Model_2022a_B.OpenRocketalt;
 
-  /* UnitConversion: '<S121>/Unit Conversion' */
+  /* UnitConversion: '<S124>/Unit Conversion' */
   /* Unit Conversion - from: m/s to: ft/s
      Expression: output = (3.28084*input) + (0) */
   Time_Varying_Model_2022a_B.UnitConversion_e = 3.280839895013123 *
     Time_Varying_Model_2022a_B.OpenRocketVelocity;
 
-  /* Saturate: '<S148>/Limit Function 10ft to 1000ft' */
+  /* Saturate: '<S151>/Limit Function 10ft to 1000ft' */
   if (Time_Varying_Model_2022a_B.UnitConversion >
       Time_Varying_Model_2022a_P.LimitFunction10ftto1000ft_Upper) {
-    /* Saturate: '<S148>/Limit Function 10ft to 1000ft' */
+    /* Saturate: '<S151>/Limit Function 10ft to 1000ft' */
     Time_Varying_Model_2022a_B.LimitFunction10ftto1000ft =
       Time_Varying_Model_2022a_P.LimitFunction10ftto1000ft_Upper;
   } else if (Time_Varying_Model_2022a_B.UnitConversion <
              Time_Varying_Model_2022a_P.LimitFunction10ftto1000ft_Lower) {
-    /* Saturate: '<S148>/Limit Function 10ft to 1000ft' */
+    /* Saturate: '<S151>/Limit Function 10ft to 1000ft' */
     Time_Varying_Model_2022a_B.LimitFunction10ftto1000ft =
       Time_Varying_Model_2022a_P.LimitFunction10ftto1000ft_Lower;
   } else {
-    /* Saturate: '<S148>/Limit Function 10ft to 1000ft' */
+    /* Saturate: '<S151>/Limit Function 10ft to 1000ft' */
     Time_Varying_Model_2022a_B.LimitFunction10ftto1000ft =
       Time_Varying_Model_2022a_B.UnitConversion;
   }
 
-  /* End of Saturate: '<S148>/Limit Function 10ft to 1000ft' */
+  /* End of Saturate: '<S151>/Limit Function 10ft to 1000ft' */
 
-  /* Fcn: '<S148>/Low Altitude Scale Length' */
+  /* Fcn: '<S151>/Low Altitude Scale Length' */
   ang_cos = 0.000823 * Time_Varying_Model_2022a_B.LimitFunction10ftto1000ft +
     0.177;
   if (ang_cos < 0.0) {
@@ -958,13 +958,13 @@ void Time_Varying_Model_2022a_step(void)
     ang_sin = rt_powd_snf(ang_cos, 1.2);
   }
 
-  /* Fcn: '<S148>/Low Altitude Scale Length' */
+  /* Fcn: '<S151>/Low Altitude Scale Length' */
   Time_Varying_Model_2022a_B.LowAltitudeScaleLength =
     Time_Varying_Model_2022a_B.LimitFunction10ftto1000ft / ang_sin;
   if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
       Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) {
-    /* UnitConversion: '<S150>/Unit Conversion' incorporates:
-     *  Constant: '<S149>/Medium//High Altitude'
+    /* UnitConversion: '<S153>/Unit Conversion' incorporates:
+     *  Constant: '<S152>/Medium//High Altitude'
      */
     /* Unit Conversion - from: m to: ft
        Expression: output = (3.28084*input) + (0) */
@@ -972,26 +972,26 @@ void Time_Varying_Model_2022a_step(void)
       Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelContin;
   }
 
-  /* Saturate: '<S131>/Limit Height h<1000ft' */
+  /* Saturate: '<S134>/Limit Height h<1000ft' */
   if (Time_Varying_Model_2022a_B.UnitConversion >
       Time_Varying_Model_2022a_P.LimitHeighth1000ft_UpperSat) {
-    /* Saturate: '<S131>/Limit Height h<1000ft' */
+    /* Saturate: '<S134>/Limit Height h<1000ft' */
     Time_Varying_Model_2022a_B.LimitHeighth1000ft =
       Time_Varying_Model_2022a_P.LimitHeighth1000ft_UpperSat;
   } else if (Time_Varying_Model_2022a_B.UnitConversion <
              Time_Varying_Model_2022a_P.LimitHeighth1000ft_LowerSat) {
-    /* Saturate: '<S131>/Limit Height h<1000ft' */
+    /* Saturate: '<S134>/Limit Height h<1000ft' */
     Time_Varying_Model_2022a_B.LimitHeighth1000ft =
       Time_Varying_Model_2022a_P.LimitHeighth1000ft_LowerSat;
   } else {
-    /* Saturate: '<S131>/Limit Height h<1000ft' */
+    /* Saturate: '<S134>/Limit Height h<1000ft' */
     Time_Varying_Model_2022a_B.LimitHeighth1000ft =
       Time_Varying_Model_2022a_B.UnitConversion;
   }
 
-  /* End of Saturate: '<S131>/Limit Height h<1000ft' */
+  /* End of Saturate: '<S134>/Limit Height h<1000ft' */
 
-  /* Fcn: '<S131>/Low Altitude Intensity' */
+  /* Fcn: '<S134>/Low Altitude Intensity' */
   ang_cos = 0.000823 * Time_Varying_Model_2022a_B.LimitHeighth1000ft + 0.177;
   if (ang_cos < 0.0) {
     ang_sin = -rt_powd_snf(-ang_cos, 0.4);
@@ -999,30 +999,30 @@ void Time_Varying_Model_2022a_step(void)
     ang_sin = rt_powd_snf(ang_cos, 0.4);
   }
 
-  /* Fcn: '<S131>/Low Altitude Intensity' */
+  /* Fcn: '<S134>/Low Altitude Intensity' */
   Time_Varying_Model_2022a_B.LowAltitudeIntensity = 1.0 / ang_sin;
   if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
       Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) {
-    /* UnitConversion: '<S122>/Unit Conversion' incorporates:
-     *  Constant: '<S110>/Windspeed at 20ft (6m)'
+    /* UnitConversion: '<S125>/Unit Conversion' incorporates:
+     *  Constant: '<S113>/Windspeed at 20ft (6m)'
      */
     /* Unit Conversion - from: m/s to: ft/s
        Expression: output = (3.28084*input) + (0) */
     Time_Varying_Model_2022a_B.UnitConversion_g = 3.280839895013123 *
       Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelCont_i;
 
-    /* Gain: '<S131>/sigma_wg ' */
+    /* Gain: '<S134>/sigma_wg ' */
     Time_Varying_Model_2022a_B.sigma_wg =
       Time_Varying_Model_2022a_P.sigma_wg_Gain *
       Time_Varying_Model_2022a_B.UnitConversion_g;
   }
 
-  /* Product: '<S131>/sigma_ug, sigma_vg' */
+  /* Product: '<S134>/sigma_ug, sigma_vg' */
   Time_Varying_Model_2022a_B.sigma_ugsigma_vg =
     Time_Varying_Model_2022a_B.LowAltitudeIntensity *
     Time_Varying_Model_2022a_B.sigma_wg;
 
-  /* PreLookup: '<S130>/PreLook-Up Index Search  (altitude)' */
+  /* PreLookup: '<S133>/PreLook-Up Index Search  (altitude)' */
   Time_Varying_Model_2022a_B.PreLookUpIndexSearchaltitude_o1 = plook_bincpa
     (Time_Varying_Model_2022a_B.UnitConversion,
      Time_Varying_Model_2022a_P.PreLookUpIndexSearchaltitude_Br, 11U,
@@ -1030,8 +1030,8 @@ void Time_Varying_Model_2022a_step(void)
      &Time_Varying_Model_2022a_DW.PreLookUpIndexSearchaltitude_DW);
   if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
       Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) {
-    /* PreLookup: '<S130>/PreLook-Up Index Search  (prob of exceed)' incorporates:
-     *  Constant: '<S130>/Probability of  Exceedance'
+    /* PreLookup: '<S133>/PreLook-Up Index Search  (prob of exceed)' incorporates:
+     *  Constant: '<S133>/Probability of  Exceedance'
      */
     Time_Varying_Model_2022a_B.PreLookUpIndexSearchprobofexc_m = plook_bincpa
       (Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelCon_au,
@@ -1040,7 +1040,7 @@ void Time_Varying_Model_2022a_step(void)
        &Time_Varying_Model_2022a_DW.PreLookUpIndexSearchprobofexcee);
   }
 
-  /* Interpolation_n-D: '<S130>/Medium//High Altitude Intensity' */
+  /* Interpolation_n-D: '<S133>/Medium//High Altitude Intensity' */
   ang_cos = Time_Varying_Model_2022a_B.PreLookUpIndexSearchaltitude_o2;
   frac[0] = ang_cos;
   ang_cos = Time_Varying_Model_2022a_B.PreLookUpIndexSearchprobofexcee;
@@ -1050,108 +1050,108 @@ void Time_Varying_Model_2022a_step(void)
   bpIdx = Time_Varying_Model_2022a_B.PreLookUpIndexSearchprobofexc_m;
   bpIndex[1] = bpIdx;
 
-  /* Interpolation_n-D: '<S130>/Medium//High Altitude Intensity' */
+  /* Interpolation_n-D: '<S133>/Medium//High Altitude Intensity' */
   Time_Varying_Model_2022a_B.MediumHighAltitudeIntensity = intrp2d_la_pw(bpIndex,
     frac, Time_Varying_Model_2022a_P.MediumHighAltitudeIntensity_Tab, 12U,
     Time_Varying_Model_2022a_P.MediumHighAltitudeIntensity_max);
   if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
       Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[2] == 0) {
-    /* Sqrt: '<S123>/Sqrt1' incorporates:
-     *  Constant: '<S123>/Constant1'
+    /* Sqrt: '<S126>/Sqrt1' incorporates:
+     *  Constant: '<S126>/Constant1'
      */
     Time_Varying_Model_2022a_B.Sqrt1 = sqrt
       (Time_Varying_Model_2022a_P.WhiteNoise_Ts);
 
-    /* Sqrt: '<S123>/Sqrt' incorporates:
-     *  Constant: '<S123>/Constant'
+    /* Sqrt: '<S126>/Sqrt' incorporates:
+     *  Constant: '<S126>/Constant'
      */
     ang_cos = sqrt(Time_Varying_Model_2022a_P.WhiteNoise_pwr[0]);
     Time_Varying_Model_2022a_B.Sqrt[0] = ang_cos;
 
-    /* Product: '<S123>/Divide' */
+    /* Product: '<S126>/Divide' */
     ang_cos /= Time_Varying_Model_2022a_B.Sqrt1;
     Time_Varying_Model_2022a_B.Divide[0] = ang_cos;
 
-    /* RandomNumber: '<S123>/White Noise' */
+    /* RandomNumber: '<S126>/White Noise' */
     ct_idx_2 = Time_Varying_Model_2022a_DW.NextOutput[0];
 
-    /* RandomNumber: '<S123>/White Noise' */
+    /* RandomNumber: '<S126>/White Noise' */
     Time_Varying_Model_2022a_B.WhiteNoise[0] = ct_idx_2;
 
-    /* Product: '<S123>/Product' */
+    /* Product: '<S126>/Product' */
     Time_Varying_Model_2022a_B.Product_p[0] = ang_cos * ct_idx_2;
 
-    /* Sqrt: '<S123>/Sqrt' incorporates:
-     *  Constant: '<S123>/Constant'
+    /* Sqrt: '<S126>/Sqrt' incorporates:
+     *  Constant: '<S126>/Constant'
      */
     ang_cos = sqrt(Time_Varying_Model_2022a_P.WhiteNoise_pwr[1]);
     Time_Varying_Model_2022a_B.Sqrt[1] = ang_cos;
 
-    /* Product: '<S123>/Divide' */
+    /* Product: '<S126>/Divide' */
     ang_cos /= Time_Varying_Model_2022a_B.Sqrt1;
     Time_Varying_Model_2022a_B.Divide[1] = ang_cos;
 
-    /* RandomNumber: '<S123>/White Noise' */
+    /* RandomNumber: '<S126>/White Noise' */
     ct_idx_2 = Time_Varying_Model_2022a_DW.NextOutput[1];
 
-    /* RandomNumber: '<S123>/White Noise' */
+    /* RandomNumber: '<S126>/White Noise' */
     Time_Varying_Model_2022a_B.WhiteNoise[1] = ct_idx_2;
 
-    /* Product: '<S123>/Product' */
+    /* Product: '<S126>/Product' */
     Time_Varying_Model_2022a_B.Product_p[1] = ang_cos * ct_idx_2;
 
-    /* Sqrt: '<S123>/Sqrt' incorporates:
-     *  Constant: '<S123>/Constant'
+    /* Sqrt: '<S126>/Sqrt' incorporates:
+     *  Constant: '<S126>/Constant'
      */
     ang_cos = sqrt(Time_Varying_Model_2022a_P.WhiteNoise_pwr[2]);
     Time_Varying_Model_2022a_B.Sqrt[2] = ang_cos;
 
-    /* Product: '<S123>/Divide' */
+    /* Product: '<S126>/Divide' */
     ang_cos /= Time_Varying_Model_2022a_B.Sqrt1;
     Time_Varying_Model_2022a_B.Divide[2] = ang_cos;
 
-    /* RandomNumber: '<S123>/White Noise' */
+    /* RandomNumber: '<S126>/White Noise' */
     ct_idx_2 = Time_Varying_Model_2022a_DW.NextOutput[2];
 
-    /* RandomNumber: '<S123>/White Noise' */
+    /* RandomNumber: '<S126>/White Noise' */
     Time_Varying_Model_2022a_B.WhiteNoise[2] = ct_idx_2;
 
-    /* Product: '<S123>/Product' */
+    /* Product: '<S126>/Product' */
     Time_Varying_Model_2022a_B.Product_p[2] = ang_cos * ct_idx_2;
 
-    /* Sqrt: '<S123>/Sqrt' incorporates:
-     *  Constant: '<S123>/Constant'
+    /* Sqrt: '<S126>/Sqrt' incorporates:
+     *  Constant: '<S126>/Constant'
      */
     ang_cos = sqrt(Time_Varying_Model_2022a_P.WhiteNoise_pwr[3]);
     Time_Varying_Model_2022a_B.Sqrt[3] = ang_cos;
 
-    /* Product: '<S123>/Divide' */
+    /* Product: '<S126>/Divide' */
     ang_cos /= Time_Varying_Model_2022a_B.Sqrt1;
     Time_Varying_Model_2022a_B.Divide[3] = ang_cos;
 
-    /* RandomNumber: '<S123>/White Noise' */
+    /* RandomNumber: '<S126>/White Noise' */
     ct_idx_2 = Time_Varying_Model_2022a_DW.NextOutput[3];
 
-    /* RandomNumber: '<S123>/White Noise' */
+    /* RandomNumber: '<S126>/White Noise' */
     Time_Varying_Model_2022a_B.WhiteNoise[3] = ct_idx_2;
 
-    /* Product: '<S123>/Product' */
+    /* Product: '<S126>/Product' */
     Time_Varying_Model_2022a_B.Product_p[3] = ang_cos * ct_idx_2;
   }
 
-  /* Outputs for Enabled SubSystem: '<S114>/Hugw(s)' incorporates:
-   *  EnablePort: '<S127>/Enable'
+  /* Outputs for Enabled SubSystem: '<S117>/Hugw(s)' incorporates:
+   *  EnablePort: '<S130>/Enable'
    */
   if ((rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
        Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) &&
       rtsiIsModeUpdateTimeStep(&Time_Varying_Model_2022a_M->solverInfo)) {
-    /* Constant: '<S114>/Constant' */
+    /* Constant: '<S117>/Constant' */
     if (Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelCont_c > 0.0) {
       if (!Time_Varying_Model_2022a_DW.Hugws_MODE) {
         (void) memset(&(Time_Varying_Model_2022a_XDis.ug_p_CSTATE), 0,
                       2*sizeof(boolean_T));
 
-        /* InitializeConditions for Integrator: '<S127>/ug_p' */
+        /* InitializeConditions for Integrator: '<S130>/ug_p' */
         Time_Varying_Model_2022a_X.ug_p_CSTATE[0] =
           Time_Varying_Model_2022a_P.ug_p_IC;
         Time_Varying_Model_2022a_X.ug_p_CSTATE[1] =
@@ -1171,8 +1171,8 @@ void Time_Varying_Model_2022a_step(void)
         (void) memset(&(Time_Varying_Model_2022a_XDis.ug_p_CSTATE), 1,
                       2*sizeof(boolean_T));
 
-        /* Disable for Product: '<S127>/w1' incorporates:
-         *  Outport: '<S127>/ugw'
+        /* Disable for Product: '<S130>/w1' incorporates:
+         *  Outport: '<S130>/ugw'
          */
         Time_Varying_Model_2022a_B.w1_a[0] = Time_Varying_Model_2022a_P.ugw_Y0;
         Time_Varying_Model_2022a_B.w1_a[1] = Time_Varying_Model_2022a_P.ugw_Y0;
@@ -1182,7 +1182,7 @@ void Time_Varying_Model_2022a_step(void)
   }
 
   if (Time_Varying_Model_2022a_DW.Hugws_MODE) {
-    /* Product: '<S127>/Lug//V' */
+    /* Product: '<S130>/Lug//V' */
     Time_Varying_Model_2022a_B.LugV[0] =
       Time_Varying_Model_2022a_B.LowAltitudeScaleLength /
       Time_Varying_Model_2022a_B.UnitConversion_e;
@@ -1190,109 +1190,109 @@ void Time_Varying_Model_2022a_step(void)
       Time_Varying_Model_2022a_B.UnitConversion_f /
       Time_Varying_Model_2022a_B.UnitConversion_e;
 
-    /* Gain: '<S127>/(2//pi)' */
+    /* Gain: '<S130>/(2//pi)' */
     ang_cos = Time_Varying_Model_2022a_B.LugV[0];
 
-    /* Gain: '<S127>/(2//pi)' */
+    /* Gain: '<S130>/(2//pi)' */
     Time_Varying_Model_2022a_B.upi_l[0] = Time_Varying_Model_2022a_P.upi_Gain *
       ang_cos;
 
-    /* Sqrt: '<S127>/sqrt' */
+    /* Sqrt: '<S130>/sqrt' */
     ang_sin = sqrt(Time_Varying_Model_2022a_B.upi_l[0]);
     Time_Varying_Model_2022a_B.sqrt_a[0] = ang_sin;
 
-    /* Product: '<S127>/Lug//V1' */
+    /* Product: '<S130>/Lug//V1' */
     ang_sin *= Time_Varying_Model_2022a_B.Product_p[0];
     Time_Varying_Model_2022a_B.LugV1_m[0] = ang_sin;
 
-    /* Integrator: '<S127>/ug_p' */
+    /* Integrator: '<S130>/ug_p' */
     st_idx_1 = Time_Varying_Model_2022a_X.ug_p_CSTATE[0];
     Time_Varying_Model_2022a_B.ug_p[0] = st_idx_1;
 
-    /* Sum: '<S127>/Sum' */
+    /* Sum: '<S130>/Sum' */
     ang_sin -= st_idx_1;
     Time_Varying_Model_2022a_B.Sum_i[0] = ang_sin;
 
-    /* Product: '<S127>/w' */
+    /* Product: '<S130>/w' */
     Time_Varying_Model_2022a_B.w_b[0] = ang_sin / ang_cos;
 
-    /* Gain: '<S127>/(2//pi)' */
+    /* Gain: '<S130>/(2//pi)' */
     ang_cos = Time_Varying_Model_2022a_B.LugV[1];
 
-    /* Gain: '<S127>/(2//pi)' */
+    /* Gain: '<S130>/(2//pi)' */
     Time_Varying_Model_2022a_B.upi_l[1] = Time_Varying_Model_2022a_P.upi_Gain *
       ang_cos;
 
-    /* Sqrt: '<S127>/sqrt' */
+    /* Sqrt: '<S130>/sqrt' */
     ang_sin = sqrt(Time_Varying_Model_2022a_B.upi_l[1]);
     Time_Varying_Model_2022a_B.sqrt_a[1] = ang_sin;
 
-    /* Product: '<S127>/Lug//V1' */
+    /* Product: '<S130>/Lug//V1' */
     ang_sin *= Time_Varying_Model_2022a_B.Product_p[0];
     Time_Varying_Model_2022a_B.LugV1_m[1] = ang_sin;
 
-    /* Integrator: '<S127>/ug_p' */
+    /* Integrator: '<S130>/ug_p' */
     st_idx_1 = Time_Varying_Model_2022a_X.ug_p_CSTATE[1];
     Time_Varying_Model_2022a_B.ug_p[1] = st_idx_1;
 
-    /* Sum: '<S127>/Sum' */
+    /* Sum: '<S130>/Sum' */
     ang_sin -= st_idx_1;
     Time_Varying_Model_2022a_B.Sum_i[1] = ang_sin;
 
-    /* Product: '<S127>/w' */
+    /* Product: '<S130>/w' */
     Time_Varying_Model_2022a_B.w_b[1] = ang_sin / ang_cos;
 
-    /* Product: '<S127>/w1' */
+    /* Product: '<S130>/w1' */
     Time_Varying_Model_2022a_B.w1_a[0] = Time_Varying_Model_2022a_B.ug_p[0] *
       Time_Varying_Model_2022a_B.sigma_ugsigma_vg;
     Time_Varying_Model_2022a_B.w1_a[1] = Time_Varying_Model_2022a_B.ug_p[1] *
       Time_Varying_Model_2022a_B.MediumHighAltitudeIntensity;
   }
 
-  /* End of Outputs for SubSystem: '<S114>/Hugw(s)' */
+  /* End of Outputs for SubSystem: '<S117>/Hugw(s)' */
 
-  /* Gain: '<S120>/Lv' */
+  /* Gain: '<S123>/Lv' */
   Time_Varying_Model_2022a_B.Lv[0] = Time_Varying_Model_2022a_P.Lv_Gain *
     Time_Varying_Model_2022a_B.LowAltitudeScaleLength;
   Time_Varying_Model_2022a_B.Lv[1] = Time_Varying_Model_2022a_P.Lv_Gain *
     Time_Varying_Model_2022a_B.UnitConversion_f;
 
-  /* Outputs for Enabled SubSystem: '<S114>/Hvgw(s)' incorporates:
-   *  EnablePort: '<S128>/Enable'
+  /* Outputs for Enabled SubSystem: '<S117>/Hvgw(s)' incorporates:
+   *  EnablePort: '<S131>/Enable'
    */
   if ((rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
        Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) &&
       rtsiIsModeUpdateTimeStep(&Time_Varying_Model_2022a_M->solverInfo)) {
-    /* Constant: '<S114>/Constant' */
+    /* Constant: '<S117>/Constant' */
     if (Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelCont_c > 0.0) {
       if (!Time_Varying_Model_2022a_DW.Hvgws_MODE) {
         (void) memset(&(Time_Varying_Model_2022a_XDis.vg_p1_CSTATE), 0,
                       4*sizeof(boolean_T));
 
-        /* InitializeConditions for Integrator: '<S128>/vg_p1' */
+        /* InitializeConditions for Integrator: '<S131>/vg_p1' */
         Time_Varying_Model_2022a_X.vg_p1_CSTATE[0] =
           Time_Varying_Model_2022a_P.vg_p1_IC;
 
-        /* InitializeConditions for Integrator: '<S128>/vgw_p2' */
+        /* InitializeConditions for Integrator: '<S131>/vgw_p2' */
         Time_Varying_Model_2022a_X.vgw_p2_CSTATE[0] =
           Time_Varying_Model_2022a_P.vgw_p2_IC;
 
-        /* InitializeConditions for Integrator: '<S128>/vg_p1' */
+        /* InitializeConditions for Integrator: '<S131>/vg_p1' */
         Time_Varying_Model_2022a_X.vg_p1_CSTATE[1] =
           Time_Varying_Model_2022a_P.vg_p1_IC;
 
-        /* InitializeConditions for Integrator: '<S128>/vgw_p2' */
+        /* InitializeConditions for Integrator: '<S131>/vgw_p2' */
         Time_Varying_Model_2022a_X.vgw_p2_CSTATE[1] =
           Time_Varying_Model_2022a_P.vgw_p2_IC;
         Time_Varying_Model_2022a_DW.Hvgws_MODE = true;
       }
     } else {
-      /* Outputs for Enabled SubSystem: '<S114>/Hugw(s)' incorporates:
-       *  EnablePort: '<S127>/Enable'
+      /* Outputs for Enabled SubSystem: '<S117>/Hugw(s)' incorporates:
+       *  EnablePort: '<S130>/Enable'
        */
       ang_cos = rtmGetTStart(Time_Varying_Model_2022a_M);
 
-      /* End of Outputs for SubSystem: '<S114>/Hugw(s)' */
+      /* End of Outputs for SubSystem: '<S117>/Hugw(s)' */
       if ((((Time_Varying_Model_2022a_M->Timing.clockTick1+
              Time_Varying_Model_2022a_M->Timing.clockTickH1* 4294967296.0)) *
            0.01) == ang_cos) {
@@ -1304,8 +1304,8 @@ void Time_Varying_Model_2022a_step(void)
         (void) memset(&(Time_Varying_Model_2022a_XDis.vg_p1_CSTATE), 1,
                       4*sizeof(boolean_T));
 
-        /* Disable for Product: '<S128>/w 1' incorporates:
-         *  Outport: '<S128>/vgw'
+        /* Disable for Product: '<S131>/w 1' incorporates:
+         *  Outport: '<S131>/vgw'
          */
         Time_Varying_Model_2022a_B.w1[0] = Time_Varying_Model_2022a_P.vgw_Y0;
         Time_Varying_Model_2022a_B.w1[1] = Time_Varying_Model_2022a_P.vgw_Y0;
@@ -1315,103 +1315,103 @@ void Time_Varying_Model_2022a_step(void)
   }
 
   if (Time_Varying_Model_2022a_DW.Hvgws_MODE) {
-    /* Product: '<S128>/Lvg//V' */
+    /* Product: '<S131>/Lvg//V' */
     ang_cos = Time_Varying_Model_2022a_B.Lv[0] /
       Time_Varying_Model_2022a_B.UnitConversion_e;
     Time_Varying_Model_2022a_B.LvgV[0] = ang_cos;
 
-    /* Gain: '<S128>/(1//pi)' */
+    /* Gain: '<S131>/(1//pi)' */
     Time_Varying_Model_2022a_B.upi_h[0] = Time_Varying_Model_2022a_P.upi_Gain_m *
       ang_cos;
 
-    /* Sqrt: '<S128>/sqrt' */
+    /* Sqrt: '<S131>/sqrt' */
     ang_sin = sqrt(Time_Varying_Model_2022a_B.upi_h[0]);
     Time_Varying_Model_2022a_B.sqrt_ew[0] = ang_sin;
 
-    /* Product: '<S128>/Lug//V1' */
+    /* Product: '<S131>/Lug//V1' */
     st_idx_1 = ang_sin * Time_Varying_Model_2022a_B.Product_p[1];
     Time_Varying_Model_2022a_B.LugV1_c[0] = st_idx_1;
 
-    /* Integrator: '<S128>/vg_p1' */
+    /* Integrator: '<S131>/vg_p1' */
     ang_sin = Time_Varying_Model_2022a_X.vg_p1_CSTATE[0];
     Time_Varying_Model_2022a_B.vg_p1[0] = ang_sin;
 
-    /* Sum: '<S128>/Sum' */
+    /* Sum: '<S131>/Sum' */
     st_idx_1 -= ang_sin;
     Time_Varying_Model_2022a_B.Sum_c[0] = st_idx_1;
 
-    /* Product: '<S128>/w' */
+    /* Product: '<S131>/w' */
     st_idx_1 /= ang_cos;
     Time_Varying_Model_2022a_B.w_l[0] = st_idx_1;
 
-    /* Product: '<S128>/Lvg//V ' */
+    /* Product: '<S131>/Lvg//V ' */
     ct_idx_0 = st_idx_1 * ang_cos;
     Time_Varying_Model_2022a_B.LvgV_n[0] = ct_idx_0;
 
-    /* Integrator: '<S128>/vgw_p2' */
+    /* Integrator: '<S131>/vgw_p2' */
     st_idx_1 = Time_Varying_Model_2022a_X.vgw_p2_CSTATE[0];
     Time_Varying_Model_2022a_B.vgw_p2[0] = st_idx_1;
 
-    /* Gain: '<S128>/sqrt(3)' */
+    /* Gain: '<S131>/sqrt(3)' */
     ct_idx_0 *= Time_Varying_Model_2022a_P.sqrt3_Gain;
     Time_Varying_Model_2022a_B.sqrt3[0] = ct_idx_0;
 
-    /* Sum: '<S128>/Sum1' */
+    /* Sum: '<S131>/Sum1' */
     ang_sin = (ang_sin - st_idx_1) + ct_idx_0;
     Time_Varying_Model_2022a_B.Sum1_l[0] = ang_sin;
 
-    /* Product: '<S128>/w ' */
+    /* Product: '<S131>/w ' */
     Time_Varying_Model_2022a_B.w_i[0] = ang_sin / ang_cos;
 
-    /* Product: '<S128>/Lvg//V' */
+    /* Product: '<S131>/Lvg//V' */
     ang_cos = Time_Varying_Model_2022a_B.Lv[1] /
       Time_Varying_Model_2022a_B.UnitConversion_e;
     Time_Varying_Model_2022a_B.LvgV[1] = ang_cos;
 
-    /* Gain: '<S128>/(1//pi)' */
+    /* Gain: '<S131>/(1//pi)' */
     Time_Varying_Model_2022a_B.upi_h[1] = Time_Varying_Model_2022a_P.upi_Gain_m *
       ang_cos;
 
-    /* Sqrt: '<S128>/sqrt' */
+    /* Sqrt: '<S131>/sqrt' */
     ang_sin = sqrt(Time_Varying_Model_2022a_B.upi_h[1]);
     Time_Varying_Model_2022a_B.sqrt_ew[1] = ang_sin;
 
-    /* Product: '<S128>/Lug//V1' */
+    /* Product: '<S131>/Lug//V1' */
     st_idx_1 = ang_sin * Time_Varying_Model_2022a_B.Product_p[1];
     Time_Varying_Model_2022a_B.LugV1_c[1] = st_idx_1;
 
-    /* Integrator: '<S128>/vg_p1' */
+    /* Integrator: '<S131>/vg_p1' */
     ang_sin = Time_Varying_Model_2022a_X.vg_p1_CSTATE[1];
     Time_Varying_Model_2022a_B.vg_p1[1] = ang_sin;
 
-    /* Sum: '<S128>/Sum' */
+    /* Sum: '<S131>/Sum' */
     st_idx_1 -= ang_sin;
     Time_Varying_Model_2022a_B.Sum_c[1] = st_idx_1;
 
-    /* Product: '<S128>/w' */
+    /* Product: '<S131>/w' */
     st_idx_1 /= ang_cos;
     Time_Varying_Model_2022a_B.w_l[1] = st_idx_1;
 
-    /* Product: '<S128>/Lvg//V ' */
+    /* Product: '<S131>/Lvg//V ' */
     ct_idx_0 = st_idx_1 * ang_cos;
     Time_Varying_Model_2022a_B.LvgV_n[1] = ct_idx_0;
 
-    /* Integrator: '<S128>/vgw_p2' */
+    /* Integrator: '<S131>/vgw_p2' */
     st_idx_1 = Time_Varying_Model_2022a_X.vgw_p2_CSTATE[1];
     Time_Varying_Model_2022a_B.vgw_p2[1] = st_idx_1;
 
-    /* Gain: '<S128>/sqrt(3)' */
+    /* Gain: '<S131>/sqrt(3)' */
     ct_idx_0 *= Time_Varying_Model_2022a_P.sqrt3_Gain;
     Time_Varying_Model_2022a_B.sqrt3[1] = ct_idx_0;
 
-    /* Sum: '<S128>/Sum1' */
+    /* Sum: '<S131>/Sum1' */
     ang_sin = (ang_sin - st_idx_1) + ct_idx_0;
     Time_Varying_Model_2022a_B.Sum1_l[1] = ang_sin;
 
-    /* Product: '<S128>/w ' */
+    /* Product: '<S131>/w ' */
     Time_Varying_Model_2022a_B.w_i[1] = ang_sin / ang_cos;
 
-    /* Product: '<S128>/w 1' */
+    /* Product: '<S131>/w 1' */
     Time_Varying_Model_2022a_B.w1[0] =
       Time_Varying_Model_2022a_B.sigma_ugsigma_vg *
       Time_Varying_Model_2022a_B.vgw_p2[0];
@@ -1420,50 +1420,50 @@ void Time_Varying_Model_2022a_step(void)
       Time_Varying_Model_2022a_B.vgw_p2[1];
   }
 
-  /* End of Outputs for SubSystem: '<S114>/Hvgw(s)' */
+  /* End of Outputs for SubSystem: '<S117>/Hvgw(s)' */
 
-  /* Gain: '<S120>/Lw' */
+  /* Gain: '<S123>/Lw' */
   Time_Varying_Model_2022a_B.Lw[0] = Time_Varying_Model_2022a_P.Lw_Gain *
     Time_Varying_Model_2022a_B.LimitFunction10ftto1000ft;
   Time_Varying_Model_2022a_B.Lw[1] = Time_Varying_Model_2022a_P.Lw_Gain *
     Time_Varying_Model_2022a_B.UnitConversion_f;
 
-  /* Outputs for Enabled SubSystem: '<S114>/Hwgw(s)' incorporates:
-   *  EnablePort: '<S129>/Enable'
+  /* Outputs for Enabled SubSystem: '<S117>/Hwgw(s)' incorporates:
+   *  EnablePort: '<S132>/Enable'
    */
   if ((rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
        Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) &&
       rtsiIsModeUpdateTimeStep(&Time_Varying_Model_2022a_M->solverInfo)) {
-    /* Constant: '<S114>/Constant' */
+    /* Constant: '<S117>/Constant' */
     if (Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelCont_c > 0.0) {
       if (!Time_Varying_Model_2022a_DW.Hwgws_MODE) {
         (void) memset(&(Time_Varying_Model_2022a_XDis.wg_p1_CSTATE), 0,
                       4*sizeof(boolean_T));
 
-        /* InitializeConditions for Integrator: '<S129>/wg_p1' */
+        /* InitializeConditions for Integrator: '<S132>/wg_p1' */
         Time_Varying_Model_2022a_X.wg_p1_CSTATE[0] =
           Time_Varying_Model_2022a_P.wg_p1_IC;
 
-        /* InitializeConditions for Integrator: '<S129>/wg_p2' */
+        /* InitializeConditions for Integrator: '<S132>/wg_p2' */
         Time_Varying_Model_2022a_X.wg_p2_CSTATE[0] =
           Time_Varying_Model_2022a_P.wg_p2_IC;
 
-        /* InitializeConditions for Integrator: '<S129>/wg_p1' */
+        /* InitializeConditions for Integrator: '<S132>/wg_p1' */
         Time_Varying_Model_2022a_X.wg_p1_CSTATE[1] =
           Time_Varying_Model_2022a_P.wg_p1_IC;
 
-        /* InitializeConditions for Integrator: '<S129>/wg_p2' */
+        /* InitializeConditions for Integrator: '<S132>/wg_p2' */
         Time_Varying_Model_2022a_X.wg_p2_CSTATE[1] =
           Time_Varying_Model_2022a_P.wg_p2_IC;
         Time_Varying_Model_2022a_DW.Hwgws_MODE = true;
       }
     } else {
-      /* Outputs for Enabled SubSystem: '<S114>/Hugw(s)' incorporates:
-       *  EnablePort: '<S127>/Enable'
+      /* Outputs for Enabled SubSystem: '<S117>/Hugw(s)' incorporates:
+       *  EnablePort: '<S130>/Enable'
        */
       ang_cos = rtmGetTStart(Time_Varying_Model_2022a_M);
 
-      /* End of Outputs for SubSystem: '<S114>/Hugw(s)' */
+      /* End of Outputs for SubSystem: '<S117>/Hugw(s)' */
       if ((((Time_Varying_Model_2022a_M->Timing.clockTick1+
              Time_Varying_Model_2022a_M->Timing.clockTickH1* 4294967296.0)) *
            0.01) == ang_cos) {
@@ -1475,8 +1475,8 @@ void Time_Varying_Model_2022a_step(void)
         (void) memset(&(Time_Varying_Model_2022a_XDis.wg_p1_CSTATE), 1,
                       4*sizeof(boolean_T));
 
-        /* Disable for Product: '<S129>/Lwg//V 1' incorporates:
-         *  Outport: '<S129>/wgw'
+        /* Disable for Product: '<S132>/Lwg//V 1' incorporates:
+         *  Outport: '<S132>/wgw'
          */
         Time_Varying_Model_2022a_B.LwgV1[0] = Time_Varying_Model_2022a_P.wgw_Y0;
         Time_Varying_Model_2022a_B.LwgV1[1] = Time_Varying_Model_2022a_P.wgw_Y0;
@@ -1486,109 +1486,109 @@ void Time_Varying_Model_2022a_step(void)
   }
 
   if (Time_Varying_Model_2022a_DW.Hwgws_MODE) {
-    /* Product: '<S129>/Lwg//V' */
+    /* Product: '<S132>/Lwg//V' */
     ang_cos = Time_Varying_Model_2022a_B.Lw[0] /
       Time_Varying_Model_2022a_B.UnitConversion_e;
     Time_Varying_Model_2022a_B.LwgV[0] = ang_cos;
 
-    /* Gain: '<S129>/1//pi' */
+    /* Gain: '<S132>/1//pi' */
     Time_Varying_Model_2022a_B.upi[0] = Time_Varying_Model_2022a_P.upi_Gain_l *
       ang_cos;
 
-    /* Sqrt: '<S129>/sqrt1' */
+    /* Sqrt: '<S132>/sqrt1' */
     ang_sin = sqrt(Time_Varying_Model_2022a_B.upi[0]);
     Time_Varying_Model_2022a_B.sqrt1[0] = ang_sin;
 
-    /* Product: '<S129>/Lug//V1' */
+    /* Product: '<S132>/Lug//V1' */
     ang_sin *= Time_Varying_Model_2022a_B.Product_p[2];
     Time_Varying_Model_2022a_B.LugV1[0] = ang_sin;
 
-    /* Integrator: '<S129>/wg_p1' */
+    /* Integrator: '<S132>/wg_p1' */
     st_idx_1 = Time_Varying_Model_2022a_X.wg_p1_CSTATE[0];
     Time_Varying_Model_2022a_B.wg_p1[0] = st_idx_1;
 
-    /* Sum: '<S129>/Sum' */
+    /* Sum: '<S132>/Sum' */
     ang_sin -= st_idx_1;
     Time_Varying_Model_2022a_B.Sum_ht[0] = ang_sin;
 
-    /* Product: '<S129>/w' */
+    /* Product: '<S132>/w' */
     Time_Varying_Model_2022a_B.w[0] = ang_sin / ang_cos;
 
-    /* Product: '<S129>/Lwg//V' */
+    /* Product: '<S132>/Lwg//V' */
     ang_cos = Time_Varying_Model_2022a_B.Lw[1] /
       Time_Varying_Model_2022a_B.UnitConversion_e;
     Time_Varying_Model_2022a_B.LwgV[1] = ang_cos;
 
-    /* Gain: '<S129>/1//pi' */
+    /* Gain: '<S132>/1//pi' */
     Time_Varying_Model_2022a_B.upi[1] = Time_Varying_Model_2022a_P.upi_Gain_l *
       ang_cos;
 
-    /* Sqrt: '<S129>/sqrt1' */
+    /* Sqrt: '<S132>/sqrt1' */
     ang_sin = sqrt(Time_Varying_Model_2022a_B.upi[1]);
     Time_Varying_Model_2022a_B.sqrt1[1] = ang_sin;
 
-    /* Product: '<S129>/Lug//V1' */
+    /* Product: '<S132>/Lug//V1' */
     ang_sin *= Time_Varying_Model_2022a_B.Product_p[2];
     Time_Varying_Model_2022a_B.LugV1[1] = ang_sin;
 
-    /* Integrator: '<S129>/wg_p1' */
+    /* Integrator: '<S132>/wg_p1' */
     st_idx_1 = Time_Varying_Model_2022a_X.wg_p1_CSTATE[1];
     Time_Varying_Model_2022a_B.wg_p1[1] = st_idx_1;
 
-    /* Sum: '<S129>/Sum' */
+    /* Sum: '<S132>/Sum' */
     ang_sin -= st_idx_1;
     Time_Varying_Model_2022a_B.Sum_ht[1] = ang_sin;
 
-    /* Product: '<S129>/w' */
+    /* Product: '<S132>/w' */
     Time_Varying_Model_2022a_B.w[1] = ang_sin / ang_cos;
     if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
         Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) {
-      /* Sqrt: '<S129>/sqrt' incorporates:
-       *  Constant: '<S129>/Constant'
+      /* Sqrt: '<S132>/sqrt' incorporates:
+       *  Constant: '<S132>/Constant'
        */
       Time_Varying_Model_2022a_B.sqrt_d = sqrt
         (Time_Varying_Model_2022a_P.Constant_Value);
     }
 
-    /* Product: '<S129>/Lwg//V ' */
+    /* Product: '<S132>/Lwg//V ' */
     ang_cos = Time_Varying_Model_2022a_B.LwgV[0];
 
-    /* Product: '<S129>/Lwg//V ' */
+    /* Product: '<S132>/Lwg//V ' */
     ang_sin = Time_Varying_Model_2022a_B.w[0] *
       Time_Varying_Model_2022a_B.sqrt_d * ang_cos;
     Time_Varying_Model_2022a_B.LwgV_p[0] = ang_sin;
 
-    /* Integrator: '<S129>/wg_p2' */
+    /* Integrator: '<S132>/wg_p2' */
     st_idx_1 = Time_Varying_Model_2022a_X.wg_p2_CSTATE[0];
     Time_Varying_Model_2022a_B.wg_p2[0] = st_idx_1;
 
-    /* Sum: '<S129>/Sum1' */
+    /* Sum: '<S132>/Sum1' */
     ang_sin += Time_Varying_Model_2022a_B.wg_p1[0] - st_idx_1;
     Time_Varying_Model_2022a_B.Sum1_b[0] = ang_sin;
 
-    /* Product: '<S129>/w ' */
+    /* Product: '<S132>/w ' */
     Time_Varying_Model_2022a_B.w_o[0] = ang_sin / ang_cos;
 
-    /* Product: '<S129>/Lwg//V ' */
+    /* Product: '<S132>/Lwg//V ' */
     ang_cos = Time_Varying_Model_2022a_B.LwgV[1];
 
-    /* Product: '<S129>/Lwg//V ' */
+    /* Product: '<S132>/Lwg//V ' */
     ang_sin = Time_Varying_Model_2022a_B.w[1] *
       Time_Varying_Model_2022a_B.sqrt_d * ang_cos;
     Time_Varying_Model_2022a_B.LwgV_p[1] = ang_sin;
 
-    /* Integrator: '<S129>/wg_p2' */
+    /* Integrator: '<S132>/wg_p2' */
     st_idx_1 = Time_Varying_Model_2022a_X.wg_p2_CSTATE[1];
     Time_Varying_Model_2022a_B.wg_p2[1] = st_idx_1;
 
-    /* Sum: '<S129>/Sum1' */
+    /* Sum: '<S132>/Sum1' */
     ang_sin += Time_Varying_Model_2022a_B.wg_p1[1] - st_idx_1;
     Time_Varying_Model_2022a_B.Sum1_b[1] = ang_sin;
 
-    /* Product: '<S129>/w ' */
+    /* Product: '<S132>/w ' */
     Time_Varying_Model_2022a_B.w_o[1] = ang_sin / ang_cos;
 
-    /* Product: '<S129>/Lwg//V 1' */
+    /* Product: '<S132>/Lwg//V 1' */
     Time_Varying_Model_2022a_B.LwgV1[0] = Time_Varying_Model_2022a_B.sigma_wg *
       Time_Varying_Model_2022a_B.wg_p2[0];
     Time_Varying_Model_2022a_B.LwgV1[1] =
@@ -1596,7 +1596,7 @@ void Time_Varying_Model_2022a_step(void)
       Time_Varying_Model_2022a_B.wg_p2[1];
   }
 
-  /* End of Outputs for SubSystem: '<S114>/Hwgw(s)' */
+  /* End of Outputs for SubSystem: '<S117>/Hwgw(s)' */
 
   /* MATLAB Function: '<S41>/RPY to DCM' */
   /* :  DCM=zeros(3); */
@@ -1645,8 +1645,8 @@ void Time_Varying_Model_2022a_step(void)
   /* End of MATLAB Function: '<S41>/RPY to DCM' */
   if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
       Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) {
-    /* UnitConversion: '<S112>/Unit Conversion' incorporates:
-     *  Constant: '<S110>/Wind direction'
+    /* UnitConversion: '<S115>/Unit Conversion' incorporates:
+     *  Constant: '<S113>/Wind direction'
      */
     /* Unit Conversion - from: deg to: rad
        Expression: output = (0.0174533*input) + (0) */
@@ -1654,9 +1654,9 @@ void Time_Varying_Model_2022a_step(void)
       Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelCont_m;
   }
 
-  /* If: '<S119>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' incorporates:
-   *  Merge: '<S143>/Merge'
-   *  Product: '<S146>/Product'
+  /* If: '<S122>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' incorporates:
+   *  Merge: '<S146>/Merge'
+   *  Product: '<S149>/Product'
    */
   if (rtsiIsModeUpdateTimeStep(&Time_Varying_Model_2022a_M->solverInfo)) {
     if (Time_Varying_Model_2022a_B.UnitConversion <= 1000.0) {
@@ -1674,33 +1674,33 @@ void Time_Varying_Model_2022a_step(void)
 
   switch (rtAction) {
    case 0:
-    /* Outputs for IfAction SubSystem: '<S119>/Low altitude  velocities' incorporates:
-     *  ActionPort: '<S141>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S122>/Low altitude  velocities' incorporates:
+     *  ActionPort: '<S144>/Action Port'
      */
-    /* SignalConversion generated from: '<S146>/Vector Concatenate' incorporates:
-     *  Concatenate: '<S146>/Vector Concatenate'
+    /* SignalConversion generated from: '<S149>/Vector Concatenate' incorporates:
+     *  Concatenate: '<S149>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate_b[2] =
       Time_Varying_Model_2022a_B.LwgV1[0];
 
-    /* Trigonometry: '<S147>/Trigonometric Function' */
+    /* Trigonometry: '<S150>/Trigonometric Function' */
     ang_sin = Time_Varying_Model_2022a_B.UnitConversion_gl;
     ang_cos = sin(ang_sin);
     ang_sin = cos(ang_sin);
 
-    /* Trigonometry: '<S147>/Trigonometric Function' */
+    /* Trigonometry: '<S150>/Trigonometric Function' */
     Time_Varying_Model_2022a_B.TrigonometricFunction_o1_h = ang_cos;
 
-    /* Trigonometry: '<S147>/Trigonometric Function' */
+    /* Trigonometry: '<S150>/Trigonometric Function' */
     Time_Varying_Model_2022a_B.TrigonometricFunction_o2_j = ang_sin;
 
-    /* Product: '<S147>/Product2' */
+    /* Product: '<S150>/Product2' */
     Time_Varying_Model_2022a_B.Product2_l[0] = Time_Varying_Model_2022a_B.w1_a[0]
       * Time_Varying_Model_2022a_B.TrigonometricFunction_o2_j;
     Time_Varying_Model_2022a_B.Product2_l[1] = Time_Varying_Model_2022a_B.w1[0] *
       Time_Varying_Model_2022a_B.TrigonometricFunction_o2_j;
 
-    /* Product: '<S147>/Product1' */
+    /* Product: '<S150>/Product1' */
     Time_Varying_Model_2022a_B.Product1_m[0] =
       Time_Varying_Model_2022a_B.TrigonometricFunction_o1_h *
       Time_Varying_Model_2022a_B.w1_a[0];
@@ -1708,85 +1708,85 @@ void Time_Varying_Model_2022a_step(void)
       Time_Varying_Model_2022a_B.TrigonometricFunction_o1_h *
       Time_Varying_Model_2022a_B.w1[0];
 
-    /* Sum: '<S147>/Sum' incorporates:
-     *  Concatenate: '<S146>/Vector Concatenate'
+    /* Sum: '<S150>/Sum' incorporates:
+     *  Concatenate: '<S149>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate_b[0] =
       Time_Varying_Model_2022a_B.Product2_l[0] -
       Time_Varying_Model_2022a_B.Product1_m[1];
 
-    /* Sum: '<S147>/Sum1' incorporates:
-     *  Concatenate: '<S146>/Vector Concatenate'
+    /* Sum: '<S150>/Sum1' incorporates:
+     *  Concatenate: '<S149>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate_b[1] =
       Time_Varying_Model_2022a_B.Product1_m[0] +
       Time_Varying_Model_2022a_B.Product2_l[1];
 
-    /* Product: '<S146>/Product' incorporates:
-     *  Concatenate: '<S146>/Vector Concatenate'
+    /* Product: '<S149>/Product' incorporates:
+     *  Concatenate: '<S149>/Vector Concatenate'
      */
     memcpy(&rotmZYX[0], &Time_Varying_Model_2022a_B.DCM[0], 9U * sizeof(real_T));
     ang_sin = Time_Varying_Model_2022a_B.VectorConcatenate_b[0];
     st_idx_1 = Time_Varying_Model_2022a_B.VectorConcatenate_b[1];
     ang_cos = Time_Varying_Model_2022a_B.VectorConcatenate_b[2];
 
-    /* End of Outputs for SubSystem: '<S119>/Low altitude  velocities' */
+    /* End of Outputs for SubSystem: '<S122>/Low altitude  velocities' */
     for (i = 0; i <= 0; i += 2) {
-      /* Outputs for IfAction SubSystem: '<S119>/Low altitude  velocities' incorporates:
-       *  ActionPort: '<S141>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S122>/Low altitude  velocities' incorporates:
+       *  ActionPort: '<S144>/Action Port'
        */
       tmp_0 = _mm_loadu_pd(&rotmZYX[i]);
       tmp_0 = _mm_mul_pd(tmp_0, _mm_set1_pd(ang_sin));
       tmp_1 = _mm_loadu_pd(&rotmZYX[i + 3]);
       tmp_1 = _mm_mul_pd(tmp_1, _mm_set1_pd(st_idx_1));
 
-      /* End of Outputs for SubSystem: '<S119>/Low altitude  velocities' */
+      /* End of Outputs for SubSystem: '<S122>/Low altitude  velocities' */
       tmp_0 = _mm_add_pd(tmp_1, tmp_0);
 
-      /* Outputs for IfAction SubSystem: '<S119>/Low altitude  velocities' incorporates:
-       *  ActionPort: '<S141>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S122>/Low altitude  velocities' incorporates:
+       *  ActionPort: '<S144>/Action Port'
        */
       tmp_1 = _mm_loadu_pd(&rotmZYX[i + 6]);
       tmp_1 = _mm_mul_pd(tmp_1, _mm_set1_pd(ang_cos));
 
-      /* End of Outputs for SubSystem: '<S119>/Low altitude  velocities' */
+      /* End of Outputs for SubSystem: '<S122>/Low altitude  velocities' */
       tmp_0 = _mm_add_pd(tmp_1, tmp_0);
 
-      /* Outputs for IfAction SubSystem: '<S119>/Low altitude  velocities' incorporates:
-       *  ActionPort: '<S141>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S122>/Low altitude  velocities' incorporates:
+       *  ActionPort: '<S144>/Action Port'
        */
       _mm_storeu_pd(&Time_Varying_Model_2022a_B.Product_i[i], tmp_0);
       _mm_storeu_pd(&Time_Varying_Model_2022a_B.Merge[i], tmp_0);
 
-      /* End of Outputs for SubSystem: '<S119>/Low altitude  velocities' */
+      /* End of Outputs for SubSystem: '<S122>/Low altitude  velocities' */
     }
 
-    /* Outputs for IfAction SubSystem: '<S119>/Low altitude  velocities' incorporates:
-     *  ActionPort: '<S141>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S122>/Low altitude  velocities' incorporates:
+     *  ActionPort: '<S144>/Action Port'
      */
     for (i = 2; i < 3; i++) {
-      /* Product: '<S146>/Product' */
+      /* Product: '<S149>/Product' */
       ct_idx_0 = rotmZYX[i] * ang_sin;
       ct_idx_0 += rotmZYX[i + 3] * st_idx_1;
       ct_idx_0 += rotmZYX[i + 6] * ang_cos;
       Time_Varying_Model_2022a_B.Product_i[i] = ct_idx_0;
 
-      /* Merge: '<S143>/Merge' incorporates:
-       *  Product: '<S146>/Product'
-       *  Reshape: '<S146>/Reshape1'
+      /* Merge: '<S146>/Merge' incorporates:
+       *  Product: '<S149>/Product'
+       *  Reshape: '<S149>/Reshape1'
        */
       Time_Varying_Model_2022a_B.Merge[i] = ct_idx_0;
     }
 
-    /* End of Outputs for SubSystem: '<S119>/Low altitude  velocities' */
+    /* End of Outputs for SubSystem: '<S122>/Low altitude  velocities' */
     break;
 
    case 1:
-    /* Outputs for IfAction SubSystem: '<S119>/Medium//High  altitude velocities' incorporates:
-     *  ActionPort: '<S142>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S122>/Medium//High  altitude velocities' incorporates:
+     *  ActionPort: '<S145>/Action Port'
      */
-    /* Merge: '<S143>/Merge' incorporates:
-     *  Gain: '<S142>/Gain'
+    /* Merge: '<S146>/Merge' incorporates:
+     *  Gain: '<S145>/Gain'
      */
     Time_Varying_Model_2022a_B.Merge[0] = Time_Varying_Model_2022a_P.Gain_Gain_o
       * Time_Varying_Model_2022a_B.w1_a[1];
@@ -1795,31 +1795,31 @@ void Time_Varying_Model_2022a_step(void)
     Time_Varying_Model_2022a_B.Merge[2] = Time_Varying_Model_2022a_P.Gain_Gain_o
       * Time_Varying_Model_2022a_B.LwgV1[1];
 
-    /* End of Outputs for SubSystem: '<S119>/Medium//High  altitude velocities' */
+    /* End of Outputs for SubSystem: '<S122>/Medium//High  altitude velocities' */
     break;
 
    default:
-    /* Outputs for IfAction SubSystem: '<S119>/Interpolate  velocities' incorporates:
-     *  ActionPort: '<S140>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S122>/Interpolate  velocities' incorporates:
+     *  ActionPort: '<S143>/Action Port'
      */
-    /* Trigonometry: '<S145>/Trigonometric Function' */
+    /* Trigonometry: '<S148>/Trigonometric Function' */
     ang_sin = Time_Varying_Model_2022a_B.UnitConversion_gl;
     ang_cos = sin(ang_sin);
     ang_sin = cos(ang_sin);
 
-    /* Trigonometry: '<S145>/Trigonometric Function' */
+    /* Trigonometry: '<S148>/Trigonometric Function' */
     Time_Varying_Model_2022a_B.TrigonometricFunction_o1 = ang_cos;
 
-    /* Trigonometry: '<S145>/Trigonometric Function' */
+    /* Trigonometry: '<S148>/Trigonometric Function' */
     Time_Varying_Model_2022a_B.TrigonometricFunction_o2 = ang_sin;
 
-    /* Product: '<S145>/Product2' */
+    /* Product: '<S148>/Product2' */
     Time_Varying_Model_2022a_B.Product2_jq[0] = Time_Varying_Model_2022a_B.w1_a
       [0] * Time_Varying_Model_2022a_B.TrigonometricFunction_o2;
     Time_Varying_Model_2022a_B.Product2_jq[1] = Time_Varying_Model_2022a_B.w1[0]
       * Time_Varying_Model_2022a_B.TrigonometricFunction_o2;
 
-    /* Product: '<S145>/Product1' */
+    /* Product: '<S148>/Product1' */
     Time_Varying_Model_2022a_B.Product1_o[0] =
       Time_Varying_Model_2022a_B.TrigonometricFunction_o1 *
       Time_Varying_Model_2022a_B.w1_a[0];
@@ -1827,77 +1827,77 @@ void Time_Varying_Model_2022a_step(void)
       Time_Varying_Model_2022a_B.TrigonometricFunction_o1 *
       Time_Varying_Model_2022a_B.w1[0];
 
-    /* Sum: '<S145>/Sum' incorporates:
-     *  Concatenate: '<S144>/Vector Concatenate'
+    /* Sum: '<S148>/Sum' incorporates:
+     *  Concatenate: '<S147>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate[0] =
       Time_Varying_Model_2022a_B.Product2_jq[0] -
       Time_Varying_Model_2022a_B.Product1_o[1];
 
-    /* Sum: '<S145>/Sum1' incorporates:
-     *  Concatenate: '<S144>/Vector Concatenate'
+    /* Sum: '<S148>/Sum1' incorporates:
+     *  Concatenate: '<S147>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate[1] =
       Time_Varying_Model_2022a_B.Product1_o[0] +
       Time_Varying_Model_2022a_B.Product2_jq[1];
 
-    /* SignalConversion generated from: '<S144>/Vector Concatenate' incorporates:
-     *  Concatenate: '<S144>/Vector Concatenate'
+    /* SignalConversion generated from: '<S147>/Vector Concatenate' incorporates:
+     *  Concatenate: '<S147>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate[2] =
       Time_Varying_Model_2022a_B.LwgV1[0];
 
-    /* Product: '<S144>/Product' incorporates:
-     *  Concatenate: '<S144>/Vector Concatenate'
+    /* Product: '<S147>/Product' incorporates:
+     *  Concatenate: '<S147>/Vector Concatenate'
      */
     memcpy(&rotmZYX[0], &Time_Varying_Model_2022a_B.DCM[0], 9U * sizeof(real_T));
     ang_sin = Time_Varying_Model_2022a_B.VectorConcatenate[0];
     st_idx_1 = Time_Varying_Model_2022a_B.VectorConcatenate[1];
     ang_cos = Time_Varying_Model_2022a_B.VectorConcatenate[2];
 
-    /* End of Outputs for SubSystem: '<S119>/Interpolate  velocities' */
+    /* End of Outputs for SubSystem: '<S122>/Interpolate  velocities' */
     for (i_0 = 0; i_0 <= 0; i_0 += 2) {
-      /* Outputs for IfAction SubSystem: '<S119>/Interpolate  velocities' incorporates:
-       *  ActionPort: '<S140>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S122>/Interpolate  velocities' incorporates:
+       *  ActionPort: '<S143>/Action Port'
        */
       tmp_0 = _mm_loadu_pd(&rotmZYX[i_0]);
       tmp_0 = _mm_mul_pd(tmp_0, _mm_set1_pd(ang_sin));
       tmp_1 = _mm_loadu_pd(&rotmZYX[i_0 + 3]);
       tmp_1 = _mm_mul_pd(tmp_1, _mm_set1_pd(st_idx_1));
 
-      /* End of Outputs for SubSystem: '<S119>/Interpolate  velocities' */
+      /* End of Outputs for SubSystem: '<S122>/Interpolate  velocities' */
       tmp_0 = _mm_add_pd(tmp_1, tmp_0);
 
-      /* Outputs for IfAction SubSystem: '<S119>/Interpolate  velocities' incorporates:
-       *  ActionPort: '<S140>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S122>/Interpolate  velocities' incorporates:
+       *  ActionPort: '<S143>/Action Port'
        */
       tmp_1 = _mm_loadu_pd(&rotmZYX[i_0 + 6]);
       tmp_1 = _mm_mul_pd(tmp_1, _mm_set1_pd(ang_cos));
 
-      /* End of Outputs for SubSystem: '<S119>/Interpolate  velocities' */
+      /* End of Outputs for SubSystem: '<S122>/Interpolate  velocities' */
       tmp_0 = _mm_add_pd(tmp_1, tmp_0);
 
-      /* Outputs for IfAction SubSystem: '<S119>/Interpolate  velocities' incorporates:
-       *  ActionPort: '<S140>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S122>/Interpolate  velocities' incorporates:
+       *  ActionPort: '<S143>/Action Port'
        */
       _mm_storeu_pd(&Time_Varying_Model_2022a_B.Product_oc[i_0], tmp_0);
 
-      /* End of Outputs for SubSystem: '<S119>/Interpolate  velocities' */
+      /* End of Outputs for SubSystem: '<S122>/Interpolate  velocities' */
     }
 
-    /* Outputs for IfAction SubSystem: '<S119>/Interpolate  velocities' incorporates:
-     *  ActionPort: '<S140>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S122>/Interpolate  velocities' incorporates:
+     *  ActionPort: '<S143>/Action Port'
      */
     for (i_0 = 2; i_0 < 3; i_0++) {
-      /* Product: '<S144>/Product' */
+      /* Product: '<S147>/Product' */
       ct_idx_0 = rotmZYX[i_0] * ang_sin;
       ct_idx_0 += rotmZYX[i_0 + 3] * st_idx_1;
       ct_idx_0 += rotmZYX[i_0 + 6] * ang_cos;
       Time_Varying_Model_2022a_B.Product_oc[i_0] = ct_idx_0;
     }
 
-    /* Sum: '<S140>/Sum2' incorporates:
-     *  Product: '<S144>/Product'
+    /* Sum: '<S143>/Sum2' incorporates:
+     *  Product: '<S147>/Product'
      */
     Time_Varying_Model_2022a_B.Sum2_np[0] = Time_Varying_Model_2022a_B.w1_a[1] -
       Time_Varying_Model_2022a_B.Product_oc[0];
@@ -1906,76 +1906,76 @@ void Time_Varying_Model_2022a_step(void)
     Time_Varying_Model_2022a_B.Sum2_np[2] = Time_Varying_Model_2022a_B.LwgV1[1]
       - Time_Varying_Model_2022a_B.Product_oc[2];
 
-    /* Sum: '<S140>/Sum1' incorporates:
-     *  Constant: '<S140>/max_height_low'
+    /* Sum: '<S143>/Sum1' incorporates:
+     *  Constant: '<S143>/max_height_low'
      */
     Time_Varying_Model_2022a_B.Sum1_kf =
       Time_Varying_Model_2022a_B.UnitConversion -
       Time_Varying_Model_2022a_P.max_height_low_Value_l;
 
-    /* Sum: '<S140>/Sum' incorporates:
-     *  Constant: '<S140>/max_height_low'
-     *  Constant: '<S140>/min_height_high'
+    /* Sum: '<S143>/Sum' incorporates:
+     *  Constant: '<S143>/max_height_low'
+     *  Constant: '<S143>/min_height_high'
      */
     Time_Varying_Model_2022a_B.Sum_jj =
       Time_Varying_Model_2022a_P.min_height_high_Value_h -
       Time_Varying_Model_2022a_P.max_height_low_Value_l;
 
-    /* Product: '<S140>/Product1' */
+    /* Product: '<S143>/Product1' */
     ang_cos = Time_Varying_Model_2022a_B.Sum2_np[0] *
       Time_Varying_Model_2022a_B.Sum1_kf / Time_Varying_Model_2022a_B.Sum_jj;
 
-    /* End of Outputs for SubSystem: '<S119>/Interpolate  velocities' */
+    /* End of Outputs for SubSystem: '<S122>/Interpolate  velocities' */
     Time_Varying_Model_2022a_B.Product1_h[0] = ang_cos;
 
-    /* Outputs for IfAction SubSystem: '<S119>/Interpolate  velocities' incorporates:
-     *  ActionPort: '<S140>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S122>/Interpolate  velocities' incorporates:
+     *  ActionPort: '<S143>/Action Port'
      */
-    /* Merge: '<S143>/Merge' incorporates:
-     *  Sum: '<S140>/Sum3'
+    /* Merge: '<S146>/Merge' incorporates:
+     *  Sum: '<S143>/Sum3'
      */
     Time_Varying_Model_2022a_B.Merge[0] = Time_Varying_Model_2022a_B.Product_oc
       [0] + ang_cos;
 
-    /* Product: '<S140>/Product1' */
+    /* Product: '<S143>/Product1' */
     ang_cos = Time_Varying_Model_2022a_B.Sum2_np[1] *
       Time_Varying_Model_2022a_B.Sum1_kf / Time_Varying_Model_2022a_B.Sum_jj;
 
-    /* End of Outputs for SubSystem: '<S119>/Interpolate  velocities' */
+    /* End of Outputs for SubSystem: '<S122>/Interpolate  velocities' */
     Time_Varying_Model_2022a_B.Product1_h[1] = ang_cos;
 
-    /* Outputs for IfAction SubSystem: '<S119>/Interpolate  velocities' incorporates:
-     *  ActionPort: '<S140>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S122>/Interpolate  velocities' incorporates:
+     *  ActionPort: '<S143>/Action Port'
      */
-    /* Merge: '<S143>/Merge' incorporates:
-     *  Sum: '<S140>/Sum3'
+    /* Merge: '<S146>/Merge' incorporates:
+     *  Sum: '<S143>/Sum3'
      */
     Time_Varying_Model_2022a_B.Merge[1] = Time_Varying_Model_2022a_B.Product_oc
       [1] + ang_cos;
 
-    /* Product: '<S140>/Product1' */
+    /* Product: '<S143>/Product1' */
     ang_cos = Time_Varying_Model_2022a_B.Sum2_np[2] *
       Time_Varying_Model_2022a_B.Sum1_kf / Time_Varying_Model_2022a_B.Sum_jj;
 
-    /* End of Outputs for SubSystem: '<S119>/Interpolate  velocities' */
+    /* End of Outputs for SubSystem: '<S122>/Interpolate  velocities' */
     Time_Varying_Model_2022a_B.Product1_h[2] = ang_cos;
 
-    /* Outputs for IfAction SubSystem: '<S119>/Interpolate  velocities' incorporates:
-     *  ActionPort: '<S140>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S122>/Interpolate  velocities' incorporates:
+     *  ActionPort: '<S143>/Action Port'
      */
-    /* Merge: '<S143>/Merge' incorporates:
-     *  Sum: '<S140>/Sum3'
+    /* Merge: '<S146>/Merge' incorporates:
+     *  Sum: '<S143>/Sum3'
      */
     Time_Varying_Model_2022a_B.Merge[2] = Time_Varying_Model_2022a_B.Product_oc
       [2] + ang_cos;
 
-    /* End of Outputs for SubSystem: '<S119>/Interpolate  velocities' */
+    /* End of Outputs for SubSystem: '<S122>/Interpolate  velocities' */
     break;
   }
 
-  /* End of If: '<S119>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' */
+  /* End of If: '<S122>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' */
 
-  /* UnitConversion: '<S110>/Unit Conversion' */
+  /* UnitConversion: '<S113>/Unit Conversion' */
   /* Unit Conversion - from: ft/s to: m/s
      Expression: output = (0.3048*input) + (0) */
   Time_Varying_Model_2022a_B.UnitConversion_j[0] = 0.3048 *
@@ -1985,7 +1985,7 @@ void Time_Varying_Model_2022a_step(void)
   Time_Varying_Model_2022a_B.Integrator_o[0] =
     Time_Varying_Model_2022a_X.Integrator_CSTATE_m[0];
 
-  /* UnitConversion: '<S110>/Unit Conversion' */
+  /* UnitConversion: '<S113>/Unit Conversion' */
   Time_Varying_Model_2022a_B.UnitConversion_j[1] = 0.3048 *
     Time_Varying_Model_2022a_B.Merge[1];
 
@@ -1993,7 +1993,7 @@ void Time_Varying_Model_2022a_step(void)
   Time_Varying_Model_2022a_B.Integrator_o[1] =
     Time_Varying_Model_2022a_X.Integrator_CSTATE_m[1];
 
-  /* UnitConversion: '<S110>/Unit Conversion' */
+  /* UnitConversion: '<S113>/Unit Conversion' */
   Time_Varying_Model_2022a_B.UnitConversion_j[2] = 0.3048 *
     Time_Varying_Model_2022a_B.Merge[2];
 
@@ -2594,6 +2594,21 @@ void Time_Varying_Model_2022a_step(void)
   /* Product: '<S5>/Divide' */
   Time_Varying_Model_2022a_B.Divide_c = Time_Varying_Model_2022a_B.SumofElements
     / Time_Varying_Model_2022a_B.SumofElements1;
+  if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
+      Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) {
+    /* RandomNumber: '<S54>/White Noise' */
+    Time_Varying_Model_2022a_B.WhiteNoise_p =
+      Time_Varying_Model_2022a_DW.NextOutput_p;
+
+    /* Gain: '<S54>/Output' */
+    ang_cos = Time_Varying_Model_2022a_P.BandLimitedWhiteNoise2_Cov;
+    ang_cos = sqrt(ang_cos);
+    ang_sin = ang_cos / 0.1;
+
+    /* Gain: '<S54>/Output' */
+    Time_Varying_Model_2022a_B.Output = ang_sin *
+      Time_Varying_Model_2022a_B.WhiteNoise_p;
+  }
 
   /* MATLAB Function: '<Root>/MATLAB Function4' */
   /* :  T0 = 288.15; */
@@ -2607,14 +2622,28 @@ void Time_Varying_Model_2022a_step(void)
     1.2256;
 
   /* Sum: '<S8>/Sum4' */
-  Time_Varying_Model_2022a_B.Sum4 = Time_Varying_Model_2022a_B.rho;
+  Time_Varying_Model_2022a_B.Sum4 = Time_Varying_Model_2022a_B.Output +
+    Time_Varying_Model_2022a_B.rho;
   if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
       Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) {
+    /* RandomNumber: '<S53>/White Noise' */
+    Time_Varying_Model_2022a_B.WhiteNoise_c =
+      Time_Varying_Model_2022a_DW.NextOutput_j;
+
+    /* Gain: '<S53>/Output' */
+    ang_cos = Time_Varying_Model_2022a_P.BandLimitedWhiteNoise1_Cov;
+    ang_cos = sqrt(ang_cos);
+    ang_sin = ang_cos / 0.1;
+
+    /* Gain: '<S53>/Output' */
+    Time_Varying_Model_2022a_B.Output_g = ang_sin *
+      Time_Varying_Model_2022a_B.WhiteNoise_c;
   }
 
   /* Sum: '<S8>/Sum3' */
   Time_Varying_Model_2022a_B.Sum3_d =
-    Time_Varying_Model_2022a_B.OpenRocketVelocity;
+    Time_Varying_Model_2022a_B.OpenRocketVelocity +
+    Time_Varying_Model_2022a_B.Output_g;
 
   /* Math: '<S8>/Square' */
   Time_Varying_Model_2022a_B.Square = Time_Varying_Model_2022a_B.Sum3_d *
@@ -2628,10 +2657,23 @@ void Time_Varying_Model_2022a_step(void)
     Time_Varying_Model_2022a_B.Square;
   if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
       Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) {
+    /* RandomNumber: '<S52>/White Noise' */
+    Time_Varying_Model_2022a_B.WhiteNoise_m =
+      Time_Varying_Model_2022a_DW.NextOutput_d;
+
+    /* Gain: '<S52>/Output' */
+    ang_cos = Time_Varying_Model_2022a_P.BandLimitedWhiteNoise_Cov;
+    ang_cos = sqrt(ang_cos);
+    ang_sin = ang_cos / 0.1;
+
+    /* Gain: '<S52>/Output' */
+    Time_Varying_Model_2022a_B.Output_h = ang_sin *
+      Time_Varying_Model_2022a_B.WhiteNoise_m;
   }
 
   /* Sum: '<S8>/Sum' */
-  Time_Varying_Model_2022a_B.Sum_b = Time_Varying_Model_2022a_B.Product_ax;
+  Time_Varying_Model_2022a_B.Sum_b = Time_Varying_Model_2022a_B.Output_h +
+    Time_Varying_Model_2022a_B.Product_ax;
 
   /* RateTransition: '<S8>/Rate Transition1' */
   if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
@@ -2642,9 +2684,9 @@ void Time_Varying_Model_2022a_step(void)
         Time_Varying_Model_2022a_B.Sum_b;
     }
 
-    /* MATLAB Function: '<S102>/SqrtUsedFcn' incorporates:
-     *  Constant: '<S102>/isSqrtUsed'
-     *  Constant: '<S53>/CovarianceZ'
+    /* MATLAB Function: '<S105>/SqrtUsedFcn' incorporates:
+     *  Constant: '<S105>/isSqrtUsed'
+     *  Constant: '<S56>/CovarianceZ'
      */
     /* :  if isSqrtUsed */
     if (Time_Varying_Model_2022a_P.isSqrtUsed_Value) {
@@ -2659,7 +2701,7 @@ void Time_Varying_Model_2022a_step(void)
         Time_Varying_Model_2022a_P.CovarianceZ_Value;
     }
 
-    /* End of MATLAB Function: '<S102>/SqrtUsedFcn' */
+    /* End of MATLAB Function: '<S105>/SqrtUsedFcn' */
   }
 
   if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
@@ -2668,27 +2710,27 @@ void Time_Varying_Model_2022a_step(void)
     Time_Varying_Model_2022a_B.RateTransition1 =
       Time_Varying_Model_2022a_DW.RateTransition1_Buffer;
 
-    /* Delay: '<S52>/MemoryX' incorporates:
-     *  Constant: '<S52>/X0'
+    /* Delay: '<S55>/MemoryX' incorporates:
+     *  Constant: '<S55>/X0'
      */
     if (Time_Varying_Model_2022a_DW.icLoad) {
       Time_Varying_Model_2022a_DW.MemoryX_DSTATE =
         Time_Varying_Model_2022a_P.X0_Value;
     }
 
-    /* Delay: '<S52>/MemoryX' */
+    /* Delay: '<S55>/MemoryX' */
     Time_Varying_Model_2022a_B.MemoryX =
       Time_Varying_Model_2022a_DW.MemoryX_DSTATE;
 
-    /* Outputs for Enabled SubSystem: '<S80>/Enabled Subsystem' incorporates:
-     *  EnablePort: '<S106>/Enable'
+    /* Outputs for Enabled SubSystem: '<S83>/Enabled Subsystem' incorporates:
+     *  EnablePort: '<S109>/Enable'
      */
     if (rtsiIsModeUpdateTimeStep(&Time_Varying_Model_2022a_M->solverInfo)) {
       if (Time_Varying_Model_2022a_P.Enable_Value) {
         Time_Varying_Model_2022a_DW.EnabledSubsystem_MODE = true;
       } else if (Time_Varying_Model_2022a_DW.EnabledSubsystem_MODE) {
-        /* Disable for Product: '<S106>/Product2' incorporates:
-         *  Outport: '<S106>/deltax'
+        /* Disable for Product: '<S109>/Product2' incorporates:
+         *  Outport: '<S109>/deltax'
          */
         Time_Varying_Model_2022a_B.Product2_cw =
           Time_Varying_Model_2022a_P.deltax_Y0;
@@ -2697,34 +2739,34 @@ void Time_Varying_Model_2022a_step(void)
     }
 
     if (Time_Varying_Model_2022a_DW.EnabledSubsystem_MODE) {
-      /* Product: '<S106>/Product' incorporates:
-       *  Constant: '<S52>/C'
+      /* Product: '<S109>/Product' incorporates:
+       *  Constant: '<S55>/C'
        */
       ang_sin = Time_Varying_Model_2022a_P.C_Value;
       ang_cos = Time_Varying_Model_2022a_B.MemoryX;
 
-      /* Product: '<S106>/Product' */
+      /* Product: '<S109>/Product' */
       Time_Varying_Model_2022a_B.Product_n = ang_sin * ang_cos;
 
-      /* Sum: '<S106>/Add1' */
+      /* Sum: '<S109>/Add1' */
       Time_Varying_Model_2022a_B.Add1 =
         Time_Varying_Model_2022a_B.RateTransition1 -
         Time_Varying_Model_2022a_B.Product_n;
 
-      /* Product: '<S106>/Product2' incorporates:
-       *  Constant: '<S53>/KalmanGainM'
+      /* Product: '<S109>/Product2' incorporates:
+       *  Constant: '<S56>/KalmanGainM'
        */
       ang_sin = Time_Varying_Model_2022a_P.KalmanGainM_Value;
       ang_cos = Time_Varying_Model_2022a_B.Add1;
 
-      /* Product: '<S106>/Product2' */
+      /* Product: '<S109>/Product2' */
       Time_Varying_Model_2022a_B.Product2_cw = ang_sin * ang_cos;
     }
 
-    /* End of Outputs for SubSystem: '<S80>/Enabled Subsystem' */
+    /* End of Outputs for SubSystem: '<S83>/Enabled Subsystem' */
 
-    /* Sum: '<S80>/Add' incorporates:
-     *  Constant: '<S52>/Enable'
+    /* Sum: '<S83>/Add' incorporates:
+     *  Constant: '<S55>/Enable'
      */
     Time_Varying_Model_2022a_B.Add = Time_Varying_Model_2022a_B.Product2_cw +
       Time_Varying_Model_2022a_B.MemoryX;
@@ -2747,37 +2789,37 @@ void Time_Varying_Model_2022a_step(void)
 
   if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
       Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[3] == 0) {
-    /* Product: '<S73>/A[k]*xhat[k|k-1]' incorporates:
-     *  Constant: '<S52>/A'
+    /* Product: '<S76>/A[k]*xhat[k|k-1]' incorporates:
+     *  Constant: '<S55>/A'
      */
     ang_sin = Time_Varying_Model_2022a_P.A_Value;
     ang_cos = Time_Varying_Model_2022a_B.MemoryX;
 
-    /* Product: '<S73>/A[k]*xhat[k|k-1]' */
+    /* Product: '<S76>/A[k]*xhat[k|k-1]' */
     Time_Varying_Model_2022a_B.Akxhatkk1 = ang_sin * ang_cos;
 
     /* RateTransition: '<S8>/Rate Transition' */
     Time_Varying_Model_2022a_B.RateTransition =
       Time_Varying_Model_2022a_DW.RateTransition_Buffer;
 
-    /* Product: '<S73>/B[k]*u[k]' incorporates:
-     *  Constant: '<S52>/B'
+    /* Product: '<S76>/B[k]*u[k]' incorporates:
+     *  Constant: '<S55>/B'
      */
     ang_sin = Time_Varying_Model_2022a_P.B_Value;
     ang_cos = Time_Varying_Model_2022a_B.RateTransition;
 
-    /* Product: '<S73>/B[k]*u[k]' */
+    /* Product: '<S76>/B[k]*u[k]' */
     Time_Varying_Model_2022a_B.Bkuk = ang_sin * ang_cos;
 
-    /* Outputs for Enabled SubSystem: '<S73>/MeasurementUpdate' incorporates:
-     *  EnablePort: '<S104>/Enable'
+    /* Outputs for Enabled SubSystem: '<S76>/MeasurementUpdate' incorporates:
+     *  EnablePort: '<S107>/Enable'
      */
     if (rtsiIsModeUpdateTimeStep(&Time_Varying_Model_2022a_M->solverInfo)) {
       if (Time_Varying_Model_2022a_P.Enable_Value) {
         Time_Varying_Model_2022a_DW.MeasurementUpdate_MODE = true;
       } else if (Time_Varying_Model_2022a_DW.MeasurementUpdate_MODE) {
-        /* Disable for Product: '<S104>/Product3' incorporates:
-         *  Outport: '<S104>/L*(y[k]-yhat[k|k-1])'
+        /* Disable for Product: '<S107>/Product3' incorporates:
+         *  Outport: '<S107>/L*(y[k]-yhat[k|k-1])'
          */
         Time_Varying_Model_2022a_B.Product3_lw =
           Time_Varying_Model_2022a_P.Lykyhatkk1_Y0;
@@ -2786,47 +2828,47 @@ void Time_Varying_Model_2022a_step(void)
     }
 
     if (Time_Varying_Model_2022a_DW.MeasurementUpdate_MODE) {
-      /* Product: '<S104>/C[k]*xhat[k|k-1]' incorporates:
-       *  Constant: '<S52>/C'
+      /* Product: '<S107>/C[k]*xhat[k|k-1]' incorporates:
+       *  Constant: '<S55>/C'
        */
       ang_sin = Time_Varying_Model_2022a_P.C_Value;
       ang_cos = Time_Varying_Model_2022a_B.MemoryX;
 
-      /* Product: '<S104>/C[k]*xhat[k|k-1]' */
+      /* Product: '<S107>/C[k]*xhat[k|k-1]' */
       Time_Varying_Model_2022a_B.Ckxhatkk1 = ang_sin * ang_cos;
 
-      /* Product: '<S104>/D[k]*u[k]' incorporates:
-       *  Constant: '<S52>/D'
+      /* Product: '<S107>/D[k]*u[k]' incorporates:
+       *  Constant: '<S55>/D'
        */
       ang_sin = Time_Varying_Model_2022a_P.D_Value;
       ang_cos = Time_Varying_Model_2022a_B.RateTransition;
 
-      /* Product: '<S104>/D[k]*u[k]' */
+      /* Product: '<S107>/D[k]*u[k]' */
       Time_Varying_Model_2022a_B.Dkuk = ang_sin * ang_cos;
 
-      /* Sum: '<S104>/Add1' */
+      /* Sum: '<S107>/Add1' */
       Time_Varying_Model_2022a_B.yhatkk1 = Time_Varying_Model_2022a_B.Ckxhatkk1
         + Time_Varying_Model_2022a_B.Dkuk;
 
-      /* Sum: '<S104>/Sum' */
+      /* Sum: '<S107>/Sum' */
       Time_Varying_Model_2022a_B.Sum_e =
         Time_Varying_Model_2022a_B.RateTransition1 -
         Time_Varying_Model_2022a_B.yhatkk1;
 
-      /* Product: '<S104>/Product3' incorporates:
-       *  Constant: '<S53>/KalmanGainL'
+      /* Product: '<S107>/Product3' incorporates:
+       *  Constant: '<S56>/KalmanGainL'
        */
       ang_sin = Time_Varying_Model_2022a_P.KalmanGainL_Value;
       ang_cos = Time_Varying_Model_2022a_B.Sum_e;
 
-      /* Product: '<S104>/Product3' */
+      /* Product: '<S107>/Product3' */
       Time_Varying_Model_2022a_B.Product3_lw = ang_sin * ang_cos;
     }
 
-    /* End of Outputs for SubSystem: '<S73>/MeasurementUpdate' */
+    /* End of Outputs for SubSystem: '<S76>/MeasurementUpdate' */
 
-    /* Sum: '<S73>/Add' incorporates:
-     *  Constant: '<S52>/Enable'
+    /* Sum: '<S76>/Add' incorporates:
+     *  Constant: '<S55>/Enable'
      */
     Time_Varying_Model_2022a_B.Add_p = (Time_Varying_Model_2022a_B.Bkuk +
       Time_Varying_Model_2022a_B.Akxhatkk1) +
@@ -2908,25 +2950,25 @@ void Time_Varying_Model_2022a_step(void)
     + Time_Varying_Model_2022a_B.CNa_nose;
   if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
       Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) {
-    /* UnitConversion: '<S116>/Unit Conversion' incorporates:
-     *  Constant: '<S110>/Wingspan'
+    /* UnitConversion: '<S119>/Unit Conversion' incorporates:
+     *  Constant: '<S113>/Wingspan'
      */
     /* Unit Conversion - from: m to: ft
        Expression: output = (3.28084*input) + (0) */
     Time_Varying_Model_2022a_B.UnitConversion_n = 3.280839895013123 *
       Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelCont_j;
 
-    /* Outputs for Enabled SubSystem: '<S113>/Hpgw' incorporates:
-     *  EnablePort: '<S124>/Enable'
+    /* Outputs for Enabled SubSystem: '<S116>/Hpgw' incorporates:
+     *  EnablePort: '<S127>/Enable'
      */
     if (rtsiIsModeUpdateTimeStep(&Time_Varying_Model_2022a_M->solverInfo)) {
-      /* Constant: '<S113>/Constant1' */
+      /* Constant: '<S116>/Constant1' */
       if (Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelCont_c > 0.0) {
         if (!Time_Varying_Model_2022a_DW.Hpgw_MODE) {
           (void) memset(&(Time_Varying_Model_2022a_XDis.pgw_p_CSTATE), 0,
                         2*sizeof(boolean_T));
 
-          /* InitializeConditions for Integrator: '<S124>/pgw_p' */
+          /* InitializeConditions for Integrator: '<S127>/pgw_p' */
           Time_Varying_Model_2022a_X.pgw_p_CSTATE[0] =
             Time_Varying_Model_2022a_P.pgw_p_IC;
           Time_Varying_Model_2022a_X.pgw_p_CSTATE[1] =
@@ -2934,12 +2976,12 @@ void Time_Varying_Model_2022a_step(void)
           Time_Varying_Model_2022a_DW.Hpgw_MODE = true;
         }
       } else {
-        /* Outputs for Enabled SubSystem: '<S114>/Hugw(s)' incorporates:
-         *  EnablePort: '<S127>/Enable'
+        /* Outputs for Enabled SubSystem: '<S117>/Hugw(s)' incorporates:
+         *  EnablePort: '<S130>/Enable'
          */
         ang_cos = rtmGetTStart(Time_Varying_Model_2022a_M);
 
-        /* End of Outputs for SubSystem: '<S114>/Hugw(s)' */
+        /* End of Outputs for SubSystem: '<S117>/Hugw(s)' */
         if ((((Time_Varying_Model_2022a_M->Timing.clockTick1+
                Time_Varying_Model_2022a_M->Timing.clockTickH1* 4294967296.0)) *
              0.01) == ang_cos) {
@@ -2951,8 +2993,8 @@ void Time_Varying_Model_2022a_step(void)
           (void) memset(&(Time_Varying_Model_2022a_XDis.pgw_p_CSTATE), 1,
                         2*sizeof(boolean_T));
 
-          /* Disable for Product: '<S124>/sigma_w' incorporates:
-           *  Outport: '<S124>/pgw'
+          /* Disable for Product: '<S127>/sigma_w' incorporates:
+           *  Outport: '<S127>/pgw'
            */
           Time_Varying_Model_2022a_B.sigma_w[0] =
             Time_Varying_Model_2022a_P.pgw_Y0;
@@ -2962,18 +3004,18 @@ void Time_Varying_Model_2022a_step(void)
         }
       }
 
-      /* End of Constant: '<S113>/Constant1' */
+      /* End of Constant: '<S116>/Constant1' */
     }
 
-    /* End of Outputs for SubSystem: '<S113>/Hpgw' */
+    /* End of Outputs for SubSystem: '<S116>/Hpgw' */
   }
 
-  /* Outputs for Enabled SubSystem: '<S113>/Hpgw' incorporates:
-   *  EnablePort: '<S124>/Enable'
+  /* Outputs for Enabled SubSystem: '<S116>/Hpgw' incorporates:
+   *  EnablePort: '<S127>/Enable'
    */
   if (Time_Varying_Model_2022a_DW.Hpgw_MODE) {
-    /* Math: '<S124>/L^1//3' incorporates:
-     *  Constant: '<S124>/Constant1'
+    /* Math: '<S127>/L^1//3' incorporates:
+     *  Constant: '<S127>/Constant1'
      */
     ang_cos = Time_Varying_Model_2022a_B.Lw[0];
     if ((ang_cos < 0.0) && (Time_Varying_Model_2022a_P.Constant1_Value > floor
@@ -2984,11 +3026,11 @@ void Time_Varying_Model_2022a_step(void)
       ang_cos = rt_powd_snf(ang_cos, Time_Varying_Model_2022a_P.Constant1_Value);
     }
 
-    /* Math: '<S124>/L^1//3' */
+    /* Math: '<S127>/L^1//3' */
     Time_Varying_Model_2022a_B.L13[0] = ang_cos;
 
-    /* Math: '<S124>/L^1//3' incorporates:
-     *  Constant: '<S124>/Constant1'
+    /* Math: '<S127>/L^1//3' incorporates:
+     *  Constant: '<S127>/Constant1'
      */
     ang_cos = Time_Varying_Model_2022a_B.Lw[1];
     if ((ang_cos < 0.0) && (Time_Varying_Model_2022a_P.Constant1_Value > floor
@@ -2999,33 +3041,33 @@ void Time_Varying_Model_2022a_step(void)
       ang_cos = rt_powd_snf(ang_cos, Time_Varying_Model_2022a_P.Constant1_Value);
     }
 
-    /* Math: '<S124>/L^1//3' */
+    /* Math: '<S127>/L^1//3' */
     Time_Varying_Model_2022a_B.L13[1] = ang_cos;
     if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
         Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) {
-      /* Product: '<S124>/w4' incorporates:
-       *  Constant: '<S124>/Constant3'
+      /* Product: '<S127>/w4' incorporates:
+       *  Constant: '<S127>/Constant3'
        */
       Time_Varying_Model_2022a_B.w4 = Time_Varying_Model_2022a_P.Constant3_Value
         / Time_Varying_Model_2022a_B.UnitConversion_n;
 
-      /* Math: '<S124>/u^1//6' incorporates:
-       *  Constant: '<S124>/Constant2'
+      /* Math: '<S127>/u^1//6' incorporates:
+       *  Constant: '<S127>/Constant2'
        */
       ang_sin = Time_Varying_Model_2022a_B.w4;
       ang_cos = Time_Varying_Model_2022a_P.Constant2_Value;
       if ((ang_sin < 0.0) && (ang_cos > floor(ang_cos))) {
-        /* Math: '<S124>/u^1//6' */
+        /* Math: '<S127>/u^1//6' */
         Time_Varying_Model_2022a_B.u16 = -rt_powd_snf(-ang_sin, ang_cos);
       } else {
-        /* Math: '<S124>/u^1//6' */
+        /* Math: '<S127>/u^1//6' */
         Time_Varying_Model_2022a_B.u16 = rt_powd_snf(ang_sin, ang_cos);
       }
 
-      /* End of Math: '<S124>/u^1//6' */
+      /* End of Math: '<S127>/u^1//6' */
     }
 
-    /* Fcn: '<S124>/sqrt(0.8//V)' */
+    /* Fcn: '<S127>/sqrt(0.8//V)' */
     ang_sin = 0.8 / Time_Varying_Model_2022a_B.UnitConversion_e;
     if (ang_sin < 0.0) {
       ang_sin = -sqrt(-ang_sin);
@@ -3033,62 +3075,62 @@ void Time_Varying_Model_2022a_step(void)
       ang_sin = sqrt(ang_sin);
     }
 
-    /* Fcn: '<S124>/sqrt(0.8//V)' */
+    /* Fcn: '<S127>/sqrt(0.8//V)' */
     Time_Varying_Model_2022a_B.sqrt08V = ang_sin;
 
-    /* Product: '<S124>/w3' */
+    /* Product: '<S127>/w3' */
     Time_Varying_Model_2022a_B.w3 = Time_Varying_Model_2022a_B.UnitConversion_e *
       Time_Varying_Model_2022a_B.w4;
 
-    /* Product: '<S124>/w1' */
+    /* Product: '<S127>/w1' */
     ang_cos = Time_Varying_Model_2022a_B.sqrt08V /
       Time_Varying_Model_2022a_B.L13[0];
     Time_Varying_Model_2022a_B.w1_k[0] = ang_cos;
 
-    /* Product: '<S124>/w2' */
+    /* Product: '<S127>/w2' */
     ang_cos *= Time_Varying_Model_2022a_B.u16;
     Time_Varying_Model_2022a_B.w2[0] = ang_cos;
 
-    /* Product: '<S124>/Lug//V1' */
+    /* Product: '<S127>/Lug//V1' */
     ang_cos *= Time_Varying_Model_2022a_B.Product_p[3];
     Time_Varying_Model_2022a_B.LugV1_mq[0] = ang_cos;
 
-    /* Integrator: '<S124>/pgw_p' */
+    /* Integrator: '<S127>/pgw_p' */
     ang_sin = Time_Varying_Model_2022a_X.pgw_p_CSTATE[0];
     Time_Varying_Model_2022a_B.pgw_p[0] = ang_sin;
 
-    /* Sum: '<S124>/Sum' */
+    /* Sum: '<S127>/Sum' */
     ang_cos -= ang_sin;
     Time_Varying_Model_2022a_B.Sum_b1[0] = ang_cos;
 
-    /* Product: '<S124>/w' */
+    /* Product: '<S127>/w' */
     Time_Varying_Model_2022a_B.w_m[0] = Time_Varying_Model_2022a_B.w3 * ang_cos;
 
-    /* Product: '<S124>/w1' */
+    /* Product: '<S127>/w1' */
     ang_cos = Time_Varying_Model_2022a_B.sqrt08V /
       Time_Varying_Model_2022a_B.L13[1];
     Time_Varying_Model_2022a_B.w1_k[1] = ang_cos;
 
-    /* Product: '<S124>/w2' */
+    /* Product: '<S127>/w2' */
     ang_cos *= Time_Varying_Model_2022a_B.u16;
     Time_Varying_Model_2022a_B.w2[1] = ang_cos;
 
-    /* Product: '<S124>/Lug//V1' */
+    /* Product: '<S127>/Lug//V1' */
     ang_cos *= Time_Varying_Model_2022a_B.Product_p[3];
     Time_Varying_Model_2022a_B.LugV1_mq[1] = ang_cos;
 
-    /* Integrator: '<S124>/pgw_p' */
+    /* Integrator: '<S127>/pgw_p' */
     ang_sin = Time_Varying_Model_2022a_X.pgw_p_CSTATE[1];
     Time_Varying_Model_2022a_B.pgw_p[1] = ang_sin;
 
-    /* Sum: '<S124>/Sum' */
+    /* Sum: '<S127>/Sum' */
     ang_cos -= ang_sin;
     Time_Varying_Model_2022a_B.Sum_b1[1] = ang_cos;
 
-    /* Product: '<S124>/w' */
+    /* Product: '<S127>/w' */
     Time_Varying_Model_2022a_B.w_m[1] = Time_Varying_Model_2022a_B.w3 * ang_cos;
 
-    /* Product: '<S124>/sigma_w' */
+    /* Product: '<S127>/sigma_w' */
     Time_Varying_Model_2022a_B.sigma_w[0] = Time_Varying_Model_2022a_B.sigma_wg *
       Time_Varying_Model_2022a_B.pgw_p[0];
     Time_Varying_Model_2022a_B.sigma_w[1] =
@@ -3096,21 +3138,21 @@ void Time_Varying_Model_2022a_step(void)
       Time_Varying_Model_2022a_B.pgw_p[1];
   }
 
-  /* End of Outputs for SubSystem: '<S113>/Hpgw' */
+  /* End of Outputs for SubSystem: '<S116>/Hpgw' */
 
-  /* Outputs for Enabled SubSystem: '<S113>/Hqgw' incorporates:
-   *  EnablePort: '<S125>/Enable'
+  /* Outputs for Enabled SubSystem: '<S116>/Hqgw' incorporates:
+   *  EnablePort: '<S128>/Enable'
    */
   if ((rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
        Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) &&
       rtsiIsModeUpdateTimeStep(&Time_Varying_Model_2022a_M->solverInfo)) {
-    /* Constant: '<S113>/Constant2' */
+    /* Constant: '<S116>/Constant2' */
     if (Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelCont_c > 0.0) {
       if (!Time_Varying_Model_2022a_DW.Hqgw_MODE) {
         (void) memset(&(Time_Varying_Model_2022a_XDis.qgw_p_CSTATE), 0,
                       2*sizeof(boolean_T));
 
-        /* InitializeConditions for Integrator: '<S125>/qgw_p' */
+        /* InitializeConditions for Integrator: '<S128>/qgw_p' */
         Time_Varying_Model_2022a_X.qgw_p_CSTATE[0] =
           Time_Varying_Model_2022a_P.qgw_p_IC;
         Time_Varying_Model_2022a_X.qgw_p_CSTATE[1] =
@@ -3118,12 +3160,12 @@ void Time_Varying_Model_2022a_step(void)
         Time_Varying_Model_2022a_DW.Hqgw_MODE = true;
       }
     } else {
-      /* Outputs for Enabled SubSystem: '<S114>/Hugw(s)' incorporates:
-       *  EnablePort: '<S127>/Enable'
+      /* Outputs for Enabled SubSystem: '<S117>/Hugw(s)' incorporates:
+       *  EnablePort: '<S130>/Enable'
        */
       ang_cos = rtmGetTStart(Time_Varying_Model_2022a_M);
 
-      /* End of Outputs for SubSystem: '<S114>/Hugw(s)' */
+      /* End of Outputs for SubSystem: '<S117>/Hugw(s)' */
       if ((((Time_Varying_Model_2022a_M->Timing.clockTick1+
              Time_Varying_Model_2022a_M->Timing.clockTickH1* 4294967296.0)) *
            0.01) == ang_cos) {
@@ -3135,8 +3177,8 @@ void Time_Varying_Model_2022a_step(void)
         (void) memset(&(Time_Varying_Model_2022a_XDis.qgw_p_CSTATE), 1,
                       2*sizeof(boolean_T));
 
-        /* Disable for Product: '<S125>/w' incorporates:
-         *  Outport: '<S125>/qgw'
+        /* Disable for Product: '<S128>/w' incorporates:
+         *  Outport: '<S128>/qgw'
          */
         Time_Varying_Model_2022a_B.w_gw[0] = Time_Varying_Model_2022a_P.qgw_Y0;
         Time_Varying_Model_2022a_B.w_gw[1] = Time_Varying_Model_2022a_P.qgw_Y0;
@@ -3144,64 +3186,64 @@ void Time_Varying_Model_2022a_step(void)
       }
     }
 
-    /* End of Constant: '<S113>/Constant2' */
+    /* End of Constant: '<S116>/Constant2' */
   }
 
   if (Time_Varying_Model_2022a_DW.Hqgw_MODE) {
-    /* Gain: '<S125>/pi//4' */
+    /* Gain: '<S128>/pi//4' */
     Time_Varying_Model_2022a_B.pi4 = Time_Varying_Model_2022a_P.pi4_Gain *
       Time_Varying_Model_2022a_B.UnitConversion_e;
 
-    /* Product: '<S125>/wg//V' */
+    /* Product: '<S128>/wg//V' */
     ang_cos = Time_Varying_Model_2022a_B.LwgV1[0] /
       Time_Varying_Model_2022a_B.UnitConversion_e;
     Time_Varying_Model_2022a_B.wgV[0] = ang_cos;
 
-    /* Integrator: '<S125>/qgw_p' */
+    /* Integrator: '<S128>/qgw_p' */
     ang_sin = Time_Varying_Model_2022a_X.qgw_p_CSTATE[0];
     Time_Varying_Model_2022a_B.qgw_p[0] = ang_sin;
 
-    /* Sum: '<S125>/Sum' */
+    /* Sum: '<S128>/Sum' */
     ang_cos -= ang_sin;
     Time_Varying_Model_2022a_B.Sum_m[0] = ang_cos;
 
-    /* Product: '<S125>/w' */
+    /* Product: '<S128>/w' */
     Time_Varying_Model_2022a_B.w_gw[0] = Time_Varying_Model_2022a_B.pi4 /
       Time_Varying_Model_2022a_B.UnitConversion_n * ang_cos;
 
-    /* Product: '<S125>/wg//V' */
+    /* Product: '<S128>/wg//V' */
     ang_cos = Time_Varying_Model_2022a_B.LwgV1[1] /
       Time_Varying_Model_2022a_B.UnitConversion_e;
     Time_Varying_Model_2022a_B.wgV[1] = ang_cos;
 
-    /* Integrator: '<S125>/qgw_p' */
+    /* Integrator: '<S128>/qgw_p' */
     ang_sin = Time_Varying_Model_2022a_X.qgw_p_CSTATE[1];
     Time_Varying_Model_2022a_B.qgw_p[1] = ang_sin;
 
-    /* Sum: '<S125>/Sum' */
+    /* Sum: '<S128>/Sum' */
     ang_cos -= ang_sin;
     Time_Varying_Model_2022a_B.Sum_m[1] = ang_cos;
 
-    /* Product: '<S125>/w' */
+    /* Product: '<S128>/w' */
     Time_Varying_Model_2022a_B.w_gw[1] = Time_Varying_Model_2022a_B.pi4 /
       Time_Varying_Model_2022a_B.UnitConversion_n * ang_cos;
   }
 
-  /* End of Outputs for SubSystem: '<S113>/Hqgw' */
+  /* End of Outputs for SubSystem: '<S116>/Hqgw' */
 
-  /* Outputs for Enabled SubSystem: '<S113>/Hrgw' incorporates:
-   *  EnablePort: '<S126>/Enable'
+  /* Outputs for Enabled SubSystem: '<S116>/Hrgw' incorporates:
+   *  EnablePort: '<S129>/Enable'
    */
   if ((rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
        Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) &&
       rtsiIsModeUpdateTimeStep(&Time_Varying_Model_2022a_M->solverInfo)) {
-    /* Constant: '<S113>/Constant3' */
+    /* Constant: '<S116>/Constant3' */
     if (Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelCont_c > 0.0) {
       if (!Time_Varying_Model_2022a_DW.Hrgw_MODE) {
         (void) memset(&(Time_Varying_Model_2022a_XDis.rgw_p_CSTATE), 0,
                       2*sizeof(boolean_T));
 
-        /* InitializeConditions for Integrator: '<S126>/rgw_p' */
+        /* InitializeConditions for Integrator: '<S129>/rgw_p' */
         Time_Varying_Model_2022a_X.rgw_p_CSTATE[0] =
           Time_Varying_Model_2022a_P.rgw_p_IC;
         Time_Varying_Model_2022a_X.rgw_p_CSTATE[1] =
@@ -3209,12 +3251,12 @@ void Time_Varying_Model_2022a_step(void)
         Time_Varying_Model_2022a_DW.Hrgw_MODE = true;
       }
     } else {
-      /* Outputs for Enabled SubSystem: '<S114>/Hugw(s)' incorporates:
-       *  EnablePort: '<S127>/Enable'
+      /* Outputs for Enabled SubSystem: '<S117>/Hugw(s)' incorporates:
+       *  EnablePort: '<S130>/Enable'
        */
       ang_cos = rtmGetTStart(Time_Varying_Model_2022a_M);
 
-      /* End of Outputs for SubSystem: '<S114>/Hugw(s)' */
+      /* End of Outputs for SubSystem: '<S117>/Hugw(s)' */
       if ((((Time_Varying_Model_2022a_M->Timing.clockTick1+
              Time_Varying_Model_2022a_M->Timing.clockTickH1* 4294967296.0)) *
            0.01) == ang_cos) {
@@ -3226,8 +3268,8 @@ void Time_Varying_Model_2022a_step(void)
         (void) memset(&(Time_Varying_Model_2022a_XDis.rgw_p_CSTATE), 1,
                       2*sizeof(boolean_T));
 
-        /* Disable for Product: '<S126>/w' incorporates:
-         *  Outport: '<S126>/rgw'
+        /* Disable for Product: '<S129>/w' incorporates:
+         *  Outport: '<S129>/rgw'
          */
         Time_Varying_Model_2022a_B.w_g[0] = Time_Varying_Model_2022a_P.rgw_Y0;
         Time_Varying_Model_2022a_B.w_g[1] = Time_Varying_Model_2022a_P.rgw_Y0;
@@ -3235,54 +3277,54 @@ void Time_Varying_Model_2022a_step(void)
       }
     }
 
-    /* End of Constant: '<S113>/Constant3' */
+    /* End of Constant: '<S116>/Constant3' */
   }
 
   if (Time_Varying_Model_2022a_DW.Hrgw_MODE) {
-    /* Gain: '<S126>/pi//3' */
+    /* Gain: '<S129>/pi//3' */
     Time_Varying_Model_2022a_B.pi3 = Time_Varying_Model_2022a_P.pi3_Gain *
       Time_Varying_Model_2022a_B.UnitConversion_e;
 
-    /* Product: '<S126>/vg//V' */
+    /* Product: '<S129>/vg//V' */
     ang_cos = Time_Varying_Model_2022a_B.w1[0] /
       Time_Varying_Model_2022a_B.UnitConversion_e;
     Time_Varying_Model_2022a_B.vgV[0] = ang_cos;
 
-    /* Integrator: '<S126>/rgw_p' */
+    /* Integrator: '<S129>/rgw_p' */
     ang_sin = Time_Varying_Model_2022a_X.rgw_p_CSTATE[0];
     Time_Varying_Model_2022a_B.rgw_p[0] = ang_sin;
 
-    /* Sum: '<S126>/Sum' */
+    /* Sum: '<S129>/Sum' */
     ang_cos -= ang_sin;
     Time_Varying_Model_2022a_B.Sum_bn[0] = ang_cos;
 
-    /* Product: '<S126>/w' */
+    /* Product: '<S129>/w' */
     Time_Varying_Model_2022a_B.w_g[0] = Time_Varying_Model_2022a_B.pi3 /
       Time_Varying_Model_2022a_B.UnitConversion_n * ang_cos;
 
-    /* Product: '<S126>/vg//V' */
+    /* Product: '<S129>/vg//V' */
     ang_cos = Time_Varying_Model_2022a_B.w1[1] /
       Time_Varying_Model_2022a_B.UnitConversion_e;
     Time_Varying_Model_2022a_B.vgV[1] = ang_cos;
 
-    /* Integrator: '<S126>/rgw_p' */
+    /* Integrator: '<S129>/rgw_p' */
     ang_sin = Time_Varying_Model_2022a_X.rgw_p_CSTATE[1];
     Time_Varying_Model_2022a_B.rgw_p[1] = ang_sin;
 
-    /* Sum: '<S126>/Sum' */
+    /* Sum: '<S129>/Sum' */
     ang_cos -= ang_sin;
     Time_Varying_Model_2022a_B.Sum_bn[1] = ang_cos;
 
-    /* Product: '<S126>/w' */
+    /* Product: '<S129>/w' */
     Time_Varying_Model_2022a_B.w_g[1] = Time_Varying_Model_2022a_B.pi3 /
       Time_Varying_Model_2022a_B.UnitConversion_n * ang_cos;
   }
 
-  /* End of Outputs for SubSystem: '<S113>/Hrgw' */
+  /* End of Outputs for SubSystem: '<S116>/Hrgw' */
 
-  /* If: '<S118>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' incorporates:
-   *  Merge: '<S135>/Merge'
-   *  Product: '<S138>/Product'
+  /* If: '<S121>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' incorporates:
+   *  Merge: '<S138>/Merge'
+   *  Product: '<S141>/Product'
    */
   if (rtsiIsModeUpdateTimeStep(&Time_Varying_Model_2022a_M->solverInfo)) {
     if (Time_Varying_Model_2022a_B.UnitConversion <= 1000.0) {
@@ -3300,34 +3342,34 @@ void Time_Varying_Model_2022a_step(void)
 
   switch (rtAction) {
    case 0:
-    /* Outputs for IfAction SubSystem: '<S118>/Low altitude  rates' incorporates:
-     *  ActionPort: '<S133>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S121>/Low altitude  rates' incorporates:
+     *  ActionPort: '<S136>/Action Port'
      */
-    /* SignalConversion generated from: '<S138>/Vector Concatenate' incorporates:
-     *  Concatenate: '<S138>/Vector Concatenate'
+    /* SignalConversion generated from: '<S141>/Vector Concatenate' incorporates:
+     *  Concatenate: '<S141>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate_m[2] =
       Time_Varying_Model_2022a_B.w_g[0];
 
-    /* Trigonometry: '<S139>/Trigonometric Function1' */
+    /* Trigonometry: '<S142>/Trigonometric Function1' */
     ang_sin = Time_Varying_Model_2022a_B.UnitConversion_gl;
     ang_cos = sin(ang_sin);
     ang_sin = cos(ang_sin);
 
-    /* Trigonometry: '<S139>/Trigonometric Function1' */
+    /* Trigonometry: '<S142>/Trigonometric Function1' */
     Time_Varying_Model_2022a_B.TrigonometricFunction1_o1 = ang_cos;
 
-    /* Trigonometry: '<S139>/Trigonometric Function1' */
+    /* Trigonometry: '<S142>/Trigonometric Function1' */
     Time_Varying_Model_2022a_B.TrigonometricFunction1_o2 = ang_sin;
 
-    /* Product: '<S139>/Product2' */
+    /* Product: '<S142>/Product2' */
     Time_Varying_Model_2022a_B.Product2_dy[0] =
       Time_Varying_Model_2022a_B.sigma_w[0] *
       Time_Varying_Model_2022a_B.TrigonometricFunction1_o2;
     Time_Varying_Model_2022a_B.Product2_dy[1] = Time_Varying_Model_2022a_B.w_gw
       [0] * Time_Varying_Model_2022a_B.TrigonometricFunction1_o2;
 
-    /* Product: '<S139>/Product1' */
+    /* Product: '<S142>/Product1' */
     Time_Varying_Model_2022a_B.Product1_if[0] =
       Time_Varying_Model_2022a_B.TrigonometricFunction1_o1 *
       Time_Varying_Model_2022a_B.sigma_w[0];
@@ -3335,85 +3377,85 @@ void Time_Varying_Model_2022a_step(void)
       Time_Varying_Model_2022a_B.TrigonometricFunction1_o1 *
       Time_Varying_Model_2022a_B.w_gw[0];
 
-    /* Sum: '<S139>/Sum' incorporates:
-     *  Concatenate: '<S138>/Vector Concatenate'
+    /* Sum: '<S142>/Sum' incorporates:
+     *  Concatenate: '<S141>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate_m[0] =
       Time_Varying_Model_2022a_B.Product2_dy[0] -
       Time_Varying_Model_2022a_B.Product1_if[1];
 
-    /* Sum: '<S139>/Sum1' incorporates:
-     *  Concatenate: '<S138>/Vector Concatenate'
+    /* Sum: '<S142>/Sum1' incorporates:
+     *  Concatenate: '<S141>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate_m[1] =
       Time_Varying_Model_2022a_B.Product1_if[0] +
       Time_Varying_Model_2022a_B.Product2_dy[1];
 
-    /* Product: '<S138>/Product' incorporates:
-     *  Concatenate: '<S138>/Vector Concatenate'
+    /* Product: '<S141>/Product' incorporates:
+     *  Concatenate: '<S141>/Vector Concatenate'
      */
     memcpy(&rotmZYX[0], &Time_Varying_Model_2022a_B.DCM[0], 9U * sizeof(real_T));
     ang_sin = Time_Varying_Model_2022a_B.VectorConcatenate_m[0];
     st_idx_1 = Time_Varying_Model_2022a_B.VectorConcatenate_m[1];
     ang_cos = Time_Varying_Model_2022a_B.VectorConcatenate_m[2];
 
-    /* End of Outputs for SubSystem: '<S118>/Low altitude  rates' */
+    /* End of Outputs for SubSystem: '<S121>/Low altitude  rates' */
     for (i = 0; i <= 0; i += 2) {
-      /* Outputs for IfAction SubSystem: '<S118>/Low altitude  rates' incorporates:
-       *  ActionPort: '<S133>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S121>/Low altitude  rates' incorporates:
+       *  ActionPort: '<S136>/Action Port'
        */
       tmp_0 = _mm_loadu_pd(&rotmZYX[i]);
       tmp_0 = _mm_mul_pd(tmp_0, _mm_set1_pd(ang_sin));
       tmp_1 = _mm_loadu_pd(&rotmZYX[i + 3]);
       tmp_1 = _mm_mul_pd(tmp_1, _mm_set1_pd(st_idx_1));
 
-      /* End of Outputs for SubSystem: '<S118>/Low altitude  rates' */
+      /* End of Outputs for SubSystem: '<S121>/Low altitude  rates' */
       tmp_0 = _mm_add_pd(tmp_1, tmp_0);
 
-      /* Outputs for IfAction SubSystem: '<S118>/Low altitude  rates' incorporates:
-       *  ActionPort: '<S133>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S121>/Low altitude  rates' incorporates:
+       *  ActionPort: '<S136>/Action Port'
        */
       tmp_1 = _mm_loadu_pd(&rotmZYX[i + 6]);
       tmp_1 = _mm_mul_pd(tmp_1, _mm_set1_pd(ang_cos));
 
-      /* End of Outputs for SubSystem: '<S118>/Low altitude  rates' */
+      /* End of Outputs for SubSystem: '<S121>/Low altitude  rates' */
       tmp_0 = _mm_add_pd(tmp_1, tmp_0);
 
-      /* Outputs for IfAction SubSystem: '<S118>/Low altitude  rates' incorporates:
-       *  ActionPort: '<S133>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S121>/Low altitude  rates' incorporates:
+       *  ActionPort: '<S136>/Action Port'
        */
       _mm_storeu_pd(&Time_Varying_Model_2022a_B.Product_dt[i], tmp_0);
       _mm_storeu_pd(&Time_Varying_Model_2022a_B.Merge_n[i], tmp_0);
 
-      /* End of Outputs for SubSystem: '<S118>/Low altitude  rates' */
+      /* End of Outputs for SubSystem: '<S121>/Low altitude  rates' */
     }
 
-    /* Outputs for IfAction SubSystem: '<S118>/Low altitude  rates' incorporates:
-     *  ActionPort: '<S133>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S121>/Low altitude  rates' incorporates:
+     *  ActionPort: '<S136>/Action Port'
      */
     for (i = 2; i < 3; i++) {
-      /* Product: '<S138>/Product' */
+      /* Product: '<S141>/Product' */
       ct_idx_0 = rotmZYX[i] * ang_sin;
       ct_idx_0 += rotmZYX[i + 3] * st_idx_1;
       ct_idx_0 += rotmZYX[i + 6] * ang_cos;
       Time_Varying_Model_2022a_B.Product_dt[i] = ct_idx_0;
 
-      /* Merge: '<S135>/Merge' incorporates:
-       *  Product: '<S138>/Product'
-       *  Reshape: '<S138>/Reshape1'
+      /* Merge: '<S138>/Merge' incorporates:
+       *  Product: '<S141>/Product'
+       *  Reshape: '<S141>/Reshape1'
        */
       Time_Varying_Model_2022a_B.Merge_n[i] = ct_idx_0;
     }
 
-    /* End of Outputs for SubSystem: '<S118>/Low altitude  rates' */
+    /* End of Outputs for SubSystem: '<S121>/Low altitude  rates' */
     break;
 
    case 1:
-    /* Outputs for IfAction SubSystem: '<S118>/Medium//High  altitude rates' incorporates:
-     *  ActionPort: '<S134>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S121>/Medium//High  altitude rates' incorporates:
+     *  ActionPort: '<S137>/Action Port'
      */
-    /* Merge: '<S135>/Merge' incorporates:
-     *  Gain: '<S134>/Gain'
+    /* Merge: '<S138>/Merge' incorporates:
+     *  Gain: '<S137>/Gain'
      */
     Time_Varying_Model_2022a_B.Merge_n[0] = Time_Varying_Model_2022a_P.Gain_Gain
       * Time_Varying_Model_2022a_B.sigma_w[1];
@@ -3422,32 +3464,32 @@ void Time_Varying_Model_2022a_step(void)
     Time_Varying_Model_2022a_B.Merge_n[2] = Time_Varying_Model_2022a_P.Gain_Gain
       * Time_Varying_Model_2022a_B.w_g[1];
 
-    /* End of Outputs for SubSystem: '<S118>/Medium//High  altitude rates' */
+    /* End of Outputs for SubSystem: '<S121>/Medium//High  altitude rates' */
     break;
 
    default:
-    /* Outputs for IfAction SubSystem: '<S118>/Interpolate  rates' incorporates:
-     *  ActionPort: '<S132>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S121>/Interpolate  rates' incorporates:
+     *  ActionPort: '<S135>/Action Port'
      */
-    /* Trigonometry: '<S137>/Trigonometric Function' */
+    /* Trigonometry: '<S140>/Trigonometric Function' */
     ang_sin = Time_Varying_Model_2022a_B.UnitConversion_gl;
     ang_cos = sin(ang_sin);
     ang_sin = cos(ang_sin);
 
-    /* Trigonometry: '<S137>/Trigonometric Function' */
+    /* Trigonometry: '<S140>/Trigonometric Function' */
     Time_Varying_Model_2022a_B.TrigonometricFunction_o1_g = ang_cos;
 
-    /* Trigonometry: '<S137>/Trigonometric Function' */
+    /* Trigonometry: '<S140>/Trigonometric Function' */
     Time_Varying_Model_2022a_B.TrigonometricFunction_o2_m = ang_sin;
 
-    /* Product: '<S137>/Product2' */
+    /* Product: '<S140>/Product2' */
     Time_Varying_Model_2022a_B.Product2_k[0] =
       Time_Varying_Model_2022a_B.sigma_w[0] *
       Time_Varying_Model_2022a_B.TrigonometricFunction_o2_m;
     Time_Varying_Model_2022a_B.Product2_k[1] = Time_Varying_Model_2022a_B.w_gw[0]
       * Time_Varying_Model_2022a_B.TrigonometricFunction_o2_m;
 
-    /* Product: '<S137>/Product1' */
+    /* Product: '<S140>/Product1' */
     Time_Varying_Model_2022a_B.Product1_dm[0] =
       Time_Varying_Model_2022a_B.TrigonometricFunction_o1_g *
       Time_Varying_Model_2022a_B.sigma_w[0];
@@ -3455,77 +3497,77 @@ void Time_Varying_Model_2022a_step(void)
       Time_Varying_Model_2022a_B.TrigonometricFunction_o1_g *
       Time_Varying_Model_2022a_B.w_gw[0];
 
-    /* Sum: '<S137>/Sum' incorporates:
-     *  Concatenate: '<S136>/Vector Concatenate'
+    /* Sum: '<S140>/Sum' incorporates:
+     *  Concatenate: '<S139>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate_i[0] =
       Time_Varying_Model_2022a_B.Product2_k[0] -
       Time_Varying_Model_2022a_B.Product1_dm[1];
 
-    /* Sum: '<S137>/Sum1' incorporates:
-     *  Concatenate: '<S136>/Vector Concatenate'
+    /* Sum: '<S140>/Sum1' incorporates:
+     *  Concatenate: '<S139>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate_i[1] =
       Time_Varying_Model_2022a_B.Product1_dm[0] +
       Time_Varying_Model_2022a_B.Product2_k[1];
 
-    /* SignalConversion generated from: '<S136>/Vector Concatenate' incorporates:
-     *  Concatenate: '<S136>/Vector Concatenate'
+    /* SignalConversion generated from: '<S139>/Vector Concatenate' incorporates:
+     *  Concatenate: '<S139>/Vector Concatenate'
      */
     Time_Varying_Model_2022a_B.VectorConcatenate_i[2] =
       Time_Varying_Model_2022a_B.w_g[0];
 
-    /* Product: '<S136>/Product' incorporates:
-     *  Concatenate: '<S136>/Vector Concatenate'
+    /* Product: '<S139>/Product' incorporates:
+     *  Concatenate: '<S139>/Vector Concatenate'
      */
     memcpy(&rotmZYX[0], &Time_Varying_Model_2022a_B.DCM[0], 9U * sizeof(real_T));
     ang_sin = Time_Varying_Model_2022a_B.VectorConcatenate_i[0];
     st_idx_1 = Time_Varying_Model_2022a_B.VectorConcatenate_i[1];
     ang_cos = Time_Varying_Model_2022a_B.VectorConcatenate_i[2];
 
-    /* End of Outputs for SubSystem: '<S118>/Interpolate  rates' */
+    /* End of Outputs for SubSystem: '<S121>/Interpolate  rates' */
     for (i_0 = 0; i_0 <= 0; i_0 += 2) {
-      /* Outputs for IfAction SubSystem: '<S118>/Interpolate  rates' incorporates:
-       *  ActionPort: '<S132>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S121>/Interpolate  rates' incorporates:
+       *  ActionPort: '<S135>/Action Port'
        */
       tmp_0 = _mm_loadu_pd(&rotmZYX[i_0]);
       tmp_0 = _mm_mul_pd(tmp_0, _mm_set1_pd(ang_sin));
       tmp_1 = _mm_loadu_pd(&rotmZYX[i_0 + 3]);
       tmp_1 = _mm_mul_pd(tmp_1, _mm_set1_pd(st_idx_1));
 
-      /* End of Outputs for SubSystem: '<S118>/Interpolate  rates' */
+      /* End of Outputs for SubSystem: '<S121>/Interpolate  rates' */
       tmp_0 = _mm_add_pd(tmp_1, tmp_0);
 
-      /* Outputs for IfAction SubSystem: '<S118>/Interpolate  rates' incorporates:
-       *  ActionPort: '<S132>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S121>/Interpolate  rates' incorporates:
+       *  ActionPort: '<S135>/Action Port'
        */
       tmp_1 = _mm_loadu_pd(&rotmZYX[i_0 + 6]);
       tmp_1 = _mm_mul_pd(tmp_1, _mm_set1_pd(ang_cos));
 
-      /* End of Outputs for SubSystem: '<S118>/Interpolate  rates' */
+      /* End of Outputs for SubSystem: '<S121>/Interpolate  rates' */
       tmp_0 = _mm_add_pd(tmp_1, tmp_0);
 
-      /* Outputs for IfAction SubSystem: '<S118>/Interpolate  rates' incorporates:
-       *  ActionPort: '<S132>/Action Port'
+      /* Outputs for IfAction SubSystem: '<S121>/Interpolate  rates' incorporates:
+       *  ActionPort: '<S135>/Action Port'
        */
       _mm_storeu_pd(&Time_Varying_Model_2022a_B.Product_g[i_0], tmp_0);
 
-      /* End of Outputs for SubSystem: '<S118>/Interpolate  rates' */
+      /* End of Outputs for SubSystem: '<S121>/Interpolate  rates' */
     }
 
-    /* Outputs for IfAction SubSystem: '<S118>/Interpolate  rates' incorporates:
-     *  ActionPort: '<S132>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S121>/Interpolate  rates' incorporates:
+     *  ActionPort: '<S135>/Action Port'
      */
     for (i_0 = 2; i_0 < 3; i_0++) {
-      /* Product: '<S136>/Product' */
+      /* Product: '<S139>/Product' */
       ct_idx_0 = rotmZYX[i_0] * ang_sin;
       ct_idx_0 += rotmZYX[i_0 + 3] * st_idx_1;
       ct_idx_0 += rotmZYX[i_0 + 6] * ang_cos;
       Time_Varying_Model_2022a_B.Product_g[i_0] = ct_idx_0;
     }
 
-    /* Sum: '<S132>/Sum2' incorporates:
-     *  Product: '<S136>/Product'
+    /* Sum: '<S135>/Sum2' incorporates:
+     *  Product: '<S139>/Product'
      */
     Time_Varying_Model_2022a_B.Sum2_f[0] = Time_Varying_Model_2022a_B.sigma_w[1]
       - Time_Varying_Model_2022a_B.Product_g[0];
@@ -3534,74 +3576,74 @@ void Time_Varying_Model_2022a_step(void)
     Time_Varying_Model_2022a_B.Sum2_f[2] = Time_Varying_Model_2022a_B.w_g[1] -
       Time_Varying_Model_2022a_B.Product_g[2];
 
-    /* Sum: '<S132>/Sum1' incorporates:
-     *  Constant: '<S132>/max_height_low'
+    /* Sum: '<S135>/Sum1' incorporates:
+     *  Constant: '<S135>/max_height_low'
      */
     Time_Varying_Model_2022a_B.Sum1_p =
       Time_Varying_Model_2022a_B.UnitConversion -
       Time_Varying_Model_2022a_P.max_height_low_Value;
 
-    /* Sum: '<S132>/Sum' incorporates:
-     *  Constant: '<S132>/max_height_low'
-     *  Constant: '<S132>/min_height_high'
+    /* Sum: '<S135>/Sum' incorporates:
+     *  Constant: '<S135>/max_height_low'
+     *  Constant: '<S135>/min_height_high'
      */
     Time_Varying_Model_2022a_B.Sum_d =
       Time_Varying_Model_2022a_P.min_height_high_Value -
       Time_Varying_Model_2022a_P.max_height_low_Value;
 
-    /* Product: '<S132>/Product1' */
+    /* Product: '<S135>/Product1' */
     ang_cos = Time_Varying_Model_2022a_B.Sum2_f[0] *
       Time_Varying_Model_2022a_B.Sum1_p / Time_Varying_Model_2022a_B.Sum_d;
 
-    /* End of Outputs for SubSystem: '<S118>/Interpolate  rates' */
+    /* End of Outputs for SubSystem: '<S121>/Interpolate  rates' */
     Time_Varying_Model_2022a_B.Product1_he[0] = ang_cos;
 
-    /* Outputs for IfAction SubSystem: '<S118>/Interpolate  rates' incorporates:
-     *  ActionPort: '<S132>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S121>/Interpolate  rates' incorporates:
+     *  ActionPort: '<S135>/Action Port'
      */
-    /* Merge: '<S135>/Merge' incorporates:
-     *  Sum: '<S132>/Sum3'
+    /* Merge: '<S138>/Merge' incorporates:
+     *  Sum: '<S135>/Sum3'
      */
     Time_Varying_Model_2022a_B.Merge_n[0] =
       Time_Varying_Model_2022a_B.Product_g[0] + ang_cos;
 
-    /* Product: '<S132>/Product1' */
+    /* Product: '<S135>/Product1' */
     ang_cos = Time_Varying_Model_2022a_B.Sum2_f[1] *
       Time_Varying_Model_2022a_B.Sum1_p / Time_Varying_Model_2022a_B.Sum_d;
 
-    /* End of Outputs for SubSystem: '<S118>/Interpolate  rates' */
+    /* End of Outputs for SubSystem: '<S121>/Interpolate  rates' */
     Time_Varying_Model_2022a_B.Product1_he[1] = ang_cos;
 
-    /* Outputs for IfAction SubSystem: '<S118>/Interpolate  rates' incorporates:
-     *  ActionPort: '<S132>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S121>/Interpolate  rates' incorporates:
+     *  ActionPort: '<S135>/Action Port'
      */
-    /* Merge: '<S135>/Merge' incorporates:
-     *  Sum: '<S132>/Sum3'
+    /* Merge: '<S138>/Merge' incorporates:
+     *  Sum: '<S135>/Sum3'
      */
     Time_Varying_Model_2022a_B.Merge_n[1] =
       Time_Varying_Model_2022a_B.Product_g[1] + ang_cos;
 
-    /* Product: '<S132>/Product1' */
+    /* Product: '<S135>/Product1' */
     ang_cos = Time_Varying_Model_2022a_B.Sum2_f[2] *
       Time_Varying_Model_2022a_B.Sum1_p / Time_Varying_Model_2022a_B.Sum_d;
 
-    /* End of Outputs for SubSystem: '<S118>/Interpolate  rates' */
+    /* End of Outputs for SubSystem: '<S121>/Interpolate  rates' */
     Time_Varying_Model_2022a_B.Product1_he[2] = ang_cos;
 
-    /* Outputs for IfAction SubSystem: '<S118>/Interpolate  rates' incorporates:
-     *  ActionPort: '<S132>/Action Port'
+    /* Outputs for IfAction SubSystem: '<S121>/Interpolate  rates' incorporates:
+     *  ActionPort: '<S135>/Action Port'
      */
-    /* Merge: '<S135>/Merge' incorporates:
-     *  Sum: '<S132>/Sum3'
+    /* Merge: '<S138>/Merge' incorporates:
+     *  Sum: '<S135>/Sum3'
      */
     Time_Varying_Model_2022a_B.Merge_n[2] =
       Time_Varying_Model_2022a_B.Product_g[2] + ang_cos;
 
-    /* End of Outputs for SubSystem: '<S118>/Interpolate  rates' */
+    /* End of Outputs for SubSystem: '<S121>/Interpolate  rates' */
     break;
   }
 
-  /* End of If: '<S118>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' */
+  /* End of If: '<S121>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' */
 
   /* Gain: '<S26>/Gain' */
   Time_Varying_Model_2022a_B.Gain_jr = Time_Varying_Model_2022a_P.Gain_Gain_c *
@@ -3983,7 +4025,7 @@ void Time_Varying_Model_2022a_step(void)
       Time_Varying_Model_2022a_M->Timing.t[0];
     if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
         Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[2] == 0) {
-      /* Update for RandomNumber: '<S123>/White Noise' */
+      /* Update for RandomNumber: '<S126>/White Noise' */
       Time_Varying_Model_2022a_DW.NextOutput[0] = rt_nrand_Upu32_Yd_f_pw_snf
         (&Time_Varying_Model_2022a_DW.RandSeed[0]) *
         Time_Varying_Model_2022a_P.WhiteNoise_StdDev +
@@ -4003,8 +4045,29 @@ void Time_Varying_Model_2022a_step(void)
     }
 
     if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
+        Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[1] == 0) {
+      /* Update for RandomNumber: '<S54>/White Noise' */
+      Time_Varying_Model_2022a_DW.NextOutput_p = rt_nrand_Upu32_Yd_f_pw_snf
+        (&Time_Varying_Model_2022a_DW.RandSeed_e) *
+        Time_Varying_Model_2022a_P.WhiteNoise_StdDev_a +
+        Time_Varying_Model_2022a_P.WhiteNoise_Mean_m;
+
+      /* Update for RandomNumber: '<S53>/White Noise' */
+      Time_Varying_Model_2022a_DW.NextOutput_j = rt_nrand_Upu32_Yd_f_pw_snf
+        (&Time_Varying_Model_2022a_DW.RandSeed_h) *
+        Time_Varying_Model_2022a_P.WhiteNoise_StdDev_o +
+        Time_Varying_Model_2022a_P.WhiteNoise_Mean_l;
+
+      /* Update for RandomNumber: '<S52>/White Noise' */
+      Time_Varying_Model_2022a_DW.NextOutput_d = rt_nrand_Upu32_Yd_f_pw_snf
+        (&Time_Varying_Model_2022a_DW.RandSeed_m) *
+        Time_Varying_Model_2022a_P.WhiteNoise_StdDev_m +
+        Time_Varying_Model_2022a_P.WhiteNoise_Mean_c;
+    }
+
+    if (rtmIsMajorTimeStep(Time_Varying_Model_2022a_M) &&
         Time_Varying_Model_2022a_M->Timing.TaskCounters.TID[3] == 0) {
-      /* Update for Delay: '<S52>/MemoryX' */
+      /* Update for Delay: '<S55>/MemoryX' */
       Time_Varying_Model_2022a_DW.icLoad = false;
       Time_Varying_Model_2022a_DW.MemoryX_DSTATE =
         Time_Varying_Model_2022a_B.Add_p;
@@ -4088,9 +4151,9 @@ void Time_Varying_Model_2022a_derivatives(void)
   /* Derivatives for Integrator: '<S16>/Integrator1' */
   _rtXdot->Integrator1_CSTATE = Time_Varying_Model_2022a_B.rDot;
 
-  /* Derivatives for Enabled SubSystem: '<S114>/Hugw(s)' */
+  /* Derivatives for Enabled SubSystem: '<S117>/Hugw(s)' */
   if (Time_Varying_Model_2022a_DW.Hugws_MODE) {
-    /* Derivatives for Integrator: '<S127>/ug_p' */
+    /* Derivatives for Integrator: '<S130>/ug_p' */
     _rtXdot->ug_p_CSTATE[0] = Time_Varying_Model_2022a_B.w_b[0];
     _rtXdot->ug_p_CSTATE[1] = Time_Varying_Model_2022a_B.w_b[1];
   } else {
@@ -4105,20 +4168,20 @@ void Time_Varying_Model_2022a_derivatives(void)
     }
   }
 
-  /* End of Derivatives for SubSystem: '<S114>/Hugw(s)' */
+  /* End of Derivatives for SubSystem: '<S117>/Hugw(s)' */
 
-  /* Derivatives for Enabled SubSystem: '<S114>/Hvgw(s)' */
+  /* Derivatives for Enabled SubSystem: '<S117>/Hvgw(s)' */
   if (Time_Varying_Model_2022a_DW.Hvgws_MODE) {
-    /* Derivatives for Integrator: '<S128>/vg_p1' */
+    /* Derivatives for Integrator: '<S131>/vg_p1' */
     _rtXdot->vg_p1_CSTATE[0] = Time_Varying_Model_2022a_B.w_l[0];
 
-    /* Derivatives for Integrator: '<S128>/vgw_p2' */
+    /* Derivatives for Integrator: '<S131>/vgw_p2' */
     _rtXdot->vgw_p2_CSTATE[0] = Time_Varying_Model_2022a_B.w_i[0];
 
-    /* Derivatives for Integrator: '<S128>/vg_p1' */
+    /* Derivatives for Integrator: '<S131>/vg_p1' */
     _rtXdot->vg_p1_CSTATE[1] = Time_Varying_Model_2022a_B.w_l[1];
 
-    /* Derivatives for Integrator: '<S128>/vgw_p2' */
+    /* Derivatives for Integrator: '<S131>/vgw_p2' */
     _rtXdot->vgw_p2_CSTATE[1] = Time_Varying_Model_2022a_B.w_i[1];
   } else {
     {
@@ -4132,20 +4195,20 @@ void Time_Varying_Model_2022a_derivatives(void)
     }
   }
 
-  /* End of Derivatives for SubSystem: '<S114>/Hvgw(s)' */
+  /* End of Derivatives for SubSystem: '<S117>/Hvgw(s)' */
 
-  /* Derivatives for Enabled SubSystem: '<S114>/Hwgw(s)' */
+  /* Derivatives for Enabled SubSystem: '<S117>/Hwgw(s)' */
   if (Time_Varying_Model_2022a_DW.Hwgws_MODE) {
-    /* Derivatives for Integrator: '<S129>/wg_p1' */
+    /* Derivatives for Integrator: '<S132>/wg_p1' */
     _rtXdot->wg_p1_CSTATE[0] = Time_Varying_Model_2022a_B.w[0];
 
-    /* Derivatives for Integrator: '<S129>/wg_p2' */
+    /* Derivatives for Integrator: '<S132>/wg_p2' */
     _rtXdot->wg_p2_CSTATE[0] = Time_Varying_Model_2022a_B.w_o[0];
 
-    /* Derivatives for Integrator: '<S129>/wg_p1' */
+    /* Derivatives for Integrator: '<S132>/wg_p1' */
     _rtXdot->wg_p1_CSTATE[1] = Time_Varying_Model_2022a_B.w[1];
 
-    /* Derivatives for Integrator: '<S129>/wg_p2' */
+    /* Derivatives for Integrator: '<S132>/wg_p2' */
     _rtXdot->wg_p2_CSTATE[1] = Time_Varying_Model_2022a_B.w_o[1];
   } else {
     {
@@ -4159,16 +4222,16 @@ void Time_Varying_Model_2022a_derivatives(void)
     }
   }
 
-  /* End of Derivatives for SubSystem: '<S114>/Hwgw(s)' */
+  /* End of Derivatives for SubSystem: '<S117>/Hwgw(s)' */
 
   /* Derivatives for Integrator: '<S41>/Integrator' */
   _rtXdot->Integrator_CSTATE_m[0] = Time_Varying_Model_2022a_B.Merge_n[0];
   _rtXdot->Integrator_CSTATE_m[1] = Time_Varying_Model_2022a_B.Merge_n[1];
   _rtXdot->Integrator_CSTATE_m[2] = Time_Varying_Model_2022a_B.Merge_n[2];
 
-  /* Derivatives for Enabled SubSystem: '<S113>/Hpgw' */
+  /* Derivatives for Enabled SubSystem: '<S116>/Hpgw' */
   if (Time_Varying_Model_2022a_DW.Hpgw_MODE) {
-    /* Derivatives for Integrator: '<S124>/pgw_p' */
+    /* Derivatives for Integrator: '<S127>/pgw_p' */
     _rtXdot->pgw_p_CSTATE[0] = Time_Varying_Model_2022a_B.w_m[0];
     _rtXdot->pgw_p_CSTATE[1] = Time_Varying_Model_2022a_B.w_m[1];
   } else {
@@ -4183,11 +4246,11 @@ void Time_Varying_Model_2022a_derivatives(void)
     }
   }
 
-  /* End of Derivatives for SubSystem: '<S113>/Hpgw' */
+  /* End of Derivatives for SubSystem: '<S116>/Hpgw' */
 
-  /* Derivatives for Enabled SubSystem: '<S113>/Hqgw' */
+  /* Derivatives for Enabled SubSystem: '<S116>/Hqgw' */
   if (Time_Varying_Model_2022a_DW.Hqgw_MODE) {
-    /* Derivatives for Integrator: '<S125>/qgw_p' */
+    /* Derivatives for Integrator: '<S128>/qgw_p' */
     _rtXdot->qgw_p_CSTATE[0] = Time_Varying_Model_2022a_B.w_gw[0];
     _rtXdot->qgw_p_CSTATE[1] = Time_Varying_Model_2022a_B.w_gw[1];
   } else {
@@ -4202,11 +4265,11 @@ void Time_Varying_Model_2022a_derivatives(void)
     }
   }
 
-  /* End of Derivatives for SubSystem: '<S113>/Hqgw' */
+  /* End of Derivatives for SubSystem: '<S116>/Hqgw' */
 
-  /* Derivatives for Enabled SubSystem: '<S113>/Hrgw' */
+  /* Derivatives for Enabled SubSystem: '<S116>/Hrgw' */
   if (Time_Varying_Model_2022a_DW.Hrgw_MODE) {
-    /* Derivatives for Integrator: '<S126>/rgw_p' */
+    /* Derivatives for Integrator: '<S129>/rgw_p' */
     _rtXdot->rgw_p_CSTATE[0] = Time_Varying_Model_2022a_B.w_g[0];
     _rtXdot->rgw_p_CSTATE[1] = Time_Varying_Model_2022a_B.w_g[1];
   } else {
@@ -4221,7 +4284,7 @@ void Time_Varying_Model_2022a_derivatives(void)
     }
   }
 
-  /* End of Derivatives for SubSystem: '<S113>/Hrgw' */
+  /* End of Derivatives for SubSystem: '<S116>/Hrgw' */
 }
 
 /* Model initialize function */
@@ -4337,10 +4400,10 @@ void Time_Varying_Model_2022a_initialize(void)
     Time_Varying_Model_2022a_M->Timing.stepSize0, (&rtmGetErrorStatus
     (Time_Varying_Model_2022a_M)));
 
-  /* Start for If: '<S119>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' */
+  /* Start for If: '<S122>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' */
   Time_Varying_Model_2022a_DW.ifHeightMaxlowaltitudeelseifHei = -1;
 
-  /* Start for If: '<S118>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' */
+  /* Start for If: '<S121>/if Height < Max low altitude  elseif Height > Min isotropic altitude ' */
   Time_Varying_Model_2022a_DW.ifHeightMaxlowaltitudeelseifH_k = -1;
 
   {
@@ -4376,7 +4439,7 @@ void Time_Varying_Model_2022a_initialize(void)
     /* InitializeConditions for RateLimiter: '<Root>/Motor Speed' */
     Time_Varying_Model_2022a_DW.LastMajorTime = (rtInf);
 
-    /* InitializeConditions for RandomNumber: '<S123>/White Noise' */
+    /* InitializeConditions for RandomNumber: '<S126>/White Noise' */
     u0 = Time_Varying_Model_2022a_P.DrydenWindTurbulenceModelCont_a[0];
     u0 = floor(u0);
     if (rtIsNaN(u0) || rtIsInf(u0)) {
@@ -4494,7 +4557,7 @@ void Time_Varying_Model_2022a_initialize(void)
     Time_Varying_Model_2022a_DW.NextOutput[3] = u0;
     Time_Varying_Model_2022a_DW.RandSeed[3] = tseed;
 
-    /* End of InitializeConditions for RandomNumber: '<S123>/White Noise' */
+    /* End of InitializeConditions for RandomNumber: '<S126>/White Noise' */
 
     /* InitializeConditions for Integrator: '<S41>/Integrator' */
     Time_Varying_Model_2022a_X.Integrator_CSTATE_m[0] =
@@ -4504,186 +4567,282 @@ void Time_Varying_Model_2022a_initialize(void)
     Time_Varying_Model_2022a_X.Integrator_CSTATE_m[2] =
       Time_Varying_Model_2022a_P.Integrator_IC_d;
 
-    /* InitializeConditions for Delay: '<S52>/MemoryX' */
+    /* InitializeConditions for RandomNumber: '<S54>/White Noise' */
+    u0 = floor(Time_Varying_Model_2022a_P.BandLimitedWhiteNoise2_seed);
+    if (rtIsNaN(u0) || rtIsInf(u0)) {
+      u0 = 0.0;
+    } else {
+      u0 = fmod(u0, 4.294967296E+9);
+    }
+
+    if (u0 < 0.0) {
+      tseed = (uint32_T)-(int32_T)(uint32_T)-u0;
+    } else {
+      tseed = (uint32_T)u0;
+    }
+
+    r = (int32_T)(tseed >> 16U);
+    t = (int32_T)(tseed & 32768U);
+    tseed = ((((tseed - ((uint32_T)r << 16U)) + (uint32_T)t) << 16U) + (uint32_T)
+             t) + (uint32_T)r;
+    if (tseed < 1U) {
+      tseed = 1144108930U;
+    } else if (tseed > 2147483646U) {
+      tseed = 2147483646U;
+    }
+
+    Time_Varying_Model_2022a_DW.RandSeed_e = tseed;
+    Time_Varying_Model_2022a_DW.NextOutput_p = rt_nrand_Upu32_Yd_f_pw_snf
+      (&Time_Varying_Model_2022a_DW.RandSeed_e) *
+      Time_Varying_Model_2022a_P.WhiteNoise_StdDev_a +
+      Time_Varying_Model_2022a_P.WhiteNoise_Mean_m;
+
+    /* End of InitializeConditions for RandomNumber: '<S54>/White Noise' */
+
+    /* InitializeConditions for RandomNumber: '<S53>/White Noise' */
+    u0 = floor(Time_Varying_Model_2022a_P.BandLimitedWhiteNoise1_seed);
+    if (rtIsNaN(u0) || rtIsInf(u0)) {
+      u0 = 0.0;
+    } else {
+      u0 = fmod(u0, 4.294967296E+9);
+    }
+
+    if (u0 < 0.0) {
+      tseed = (uint32_T)-(int32_T)(uint32_T)-u0;
+    } else {
+      tseed = (uint32_T)u0;
+    }
+
+    r = (int32_T)(tseed >> 16U);
+    t = (int32_T)(tseed & 32768U);
+    tseed = ((((tseed - ((uint32_T)r << 16U)) + (uint32_T)t) << 16U) + (uint32_T)
+             t) + (uint32_T)r;
+    if (tseed < 1U) {
+      tseed = 1144108930U;
+    } else if (tseed > 2147483646U) {
+      tseed = 2147483646U;
+    }
+
+    Time_Varying_Model_2022a_DW.RandSeed_h = tseed;
+    Time_Varying_Model_2022a_DW.NextOutput_j = rt_nrand_Upu32_Yd_f_pw_snf
+      (&Time_Varying_Model_2022a_DW.RandSeed_h) *
+      Time_Varying_Model_2022a_P.WhiteNoise_StdDev_o +
+      Time_Varying_Model_2022a_P.WhiteNoise_Mean_l;
+
+    /* End of InitializeConditions for RandomNumber: '<S53>/White Noise' */
+
+    /* InitializeConditions for RandomNumber: '<S52>/White Noise' */
+    u0 = floor(Time_Varying_Model_2022a_P.BandLimitedWhiteNoise_seed);
+    if (rtIsNaN(u0) || rtIsInf(u0)) {
+      u0 = 0.0;
+    } else {
+      u0 = fmod(u0, 4.294967296E+9);
+    }
+
+    if (u0 < 0.0) {
+      tseed = (uint32_T)-(int32_T)(uint32_T)-u0;
+    } else {
+      tseed = (uint32_T)u0;
+    }
+
+    r = (int32_T)(tseed >> 16U);
+    t = (int32_T)(tseed & 32768U);
+    tseed = ((((tseed - ((uint32_T)r << 16U)) + (uint32_T)t) << 16U) + (uint32_T)
+             t) + (uint32_T)r;
+    if (tseed < 1U) {
+      tseed = 1144108930U;
+    } else if (tseed > 2147483646U) {
+      tseed = 2147483646U;
+    }
+
+    Time_Varying_Model_2022a_DW.RandSeed_m = tseed;
+    Time_Varying_Model_2022a_DW.NextOutput_d = rt_nrand_Upu32_Yd_f_pw_snf
+      (&Time_Varying_Model_2022a_DW.RandSeed_m) *
+      Time_Varying_Model_2022a_P.WhiteNoise_StdDev_m +
+      Time_Varying_Model_2022a_P.WhiteNoise_Mean_c;
+
+    /* End of InitializeConditions for RandomNumber: '<S52>/White Noise' */
+
+    /* InitializeConditions for Delay: '<S55>/MemoryX' */
     Time_Varying_Model_2022a_DW.icLoad = true;
 
-    /* SystemInitialize for Enabled SubSystem: '<S80>/Enabled Subsystem' */
-    /* SystemInitialize for Product: '<S106>/Product2' incorporates:
-     *  Outport: '<S106>/deltax'
+    /* SystemInitialize for Enabled SubSystem: '<S83>/Enabled Subsystem' */
+    /* SystemInitialize for Product: '<S109>/Product2' incorporates:
+     *  Outport: '<S109>/deltax'
      */
     Time_Varying_Model_2022a_B.Product2_cw =
       Time_Varying_Model_2022a_P.deltax_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S80>/Enabled Subsystem' */
+    /* End of SystemInitialize for SubSystem: '<S83>/Enabled Subsystem' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S73>/MeasurementUpdate' */
-    /* SystemInitialize for Product: '<S104>/Product3' incorporates:
-     *  Outport: '<S104>/L*(y[k]-yhat[k|k-1])'
+    /* SystemInitialize for Enabled SubSystem: '<S76>/MeasurementUpdate' */
+    /* SystemInitialize for Product: '<S107>/Product3' incorporates:
+     *  Outport: '<S107>/L*(y[k]-yhat[k|k-1])'
      */
     Time_Varying_Model_2022a_B.Product3_lw =
       Time_Varying_Model_2022a_P.Lykyhatkk1_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S73>/MeasurementUpdate' */
+    /* End of SystemInitialize for SubSystem: '<S76>/MeasurementUpdate' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S114>/Hugw(s)' */
-    /* InitializeConditions for Integrator: '<S127>/ug_p' */
+    /* SystemInitialize for Enabled SubSystem: '<S117>/Hugw(s)' */
+    /* InitializeConditions for Integrator: '<S130>/ug_p' */
     Time_Varying_Model_2022a_X.ug_p_CSTATE[0] =
       Time_Varying_Model_2022a_P.ug_p_IC;
 
-    /* SystemInitialize for Product: '<S127>/w1' incorporates:
-     *  Outport: '<S127>/ugw'
+    /* SystemInitialize for Product: '<S130>/w1' incorporates:
+     *  Outport: '<S130>/ugw'
      */
     Time_Varying_Model_2022a_B.w1_a[0] = Time_Varying_Model_2022a_P.ugw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S114>/Hugw(s)' */
+    /* End of SystemInitialize for SubSystem: '<S117>/Hugw(s)' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S114>/Hvgw(s)' */
-    /* InitializeConditions for Integrator: '<S128>/vg_p1' */
+    /* SystemInitialize for Enabled SubSystem: '<S117>/Hvgw(s)' */
+    /* InitializeConditions for Integrator: '<S131>/vg_p1' */
     Time_Varying_Model_2022a_X.vg_p1_CSTATE[0] =
       Time_Varying_Model_2022a_P.vg_p1_IC;
 
-    /* InitializeConditions for Integrator: '<S128>/vgw_p2' */
+    /* InitializeConditions for Integrator: '<S131>/vgw_p2' */
     Time_Varying_Model_2022a_X.vgw_p2_CSTATE[0] =
       Time_Varying_Model_2022a_P.vgw_p2_IC;
 
-    /* SystemInitialize for Product: '<S128>/w 1' incorporates:
-     *  Outport: '<S128>/vgw'
+    /* SystemInitialize for Product: '<S131>/w 1' incorporates:
+     *  Outport: '<S131>/vgw'
      */
     Time_Varying_Model_2022a_B.w1[0] = Time_Varying_Model_2022a_P.vgw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S114>/Hvgw(s)' */
+    /* End of SystemInitialize for SubSystem: '<S117>/Hvgw(s)' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S114>/Hwgw(s)' */
-    /* InitializeConditions for Integrator: '<S129>/wg_p1' */
+    /* SystemInitialize for Enabled SubSystem: '<S117>/Hwgw(s)' */
+    /* InitializeConditions for Integrator: '<S132>/wg_p1' */
     Time_Varying_Model_2022a_X.wg_p1_CSTATE[0] =
       Time_Varying_Model_2022a_P.wg_p1_IC;
 
-    /* InitializeConditions for Integrator: '<S129>/wg_p2' */
+    /* InitializeConditions for Integrator: '<S132>/wg_p2' */
     Time_Varying_Model_2022a_X.wg_p2_CSTATE[0] =
       Time_Varying_Model_2022a_P.wg_p2_IC;
 
-    /* SystemInitialize for Product: '<S129>/Lwg//V 1' incorporates:
-     *  Outport: '<S129>/wgw'
+    /* SystemInitialize for Product: '<S132>/Lwg//V 1' incorporates:
+     *  Outport: '<S132>/wgw'
      */
     Time_Varying_Model_2022a_B.LwgV1[0] = Time_Varying_Model_2022a_P.wgw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S114>/Hwgw(s)' */
+    /* End of SystemInitialize for SubSystem: '<S117>/Hwgw(s)' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S113>/Hpgw' */
-    /* InitializeConditions for Integrator: '<S124>/pgw_p' */
+    /* SystemInitialize for Enabled SubSystem: '<S116>/Hpgw' */
+    /* InitializeConditions for Integrator: '<S127>/pgw_p' */
     Time_Varying_Model_2022a_X.pgw_p_CSTATE[0] =
       Time_Varying_Model_2022a_P.pgw_p_IC;
 
-    /* SystemInitialize for Product: '<S124>/sigma_w' incorporates:
-     *  Outport: '<S124>/pgw'
+    /* SystemInitialize for Product: '<S127>/sigma_w' incorporates:
+     *  Outport: '<S127>/pgw'
      */
     Time_Varying_Model_2022a_B.sigma_w[0] = Time_Varying_Model_2022a_P.pgw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S113>/Hpgw' */
+    /* End of SystemInitialize for SubSystem: '<S116>/Hpgw' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S113>/Hqgw' */
-    /* InitializeConditions for Integrator: '<S125>/qgw_p' */
+    /* SystemInitialize for Enabled SubSystem: '<S116>/Hqgw' */
+    /* InitializeConditions for Integrator: '<S128>/qgw_p' */
     Time_Varying_Model_2022a_X.qgw_p_CSTATE[0] =
       Time_Varying_Model_2022a_P.qgw_p_IC;
 
-    /* SystemInitialize for Product: '<S125>/w' incorporates:
-     *  Outport: '<S125>/qgw'
+    /* SystemInitialize for Product: '<S128>/w' incorporates:
+     *  Outport: '<S128>/qgw'
      */
     Time_Varying_Model_2022a_B.w_gw[0] = Time_Varying_Model_2022a_P.qgw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S113>/Hqgw' */
+    /* End of SystemInitialize for SubSystem: '<S116>/Hqgw' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S113>/Hrgw' */
-    /* InitializeConditions for Integrator: '<S126>/rgw_p' */
+    /* SystemInitialize for Enabled SubSystem: '<S116>/Hrgw' */
+    /* InitializeConditions for Integrator: '<S129>/rgw_p' */
     Time_Varying_Model_2022a_X.rgw_p_CSTATE[0] =
       Time_Varying_Model_2022a_P.rgw_p_IC;
 
-    /* SystemInitialize for Product: '<S126>/w' incorporates:
-     *  Outport: '<S126>/rgw'
+    /* SystemInitialize for Product: '<S129>/w' incorporates:
+     *  Outport: '<S129>/rgw'
      */
     Time_Varying_Model_2022a_B.w_g[0] = Time_Varying_Model_2022a_P.rgw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S113>/Hrgw' */
+    /* End of SystemInitialize for SubSystem: '<S116>/Hrgw' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S114>/Hugw(s)' */
-    /* InitializeConditions for Integrator: '<S127>/ug_p' */
+    /* SystemInitialize for Enabled SubSystem: '<S117>/Hugw(s)' */
+    /* InitializeConditions for Integrator: '<S130>/ug_p' */
     Time_Varying_Model_2022a_X.ug_p_CSTATE[1] =
       Time_Varying_Model_2022a_P.ug_p_IC;
 
-    /* SystemInitialize for Product: '<S127>/w1' incorporates:
-     *  Outport: '<S127>/ugw'
+    /* SystemInitialize for Product: '<S130>/w1' incorporates:
+     *  Outport: '<S130>/ugw'
      */
     Time_Varying_Model_2022a_B.w1_a[1] = Time_Varying_Model_2022a_P.ugw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S114>/Hugw(s)' */
+    /* End of SystemInitialize for SubSystem: '<S117>/Hugw(s)' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S114>/Hvgw(s)' */
-    /* InitializeConditions for Integrator: '<S128>/vg_p1' */
+    /* SystemInitialize for Enabled SubSystem: '<S117>/Hvgw(s)' */
+    /* InitializeConditions for Integrator: '<S131>/vg_p1' */
     Time_Varying_Model_2022a_X.vg_p1_CSTATE[1] =
       Time_Varying_Model_2022a_P.vg_p1_IC;
 
-    /* InitializeConditions for Integrator: '<S128>/vgw_p2' */
+    /* InitializeConditions for Integrator: '<S131>/vgw_p2' */
     Time_Varying_Model_2022a_X.vgw_p2_CSTATE[1] =
       Time_Varying_Model_2022a_P.vgw_p2_IC;
 
-    /* SystemInitialize for Product: '<S128>/w 1' incorporates:
-     *  Outport: '<S128>/vgw'
+    /* SystemInitialize for Product: '<S131>/w 1' incorporates:
+     *  Outport: '<S131>/vgw'
      */
     Time_Varying_Model_2022a_B.w1[1] = Time_Varying_Model_2022a_P.vgw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S114>/Hvgw(s)' */
+    /* End of SystemInitialize for SubSystem: '<S117>/Hvgw(s)' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S114>/Hwgw(s)' */
-    /* InitializeConditions for Integrator: '<S129>/wg_p1' */
+    /* SystemInitialize for Enabled SubSystem: '<S117>/Hwgw(s)' */
+    /* InitializeConditions for Integrator: '<S132>/wg_p1' */
     Time_Varying_Model_2022a_X.wg_p1_CSTATE[1] =
       Time_Varying_Model_2022a_P.wg_p1_IC;
 
-    /* InitializeConditions for Integrator: '<S129>/wg_p2' */
+    /* InitializeConditions for Integrator: '<S132>/wg_p2' */
     Time_Varying_Model_2022a_X.wg_p2_CSTATE[1] =
       Time_Varying_Model_2022a_P.wg_p2_IC;
 
-    /* SystemInitialize for Product: '<S129>/Lwg//V 1' incorporates:
-     *  Outport: '<S129>/wgw'
+    /* SystemInitialize for Product: '<S132>/Lwg//V 1' incorporates:
+     *  Outport: '<S132>/wgw'
      */
     Time_Varying_Model_2022a_B.LwgV1[1] = Time_Varying_Model_2022a_P.wgw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S114>/Hwgw(s)' */
+    /* End of SystemInitialize for SubSystem: '<S117>/Hwgw(s)' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S113>/Hpgw' */
-    /* InitializeConditions for Integrator: '<S124>/pgw_p' */
+    /* SystemInitialize for Enabled SubSystem: '<S116>/Hpgw' */
+    /* InitializeConditions for Integrator: '<S127>/pgw_p' */
     Time_Varying_Model_2022a_X.pgw_p_CSTATE[1] =
       Time_Varying_Model_2022a_P.pgw_p_IC;
 
-    /* SystemInitialize for Product: '<S124>/sigma_w' incorporates:
-     *  Outport: '<S124>/pgw'
+    /* SystemInitialize for Product: '<S127>/sigma_w' incorporates:
+     *  Outport: '<S127>/pgw'
      */
     Time_Varying_Model_2022a_B.sigma_w[1] = Time_Varying_Model_2022a_P.pgw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S113>/Hpgw' */
+    /* End of SystemInitialize for SubSystem: '<S116>/Hpgw' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S113>/Hqgw' */
-    /* InitializeConditions for Integrator: '<S125>/qgw_p' */
+    /* SystemInitialize for Enabled SubSystem: '<S116>/Hqgw' */
+    /* InitializeConditions for Integrator: '<S128>/qgw_p' */
     Time_Varying_Model_2022a_X.qgw_p_CSTATE[1] =
       Time_Varying_Model_2022a_P.qgw_p_IC;
 
-    /* SystemInitialize for Product: '<S125>/w' incorporates:
-     *  Outport: '<S125>/qgw'
+    /* SystemInitialize for Product: '<S128>/w' incorporates:
+     *  Outport: '<S128>/qgw'
      */
     Time_Varying_Model_2022a_B.w_gw[1] = Time_Varying_Model_2022a_P.qgw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S113>/Hqgw' */
+    /* End of SystemInitialize for SubSystem: '<S116>/Hqgw' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S113>/Hrgw' */
-    /* InitializeConditions for Integrator: '<S126>/rgw_p' */
+    /* SystemInitialize for Enabled SubSystem: '<S116>/Hrgw' */
+    /* InitializeConditions for Integrator: '<S129>/rgw_p' */
     Time_Varying_Model_2022a_X.rgw_p_CSTATE[1] =
       Time_Varying_Model_2022a_P.rgw_p_IC;
 
-    /* SystemInitialize for Product: '<S126>/w' incorporates:
-     *  Outport: '<S126>/rgw'
+    /* SystemInitialize for Product: '<S129>/w' incorporates:
+     *  Outport: '<S129>/rgw'
      */
     Time_Varying_Model_2022a_B.w_g[1] = Time_Varying_Model_2022a_P.rgw_Y0;
 
-    /* End of SystemInitialize for SubSystem: '<S113>/Hrgw' */
+    /* End of SystemInitialize for SubSystem: '<S116>/Hrgw' */
   }
 }
 

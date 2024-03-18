@@ -1,0 +1,9 @@
+- profiling
+- add extra tests and outputs to these tests (DONE)
+- add bluetooth header and tail (DONE)
+- change startup to a button rather than automatic (DONE)
+- fix buzzers
+- remove led code and just leave to on or off (DONE)
+- be able to calibrate servos on the fly? (DONE)
+- monitor to save all servo data
+- add servo PID gains

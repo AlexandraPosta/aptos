@@ -1,12 +1,13 @@
 /*
   Leeds University Rocketry Organisation - LURA
   Author Name: Oliver Martin
-  Created on: 01 February 2024
+  Created on: 01 March 2024
   Description: header file for the IMU module LSM6DS3
 */
 #ifndef LSM6DS3_DRIVER_H
 #define LSM6DS3_DRIVER_H
 #include "mcu.h"
+#include "filters.h"
 
 #pragma once
 
@@ -90,42 +91,54 @@
 #define LSM6DSO_MASK_CTRL9_XL 0x02        // 0b00000010
 
 // Calibration parameters
-#define LSM6DSO_OFFSET_BUFF_LEN 100
+#define LSM6DSO_OFFSET_BUFF_LEN 50
 #define LSM6DS6_DOWNSAMPLE_SIZE 4
 #define LMS6DS6_ANGULAR_RATE_SENSITIVITY  70 //for +-2000dps sensitivity is 70mdps/LSB
+#define LMS6DS6_ACCEL_SENSITIVITY  488 //for +-16G, sensitivity is 0.488 mg/LSB
+
+// Constants for filter tuning
+#define GYRO_WEIGHT 100//0.98
+#define ACCEL_WEIGHT 0//0.02
 
 typedef struct LSM6DS3_data
 {
   int32_t x;
   int32_t y;
   int32_t z;
-  int16_t xRate;
-  int16_t yRate;
-  int16_t zRate;
-  int16_t xOffset;
-  int16_t yOffset;
-  int16_t zOffset;
+  int32_t roll;
+  int32_t pitch;
+  int32_t yaw;
+  int32_t xRate;
+  int32_t yRate;
+  int32_t zRate;
+  int32_t xOffset;
+  int32_t yOffset;
+  int32_t zOffset;
+  int16_t xAccel;
+  int16_t yAccel;
+  int16_t zAccel;
   int32_t time;
 } LSM6DS3_data;
 
 //init functions
-uint8_t lsm6ds6_init(SPI_TypeDef *spi, LSM6DS3_data* gyro);
-static void lsm6ds6WriteRegister(SPI_TypeDef *spi, uint8_t registerID, uint8_t value, unsigned delayMs);
-static void lsm6ds6WriteRegisterBits(SPI_TypeDef *spi, uint8_t registerID, uint8_t mask, uint8_t value, unsigned delayMs);
-void lsm6ds6Config(SPI_TypeDef *spi);
+uint8_t lsm6ds3_init(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+static void lsm6ds3WriteRegister(SPI_TypeDef *spi, uint8_t registerID, uint8_t value, unsigned delayMs);
+static void lsm6ds3WriteRegisterBits(SPI_TypeDef *spi, uint8_t registerID, uint8_t mask, uint8_t value, unsigned delayMs);
+void lsm6ds3Config(SPI_TypeDef *spi);
 
-// Contained in accgyro_spi_lsm6ds6_init.c which is size-optimized
-//uint8_t lsm6ds6Detect(SPI_TypeDef *spi);
-//bool lsm6ds6SpiAccDetect(SPI_TypeDef *spi);
-//bool lsm6ds6SpiGyroDetect(SPI_TypeDef *spi);
+// Contained in accgyro_spi_lsm6ds3_init.c which is size-optimized
+//uint8_t lsm6ds3Detect(SPI_TypeDef *spi);
+//bool lsm6ds3SpiAccDetect(SPI_TypeDef *spi);
+//bool lsm6ds3SpiGyroDetect(SPI_TypeDef *spi);
 
-// Contained in accgyro_spi_lsm6ds6.c which is speed-optimized
-//void lsm6ds6ExtiHandler(extiCallbackRec_t *cb);
-bool lsm6ds6AccRead(SPI_TypeDef *spi);
-bool lsm6ds6GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro);
-bool lsm6ds6GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+// Contained in accgyro_spi_lsm6ds3.c which is speed-optimized
+//void lsm6ds3ExtiHandler(extiCallbackRec_t *cb);
+bool lsm6ds3AccRead(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+bool lsm6ds3GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+bool lsm6ds3GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+void lsm6ds3CalculateOrientation(SPI_TypeDef *spi, LSM6DS3_data* gyro);
 //calculates the gyro offset values
-bool lsm6ds6GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+bool lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro);
 
 //keeps angle between +-180,000 mDeg
 int32_t LSM6DS3_angle_overflow(int32_t mDeg);

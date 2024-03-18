@@ -71,17 +71,20 @@ void run_test_routine_BME280() {
 
 void run_test_routine_LSM6DS3()
 {
+  printf("----------- IMU TEST -----------\r\n");
   LSM6DS3_data gyro_data;
-  delay_ms(50);
-  lsm6ds6_init(SPI2, &gyro_data);
+  //delay_ms(50);
+  lsm6ds3_init(SPI2, &gyro_data);
   uint32_t startTime = get_time_us();
   uint32_t currentTime;
   while (1){
     currentTime = get_time_us();
-    if(currentTime - startTime > 1000000/20){//26hz
+    if(currentTime - startTime > 1000000/500){
       startTime = currentTime;
-      lsm6ds6GyroReadAngle(SPI2, &gyro_data);
-      //lsm6dsoAccRead(SPI2);
+      //lsm6ds3GyroReadAngle(SPI2, &gyro_data);
+      //lsm6ds3AccRead(SPI2, &gyro_data);
+      //lsm6ds3GyroRead(SPI2, &gyro_data);
+      lsm6ds3CalculateOrientation(SPI2, &gyro_data);
     }
     watchdog_pat();
     
@@ -110,4 +113,42 @@ void timer_test(){
     delay_ms(50);
   }
 
+}
+
+void DFU_programming_check(){
+  printf("============== DFU flash check ===========\r\n");
+  delay_ms(500);
+  while (uart_read_ready(USART1)){
+    uint8_t recieve = uart_read_byte(USART1);
+    delay(1);
+    //printf("%x\r\n", recieve);
+    if (recieve == 'f'){
+      printf("Flash command recieved!\r\n");
+      delay_ms(500);
+      jump_to_bootloader();
+    }
+  }
+  printf("No flash request\r\n");
+}
+
+
+void DFU_programming_test(){
+  
+  printf("============== DFU Routine ===========\r\n");
+  uint8_t recieve = 0;
+  delay(10);
+  while(1){
+    delay_ms(100);
+    if (uart_read_ready(USART1)){
+      recieve = uart_read_byte(USART1);
+      delay(1);
+      //printf("%x\r\n", recieve);
+      if (recieve == 'f'){
+        printf("Flash command recieved!\r\n");
+        delay_ms(500);
+        jump_to_bootloader();
+      }
+    }
+    
+  }
 }

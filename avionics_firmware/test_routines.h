@@ -42,4 +42,18 @@ void run_ADXL375_routine();
 
 void timer_test();
 
+/**
+  @brief Routine to check if it should enter DFU boot mode.
+*/
+//void NAND_flash_test_routine();
+
+void DFU_programming_check();
+
+/**
+  @brief Routine to test programming via USB DFU.
+*/
+//void NAND_flash_test_routine();
+
+void DFU_programming_test();
+
 #endif /*TESTING_ROUTINE_H*/
