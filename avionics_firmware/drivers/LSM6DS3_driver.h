@@ -105,42 +105,62 @@ typedef struct LSM6DS3_data
   int32_t x;
   int32_t y;
   int32_t z;
-  int32_t roll;
-  int32_t pitch;
-  int32_t yaw;
-  int32_t xRate;
-  int32_t yRate;
-  int32_t zRate;
-  int32_t xOffset;
-  int32_t yOffset;
-  int32_t zOffset;
-  int16_t xAccel;
-  int16_t yAccel;
-  int16_t zAccel;
+  int32_t x_rate;
+  int32_t y_rate;
+  int32_t z_rate;
+  int32_t x_offset;
+  int32_t y_offset;
+  int32_t z_offset;
+  int16_t x_accel;
+  int16_t y_accel;
+  int16_t z_accel;
   int32_t time;
 } LSM6DS3_data;
 
-//init functions
-uint8_t lsm6ds3_init(SPI_TypeDef *spi, LSM6DS3_data* gyro);
-static void lsm6ds3WriteRegister(SPI_TypeDef *spi, uint8_t registerID, uint8_t value, unsigned delayMs);
-static void lsm6ds3WriteRegisterBits(SPI_TypeDef *spi, uint8_t registerID, uint8_t mask, uint8_t value, unsigned delayMs);
-void lsm6ds3Config(SPI_TypeDef *spi);
+/**
+	@brief Initialises the IMU
+	@note sets registers and runs gyro offset calc
+	@return 1 for success, 0 for wrong chip id
+*/
+uint8_t Lsm6ds3Init(SPI_TypeDef *spi, LSM6DS3_data* gyro);
 
-// Contained in accgyro_spi_lsm6ds3_init.c which is size-optimized
-//uint8_t lsm6ds3Detect(SPI_TypeDef *spi);
-//bool lsm6ds3SpiAccDetect(SPI_TypeDef *spi);
-//bool lsm6ds3SpiGyroDetect(SPI_TypeDef *spi);
+static void Lsm6ds3WriteRegister(SPI_TypeDef *spi, uint8_t register_id, uint8_t value, unsigned delayMs);
+static void Lsm6ds3WriteRegisterBits(SPI_TypeDef *spi, uint8_t register_id, uint8_t mask, uint8_t value, unsigned delayMs);
 
-// Contained in accgyro_spi_lsm6ds3.c which is speed-optimized
-//void lsm6ds3ExtiHandler(extiCallbackRec_t *cb);
-bool lsm6ds3AccRead(SPI_TypeDef *spi, LSM6DS3_data* gyro);
-bool lsm6ds3GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro);
-bool lsm6ds3GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro);
-void lsm6ds3CalculateOrientation(SPI_TypeDef *spi, LSM6DS3_data* gyro);
-//calculates the gyro offset values
-bool lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+/**
+	@brief Configures the settings registers for the IMU
+	@note Sets things like frequency and range
+*/
+void Lsm6ds3Config(SPI_TypeDef *spi);
 
-//keeps angle between +-180,000 mDeg
-int32_t LSM6DS3_angle_overflow(int32_t mDeg);
+/**
+	@brief Reads the raw Accel data
+	@note results are stored in the gyro pointer
+*/
+bool Lsm6ds3AccRead(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+
+/**
+	@brief Reads the raw Gyro data
+	@note results are stored in the gyro pointer
+*/
+bool Lsm6ds3GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+
+/**
+	@brief Calculates the angles by integrating the raw gyro readings
+	@note results are stored in the gyro pointer
+*/
+bool Lsm6ds3GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+
+/**
+	@brief Calculates offsets to zero the gyro
+	@note must be stationary while this is performed
+*/
+bool Lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro);
+
+/**
+	@brief Stops angle from overflowing.
+	@note keeps angle between +-180,000 mDeg
+*/
+int32_t Lsm6ds3AngleOverflow(int32_t mDeg);
 
 #endif /* LSM6DS3_DRIVER_H */

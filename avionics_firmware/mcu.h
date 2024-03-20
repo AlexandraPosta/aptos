@@ -221,8 +221,8 @@ static inline void jump_to_bootloader(){
   const uint32_t p = (*((uint32_t *) 0x1FFF0000));
   //__set_MSP( p );
   //next two lines are taken from what is in examples of __set_MSP();
-    register uint32_t __regMainStackPointer     asm("msp");//__ASM("msp");
-    __regMainStackPointer = p;
+  //  register uint32_t __regMainStackPointer     asm("msp");//__ASM("msp");
+  //  __regMainStackPointer = p;
 
 
   void (*SysMemBootJump)(void);
