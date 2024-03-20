@@ -196,7 +196,6 @@ static inline bool gpio_read(uint16_t pin) {
 #pragma endregion GPIO
 
 #pragma region DFU
-
 //test function found on thread here: https://stackoverflow.com/questions/66538837/stm32-usb-programming-jump-to-bootloader-for-dfu
 //supposed to put MCU into DFU mode without having to pull boot0 pin high.
 
@@ -206,30 +205,13 @@ static inline void jump_to_bootloader(){
   gpio_write(RGB2_G, LOW);
   gpio_write(RGB2_B, HIGH);
 
-  //__enable_irq(); 
-  asm volatile ("cpsie i" : : : "memory");
-  //HAL_RCC_DeInit();
-  //HAL_DeInit();
   SysTick->CTRL = SysTick->LOAD = SysTick->VAL = 0;
-  //__HAL_SYSCFG_REMAPMEMORY_SYSTEMFLASH();
-  do {
-    SYSCFG->MEMRMP &= ~(SYSCFG_MEMRMP_MEM_MODE);\
-    SYSCFG->MEMRMP |= SYSCFG_MEMRMP_MEM_MODE_0;\
-  }while(0);
-
-
-  const uint32_t p = (*((uint32_t *) 0x1FFF0000));
-  //__set_MSP( p );
-  //next two lines are taken from what is in examples of __set_MSP();
-  //  register uint32_t __regMainStackPointer     asm("msp");//__ASM("msp");
-  //  __regMainStackPointer = p;
-
+  SYSCFG->MEMRMP &= ~(SYSCFG_MEMRMP_MEM_MODE);
+  SYSCFG->MEMRMP |= SYSCFG_MEMRMP_MEM_MODE_0;
 
   void (*SysMemBootJump)(void);
 	SysMemBootJump = (void (*)(void)) (*((uint32_t *) 0x1FFF0004));
 	SysMemBootJump();
-
-	while( 1 ) {}
 }
 
 #pragma endregion DFU
