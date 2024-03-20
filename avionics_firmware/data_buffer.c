@@ -15,13 +15,13 @@ void init_buffer(dataBuffer* buffer) {
   // Allocate memory for the buffer array
   /*
   //Create a blank frame
-  FrameArray blankFrame;                         // initialise the frameArray that keeps updating
-  uint8_t dataArray[128];                   // dummy array to store the frame data
-  _memset(dataArray, 0, sizeof(dataArray)); // set the necessary memory and set values to 0
-  blankFrame = unzip(&dataArray);               // convert from normal array into FrameArray
+  FrameArray blankFrame;                          // initialise the frameArray that keeps updating
+  uint8_t dataArray[128];                         // dummy array to store the frame data
+  _memset(dataArray, 0, sizeof(dataArray));       // set the necessary memory and set values to 0
+  blankFrame = unzip(&dataArray);                 // convert from normal array into FrameArray
 
   //add blank frames to buffers
-  for (uint8_t i = 0; i < BUFFER_SIZE; i ++){
+  for (uint8_t i = 0; i < BUFFER_SIZE; i++){
     buffer->frames[i] = blankFrame;
   }
   */
