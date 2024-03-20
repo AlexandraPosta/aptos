@@ -12,6 +12,7 @@
 #include "drivers/ADXL375_driver.h"
 #include "drivers/LSM6DS3_driver.h"
 //#include "drivers/NAND_flash_driver.h"
+#include "drivers/SERVO_driver.h"
 
 /**
   @brief Test Routine
@@ -33,12 +34,7 @@ void run_test_routine_LSM6DS3();
 
 void run_ADXL375_routine();
 
-//void run_nand_flash_test();
-
-/**
-  @brief Routine to test NAND Flash reading and writing.
-*/
-//void NAND_flash_test_routine();
+void ServoTest();
 
 void timer_test();
 
@@ -49,11 +45,6 @@ void timer_test();
 
 void DFU_programming_check();
 
-/**
-  @brief Routine to test programming via USB DFU.
-*/
-//void NAND_flash_test_routine();
 
-void DFU_programming_test();
 
 #endif /*TESTING_ROUTINE_H*/

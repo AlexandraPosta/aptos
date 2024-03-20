@@ -13,9 +13,9 @@ extern int FREQ;
 #define _buzzer     PIN('B', 1)   //assigned for aptos board
 #define _blueLED    PIN('E', 7)   //assigned for aptos board
 #define _boot0      PIN('H', 3)   //Boot0 pin
-#define _servoEn    PIN('B', 2);  //Servo enable pin
-#define _USB_P      PIN('A', 12); //USB D+ line
-#define _USB_N      PIN('A', 11); //USB D- line
+#define _servoEn    PIN('B', 2)  //Servo enable pin
+#define _USB_P      PIN('A', 12) //USB D+ line
+#define _USB_N      PIN('A', 11) //USB D- line
 
 //RGB LEDs
 #define RGB1_R      PIN('E', 9)
@@ -36,10 +36,10 @@ extern int FREQ;
 #define SPI2_mosi   PIN('B', 15)
 
 //USART Pins
-#define USART1_tx   PIN('B', 6);
-#define USART1_rx   PIN('B', 7);
-#define USART2_tx   PIN('D', 5);
-#define USART2_rx   PIN('D', 6);
+#define USART1_tx   PIN('B', 6)
+#define USART1_rx   PIN('B', 7)
+#define USART2_tx   PIN('D', 5)
+#define USART2_rx   PIN('D', 6)
 
 // Map cs pins to sensors
 #define CS0         PIN('C', 7)   // Accelerometer

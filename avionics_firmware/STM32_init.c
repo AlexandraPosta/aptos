@@ -91,6 +91,7 @@ void STM32_init_peripherals()
   gpio_set_mode(_buzzer, GPIO_MODE_OUTPUT);
   gpio_set_mode(_blueLED, GPIO_MODE_OUTPUT);
   gpio_set_mode(_boot0, GPIO_MODE_OUTPUT);
+  gpio_set_mode(_servoEn, GPIO_MODE_OUTPUT);
 
   gpio_set_mode(RGB1_R, GPIO_MODE_OUTPUT);
   gpio_set_mode(RGB1_G, GPIO_MODE_OUTPUT);
@@ -106,13 +107,10 @@ void STM32_init_peripherals()
   gpio_set_mode(CS3, GPIO_MODE_OUTPUT);
   gpio_set_mode(CS4, GPIO_MODE_OUTPUT);
 
-  // ss was originally set to GPIO_MODE_AF, which seems correct but needs to be set to output to actually work?
-  // investigate !!!
-  //gpio_set_af(ss, af);???
-
   // Initialise
   gpio_write(_blueLED, HIGH);
   gpio_write(_buzzer, LOW);
+  gpio_write(_servoEn, LOW);
 
 }
 

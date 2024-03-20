@@ -122,11 +122,12 @@ int main(void) {
   //run_test_routine_BME280();
   //ADXL375_init(SPI2);
   //run_ADXL375_routine();
-  run_test_routine_LSM6DS3();
+  //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
   //NAND_flash_read();
   //DFU_programming_test();
+  ServoTest();
 
   //delay_ms(1000);
   gpio_write(RGB1_G, HIGH);

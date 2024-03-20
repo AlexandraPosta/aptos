@@ -111,8 +111,23 @@ void timer_test(){
     printf("%d\r\n",get_time_us());
     delay_ms(50);
   }
-
 }
+
+void ServoTest(){
+  delay_ms(500);
+  ServoEnable(true);
+  delay_ms(1000);
+  ServoUartInit(UART1);
+  SmartServo servo1 = ServoInit(UART1, 1);
+  delay_ms(300);
+  ServoSetTargetAngle(&servo1,10000);
+  delay_ms(300);
+  ServoSetTargetAngle(&servo1,-10000);
+  while(1){
+
+  }
+}
+
 
 void DFU_programming_check(){
   printf("============== DFU flash check ===========\r\n");
@@ -130,24 +145,3 @@ void DFU_programming_check(){
   printf("No flash request\r\n");
 }
 
-
-void DFU_programming_test(){
-  
-  printf("============== DFU Routine ===========\r\n");
-  uint8_t recieve = 0;
-  delay(10);
-  while(1){
-    delay_ms(100);
-    if (uart_read_ready(USART1)){
-      recieve = uart_read_byte(USART1);
-      delay(1);
-      //printf("%x\r\n", recieve);
-      if (recieve == 'f'){
-        printf("Flash command recieved!\r\n");
-        delay_ms(500);
-        jump_to_bootloader();
-      }
-    }
-    
-  }
-}

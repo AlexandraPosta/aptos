@@ -1,25 +1,97 @@
 #include "SERVO_driver.h"
 
 
+void ServoUartInit(USART_TypeDef* uart){
+    UartSingleWireInit(uart, 1000000);
+}
 
-
+void ServoEnable(bool enable){
+    gpio_write(_servoEn, enable);
+}
 
 SmartServo ServoInit(USART_TypeDef* uart, uint8_t id){
     SmartServo servo;
     servo.servo_uart = uart;
     servo.servo_id = id;
 
+    printf("Initialising Servo ID:%i\r\n", id);
     //ping servo to check its there
-    if (ServoPing(&servo))
+    if (ServoPing(&servo)){
+        printf("Servo Ping Success\r\n");
+    }else{
+        printf("Servo ping Failed\r\n");
+    }
+
     //reset servo
     ServoReset(&servo);
 
+    //---------- Configure the servo settings ----------
+    uint8_t send_byte;
+    //set respone mode to 0, no response unless requested
+    send_byte = 0;
+    ServoWriteData(&servo, SERVO_REG_RESPONSE_STATUS_LEVEL, 1, &send_byte);
+    //set baud rate
+    send_byte = 0;
+    ServoWriteData(&servo, SERVO_REG_BAUDRATE, 1, &send_byte);  //baud rate of 1,000,000
+
+    //set min angle
+    //0-4096. 15deg = 2048 - (4096/360*15) = 1877
+    uint8_t min_angle[2] = {1877 & 0xFF, 1877 >> 8};   //split into 2 bytes, lower section and higher section
+    ServoWriteData(&servo, SERVO_REG_MINIMUM_ANGLE, 2, &min_angle);     
+
+    //set max angle
+    //0-4096. 15deg = 2048 + (4096/360*15) = 2219
+    uint8_t max_angle[2] = {2219 & 0xFF, 2219 >> 8};   //split into 2 bytes, lower section and higher section
+    ServoWriteData(&servo, SERVO_REG_MAXIMUM_ANGLE, 2, &max_angle);     
+
+    //set operation mode to position servo
+    send_byte = 0;
+    ServoWriteData(&servo, SERVO_REG_OPERATION_MODE, 1, &send_byte);
+
+    //---------------------------------------------------
     //set servo to 0 degrees
+    ServoSetTargetAngle(&servo, 0);
 
     return servo;
 }
 
 void ServoReset(SmartServo* servo){
+    uint8_t txBuf[SERVO_MIN_PACKET_SIZE];    //can't be changed dynamically so set to max
+    txBuf[0] = SERVO_HEADER;
+    txBuf[1] = SERVO_HEADER;
+    txBuf[2] = servo->servo_id;
+    txBuf[3] = 0x02;
+    txBuf[4] = SERVO_CMD_RESET;
+
+    uint8_t check_sum = ~(txBuf[2] + txBuf[3] + txBuf[4] + txBuf[5]);  // checksum
+    txBuf[5] = check_sum;
+
+    uart_write_buf(servo->servo_uart, txBuf, sizeof(txBuf));    //send buffer
+
+    //============ Recieving data =============
+    //delay here
+    delay_microseconds(1);
+
+    uint8_t rxBuf[SERVO_MIN_PACKET_SIZE]; //length can't be changed dynamically so set a max
+    uint16_t result = 0;
+    uint8_t wait_counter;
+    uint8_t wait_limit = 250;
+
+    for (uint8_t ii = 0; ii <= sizeof(rxBuf)-1; ii++) {
+        wait_counter = 0;
+        while(!uart_read_ready(servo->servo_uart))
+        {
+            wait_counter++;
+            delay_microseconds(1); 
+            if (wait_counter >= wait_limit){
+                servo->servo_error_status = SERVO_ERROR_INVALID_PACKET;
+                return false;
+            }
+        }
+        rxBuf[ii] = uart_read_byte(servo->servo_uart);
+    }
+
+    //check data?
 
 }
 
@@ -73,10 +145,57 @@ bool ServoPing(SmartServo* servo){
         return false;
     }
 
+    printf("Ping return = 0x%x\r\n", rxBuf[4]);
     return true;
 }
 
+void ServoSetId(SmartServo* servo, uint8_t new_id){
+    //check new ID valid
+    if (new_id > 0xFE) return;
+    //ping oldID
+    if (!ServoPing(servo)) return;
+    uint8_t send_byte;
+    //unlock EEPROM
+    send_byte = 0;
+    ServoWriteData(servo, SERVO_REG_WRITE_LOCK, 1, &send_byte);
+    //Write new_id to register
+    ServoWriteData(servo, SERVO_REG_ID, 1, &new_id);
+    //update servo struct
+    servo->servo_id = new_id;
+    //lock EEPROM
+    ServoWriteData(servo, SERVO_REG_WRITE_LOCK, 1, &send_byte);
+    //check by pinging new_id
+    ServoPing(servo);
+}
+
+void ServoSetTargetAngle(SmartServo* servo, int32_t target_angle_mdeg){
+    int32_t convert_angle_to_position = target_angle_mdeg;
+    convert_angle_to_position = (convert_angle_to_position*4096)/360000 + 2048;
+    ServoSetTargetPosition(servo, convert_angle_to_position);
+}
+
+void ServoSetTargetPosition(SmartServo* servo, uint16_t target_postion){
+    uint8_t angle_buff[2] = {target_postion & 0xFF, target_postion >> 8};
+    ServoWriteData(servo, SERVO_REG_TARGET_POSITION, 2, &angle_buff);
+}
+
+int32_t ServoGetCurrentAngle(SmartServo* servo){
+    uint16_t position = ServoGetCurrentPosition(servo);
+    int32_t angle = ((position - 2048) * 360000) / 4096;
+    return angle;
+}
+
+uint16_t ServoGetCurrentPosition(SmartServo* servo){
+    return ServoReadTwoBytes(servo, SERVO_REG_CURRENT_POSITION);
+}
+
 //================== Private functions =======================
+
+uint16_t ServoReadTwoBytes(SmartServo* servo, uint8_t address){
+    uint8_t result_buff[2] = {0,0};
+    ServoReadData(servo, address, 2, &result_buff);
+    return result_buff[0] & (result_buff[1] << 8);
+}
 
 void ServoWriteData(SmartServo* servo, uint8_t address, uint8_t length, uint8_t* data){
     //check length
@@ -104,7 +223,6 @@ void ServoWriteData(SmartServo* servo, uint8_t address, uint8_t length, uint8_t*
 
     uart_write_buf(servo->servo_uart, txBuf, sizeof(txBuf));    //send buffer
 }
-
 
 void ServoReadData(SmartServo* servo, uint8_t address, uint8_t length, uint8_t* result){
     //check length

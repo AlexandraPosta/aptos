@@ -1,10 +1,62 @@
-#ifndef SERVO_DRIVER_H
+#ifndef SERVO_DRIVER_HRegisters
 #define SERVO_DRIVER_H
 
 // DATASHEET: https://files.waveshare.com/upload/2/27/Communication_Protocol_User_Manual-EN%28191218-0923%29.pdf
 
 //================== INCLUDES ===================
 #include "mcu.h"
+
+//------------------------------------------------------------------------------
+// Registers
+#define SERVO_REG_FIRMWARE_MAJOR            0x00
+#define SERVO_REG_FIRMWARE_MINOR            0x01
+#define SERVO_REG_SERVO_MAJOR               0x03
+#define SERVO_REG_SERVO_MINOR               0x04
+#define SERVO_REG_ID                        0x05
+#define SERVO_REG_BAUDRATE                  0x06
+#define SERVO_REG_RESPONSE_DELAY            0x07
+#define SERVO_REG_RESPONSE_STATUS_LEVEL     0x08
+#define SERVO_REG_MINIMUM_ANGLE             0x09
+#define SERVO_REG_MAXIMUM_ANGLE             0x0B
+#define SERVO_REG_MAXIMUM_TEMPERATURE       0x0D
+#define SERVO_REG_MAXIMUM_VOLTAGE           0x0E
+#define SERVO_REG_MINIMUM_VOLTAGE           0x0F
+#define SERVO_REG_MAXIMUM_TORQUE            0x10
+#define SERVO_REG_UNLOADING_CONDITION       0x13
+#define SERVO_REG_LED_ALARM_CONDITION       0x14
+#define SERVO_REG_POS_PROPORTIONAL_GAIN     0x15
+#define SERVO_REG_POS_DERIVATIVE_GAIN       0x16
+#define SERVO_REG_POS_INTEGRAL_GAIN         0x17
+#define SERVO_REG_MINIMUM_STARTUP_FORCE     0x18
+#define SERVO_REG_CK_INSENSITIVE_AREA       0x1A
+#define SERVO_REG_CCK_INSENSITIVE_AREA      0x1B
+#define SERVO_REG_CURRENT_PROTECTION_TH     0x1C
+#define SERVO_REG_ANGULAR_RESOLUTION        0x1E
+#define SERVO_REG_POSITION_CORRECTION       0x1F
+#define SERVO_REG_OPERATION_MODE            0x21
+#define SERVO_REG_TORQUE_PROTECTION_TH      0x22
+#define SERVO_REG_TORQUE_PROTECTION_TIME    0x23
+#define SERVO_REG_OVERLOAD_TORQUE           0x24
+#define SERVO_REG_SPEED_PROPORTIONAL_GAIN   0x25
+#define SERVO_REG_OVERCURRENT_TIME          0x26
+#define SERVO_REG_SPEED_INTEGRAL_GAIN       0x27
+#define SERVO_REG_TORQUE_SWITCH             0x28
+#define SERVO_REG_TARGET_ACCELERATION       0x29
+#define SERVO_REG_TARGET_POSITION           0x2A
+#define SERVO_REG_RUNNING_TIME              0x2C
+#define SERVO_REG_RUNNING_SPEED             0x2E
+#define SERVO_REG_TORQUE_LIMIT              0x30
+#define SERVO_REG_WRITE_LOCK                0x37
+#define SERVO_REG_CURRENT_POSITION          0x38
+#define SERVO_REG_CURRENT_SPEED             0x3A
+#define SERVO_REG_CURRENT_DRIVE_VOLTAGE     0x3C
+#define SERVO_REG_CURRENT_VOLTAGE           0x3E
+#define SERVO_REG_CURRENT_TEMPERATURE       0x3F
+#define SERVO_REG_ASYNCHRONOUS_WRITE_ST     0x40
+#define SERVO_REG_STATUS                    0x41
+#define SERVO_REG_MOVING_STATUS             0x42
+#define SERVO_REG_CURRENT_CURRENT           0x45
+
 
 //------------------------------------------------------------------------------
 // Instruction Types
@@ -45,6 +97,19 @@ typedef struct SmartServo
 } SmartServo;
 
 //============================= FUNCTIONS ===================================================
+
+/**
+	@brief Initialises a servo uart to single wire
+	@note 
+*/
+void ServoUartInit(USART_TypeDef* uart);
+
+/**
+	@brief enables or disables power to servos
+	@note 
+*/
+void ServoEnable(bool enable);
+
 /**
 	@brief Initialises a servo
 	@note sets up servo object, resets servo and moves to default position
@@ -66,7 +131,48 @@ void ServoReset(SmartServo* servo);
 */
 bool ServoPing(SmartServo* servo);
 
-//================== Private functions =======================
+/**
+	@brief Changes the ID of a servo
+	@note 
+	@return 
+*/
+void ServoSetId(SmartServo* servo, uint8_t new_id);
+
+/**
+	@brief Sets target angle of the servo
+	@note angle in milli degrees
+*/
+void ServoSetTargetAngle(SmartServo* servo, int32_t target_angle_mdeg);
+
+/**
+	@brief Sets target position of servo
+	@note position is a value between 0-4096
+*/
+void ServoSetTargetPosition(SmartServo* servo, uint16_t target_postion);
+
+/**
+	@brief Gets current angle of servo
+	@note
+    @return angle in milli degrees
+*/
+int32_t ServoGetCurrentAngle(SmartServo* servo);
+
+/**
+	@brief Gets current position of servo
+	@note
+    @return position between 0-4096
+*/
+uint16_t ServoGetCurrentPosition(SmartServo* servo);
+
+
+//========================== Private functions ==============================================
+/**
+	@brief Reads two registers to return a 16-bit result
+	@note pass the lower number register
+	@return 16 bit result of the 2 registers
+*/
+uint16_t ServoReadTwoBytes(SmartServo* servo, uint8_t address);
+
 /**
 	@brief Writes data to servo
 	@note 
