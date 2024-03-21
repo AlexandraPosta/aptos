@@ -153,7 +153,7 @@ void ServoSetId(SmartServo* servo, uint8_t new_id){
     //check new ID valid
     if (new_id > 0xFE) return;
     //ping oldID
-    if (!ServoPing(servo)) return;
+    if (!ServoPing(servo)) ;//return;
     uint8_t send_byte;
     //unlock EEPROM
     send_byte = 0;
@@ -163,6 +163,7 @@ void ServoSetId(SmartServo* servo, uint8_t new_id){
     //update servo struct
     servo->servo_id = new_id;
     //lock EEPROM
+    send_byte = 1;
     ServoWriteData(servo, SERVO_REG_WRITE_LOCK, 1, &send_byte);
     //check by pinging new_id
     ServoPing(servo);

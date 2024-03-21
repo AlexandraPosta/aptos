@@ -2,6 +2,7 @@
 #define SERVO_DRIVER_H
 
 // DATASHEET: https://files.waveshare.com/upload/2/27/Communication_Protocol_User_Manual-EN%28191218-0923%29.pdf
+// Memory map: https://files.waveshare.com/upload/2/27/sts3215_%20memory_table.xlsx 
 
 //================== INCLUDES ===================
 #include "mcu.h"
@@ -80,7 +81,7 @@
 
 // Size
 #define SERVO_MIN_PACKET_SIZE                     6
-#define SERVO_MAX_WRITE_SIZE                       8 //this can be increased
+#define SERVO_MAX_WRITE_SIZE                      8 //this can be increased
 #define SERVO_MAX_READ_SIZE                       8 //this can be increased
 
 #define NUM_SERVOS          4

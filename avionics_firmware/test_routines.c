@@ -116,13 +116,17 @@ void timer_test(){
 void ServoTest(){
   delay_ms(500);
   ServoEnable(true);
-  delay_ms(1000);
+  delay_ms(100);
   ServoUartInit(UART1);
-  SmartServo servo1 = ServoInit(UART1, 1);
+  SmartServo servo1 = ServoInit(UART1, 101);
+  SmartServo servo2 = ServoInit(UART1, 102);
   delay_ms(300);
   ServoSetTargetAngle(&servo1,10000);
-  delay_ms(300);
+  ServoSetTargetAngle(&servo2,-10000);
+  delay_ms(500);
   ServoSetTargetAngle(&servo1,-10000);
+  delay_ms(500);
+  ServoSetTargetAngle(&servo2,10000);
   while(1){
 
   }
