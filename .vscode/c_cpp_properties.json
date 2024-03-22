@@ -3,7 +3,9 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/avionics_firmware/*",
+                "${workspaceFolder}/avionics_firmware/tinyUSB/***"
             ],
             "defines": [
                 "_DEBUG",

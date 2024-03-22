@@ -13,6 +13,24 @@
         "usbd_cdc_if.h": "c",
         "bme280_driver.h": "c",
         "mcu.h": "c",
-        "filters.h": "c"
+        "filters.h": "c",
+        "xpd_rcc.h": "c",
+        "xpd_utils.h": "c",
+        "xpd_common.h": "c",
+        "xpd_usb_wrapper.h": "c",
+        "xpd_usb_otg.h": "c",
+        "usbd_cdc_vcp.h": "c",
+        "usb_conf.h": "c",
+        "usbd_conf.h": "c",
+        "usbd_desc.h": "c",
+        "usb_lib.h": "c",
+        "usbhw.h": "c",
+        "usb.h": "c",
+        "ringbuffer.h": "c",
+        "data_buffer.h": "c",
+        "xpd_usb.h": "c",
+        "stdio.h": "c",
+        "tusb_compiler.h": "c",
+        "tusb_option.h": "c"
     }
 }

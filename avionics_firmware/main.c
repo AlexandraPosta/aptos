@@ -10,6 +10,9 @@
 #include "test_routines.h"
 #include "data_buffer.h"
 
+#include "tinyUSB/tusb.h"
+
+
 #define PADREADFREQ 100 //frequency to read data during ascent
 #define ASCENTREADFREQ 1000 //frequency to read data during ascent
 #define APOGEEREADFREQ 1000 //frequency to read data during ascent
@@ -127,6 +130,7 @@ int main(void) {
   //run_nand_flash_erase();
   //NAND_flash_read();
   //DFU_programming_test();
+  tusb_init();
   ServoTest();
 
   //delay_ms(1000);
