@@ -152,6 +152,13 @@ void ServoSetTargetAngle(SmartServo* servo, int32_t target_angle_mdeg);
 void ServoSetTargetPosition(SmartServo* servo, uint16_t target_postion);
 
 /**
+	@brief Sets pid values for the position control of the servo
+	@note all values are 0-254, use 255 (0xFF) to skip assignement.
+	@note Default pid values are 32, 32, 0
+*/
+void ServoSetPID(SmartServo* servo, uint8_t p, uint8_t i, uint8_t d);
+
+/**
 	@brief Gets current angle of servo
 	@note
     @return angle in milli degrees

@@ -37,12 +37,12 @@ SmartServo ServoInit(USART_TypeDef* uart, uint8_t id){
     //set min angle
     //0-4096. 15deg = 2048 - (4096/360*15) = 1877
     uint8_t min_angle[2] = {1877 & 0xFF, 1877 >> 8};   //split into 2 bytes, lower section and higher section
-    ServoWriteData(&servo, SERVO_REG_MINIMUM_ANGLE, 2, &min_angle);     
+    //ServoWriteData(&servo, SERVO_REG_MINIMUM_ANGLE, 2, &min_angle);     
 
     //set max angle
     //0-4096. 15deg = 2048 + (4096/360*15) = 2219
     uint8_t max_angle[2] = {2219 & 0xFF, 2219 >> 8};   //split into 2 bytes, lower section and higher section
-    ServoWriteData(&servo, SERVO_REG_MAXIMUM_ANGLE, 2, &max_angle);     
+    //ServoWriteData(&servo, SERVO_REG_MAXIMUM_ANGLE, 2, &max_angle);     
 
     //set operation mode to position servo
     send_byte = 0;
@@ -103,7 +103,7 @@ bool ServoPing(SmartServo* servo){
     txBuf[3] = 0x02;
     txBuf[4] = SERVO_CMD_PING;
 
-    uint8_t check_sum = ~(txBuf[2] + txBuf[3] + txBuf[4] + txBuf[5]);  // checksum
+    uint8_t check_sum = ~(txBuf[2] + txBuf[3] + txBuf[4]);  // checksum
     txBuf[5] = check_sum;
 
     uart_write_buf(servo->servo_uart, txBuf, sizeof(txBuf));    //send buffer
@@ -180,11 +180,32 @@ void ServoSetTargetPosition(SmartServo* servo, uint16_t target_postion){
     ServoWriteData(servo, SERVO_REG_TARGET_POSITION, 2, &angle_buff);
 }
 
+void ServoSetPID(SmartServo* servo, uint8_t p, uint8_t i, uint8_t d){
+    uint8_t send_buff;
+    //set p
+    if (p != 0xFF){ //set if not equal to 255
+        send_buff = p;
+        ServoWriteData(servo, SERVO_REG_POS_PROPORTIONAL_GAIN, 1, &send_buff);
+    }
+    //set i
+    if (p != 0xFF){
+        send_buff = i;
+        ServoWriteData(servo, SERVO_REG_POS_INTEGRAL_GAIN, 1, &send_buff);
+    }
+    //set d
+    if (p != 0xFF){
+        send_buff = d;
+        ServoWriteData(servo, SERVO_REG_POS_DERIVATIVE_GAIN, 1, &send_buff);
+    }
+
+}
+
 int32_t ServoGetCurrentAngle(SmartServo* servo){
     uint16_t position = ServoGetCurrentPosition(servo);
     int32_t angle = ((position - 2048) * 360000) / 4096;
     return angle;
 }
+
 
 uint16_t ServoGetCurrentPosition(SmartServo* servo){
     return ServoReadTwoBytes(servo, SERVO_REG_CURRENT_POSITION);
