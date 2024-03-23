@@ -114,15 +114,26 @@ void timer_test(){
 }
 
 void ServoTest(){
-  delay_ms(500);
-  ServoEnable(true);
+  //ServoEnable(true);
   delay_ms(100);
   ServoUartInit(UART1);
-  SmartServo servo1 = ServoInit(UART1, 101);
-  SmartServo servo2 = ServoInit(UART1, 102);
+  SmartServo servo1 = ServoInit(UART1, 104);
+  SmartServo servo2 = ServoInit(UART1, 103);
+  ServoSetPID(&servo1, 32, 32, 0);
+  ServoSetAccel(&servo1, 250);
   delay_ms(300);
-  ServoSetTargetAngle(&servo1,10000);
-  ServoSetTargetAngle(&servo2,-10000);
+  int count = 0;
+  int angle = 0;
+  while (1){
+    angle = ((count%5)*90000)-180000;
+    printf("Angle: %i\r\n", angle);
+    ServoSetTargetAngle(&servo1, angle);
+    ServoSetTargetAngle(&servo2, angle);
+    count ++;
+    delay_ms(1000);
+  }
+  ServoSetTargetAngle(&servo1,90000);
+  ServoSetTargetAngle(&servo2,-90000);
   delay_ms(500);
   ServoSetTargetAngle(&servo1,-10000);
   delay_ms(500);

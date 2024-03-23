@@ -74,7 +74,7 @@ void NAND_flash_read()
 int main(void) {
   // STM32 setup
   STM32_init();
-  uart_init(USART1, 921600);
+  uart_init(USART1, 1000000); //921600
   spi_init(SPI2);
   DFU_programming_check();
   printf("==================== PROGRAM START ==================\r\n");
@@ -115,6 +115,15 @@ int main(void) {
   int previous_value = 999999999;
   int current_value = 999999999;
   int apogee_incr = 3;
+
+  //=============== Servo initialising ================
+  ServoUartInit(UART1);
+  SmartServo servos[4];
+  servos[0] = ServoInit(UART1, 101);
+  servos[1] = ServoInit(UART1, 102);
+  servos[2] = ServoInit(UART1, 103);
+  servos[3] = ServoInit(UART1, 104);
+  ServoStartup(&(servos));
 
   //printf("============== ADD TESTS HERE ==============\r\n");
   //delay_ms(200);

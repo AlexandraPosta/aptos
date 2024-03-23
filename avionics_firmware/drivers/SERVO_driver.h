@@ -112,6 +112,12 @@ void ServoUartInit(USART_TypeDef* uart);
 void ServoEnable(bool enable);
 
 /**
+	@brief Turns each of the 4 servos in turn
+	@param servo should be a pointer to a list of 4 servos
+*/
+void ServoStartup(SmartServo* servo);
+
+/**
 	@brief Initialises a servo
 	@note sets up servo object, resets servo and moves to default position
 	@return SmartServo struct
@@ -159,6 +165,19 @@ void ServoSetTargetPosition(SmartServo* servo, uint16_t target_postion);
 void ServoSetPID(SmartServo* servo, uint8_t p, uint8_t i, uint8_t d);
 
 /**
+	@brief Sets position offset of the servo
+	@note value between 0-2047, bit 11 is direction bit.
+	@note Default pid values are 32, 32, 0
+*/
+void ServoSetOffset(SmartServo* servo, int16_t offset);
+
+/**
+	@brief Sets acceleration of the servo
+	@note value is * by 100 step/s^2
+*/
+void ServoSetAccel(SmartServo* servo, uint8_t acccel);
+
+/**
 	@brief Gets current angle of servo
 	@note
     @return angle in milli degrees
@@ -174,6 +193,11 @@ uint16_t ServoGetCurrentPosition(SmartServo* servo);
 
 
 //========================== Private functions ==============================================
+
+void ServoLockEeprom(SmartServo* servo);
+
+void ServoUnlockEeprom(SmartServo* servo);
+
 /**
 	@brief Reads two registers to return a 16-bit result
 	@note pass the lower number register

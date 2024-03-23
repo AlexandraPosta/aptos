@@ -264,7 +264,8 @@ static inline void uart_init(USART_TypeDef *uart, unsigned long baud) {
 */
 static inline void UartSingleWireInit(USART_TypeDef *uart, unsigned long baud) {
   uint8_t af = 8;           // Alternate function
-  uint16_t rx, tx;  // pins
+  uint16_t rx;
+  uint16_t tx;  // pins
 
   if (uart == USART1) RCC->APB2ENR  |= RCC_APB2ENR_USART1EN; // BIT(14);   //Enables clock for UART 1
   if (uart == USART2) RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;// BIT(17);   //TODO find what needs to be done here

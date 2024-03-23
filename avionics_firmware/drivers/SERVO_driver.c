@@ -26,6 +26,7 @@ SmartServo ServoInit(USART_TypeDef* uart, uint8_t id){
     ServoReset(&servo);
 
     //---------- Configure the servo settings ----------
+    ServoUnlockEeprom(&servo);
     uint8_t send_byte;
     //set respone mode to 0, no response unless requested
     send_byte = 0;
@@ -37,22 +38,34 @@ SmartServo ServoInit(USART_TypeDef* uart, uint8_t id){
     //set min angle
     //0-4096. 15deg = 2048 - (4096/360*15) = 1877
     uint8_t min_angle[2] = {1877 & 0xFF, 1877 >> 8};   //split into 2 bytes, lower section and higher section
-    //ServoWriteData(&servo, SERVO_REG_MINIMUM_ANGLE, 2, &min_angle);     
+    ServoWriteData(&servo, SERVO_REG_MINIMUM_ANGLE, 2, &min_angle);     
 
     //set max angle
     //0-4096. 15deg = 2048 + (4096/360*15) = 2219
     uint8_t max_angle[2] = {2219 & 0xFF, 2219 >> 8};   //split into 2 bytes, lower section and higher section
-    //ServoWriteData(&servo, SERVO_REG_MAXIMUM_ANGLE, 2, &max_angle);     
+    ServoWriteData(&servo, SERVO_REG_MAXIMUM_ANGLE, 2, &max_angle);     
 
     //set operation mode to position servo
     send_byte = 0;
     ServoWriteData(&servo, SERVO_REG_OPERATION_MODE, 1, &send_byte);
 
+    ServoLockEeprom(&servo);
     //---------------------------------------------------
     //set servo to 0 degrees
     ServoSetTargetAngle(&servo, 0);
 
     return servo;
+}
+
+void ServoStartup(SmartServo* servo){
+    for (uint8_t s = 0; s < 4; s ++){
+        ServoSetTargetAngle(&(servo[s]), -10000);
+        delay_ms(200);
+        ServoSetTargetAngle(&(servo[s]), 10000);
+        delay_ms(200);
+        ServoSetTargetAngle(&(servo[s]), 0);
+        delay_ms(200);
+    }
 }
 
 void ServoReset(SmartServo* servo){
@@ -119,16 +132,19 @@ bool ServoPing(SmartServo* servo){
 
     for (uint8_t ii = 0; ii <= sizeof(rxBuf)-1; ii++) {
         wait_counter = 0;
+
         while(!uart_read_ready(servo->servo_uart))
         {
             wait_counter++;
-            delay_microseconds(1); 
+            delay_microseconds(4); 
             if (wait_counter >= wait_limit){
                 servo->servo_error_status = SERVO_ERROR_INVALID_PACKET;
+                printf("ping timeout");
                 return false;
             }
         }
         rxBuf[ii] = uart_read_byte(servo->servo_uart);
+        printf("byte recieved 0x%x", rxBuf[ii]);
     }
 
 
@@ -136,12 +152,13 @@ bool ServoPing(SmartServo* servo){
     
     //check checksum
     check_sum = 0;
-    for (uint8_t i = 2; i < (SERVO_MIN_PACKET_SIZE); i++){
+    for (uint8_t i = 2; i < (SERVO_MIN_PACKET_SIZE-1); i++){
         check_sum += rxBuf[i];
     }
     check_sum = ~(check_sum);
     if (check_sum != rxBuf[SERVO_MIN_PACKET_SIZE-1]){
         servo->servo_error_status = SERVO_ERROR_CHECKSUM;
+        printf("ping checksum error\r\n");
         return false;
     }
 
@@ -156,15 +173,13 @@ void ServoSetId(SmartServo* servo, uint8_t new_id){
     if (!ServoPing(servo)) ;//return;
     uint8_t send_byte;
     //unlock EEPROM
-    send_byte = 0;
-    ServoWriteData(servo, SERVO_REG_WRITE_LOCK, 1, &send_byte);
+    ServoUnlockEeprom(servo);
     //Write new_id to register
     ServoWriteData(servo, SERVO_REG_ID, 1, &new_id);
     //update servo struct
     servo->servo_id = new_id;
     //lock EEPROM
-    send_byte = 1;
-    ServoWriteData(servo, SERVO_REG_WRITE_LOCK, 1, &send_byte);
+    ServoLockEeprom(servo);
     //check by pinging new_id
     ServoPing(servo);
 }
@@ -172,6 +187,7 @@ void ServoSetId(SmartServo* servo, uint8_t new_id){
 void ServoSetTargetAngle(SmartServo* servo, int32_t target_angle_mdeg){
     int32_t convert_angle_to_position = target_angle_mdeg;
     convert_angle_to_position = (convert_angle_to_position*4096)/360000 + 2048;
+    printf("Position: %i\r\n", convert_angle_to_position);
     ServoSetTargetPosition(servo, convert_angle_to_position);
 }
 
@@ -181,6 +197,7 @@ void ServoSetTargetPosition(SmartServo* servo, uint16_t target_postion){
 }
 
 void ServoSetPID(SmartServo* servo, uint8_t p, uint8_t i, uint8_t d){
+    ServoUnlockEeprom(servo);
     uint8_t send_buff;
     //set p
     if (p != 0xFF){ //set if not equal to 255
@@ -197,7 +214,25 @@ void ServoSetPID(SmartServo* servo, uint8_t p, uint8_t i, uint8_t d){
         send_buff = d;
         ServoWriteData(servo, SERVO_REG_POS_DERIVATIVE_GAIN, 1, &send_buff);
     }
+    ServoLockEeprom(servo);
+}
 
+void ServoSetOffset(SmartServo* servo, int16_t offset){
+    uint8_t send_buff[2];
+    if (offset > 0){
+        send_buff[0] = offset & 0xFF; //lsb byte
+        send_buff[1] = offset & 0xF00; //bits 8 to 11
+    }else{
+        send_buff[0] = offset & 0xFF; //lsb byte
+        send_buff[1] = (offset & 0x700) | 0x800; //bits 8 to 10, with bit 11 as positive to indicate negative direction
+    }
+    ServoUnlockEeprom(servo);
+    ServoWriteData(servo, SERVO_REG_POSITION_CORRECTION, 2, &(send_buff));
+    ServoLockEeprom(servo);
+}
+
+void ServoSetAccel(SmartServo* servo, uint8_t acccel){
+    ServoWriteData(servo, SERVO_REG_TARGET_ACCELERATION,1, &(acccel));
 }
 
 int32_t ServoGetCurrentAngle(SmartServo* servo){
@@ -212,6 +247,16 @@ uint16_t ServoGetCurrentPosition(SmartServo* servo){
 }
 
 //================== Private functions =======================
+
+void ServoLockEeprom(SmartServo* servo){
+    uint8_t send_byte = 1;
+    ServoWriteData(servo, SERVO_REG_WRITE_LOCK, 1, &send_byte);
+}
+
+void ServoUnlockEeprom(SmartServo* servo){
+    uint8_t send_byte = 0;
+    ServoWriteData(servo, SERVO_REG_WRITE_LOCK, 1, &send_byte);
+}
 
 uint16_t ServoReadTwoBytes(SmartServo* servo, uint8_t address){
     uint8_t result_buff[2] = {0,0};
