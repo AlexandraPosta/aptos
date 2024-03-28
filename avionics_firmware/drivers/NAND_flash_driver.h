@@ -597,7 +597,7 @@ static inline void write_frame(uint32_t frameAddr, uint8_t *bytes) {
   wait_for_ready_flag();
   send_byte_to_flash(0x80, COMMAND_INPUT);
   send_addr_to_flash(frameAddr, 0);  // Address Input
-  delay_nanoseconds(10); //was 1 ms but I think that needs decreasing
+  delay_nanoseconds(10); // Was 1 ms but I think that needs decreasing
   for (int byteAddr = 0; byteAddr < 128; byteAddr++) {
     send_byte_to_flash(bytes[byteAddr], DATA_INPUT);
   }
@@ -627,7 +627,7 @@ static inline void erase_all(){
     printf("ERASING DATA IN: ");
     printf("%i", countDown);
     printf(" Seconds\r\n");
-    delay_ms(1000);
+    delay_miliseconds(1000);
   }
 
   for (uint32_t block = 0; block < 64*4096; block++) {

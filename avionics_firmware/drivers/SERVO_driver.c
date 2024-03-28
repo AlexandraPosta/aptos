@@ -60,11 +60,11 @@ SmartServo ServoInit(USART_TypeDef* uart, uint8_t id){
 void ServoStartup(SmartServo* servo){
     for (uint8_t s = 0; s < 4; s ++){
         ServoSetTargetAngle(&(servo[s]), -10000);
-        delay_ms(200);
+        delay_miliseconds(200);
         ServoSetTargetAngle(&(servo[s]), 10000);
-        delay_ms(200);
+        delay_miliseconds(200);
         ServoSetTargetAngle(&(servo[s]), 0);
-        delay_ms(200);
+        delay_miliseconds(200);
     }
 }
 

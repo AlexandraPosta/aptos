@@ -21,11 +21,11 @@ uint8_t Lsm6ds3Init(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     uint8_t chip_id = 0;
     uint8_t send_data[1] = {(LSM6DSO_REG_WHO_AM_I) | 0x80}; 
     //start SPI comms
-    spi_enable_cs(spi, LSM6DS3_CS);
+    spi_enable_cs(LSM6DS3_CS);
     delay_microseconds(1);
     spi_transmit_receive(spi, &send_data, 1, 1, &chip_id);
     delay_microseconds(1);
-    spi_disable_cs(spi, LSM6DS3_CS);
+    spi_disable_cs(LSM6DS3_CS);
     //end of spi comm
 
     if (chip_id == LSM6DS3_WHO_AM_I_EXP) {
@@ -56,26 +56,26 @@ uint8_t Lsm6ds3Init(SPI_TypeDef *spi, LSM6DS3_data* gyro)
 static void Lsm6ds3WriteRegister(SPI_TypeDef *spi, uint8_t register_id, uint8_t value, unsigned delayMs)
 {
     uint8_t send_data[2] =  {register_id, value};
-    spi_enable_cs(spi, LSM6DS3_CS);
+    spi_enable_cs(LSM6DS3_CS);
     delay_microseconds(10);
     spi_transmit_receive(spi, &(send_data[0]), 1, 0, &send_data);
     spi_transmit_receive(spi, &(send_data[1]), 1, 0, &send_data);
     delay_microseconds(1);
-    spi_disable_cs(spi, LSM6DS3_CS);
+    spi_disable_cs(LSM6DS3_CS);
     if (delayMs) {
-        delay_ms(delayMs);
+        delay_miliseconds(delayMs);
     }
 }
 
 static void Lsm6ds3WriteRegisterBits(SPI_TypeDef *spi, uint8_t register_id, uint8_t mask, uint8_t value, unsigned delayMs)
 {
     uint8_t new_value = 0;
-    spi_enable_cs(spi, LSM6DS3_CS);
+    spi_enable_cs(LSM6DS3_CS);
     delay_microseconds(10);
     uint8_t send_data = register_id | 80;
     spi_transmit_receive(spi, &send_data, 1, 1, &new_value); //get current data
     delay_microseconds(1);
-    spi_disable_cs(spi, LSM6DS3_CS);
+    spi_disable_cs(LSM6DS3_CS);
     
     delay_microseconds(delayMs);
     new_value = (new_value & ~mask) | value;
@@ -86,7 +86,7 @@ static void Lsm6ds3WriteRegisterBits(SPI_TypeDef *spi, uint8_t register_id, uint
 void Lsm6ds3Config(SPI_TypeDef *spi){
     // Reset the device (wait 100ms before continuing config)
     Lsm6ds3WriteRegisterBits(spi, LSM6DSO_REG_CTRL3_C, LSM6DSO_MASK_CTRL3_C_RESET, BIT(0), 100);
-    delay_ms(100);
+    delay_miliseconds(100);
     // Configure interrupt pin 1 for gyro data ready only
     //Lsm6ds3WriteRegister(spi, LSM6DSO_REG_INT1_CTRL, LSM6DSO_VAL_INT1_CTRL, 1);
 
@@ -134,7 +134,7 @@ bool Lsm6ds3AccRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     uint8_t lsm6ds3_rx_buf[BUFFER_SIZE];
     uint8_t send_data =  LSM6DSO_REG_OUTX_L_A | 0x80;   //first reg address
 
-    spi_enable_cs(spi, LSM6DS3_CS);
+    spi_enable_cs(LSM6DS3_CS);
     delay_microseconds(1);
     spi_transmit_receive(spi, &(send_data), 1, 1, &(lsm6ds3_rx_buf[0]));  //send read command and get first result
     
@@ -142,7 +142,7 @@ bool Lsm6ds3AccRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
         spi_transmit_receive(spi, &(send_data), 0, 1, &(lsm6ds3_rx_buf[i]));
     } 
     delay_microseconds(1);
-    spi_disable_cs(spi, LSM6DS3_CS);
+    spi_disable_cs(LSM6DS3_CS);
 
     //convert raw bytes into milli G
     gyro->x_accel = LMS6DS6_ACCEL_SENSITIVITY*(int32_t)((int16_t)((lsm6ds3_rx_buf[IDX_ACCEL_XOUT_H] << 8) | lsm6ds3_rx_buf[IDX_ACCEL_XOUT_L]))/1000;
@@ -168,14 +168,14 @@ bool Lsm6ds3GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     uint8_t lsm6ds3_rx_buf[BUFFER_SIZE] = {0};
     uint8_t send_data = (LSM6DSO_REG_OUTX_L_G) | 0x80;  //first reg address
 
-    spi_enable_cs(spi, LSM6DS3_CS);
+    spi_enable_cs(LSM6DS3_CS);
     delay_microseconds(1);
     spi_transmit_receive(spi, &(send_data), 1, 1, &(lsm6ds3_rx_buf[0])); //send read command and get first result
     for (uint8_t i = 1; i < BUFFER_SIZE; i ++){
         spi_transmit_receive(spi, &(send_data), 0, 1, &(lsm6ds3_rx_buf[i]));
     }
     delay_microseconds(1);
-    spi_disable_cs(spi, LSM6DS3_CS);
+    spi_disable_cs(LSM6DS3_CS);
 
     //convert raw data into value of milli deg per second
     gyro->x_rate = LMS6DS6_ANGULAR_RATE_SENSITIVITY * (int32_t)((int16_t)((lsm6ds3_rx_buf[IDX_GYRO_XOUT_H] << 8) | lsm6ds3_rx_buf[IDX_GYRO_XOUT_L])) - gyro->x_offset;
@@ -226,7 +226,7 @@ bool Lsm6ds3GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     gyro->y = Lsm6ds3AngleOverflow(gyro->y + dy);
     gyro->z = Lsm6ds3AngleOverflow(gyro->z + dz);
     
-    printf("GryoA: X:%6i, \tY:%6i,\tZ:%6i\r\n", gyro->x/100, gyro->y/100, gyro->z/100);
+    //printf("GryoA: X:%6li, \tY:%6li,\tZ:%6li\r\n", gyro->x/100, gyro->y/100, gyro->z/100);
     return 1;
 }
 
@@ -236,7 +236,7 @@ bool Lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     LSM6DS3_data buff[LSM6DSO_OFFSET_BUFF_LEN];
     int32_t avg[3] = {0,0,0};
     Lsm6ds3GyroRead(spi, gyro);
-    delay_ms(300);
+    delay_miliseconds(300);
     for (uint8_t i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i++){
         Lsm6ds3GyroRead(spi, gyro);
         buff[i] = *gyro;

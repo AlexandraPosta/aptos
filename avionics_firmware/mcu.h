@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <math.h>
 
 // https://github.com/STMicroelectronics/cmsis_device_l4/blob/master/Include/system_stm32l4xx.h
 #include "stm32l4r5xx.h"
@@ -111,7 +112,6 @@ static inline void delay_nanoseconds(uint32_t time) {
   spin(time);
 }
 
-
 /**
   @brief Delay in microseconds
   @param time Time in microseconds
@@ -125,7 +125,7 @@ static inline void delay_microseconds(uint32_t time) {
   @brief Delay in miliseconds
   @param time Time in miliseconds
 */
-static inline void delay_ms(uint32_t time) {
+static inline void delay_miliseconds(uint32_t time) {
   uint32_t initial_ticks = s_ticks; 
   while (s_ticks - initial_ticks < time); //hold until that many ticks have passed
 }
@@ -475,7 +475,7 @@ static inline int spi_ready_write(SPI_TypeDef *spi) {
   @param 
   @note Not needed but keeps compatibility with drivers
 */
-static inline void spi_enable_cs(SPI_TypeDef *spi, uint16_t cs) {
+static inline void spi_enable_cs(uint16_t cs) {
   set_cs(cs); 
 }
 
@@ -484,7 +484,7 @@ static inline void spi_enable_cs(SPI_TypeDef *spi, uint16_t cs) {
   @param 
   @note Not needed but keeps compatibility with drivers
 */
-static inline void spi_disable_cs(SPI_TypeDef *spi, uint16_t cs)
+static inline void spi_disable_cs(uint16_t cs)
 {
   unset_cs();
 }
@@ -513,13 +513,11 @@ static inline uint8_t spi_transmit(SPI_TypeDef *spi, uint8_t send_byte)
 static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t *send_byte, uint8_t transmit_size, uint8_t receive_size, void* result_ptr)
 {
   uint8_t ret_value = 0;
-  //spi_enable_cs(spi, cs);
   spi_ready_write(spi);
 
   for (int i = 0; i<transmit_size; i++) {
     spi_transmit(spi, send_byte[i]);
   }
-
 
   uint32_t result = 0;
   int8_t rs = receive_size;
@@ -531,8 +529,7 @@ static inline uint8_t spi_transmit_receive(SPI_TypeDef *spi, uint8_t *send_byte,
     rs--;
     spi_ready_write(spi);
   }
-  //spi_disable_cs(spi, cs);
-  //printf("RESULT: %d\r\n", result);
+  
   if(receive_size == 1)
   {
     *((uint8_t*)result_ptr) = result;

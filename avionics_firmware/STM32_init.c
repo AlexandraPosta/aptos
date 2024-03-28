@@ -166,11 +166,11 @@ void STM32_indicate_on_buzzer()
 void STM32_indicate_on_led()
 {
   STM32_led_on();
-  delay_ms(100);
+  delay_miliseconds(100);
   STM32_led_off();
-  delay_ms(100);
+  delay_miliseconds(100);
   STM32_led_on();
-  delay_ms(100);
+  delay_miliseconds(100);
   STM32_led_off();
 }
 

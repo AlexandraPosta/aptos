@@ -58,7 +58,7 @@ int8_t BME280_soft_reset(BME280_dev *dev)
         do
         {
             // As per data sheet - Table 1, startup time is 2 ms
-            delay_ms(BME280_STARTUP_DELAY/1000);
+            delay_miliseconds(BME280_STARTUP_DELAY/1000);
             ret_val = BME280_get_regs(BME280_REG_STATUS, &status_reg, 1, dev);
 
         } while ((ret_val == 1) && (try_run--) && (status_reg & BME280_CMD_STATUS_IM_UPDATE));
@@ -85,10 +85,10 @@ int8_t BME280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, BME280
         //spi_transmit_receive(dev->BME280_SPI, BME280_CS, reg_addr, 1, len, reg_data); //SPI READ
         
         for (uint8_t i = 0; i < len; i ++){
-            spi_enable_cs(dev->BME280_SPI, BME280_CS);
+            spi_enable_cs(BME280_CS);
             spi_transmit(dev->BME280_SPI, reg_addr+i);
             reg_data[i] = spi_read_byte(dev->BME280_SPI);
-            spi_disable_cs(dev->BME280_SPI, BME280_CS);
+            spi_disable_cs(BME280_CS);
         }
         
         
@@ -149,9 +149,9 @@ int8_t BME280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint16_t len,
             
             //figure out what data needs to be sent
             printf("Sending data to set register\r\n");
-            spi_enable_cs(dev->BME280_SPI, BME280_CS);
+            spi_enable_cs(BME280_CS);
             spi_transmit_receive(dev->BME280_SPI, temp_buff, temp_len, 1,  &dev->intf_rslt);
-            spi_disable_cs(dev->BME280_SPI, BME280_CS);
+            spi_disable_cs(BME280_CS);
             //dev->intf_rslt = spi_transmit_receive(BME280_SPI, BME280_CS, temp_buff, temp_len, 1);
             //dev->intf_rslt = dev->write(reg_addr[0], temp_buff, temp_len, dev->intf_rslt); //****Replace this line with spi_transmit_receive()
         }
