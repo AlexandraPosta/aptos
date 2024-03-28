@@ -67,52 +67,14 @@ typedef struct M5611_data
 */
 uint8_t MS5611_init(SPI_TypeDef* spi);
 
-
 /**
-  @brief TEST
+  @brief Read the PROM data from the sensor
 */
-int32_t MS5611_get_data_test();
-
-
-/**
-  @brief Set the OSR (Oversampling rate). Setting another value from the enumeration will put the min OSR
-  @note Setting an higher value means longer time to read the data
-  @param osr The oversampling rate
-*/
-void MS5611_set_OSR (MS5611_OSR osr);
-
-
-/**
-	@brief Return the temperature with a 2 digits precision in celcius. 
-	@note Example : 2000 -> 20,00°C
-	@param calculate True if value needs to be updated. It will update the threes values
-	@return The temperature in Celcius
-*/
-int32_t MS5611_get_temperature(bool calculate);
-
-
-/**
-	@brief Return the pressure in mbar with a 2 digits precision
-	@note Example : 100000 -> 1000,00 mbar
-	@param calculate True if value needs to be updated. It will update the threes values
-	@return The pressure in mbar
-*/
-int32_t MS5611_get_pressure(bool calculate);
-
-
-/**
-	@brief Return the altitude in meters
-	@param calculate True if value needs to be updated. It will update the threes values
-	@return The altitude in meters
-*/
-int32_t MS5611_get_altitude(bool calculate);
-
-
-/**
-	@brief Calculate/update the altitude/pressure/temperature using the barometer
-*/
-void MS5611_calculate();
-
 uint8_t MS5611_read_PROM();
+
+/**
+  @brief Get the temperature and pressure data from the sensor
+*/
+uint8_t MS5611_get_data(M5611_data* data);
 
 #endif /* MS5611_DRIVER_H */
