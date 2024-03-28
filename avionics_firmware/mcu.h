@@ -72,6 +72,21 @@ typedef struct FrameArray {
 
 extern volatile uint32_t s_ticks;
 
+static inline void printf_float(char* name, float value) {
+  char str[100];
+
+  char *tmpSign = (value < 0) ? "-" : "";
+  float tmpVal = (value < 0) ? -value : value;
+
+  int tmpInt1 = tmpVal;                  // Get the integer (678).
+  float tmpFrac = tmpVal - tmpInt1;      // Get fraction (0.0123).
+  int tmpInt2 = trunc(tmpFrac * 10000);  // Turn into integer (123).
+
+  // Print as parts, note that you need 0-padding for fractional bit.
+  sprintf(str, "%s = %s%d.%04d", name, tmpSign, tmpInt1, tmpInt2);
+  printf("%s", str);
+}
+
 #pragma region System Clk
 /**
   @brief The low level delay
