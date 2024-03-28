@@ -9,6 +9,8 @@
 #include "drivers/NAND_flash_driver.h"
 #include "test_routines.h"
 #include "data_buffer.h"
+#include "LQR_controller.h"
+#include "orientation_utils.h"
 
 #define PADREADFREQ 100 //frequency to read data during ascent
 #define ASCENTREADFREQ 1000 //frequency to read data during ascent
@@ -101,7 +103,7 @@ int main(void) {
   ADXL375_init(SPI2);         // Accelerometer
   Lsm6ds3Init(SPI2, &_LSM6DS3_data);
   
-  delay_ms(1000);
+  /*
   // Buffer
   FrameArray frame;                         // initialise the frameArray that keeps updating
   uint8_t dataArray[128];                   // dummy array to store the frame data
@@ -110,13 +112,7 @@ int main(void) {
   dataBuffer frame_buffer;                  // contains FrameArrays
   init_buffer(&frame_buffer);               // initialise the buffer
 
-  // Additional variables
-  int _data[WINDOW_SIZE];
-  int previous_value = 999999999;
-  int current_value = 999999999;
-  int apogee_incr = 3;
-
-  //=============== Servo initialising ================
+  // Servo
   ServoUartInit(UART1);
   SmartServo servos[4];
   servos[0] = ServoInit(UART1, 101);
@@ -125,9 +121,26 @@ int main(void) {
   servos[3] = ServoInit(UART1, 104);
   ServoStartup(&(servos));
 
+  // Additional variables
+  int _data[WINDOW_SIZE];
+  int previous_value = 999999999;
+  int current_value = 999999999;
+  int apogee_incr = 3;
+  */
+
+  // Controller
+  LQR_controller _LQR_controller;
+  orientation_data _orientation;
+  float servoDeflection[4] = {0, 0, 0, 0};
+  LQR_init(&_LQR_controller);
+  orientation_init(&_orientation);
+
+  // Initialisation complete
+  gpio_write(RGB1_G, HIGH);
+
   //printf("============== ADD TESTS HERE ==============\r\n");
-  //delay_ms(200);
-  //delay_ms(1000);
+  //delay_miliseconds(200);
+  //delay_miliseconds(1000);
   //run_test_routine_BME280();
   //ADXL375_init(SPI2);
   //run_ADXL375_routine();
@@ -136,11 +149,10 @@ int main(void) {
   //run_nand_flash_erase();
   //NAND_flash_read();
   //DFU_programming_test();
-  ServoTest();
-
-  //delay_ms(1000);
-  gpio_write(RGB1_G, HIGH);
+  //ServoTest();
+  run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
   
+  /*
   printf("============= ENTER MAIN PROCEDURE ============\r\n");
   uint32_t newTime = get_time_us();
   uint32_t oldTime = get_time_us();
@@ -267,6 +279,6 @@ int main(void) {
         break;
     }
   }
-
+  */
   return 0;
 }

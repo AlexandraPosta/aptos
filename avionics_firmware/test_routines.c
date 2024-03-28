@@ -160,3 +160,18 @@ void DFU_programming_check(){
   printf("No flash request\r\n");
 }
 
+void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orientation, LQR_controller _LQR_controller) {
+  
+  for (;;) {
+    delay_microseconds(1000000); // 1 second delay
+    Lsm6ds3GyroReadAngle(SPI2, &_LSM6DS3_data);
+    //printf_float("x", (float) _LSM6DS3_data.x / 100.0);
+    //printf("\r\n");
+
+    orientation_update(0, &_orientation, &_LSM6DS3_data);
+    printf_float("Roll", _orientation.current_euler.roll);
+    printf_float(" Pitch", _orientation.current_euler.pitch);
+    printf_float(" Yaw", _orientation.current_euler.yaw);
+    printf("\r\n");
+  }
+}

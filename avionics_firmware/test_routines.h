@@ -13,6 +13,8 @@
 #include "drivers/LSM6DS3_driver.h"
 //#include "drivers/NAND_flash_driver.h"
 #include "drivers/SERVO_driver.h"
+#include "LQR_controller.h"
+#include "orientation_utils.h"
 
 /**
   @brief Test Routine
@@ -45,6 +47,6 @@ void timer_test();
 
 void DFU_programming_check();
 
-
+void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orientation, LQR_controller _LQR_controller);
 
 #endif /*TESTING_ROUTINE_H*/

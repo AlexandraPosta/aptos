@@ -67,6 +67,9 @@ void init_delay_timer(){
 */
 void STM32_init_internals()
 {
+  // FPU
+  SCB->CPACR |= ((3UL << 10*2) | (3UL << 11*2));  // set CP10 and CP11 Full Access
+
   // UART
   //uart_init(LUART1, 115200);  // Initialise Low Power UART;
   uart_init(UART1,  115200);  // Initialise UART1;

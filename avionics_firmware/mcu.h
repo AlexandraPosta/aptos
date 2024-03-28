@@ -73,18 +73,18 @@ typedef struct FrameArray {
 
 extern volatile uint32_t s_ticks;
 
-static inline void printf_float(char* name, float value) {
-  char str[100];
+static void printf_float(char* name, float value) {
+  char str[30];
 
   char *tmpSign = (value < 0) ? "-" : "";
   float tmpVal = (value < 0) ? -value : value;
 
-  int tmpInt1 = tmpVal;                  // Get the integer (678).
-  float tmpFrac = tmpVal - tmpInt1;      // Get fraction (0.0123).
-  int tmpInt2 = trunc(tmpFrac * 10000);  // Turn into integer (123).
+  uint32_t tmpInt1 = (uint32_t) tmpVal;  // Get the integer (678).
+  float tmpFrac = (tmpVal - tmpInt1);    // Get fraction (0.0123).
+  int tmpInt2 = trunc(tmpFrac * 1000);   // Turn into integer (123).
 
   // Print as parts, note that you need 0-padding for fractional bit.
-  sprintf(str, "%s = %s%d.%04d", name, tmpSign, tmpInt1, tmpInt2);
+  sprintf(str, "%s = %s%d.%03d", name, tmpSign, tmpInt1, tmpInt2);
   printf("%s", str);
 }
 
