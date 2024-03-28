@@ -20,6 +20,20 @@
                 "--no-reload"
             ],
             "jinja": true
+        },
+        {
+            "name": "C: Hardware Debugging",
+            "type": "gdb",
+            "request": "launch",
+            "target": "${workspaceFolder}\\avionics_firmware\\firmware.elf",
+            "cwd":"${workspaceRoot}",
+            "gdbpath": "C:\\Program Files (x86)\\Arm GNU Toolchain arm-none-eabi\\12.2 rel1\\bin\\arm-none-eabi-gdb.exe",
+            "valuesFormatting": "parseText",
+            "autorun": [
+                "target extended-remote localhost:3333",
+                "symbol-file ./avionics_firmware/firmware.elf",
+                "break main"
+            ]
         }
     ]
 }
