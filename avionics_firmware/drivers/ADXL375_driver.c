@@ -73,7 +73,7 @@ uint8_t ADXL375_get_data(ADXL375_data* data){
 
     // x-axis
     spi_enable_cs(ADXL375_CS);
-    delay_miliseconds(1);
+    delay_milliseconds(1);
     int x_values[2] = {0,0};
     ADXL375_reg_read(ADXL375_X_REG_DATAX0, x_values, 2);
     spi_disable_cs(ADXL375_CS);
@@ -82,7 +82,7 @@ uint8_t ADXL375_get_data(ADXL375_data* data){
 
     // y-axis
     spi_enable_cs(ADXL375_CS);
-    delay_miliseconds(1);
+    delay_milliseconds(1);
     int y_values[2] = {0,0};
     ADXL375_reg_read(ADXL375_Y_REG_DATAY0, y_values, 2);
     spi_disable_cs(ADXL375_CS);
@@ -91,7 +91,7 @@ uint8_t ADXL375_get_data(ADXL375_data* data){
 
     // z-axis
     spi_enable_cs(ADXL375_CS);
-    delay_miliseconds(1);
+    delay_milliseconds(1);
     int z_values[2] = {0,0};
     ADXL375_reg_read(ADXL375_Z_REG_DATAZ0, z_values, 2);
     spi_disable_cs(ADXL375_CS);
@@ -146,7 +146,7 @@ static void ADXL375_get_test_value(struct ADXL375_data *data, int samples)
 		data->x += 0;
 		data->y += 0;
 		data->z += (z_1 << 8) | z_0;
-		delay_miliseconds(10);
+		delay_milliseconds(10);
 	}
 }
 */

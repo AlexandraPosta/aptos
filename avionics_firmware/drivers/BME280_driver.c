@@ -58,7 +58,7 @@ int8_t BME280_soft_reset(BME280_dev *dev)
         do
         {
             // As per data sheet - Table 1, startup time is 2 ms
-            delay_miliseconds(BME280_STARTUP_DELAY/1000);
+            delay_milliseconds(BME280_STARTUP_DELAY/1000);
             ret_val = BME280_get_regs(BME280_REG_STATUS, &status_reg, 1, dev);
 
         } while ((ret_val == 1) && (try_run--) && (status_reg & BME280_CMD_STATUS_IM_UPDATE));

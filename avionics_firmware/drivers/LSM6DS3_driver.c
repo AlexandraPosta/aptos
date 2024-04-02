@@ -64,7 +64,7 @@ static void Lsm6ds3WriteRegister(SPI_TypeDef *spi, uint8_t register_id, uint8_t 
     delay_microseconds(1);
     spi_disable_cs(LSM6DS3_CS);
     if (delayMs) {
-        delay_miliseconds(delayMs);
+        delay_milliseconds(delayMs);
     }
 }
 
@@ -87,7 +87,7 @@ static void Lsm6ds3WriteRegisterBits(SPI_TypeDef *spi, uint8_t register_id, uint
 void Lsm6ds3Config(SPI_TypeDef *spi){
     // Reset the device (wait 100ms before continuing config)
     Lsm6ds3WriteRegisterBits(spi, LSM6DSO_REG_CTRL3_C, LSM6DSO_MASK_CTRL3_C_RESET, BIT(0), 100);
-    delay_miliseconds(100);
+    delay_milliseconds(100);
     // Configure interrupt pin 1 for gyro data ready only
     //Lsm6ds3WriteRegister(spi, LSM6DSO_REG_INT1_CTRL, LSM6DSO_VAL_INT1_CTRL, 1);
 
@@ -237,7 +237,7 @@ bool Lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     LSM6DS3_data buff[LSM6DSO_OFFSET_BUFF_LEN];
     int32_t avg[3] = {0,0,0};
     Lsm6ds3GyroRead(spi, gyro);
-    delay_miliseconds(300);
+    delay_milliseconds(300);
     do{
         avg[0] = 0, avg[1] = 0, avg[2] = 0; //reset averages
         for (uint8_t i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i++){

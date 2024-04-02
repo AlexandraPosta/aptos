@@ -139,8 +139,8 @@ int main(void) {
   gpio_write(RGB2_G, HIGH);
 
   //printf("============== ADD TESTS HERE ==============\r\n");
-  //delay_miliseconds(200);
-  //delay_miliseconds(1000);
+  //delay_milliseconds(200);
+  //delay_milliseconds(1000);
   //run_test_routine_BME280();
   //ADXL375_init(SPI2);
   //run_ADXL375_routine();
