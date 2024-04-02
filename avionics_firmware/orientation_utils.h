@@ -40,4 +40,6 @@ void orientation_init();
 
 void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data);
 
+bool OrientationAccelerationVector(LSM6DS3_data* _LSM6DS3_data, float vector[]);
+
 #endif /* ORIENTATION_UTILS_H */

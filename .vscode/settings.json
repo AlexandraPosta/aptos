@@ -13,6 +13,9 @@
         "usbd_cdc_if.h": "c",
         "bme280_driver.h": "c",
         "mcu.h": "c",
-        "filters.h": "c"
+        "filters.h": "c",
+        "atomic": "c",
+        "cstdint": "c",
+        "type_traits": "c"
     }
 }
