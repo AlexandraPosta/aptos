@@ -354,7 +354,7 @@ void LQR_update_gain(LQR_controller* lqr, int velocity) {
     }
 }
 
-void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, float* servo_defs[NUM_SERVOS]) {
+void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, char* servo_defs) {
     // Extract Euler angles and Rates
     float _orientation[STATE_SPACE_DIM] = {orientation.current_euler.roll, 
                                            orientation.current_euler.pitch, 
@@ -365,9 +365,9 @@ void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, floa
     
     // Perform control
     for (int row = 0; row < NUM_SERVOS; row++) {
-        *servo_defs[row] = 0.0f;
+        servo_defs[row] = 0.0f;
         for (int col = 0; col < STATE_SPACE_DIM; col++) {
-            *servo_defs[row] += lqr->current_gain[_ravel_index_2d(row, col)] * _orientation[col];
+            servo_defs[row] += lqr->current_gain[_ravel_index_2d(row, col)] * _orientation[col];
         }
     }
 }

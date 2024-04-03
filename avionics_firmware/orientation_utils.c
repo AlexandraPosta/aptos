@@ -29,37 +29,45 @@ void orientation_quaternion_to_euler(Quaternion* q, Euler* e) {
 
 void orientation_init(orientation_data* orientation) {
     // Set initial values for current_quaternion
-    orientation->current_quaternion.w = 1;
-    orientation->current_quaternion.x = 0;
-    orientation->current_quaternion.y = 0;
-    orientation->current_quaternion.z = 0;
+    orientation->current_quaternion.w = 1.0;
+    orientation->current_quaternion.x = 0.0;
+    orientation->current_quaternion.y = 0.0;
+    orientation->current_quaternion.z = 0.0;
 
     // Set initial values for current_rate_quaternion
-    orientation->current_rate_quaternion.w = 0;
-    orientation->current_rate_quaternion.x = 0;
-    orientation->current_rate_quaternion.y = 0;
-    orientation->current_rate_quaternion.z = 0;
+    orientation->current_rate_quaternion.w = 0.0;
+    orientation->current_rate_quaternion.x = 0.0;
+    orientation->current_rate_quaternion.y = 0.0;
+    orientation->current_rate_quaternion.z = 0.0;
 
     // Set initial values for current_euler
-    orientation->current_euler.roll = 0;
-    orientation->current_euler.pitch = 0;
-    orientation->current_euler.yaw = 0;
+    orientation->current_euler.roll = 0.0;
+    orientation->current_euler.pitch = 0.0;
+    orientation->current_euler.yaw = 0.0;
 
     // Set initial values for current_rate_euler
-    orientation->current_rate_euler.roll = 0;
-    orientation->current_rate_euler.pitch = 0;
-    orientation->current_rate_euler.yaw = 0;
+    orientation->current_rate_euler.roll = 0.0;
+    orientation->current_rate_euler.pitch = 0.0;
+    orientation->current_rate_euler.yaw = 0.0;
 
     // Set initial values for previous_euler
-    orientation->previous_euler.roll = 0;
-    orientation->previous_euler.pitch = 0;
-    orientation->previous_euler.yaw = 0;
+    orientation->previous_euler.roll = 0.0;
+    orientation->previous_euler.pitch = 0.0;
+    orientation->previous_euler.yaw = 0.0;
 }
 
-void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data) {
-    float wx = (float)_LSM6DS3_data->x;
-    float wy = (float)_LSM6DS3_data->y;
-    float wz = (float)_LSM6DS3_data->z;
+void orientation_change_coordinate_system(LSM6DS3_data* _LSM6DS3_data) {
+    int32_t temp_x = _LSM6DS3_data->x_rate;
+    _LSM6DS3_data->x_rate = _LSM6DS3_data->z_rate;
+    _LSM6DS3_data->z_rate = -temp_x;
+}
+
+void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data _LSM6DS3_data) {
+    orientation_change_coordinate_system(&_LSM6DS3_data);
+    
+    float wx = (float)_LSM6DS3_data.x_rate;
+    float wy = (float)_LSM6DS3_data.y_rate;
+    float wz = (float)_LSM6DS3_data.z_rate;
     float qw = orientation->current_quaternion.w;
     float qx = orientation->current_quaternion.x;
     float qy = orientation->current_quaternion.y;
@@ -68,7 +76,7 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     // Calculate the derivative of the quaternion
     orientation->current_rate_quaternion.w = 0.5f * (-wx * qx - wy * qy - wz * qz);
     orientation->current_rate_quaternion.x = 0.5f * ( wx * qw + wz * qy - wy * qz);
-    orientation->current_rate_quaternion.y = 0.5f * ( wy * qw - wz * qx + wx * qz);
+    orientation->current_rate_quaternion.y = 0.5f * ( wy * qw - wz * qx + wx * qz);	
     orientation->current_rate_quaternion.z = 0.5f * ( wz * qw + wy * qx - wx * qy);
 
     // Update quaternion using the derivative
@@ -77,7 +85,7 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     orientation->current_quaternion.y += orientation->current_rate_quaternion.y * (float)dt * 1e-6f;
     orientation->current_quaternion.z += orientation->current_rate_quaternion.z * (float)dt * 1e-6f;
 
-    // Normalise quaternion
+    // Normalise quaternions
     float norm = sqrtf(orientation->current_quaternion.w * orientation->current_quaternion.w +
                        orientation->current_quaternion.x * orientation->current_quaternion.x +
                        orientation->current_quaternion.y * orientation->current_quaternion.y +
@@ -92,6 +100,13 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     // Convert quaternion to euler angles
     orientation->previous_euler = orientation->current_euler;
     orientation_quaternion_to_euler(&orientation->current_quaternion, &orientation->current_euler);
+
+    /*
+    printf_float(" Roll", orientation->current_euler.roll);
+    printf_float(" Pitch", orientation->current_euler.pitch);
+    printf_float(" Yaw", orientation->current_euler.yaw);
+    printf("\r\n");
+    */
 
     // Calculate the derivative of the euler angles
     if ((orientation->current_euler.roll < (M_PI_F - 0.6f)) && orientation->previous_euler.roll > (-M_PI_F + 0.6f)) {

@@ -24,10 +24,26 @@ typedef struct LQR_controller {
     float zero_gains[NUM_SERVOS * STATE_SPACE_DIM];
 } LQR_controller;
 
+/**
+  @brief Initialise the LQR controller
+  @param lqr LQR controller structure
+*/
 void LQR_init(LQR_controller* lqr);
 
+/**
+  @brief Update the gains of the LQR controller
+  @param lqr LQR controller structure
+  @param velocity Current velocity of the rocket
+  @note the gains are set to zero if the velocity is below or above a threshold
+*/
 void LQR_update_gain(LQR_controller* lqr, int velocity);
 
-void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, float* servo_defs[NUM_SERVOS]);
+/**
+  @brief Perform the LQR control
+  @param lqr LQR controller structure
+  @param orientation Current orientation data
+  @param servo_defs Servo deflections angles
+*/
+void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, char* servo_defs);
 
 #endif /* LQR_CONTROLLER_DRIVER_H */

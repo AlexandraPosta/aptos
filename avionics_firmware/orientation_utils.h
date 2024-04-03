@@ -34,10 +34,25 @@ typedef struct orientation_data {
     Euler previous_euler;
 } orientation_data;
 
+/**
+   @brief Convert euler angles to quaternion
+   @param e Euler angles
+   @param q Quaternion
+*/
 void orientation_quaternion_to_euler(Quaternion* q, Euler* e);
 
+/**
+  @brief Initialise the orientation data
+  @note Set the orientation_data structure to 0 to initialise memory
+*/
 void orientation_init();
 
-void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data);
+/**
+  @brief Update the orientation data based on gyro readings
+  @param dt Time difference in microseconds
+  @param orientation Orientation data structure
+  @param _LSM6DS3_data Gyroscope data
+*/
+void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data _LSM6DS3_data);
 
 #endif /* ORIENTATION_UTILS_H */
