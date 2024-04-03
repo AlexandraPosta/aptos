@@ -143,7 +143,6 @@ void ServoTest(){
   }
 }
 
-
 void DFU_programming_check(){
   printf("============== DFU flash check ===========\r\n");
   delay_milliseconds(500);
@@ -161,17 +160,68 @@ void DFU_programming_check(){
 }
 
 void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orientation, LQR_controller _LQR_controller) {
-  
-  for (;;) {
-    delay_microseconds(1000000); // 1 second delay
-    Lsm6ds3GyroReadAngle(SPI2, &_LSM6DS3_data);
-    //printf_float("x", (float) _LSM6DS3_data.x / 100.0);
-    //printf("\r\n");
+  // Initialise timer
+  uint32_t newTimer = get_time_us();
+  uint32_t oldTimer = get_time_us();
 
-    orientation_update(0, &_orientation, &_LSM6DS3_data);
-    printf_float("Roll", _orientation.current_euler.roll);
-    printf_float(" Pitch", _orientation.current_euler.pitch);
-    printf_float(" Yaw", _orientation.current_euler.yaw);
+  // Initialise servos
+  char servoDeflection[4] = {0};
+  SmartServo servo1 = ServoInit(UART1, 101);
+  SmartServo servo2 = ServoInit(UART1, 102);
+  SmartServo servo3 = ServoInit(UART1, 103);
+  SmartServo servo4 = ServoInit(UART1, 104);
+  delay_miliseconds(300);
+  ServoSetTargetAngle(&servo3, 30*1000);
+  delay_miliseconds(200);
+  ServoSetTargetAngle(&servo3, 0*1000);
+  delay_miliseconds(200);
+  ServoSetTargetAngle(&servo4, 30*1000);
+  delay_miliseconds(200);
+  ServoSetTargetAngle(&servo4, 0*1000);
+
+  // Initialise IMU 
+  Lsm6ds3Init(SPI2, &_LSM6DS3_data);
+
+  for (;;) {
+    //delay_microseconds(250000); // 0.25 second delay
+    newTimer = get_time_us();
+
+    // Read the gyro data
+    Lsm6ds3GyroReadAngle(SPI2, &_LSM6DS3_data);
+
+    /*
+    printf_float(" x", _LSM6DS3_data.x_rate);
+    printf_float(" y", _LSM6DS3_data.y_rate);
+    printf_float(" z", _LSM6DS3_data.z_rate);
     printf("\r\n");
+    */
+
+    // Return the Euler and Quaternion angles in microseconds
+    orientation_update((newTimer - oldTimer), &_orientation, _LSM6DS3_data);
+
+    // Perform LQR control
+    LQR_perform_control(&_LQR_controller, _orientation, servoDeflection);
+    /*
+    printf_float(" Servo 1", servoDeflection[0]);
+    printf_float(" Servo 2", servoDeflection[1]);
+    printf_float(" Servo 3", servoDeflection[2]);
+    printf_float(" Servo 4", servoDeflection[3]);
+    printf("\r\n");
+    printf("\r\n");
+    */
+
+    ServoSetTargetAngle(&servo1, (int32_t)servoDeflection[0]*1000);
+    ServoSetTargetAngle(&servo2, (int32_t)servoDeflection[1]*1000);
+    ServoSetTargetAngle(&servo3, (int32_t)servoDeflection[2]*1000);
+    ServoSetTargetAngle(&servo4, (int32_t)servoDeflection[3]*1000);
+    delay_miliseconds(200);
+
+    // TODO
+    // Set servos to 0 deflection if angle to vertical is low
+    // Check if gain timer reached update interval
+    // Calculate velocity based on barometer data
+    // Update gains based on velocity
+
+    oldTimer = newTimer;
   }
 }
