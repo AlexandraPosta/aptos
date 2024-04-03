@@ -125,7 +125,6 @@ int main(void) {
   int previous_value = 999999999;
   int current_value = 999999999;
   int apogee_incr = 3;
-  
 
   // Controller
   LQR_controller _LQR_controller;
