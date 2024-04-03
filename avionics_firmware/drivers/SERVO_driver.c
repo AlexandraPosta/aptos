@@ -60,11 +60,11 @@ SmartServo ServoInit(USART_TypeDef* uart, uint8_t id){
 void ServoStartup(SmartServo* servo){
     for (uint8_t s = 0; s < 4; s ++){
         ServoSetTargetAngle(&(servo[s]), -10000);
-        delay_miliseconds(200);
+        delay_milliseconds(200);
         ServoSetTargetAngle(&(servo[s]), 10000);
-        delay_miliseconds(200);
+        delay_milliseconds(200);
         ServoSetTargetAngle(&(servo[s]), 0);
-        delay_miliseconds(200);
+        delay_milliseconds(200);
     }
 }
 
@@ -76,7 +76,7 @@ void ServoReset(SmartServo* servo){
     txBuf[3] = 0x02;
     txBuf[4] = SERVO_CMD_RESET;
 
-    uint8_t check_sum = ~(txBuf[2] + txBuf[3] + txBuf[4] + txBuf[5]);  // checksum
+    uint8_t check_sum = ~(txBuf[2] + txBuf[3] + txBuf[4]);  // checksum
     txBuf[5] = check_sum;
 
     uart_write_buf(servo->servo_uart, txBuf, sizeof(txBuf));    //send buffer
@@ -329,7 +329,7 @@ void ServoReadData(SmartServo* servo, uint8_t address, uint8_t length, uint8_t* 
             delay_microseconds(1); 
             if (wait_counter >= wait_limit){
                 servo->servo_error_status = SERVO_ERROR_INVALID_PACKET;
-                return 0;
+                return;
             }
         }
         rxBuf[ii] = uart_read_byte(servo->servo_uart);

@@ -27,6 +27,4 @@
 int32_t LPF1(int32_t input, int32_t output_prev, uint8_t alpha);
 #pragma endregion
 
-int32_t atan2_milli(int32_t y, int32_t x);
-int32_t sqrt_int(int32_t x);
 #endif

@@ -23,7 +23,7 @@ void run_test_routine() {
   static bool on = true;
   int counter = 0;
   while (1){
-    delay_miliseconds(50);  
+    delay_milliseconds(50);  
     counter = counter + 1;
     if (counter < 20){
       watchdog_pat();
@@ -46,7 +46,7 @@ void run_test_routine_MS5611() {
   while (1){
     MS5611_get_data_test();
     watchdog_pat();
-    delay_miliseconds(500);
+    delay_milliseconds(500);
   }
 }
 /**
@@ -65,7 +65,7 @@ void run_test_routine_BME280() {
     printf("Return: %i\r\n", rslt);
     printf("TEMP: %u, \tPressure: %u, \tHumidity: %u\r\n", (&BME_data)->temperature, (&BME_data)->pressure, (&BME_data)->humidity);
     watchdog_pat();
-    delay_miliseconds(500);
+    delay_milliseconds(500);
   }
 }
 
@@ -73,7 +73,7 @@ void run_test_routine_LSM6DS3()
 {
   printf("----------- IMU TEST -----------\r\n");
   LSM6DS3_data gyro_data;
-  //delay_miliseconds(50);
+  //delay_milliseconds(50);
   Lsm6ds3Init(SPI2, &gyro_data);
   uint32_t start_time = get_time_us();
   uint32_t current_time;
@@ -98,7 +98,7 @@ void run_ADXL375_routine()
   ADXL375_data _data;
   
   while(1){
-    delay_miliseconds(100);
+    delay_milliseconds(100);
     
     ADXL375_get_data(&_data);
     printf("X:%i, Y:%i, Z:%i\r\n", _data.x, _data.y, _data.z);
@@ -109,19 +109,19 @@ void run_ADXL375_routine()
 void timer_test(){
   while(1){
     printf("%d\r\n",get_time_us());
-    delay_miliseconds(50);
+    delay_milliseconds(50);
   }
 }
 
 void ServoTest(){
   //ServoEnable(true);
-  delay_miliseconds(100);
+  delay_milliseconds(100);
   ServoUartInit(UART1);
   SmartServo servo1 = ServoInit(UART1, 104);
   SmartServo servo2 = ServoInit(UART1, 103);
   ServoSetPID(&servo1, 32, 32, 0);
   ServoSetAccel(&servo1, 250);
-  delay_miliseconds(300);
+  delay_milliseconds(300);
   int count = 0;
   int angle = 0;
   while (1){
@@ -130,13 +130,13 @@ void ServoTest(){
     ServoSetTargetAngle(&servo1, angle);
     ServoSetTargetAngle(&servo2, angle);
     count ++;
-    delay_miliseconds(1000);
+    delay_milliseconds(1000);
   }
   ServoSetTargetAngle(&servo1,90000);
   ServoSetTargetAngle(&servo2,-90000);
-  delay_miliseconds(500);
+  delay_milliseconds(500);
   ServoSetTargetAngle(&servo1,-10000);
-  delay_miliseconds(500);
+  delay_milliseconds(500);
   ServoSetTargetAngle(&servo2,10000);
   while(1){
 
@@ -146,14 +146,14 @@ void ServoTest(){
 
 void DFU_programming_check(){
   printf("============== DFU flash check ===========\r\n");
-  delay_miliseconds(500);
+  delay_milliseconds(500);
   while (uart_read_ready(USART1)){
     uint8_t recieve = uart_read_byte(USART1);
     delay(1);
     //printf("%x\r\n", recieve);
     if (recieve == 'f'){
       printf("Flash command recieved!\r\n");
-      delay_miliseconds(500);
+      delay_milliseconds(500);
       jump_to_bootloader();
     }
   }

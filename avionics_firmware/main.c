@@ -46,11 +46,12 @@ void get_frame_array(FrameArray* _frameArray,
   _frameArray->gyroscope.z = (uint16_t) (_LSM6DS3_data->z/10+18000);
 }
 
-void update_sensors(M5611_data* _M5611_data, 
-                    ADXL375_data* _ADXL375_data, LSM6DS3_data* _LSM6DS3_data) {
+void update_sensors(M5611_data* _M5611_data, ADXL375_data* _ADXL375_data, LSM6DS3_data* _LSM6DS3_data, orientation_data* _orientation, uint32_t dt) {
   MS5611_get_data(_M5611_data);
   ADXL375_get_data(_ADXL375_data);
-  Lsm6ds3GyroReadAngle(SPI2, _LSM6DS3_data);
+  Lsm6ds3GyroRead(SPI2, _LSM6DS3_data);
+  Lsm6ds3AccRead(SPI2, _LSM6DS3_data);
+  orientation_update(dt , _orientation, _LSM6DS3_data);
 }
 #pragma endregion Updates
 
@@ -87,7 +88,6 @@ int main(void) {
   watchdog_pat();
   STM32_led_on();
   gpio_write(RGB2_R, HIGH);
-  printf("FLASHED ON PC USB!\r\n");
 
   printf("============ INITIALISE NAND FLASH ============\r\n");
   init_flash();
@@ -102,8 +102,7 @@ int main(void) {
   MS5611_init(SPI2);          // Barometer
   ADXL375_init(SPI2);         // Accelerometer
   Lsm6ds3Init(SPI2, &_LSM6DS3_data);
-  
-  /*
+
   // Buffer
   FrameArray frame;                         // initialise the frameArray that keeps updating
   uint8_t dataArray[128];                   // dummy array to store the frame data
@@ -126,21 +125,22 @@ int main(void) {
   int previous_value = 999999999;
   int current_value = 999999999;
   int apogee_incr = 3;
-  */
+  
 
   // Controller
   LQR_controller _LQR_controller;
   orientation_data _orientation;
   float servoDeflection[4] = {0, 0, 0, 0};
   LQR_init(&_LQR_controller);
-  orientation_init(&_orientation);
+  orientation_init(&_orientation, &_LSM6DS3_data);  //initialise orientation
 
   // Initialisation complete
-  gpio_write(RGB1_G, HIGH);
+  gpio_write(RGB2_R, LOW);
+  gpio_write(RGB2_G, HIGH);
 
   //printf("============== ADD TESTS HERE ==============\r\n");
-  //delay_miliseconds(200);
-  //delay_miliseconds(1000);
+  //delay_milliseconds(200);
+  //delay_milliseconds(1000);
   //run_test_routine_BME280();
   //ADXL375_init(SPI2);
   //run_ADXL375_routine();
@@ -152,18 +152,22 @@ int main(void) {
   //ServoTest();
   run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
   
-  /*
+  
   printf("============= ENTER MAIN PROCEDURE ============\r\n");
+  gpio_write(RGB1_G, HIGH); //green LED for ready to launch
   uint32_t newTime = get_time_us();
   uint32_t oldTime = get_time_us();
+  uint32_t dt = 0;
   for (;;) {
     switch (flightStage) {
         case LAUNCHPAD:
           newTime = get_time_us();  //get current time
           if (newTime - oldTime > 1000000/PADREADFREQ){
+            dt = newTime - oldTime;
             oldTime = newTime;  //old time = new time
+            
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
             get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data); 
 
             // Update buffer and window
@@ -179,6 +183,8 @@ int main(void) {
               printf("Diff: %i\r\n", frame_buffer.ground_ref - current_value);
               if ((frame_buffer.ground_ref - current_value) > LAUNCH_THRESHOLD) {
                 flightStage = ASCENT;
+                gpio_write(RGB1_G, LOW); //green LED for ready to launch
+                gpio_write(RGB1_R, LOW); //RED LED for ascent
                 printf("FLIGHT STAGE = ASCENT\r\n");
                 // Log all data from the buffer
                 for (int i = 0; i < BUFFER_SIZE; i++) {
@@ -192,10 +198,11 @@ int main(void) {
         case ASCENT:
           newTime = get_time_us();  //get current time
           if (newTime - oldTime > 1000000/ASCENTREADFREQ){
+            dt = newTime - oldTime;
             oldTime = newTime;  //old time = new time
 
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
             get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
 
             // Log data
@@ -223,9 +230,10 @@ int main(void) {
         case APOGEE:
           newTime = get_time_us();  // Get current time
           if ((newTime - oldTime) > (1000000 / APOGEEREADFREQ)) {
+            dt = newTime - oldTime;
             oldTime = newTime;  // Old time = new time
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
             get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data); 
 
             // Log data
@@ -247,10 +255,11 @@ int main(void) {
         case DESCENT:
           newTime = get_time_us();  //get current time
           if (newTime - oldTime > 1000000/DESCENTREADFREQ){
+            dt = newTime - oldTime;
             oldTime = newTime;  //old time = new time
             
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
             get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data); 
 
             // Log data
@@ -279,6 +288,6 @@ int main(void) {
         break;
     }
   }
-  */
+  
   return 0;
 }

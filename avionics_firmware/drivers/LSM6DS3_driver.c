@@ -43,7 +43,8 @@ uint8_t Lsm6ds3Init(SPI_TypeDef *spi, LSM6DS3_data* gyro)
         gyro->z_offset = 0;
 
         // calculate gyro offsets
-        Lsm6ds3GyroOffsets(spi, gyro);  
+        Lsm6ds3GyroOffsets(spi, gyro);
+        
         gyro->time = get_time_us();
         return 1;
     }else{
@@ -63,7 +64,7 @@ static void Lsm6ds3WriteRegister(SPI_TypeDef *spi, uint8_t register_id, uint8_t 
     delay_microseconds(1);
     spi_disable_cs(LSM6DS3_CS);
     if (delayMs) {
-        delay_miliseconds(delayMs);
+        delay_milliseconds(delayMs);
     }
 }
 
@@ -86,7 +87,7 @@ static void Lsm6ds3WriteRegisterBits(SPI_TypeDef *spi, uint8_t register_id, uint
 void Lsm6ds3Config(SPI_TypeDef *spi){
     // Reset the device (wait 100ms before continuing config)
     Lsm6ds3WriteRegisterBits(spi, LSM6DSO_REG_CTRL3_C, LSM6DSO_MASK_CTRL3_C_RESET, BIT(0), 100);
-    delay_miliseconds(100);
+    delay_milliseconds(100);
     // Configure interrupt pin 1 for gyro data ready only
     //Lsm6ds3WriteRegister(spi, LSM6DSO_REG_INT1_CTRL, LSM6DSO_VAL_INT1_CTRL, 1);
 
@@ -236,22 +237,58 @@ bool Lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     LSM6DS3_data buff[LSM6DSO_OFFSET_BUFF_LEN];
     int32_t avg[3] = {0,0,0};
     Lsm6ds3GyroRead(spi, gyro);
-    delay_miliseconds(300);
-    for (uint16_t i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i++){
-        Lsm6ds3GyroRead(spi, gyro);
-        buff[i] = *gyro;
-        avg[0] += buff[i].x_rate;
-        avg[1] += buff[i].y_rate;
-        avg[2] += buff[i].z_rate;
-        //printf("Offset Sums: %i, %i, %i\r\n", avg[0], avg[1], avg[2]);
-        delay_microseconds(1000000/100);
-    }
+    delay_milliseconds(300);
+    do{
+        avg[0] = 0, avg[1] = 0, avg[2] = 0; //reset averages
+        for (uint16_t i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i++){
+            Lsm6ds3GyroRead(spi, gyro);
+            buff[i] = *gyro;
+            avg[0] += buff[i].x_rate;
+            avg[1] += buff[i].y_rate;
+            avg[2] += buff[i].z_rate;
+            //printf("Offset Sums: %i, %i, %i\r\n", avg[0], avg[1], avg[2]);
+            delay_microseconds(1000000/100);//delay to read at 50Hz
+        }
+    }while(!Lsmds3GyroStandardDev(buff, 50));   //if standard deviation of readings is not within limit then its not steady enough & try again
+    
     gyro->x_offset = (avg[0] / LSM6DSO_OFFSET_BUFF_LEN);
     gyro->y_offset = (avg[1] / LSM6DSO_OFFSET_BUFF_LEN);
     gyro->z_offset = (avg[2] / LSM6DSO_OFFSET_BUFF_LEN);
     printf("Gyro Offsets: %i, %i, %i\r\n", gyro->x_offset, gyro->y_offset, gyro->z_offset);
 
     return 1;
+}
+
+bool Lsmds3GyroStandardDev(LSM6DS3_data buff[], uint16_t limit){
+    //calculate mean
+    int means[3] = {0,0,0};
+    for (int i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i ++){
+        means[0] += buff[i].x_rate;
+        means[1] += buff[i].y_rate;
+        means[2] += buff[i].z_rate;
+    }
+    means[0] /= LSM6DSO_OFFSET_BUFF_LEN;
+    means[1] /= LSM6DSO_OFFSET_BUFF_LEN;
+    means[2] /= LSM6DSO_OFFSET_BUFF_LEN;
+
+    //calculate variance through (sum of (squares of deviations))/num_samples
+    long variance[3] = {0,0,0};
+    for (int i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i ++){
+        variance[0] += powl(buff[i].x_rate - means[0],2);
+        variance[1] += powl(buff[i].x_rate - means[1],2);
+        variance[2] += powl(buff[i].x_rate - means[2],2);
+    }
+    //divide by samples to get variance
+    variance[0] /= LSM6DSO_OFFSET_BUFF_LEN;
+    variance[1] /= LSM6DSO_OFFSET_BUFF_LEN;
+    variance[2] /= LSM6DSO_OFFSET_BUFF_LEN;
+    
+    //sqrt to get standard deviation
+    int std_dev[3] = {sqrt(variance[0]), sqrt(variance[1]), sqrt(variance[2])};
+    if (std_dev[0] < limit && std_dev[1] < limit && std_dev[2] < limit){
+        return true;
+    }
+    return false;
 }
 
 //keeps angle between +-180,000 mDeg
