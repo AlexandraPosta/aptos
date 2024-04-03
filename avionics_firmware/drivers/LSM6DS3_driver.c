@@ -237,7 +237,7 @@ bool Lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     int32_t avg[3] = {0,0,0};
     Lsm6ds3GyroRead(spi, gyro);
     delay_miliseconds(300);
-    for (uint8_t i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i++){
+    for (uint16_t i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i++){
         Lsm6ds3GyroRead(spi, gyro);
         buff[i] = *gyro;
         avg[0] += buff[i].x_rate;
