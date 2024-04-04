@@ -8,11 +8,13 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
-#include "drivers/ADXL375_driver.h"
-#include "drivers/MS5611_driver.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "drivers/ADXL375_driver.h"
+#include "drivers/MS5611_driver.h"
 #include "mcu.h"
+#include "frame_array.h"
 
 // Define Constants and Thresholds
 #define BUFFER_SIZE       50
