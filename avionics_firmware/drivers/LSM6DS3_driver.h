@@ -92,7 +92,7 @@
 #define LSM6DSO_MASK_CTRL9_XL 0x02        // 0b00000010
 
 // Calibration parameters
-#define LSM6DSO_OFFSET_BUFF_LEN 500
+#define LSM6DSO_OFFSET_BUFF_LEN 50
 #define LSM6DS6_DOWNSAMPLE_SIZE 4
 #define LMS6DS6_ANGULAR_RATE_SENSITIVITY  70 //for +-2000dps sensitivity is 70mdps/LSB
 #define LMS6DS6_ACCEL_SENSITIVITY  488 //for +-16G, sensitivity is 0.488 mg/LSB

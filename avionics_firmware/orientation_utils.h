@@ -53,7 +53,7 @@ void orientation_init();
   @param orientation Orientation data structure
   @param _LSM6DS3_data Gyroscope data
 */
-void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data _LSM6DS3_data);
+void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data);
 
 bool OrientationAccelerationVector(LSM6DS3_data* _LSM6DS3_data, float vector[]);
 

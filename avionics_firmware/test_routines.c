@@ -170,13 +170,13 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
   SmartServo servo2 = ServoInit(UART1, 102);
   SmartServo servo3 = ServoInit(UART1, 103);
   SmartServo servo4 = ServoInit(UART1, 104);
-  delay_miliseconds(300);
+  delay_milliseconds(300);
   ServoSetTargetAngle(&servo3, 30*1000);
-  delay_miliseconds(200);
+  delay_milliseconds(200);
   ServoSetTargetAngle(&servo3, 0*1000);
-  delay_miliseconds(200);
+  delay_milliseconds(200);
   ServoSetTargetAngle(&servo4, 30*1000);
-  delay_miliseconds(200);
+  delay_milliseconds(200);
   ServoSetTargetAngle(&servo4, 0*1000);
 
   // Initialise IMU 
@@ -197,7 +197,7 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     */
 
     // Return the Euler and Quaternion angles in microseconds
-    orientation_update((newTimer - oldTimer), &_orientation, _LSM6DS3_data);
+    orientation_update((newTimer - oldTimer), &_orientation, &_LSM6DS3_data);
 
     // Perform LQR control
     LQR_perform_control(&_LQR_controller, _orientation, servoDeflection);
@@ -214,7 +214,7 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     ServoSetTargetAngle(&servo2, (int32_t)servoDeflection[1]*1000);
     ServoSetTargetAngle(&servo3, (int32_t)servoDeflection[2]*1000);
     ServoSetTargetAngle(&servo4, (int32_t)servoDeflection[3]*1000);
-    delay_miliseconds(200);
+    delay_milliseconds(200);
 
     // TODO
     // Set servos to 0 deflection if angle to vertical is low

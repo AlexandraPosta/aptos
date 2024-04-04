@@ -142,14 +142,14 @@ int main(void) {
   //delay_milliseconds(1000);
   //run_test_routine_BME280();
   //ADXL375_init(SPI2);
-  //run_ADXL375_routine();
+  //run_ADXL375_routine ();
   //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
   //NAND_flash_read();
   //DFU_programming_test();
   //ServoTest();
-  run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
+  //run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
   
   
   printf("============= ENTER MAIN PROCEDURE ============\r\n");

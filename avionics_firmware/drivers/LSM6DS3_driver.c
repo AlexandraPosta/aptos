@@ -249,7 +249,7 @@ bool Lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
             //printf("Offset Sums: %i, %i, %i\r\n", avg[0], avg[1], avg[2]);
             delay_microseconds(1000000/100);//delay to read at 50Hz
         }
-    }while(!Lsmds3GyroStandardDev(buff, 50));   //if standard deviation of readings is not within limit then its not steady enough & try again
+    }while(!Lsmds3GyroStandardDev(buff, 500));   //if standard deviation of readings is not within limit then its not steady enough & try again
     
     gyro->x_offset = (avg[0] / LSM6DSO_OFFSET_BUFF_LEN);
     gyro->y_offset = (avg[1] / LSM6DSO_OFFSET_BUFF_LEN);
@@ -270,24 +270,28 @@ bool Lsmds3GyroStandardDev(LSM6DS3_data buff[], uint16_t limit){
     means[0] /= LSM6DSO_OFFSET_BUFF_LEN;
     means[1] /= LSM6DSO_OFFSET_BUFF_LEN;
     means[2] /= LSM6DSO_OFFSET_BUFF_LEN;
+    //printf("Means: %i, %i, %i\r\n", means[0], means[1], means[2]);
 
     //calculate variance through (sum of (squares of deviations))/num_samples
     long variance[3] = {0,0,0};
     for (int i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i ++){
         variance[0] += powl(buff[i].x_rate - means[0],2);
-        variance[1] += powl(buff[i].x_rate - means[1],2);
-        variance[2] += powl(buff[i].x_rate - means[2],2);
+        variance[1] += powl(buff[i].y_rate - means[1],2);
+        variance[2] += powl(buff[i].z_rate - means[2],2);
     }
     //divide by samples to get variance
     variance[0] /= LSM6DSO_OFFSET_BUFF_LEN;
     variance[1] /= LSM6DSO_OFFSET_BUFF_LEN;
     variance[2] /= LSM6DSO_OFFSET_BUFF_LEN;
-    
+    //printf("Variance: %i, %i, %i\r\n", variance[0], variance[1], variance[2]);
+
     //sqrt to get standard deviation
     int std_dev[3] = {sqrt(variance[0]), sqrt(variance[1]), sqrt(variance[2])};
     if (std_dev[0] < limit && std_dev[1] < limit && std_dev[2] < limit){
+        printf("Standard deviation okay: %i, %i, %i\r\n", std_dev[0], std_dev[1], std_dev[2]);
         return true;
     }
+    printf("Standard deviation too large: %i, %i, %i\r\n", std_dev[0], std_dev[1], std_dev[2]);
     return false;
 }
 
