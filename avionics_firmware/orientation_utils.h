@@ -45,7 +45,7 @@ void orientation_quaternion_to_euler(Quaternion* q, Euler* e);
   @brief Initialise the orientation data
   @note Set the orientation_data structure to 0 to initialise memory
 */
-void orientation_init();
+void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data);
 
 /**
   @brief Update the orientation data based on gyro readings

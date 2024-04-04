@@ -48,7 +48,7 @@ SmartServo ServoInit(USART_TypeDef* uart, uint8_t id){
     //set operation mode to position servo
     send_byte = 0;
     ServoWriteData(&servo, SERVO_REG_OPERATION_MODE, 1, &send_byte);
-
+    
     ServoLockEeprom(&servo);
     //---------------------------------------------------
     //set servo to 0 degrees
@@ -170,7 +170,7 @@ void ServoSetId(SmartServo* servo, uint8_t new_id){
     //check new ID valid
     if (new_id > 0xFE) return;
     //ping oldID
-    if (!ServoPing(servo)) ;//return;
+    //if (!ServoPing(servo)) ;//return;
     uint8_t send_byte;
     //unlock EEPROM
     ServoUnlockEeprom(servo);

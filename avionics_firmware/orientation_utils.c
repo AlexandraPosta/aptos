@@ -31,7 +31,7 @@ void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data
     float accel_vector[3];
     if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector)){ //try to get an acceleration vector to use as starting angle
         // Set initial values for current_quaternion
-        orientation->current_quaternion.w = 1;
+        orientation->current_quaternion.w = 0;
         orientation->current_quaternion.x = accel_vector[0];
         orientation->current_quaternion.y = accel_vector[1];
         orientation->current_quaternion.z = accel_vector[2];
@@ -74,9 +74,9 @@ void orientation_change_coordinate_system(LSM6DS3_data* _LSM6DS3_data) {
 void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data) {
     
     //assign measured sensor rotations
-    float wx = (float)_LSM6DS3_data->x_rate;
-    float wy = (float)_LSM6DS3_data->y_rate;
-    float wz = (float)_LSM6DS3_data->z_rate;
+    float wx = (float)_LSM6DS3_data->x_rate*M_PI_F / 180 /1000.0; //convert from milli degrees to radians
+    float wy = (float)_LSM6DS3_data->y_rate*M_PI_F / 180 /1000.0;
+    float wz = (float)_LSM6DS3_data->z_rate*M_PI_F / 180 /1000.0;
     float qw = orientation->current_quaternion.w;
     float qx = orientation->current_quaternion.x;
     float qy = orientation->current_quaternion.y;
@@ -89,9 +89,10 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     orientation->current_rate_quaternion.z = 0.5f * ( wz * qw + wy * qx - wx * qy);
 
     float accel_vector[3];
-    if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector)){ //check if accceleration can be used to assist
+    if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector) && false){ //check if accceleration can be used to assist
         //use acceleration vector to help.
         // Update quaternion using the derivative & acceleration
+        printf("Using acceleration\r\n");
         orientation->current_quaternion.w += orientation->current_rate_quaternion.w * (float)dt * 1e-6f;
         orientation->current_quaternion.x += (orientation->current_rate_quaternion.x * (float)dt * 1e-6f * 0.98) * (accel_vector[0] * 0.02);
         orientation->current_quaternion.y += (orientation->current_rate_quaternion.y * (float)dt * 1e-6f * 0.98) * (accel_vector[1] * 0.02);

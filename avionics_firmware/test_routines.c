@@ -73,17 +73,34 @@ void run_test_routine_LSM6DS3()
 {
   printf("----------- IMU TEST -----------\r\n");
   LSM6DS3_data gyro_data;
+  orientation_data _orientation;
   //delay_milliseconds(50);
   Lsm6ds3Init(SPI2, &gyro_data);
+  orientation_init(&_orientation, &gyro_data);
+
   uint32_t start_time = get_time_us();
   uint32_t current_time;
+  uint32_t dt;
   while (1){
     current_time = get_time_us();
-    if(current_time - start_time > 1000000/500){
+    dt = current_time - start_time;
+    if(dt > 1000000/10){
       start_time = current_time;
-      Lsm6ds3GyroReadAngle(SPI2, &gyro_data);
-      //lsm6ds3AccRead(SPI2, &gyro_data);
-      //lsm6ds3GyroRead(SPI2, &gyro_data);
+      Lsm6ds3GyroRead(SPI2, &gyro_data);
+      Lsm6ds3AccRead(SPI2, &gyro_data);
+      //printf("A, X: %i, Y: %i, Z:%i \r\n", gyro_data.x_accel, gyro_data.y_accel, gyro_data.z_accel);
+      orientation_update(dt, &_orientation, &gyro_data);
+      /*
+      printf("R, X: %i, Y: %i, Z:%i \r\n", gyro_data.x_rate, gyro_data.y_rate, gyro_data.z_rate);
+      printf_float("Q, W:", _orientation.current_quaternion.w);
+      printf_float(", X: ", _orientation.current_quaternion.x);
+      printf_float(", Y: ", _orientation.current_quaternion.y);
+      printf_float(", Z: ", _orientation.current_quaternion.z);
+      printf("\r\n");*/
+      printf_float("E, p:", _orientation.current_euler.pitch/M_PI_F*180);
+      printf_float(", r: ", _orientation.current_euler.roll/M_PI_F*180);
+      printf_float(", y: ", _orientation.current_euler.yaw/M_PI_F*180);
+      printf("\r\n");
     }
     watchdog_pat();
     
