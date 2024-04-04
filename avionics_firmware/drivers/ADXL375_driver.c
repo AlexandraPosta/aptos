@@ -78,7 +78,6 @@ uint8_t ADXL375_get_data(ADXL375_data* data){
     ADXL375_reg_read(ADXL375_X_REG_DATAX0, x_values, 2);
     spi_disable_cs(ADXL375_CS);
     int16_t x = ((uint16_t)x_values[1] << 8) | (uint16_t)x_values[0];
-    x = x;
 
     // y-axis
     spi_enable_cs(ADXL375_CS);
@@ -87,7 +86,6 @@ uint8_t ADXL375_get_data(ADXL375_data* data){
     ADXL375_reg_read(ADXL375_Y_REG_DATAY0, y_values, 2);
     spi_disable_cs(ADXL375_CS);
     int16_t y = ((uint16_t)y_values[1] << 8) | (uint16_t)y_values[0];
-    y = y ;
 
     // z-axis
     spi_enable_cs(ADXL375_CS);
@@ -96,7 +94,6 @@ uint8_t ADXL375_get_data(ADXL375_data* data){
     ADXL375_reg_read(ADXL375_Z_REG_DATAZ0, z_values, 2);
     spi_disable_cs(ADXL375_CS);
     int16_t z = ((uint16_t)z_values[1] << 8) | (uint16_t)z_values[0];
-    z = (z );
 
     data->x = x;
     data->y = y;

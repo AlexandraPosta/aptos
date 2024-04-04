@@ -87,7 +87,6 @@ extern int FREQ;
 // Required structures
 typedef enum FlightStages {LAUNCHPAD, ASCENT, APOGEE, DESCENT, LANDING} FlightStages;
 
-
 typedef struct Date 
 {
   unsigned int year;

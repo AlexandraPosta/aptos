@@ -11,21 +11,6 @@ void init_buffer(dataBuffer* buffer) {
   buffer->ground_ref = 0;
   buffer->index = 0;
   buffer->count = 0;
-
-  // Allocate memory for the buffer array
-  /*
-  //Create a blank frame
-  FrameArray blankFrame;                          // initialise the frameArray that keeps updating
-  uint8_t dataArray[128];                         // dummy array to store the frame data
-  _memset(dataArray, 0, sizeof(dataArray));       // set the necessary memory and set values to 0
-  blankFrame = unzip(&dataArray);                 // convert from normal array into FrameArray
-
-  //add blank frames to buffers
-  for (uint8_t i = 0; i < BUFFER_SIZE; i++){
-    buffer->frames[i] = blankFrame;
-  }
-  */
-  // TODO: Allocate memory for the window array
 }
 
 /**
@@ -49,7 +34,7 @@ void set_ground_reference(dataBuffer* buffer) {
   // Create copy of buffer data to sort
   int _data[WINDOW_SIZE];
   for (int i = 0; i < WINDOW_SIZE; i++) {
-    _data[i] = buffer->frames[i].barometer;
+    _data[i] = buffer->frames[i].barometer.pressure;
   }
 
   // get the ground reference as median

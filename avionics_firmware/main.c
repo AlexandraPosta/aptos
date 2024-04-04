@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include "STM32_init.h"
 #include "mcu.h"
+#include "frame_array.h"
 #include "stm32l4r5xx.h"
 #include "drivers/MS5611_driver.h"
-//#include "drivers/BME280_driver.h"
 #include "drivers/LSM6DS3_driver.h"
 #include "drivers/ADXL375_driver.h"
 #include "drivers/NAND_flash_driver.h"
@@ -26,24 +26,27 @@ extern void SysTick_Handler(void) {
 
 #pragma region Updates
 void get_frame_array(FrameArray* _frameArray, 
-                    M5611_data* _M5611_data, 
-                    ADXL375_data* _ADXL375_data, LSM6DS3_data* _LSM6DS3_data) {
-  // Convert data to frame TODO
-  Vector3 _acc_high_g = { _ADXL375_data->x, _ADXL375_data->y, _ADXL375_data->z };
-
+                    M5611_data _M5611_data, 
+                    ADXL375_data _ADXL375_data, 
+                    LSM6DS3_data _LSM6DS3_data,
+                    GNSS_Data _GNSS_data,
+                    orientation_data _orientation,
+                    ServoDeflections _servoDeflections) {
   // Add time stamp
   _frameArray->date.minute = (get_time_us()/(1000000*60))%60; //minuts
   _frameArray->date.second = (get_time_us()/1000000)%60; //seconds
   _frameArray->date.millisecond = (get_time_us()/1000)%1000; //milli seconds
   _frameArray->date.microsecond = get_time_us()%1000; //Mirco seconds
+  
   // Add data to the frame
   _frameArray->changeFlag = flightStage;
-  _frameArray->barometer = _M5611_data->pressure;
-  _frameArray->temp = _M5611_data->temp;
-  _frameArray->accelHighG = _acc_high_g;
-  _frameArray->gyroscope.x = (uint16_t) (_LSM6DS3_data->x/10+18000);
-  _frameArray->gyroscope.y = (uint16_t) (_LSM6DS3_data->y/10+18000);
-  _frameArray->gyroscope.z = (uint16_t) (_LSM6DS3_data->z/10+18000);
+  _frameArray->accel = _ADXL375_data;
+  _frameArray->imu =_LSM6DS3_data;
+  _frameArray->barometer = _M5611_data;
+  _frameArray->GNSS = _GNSS_data;
+  _frameArray->euler = _orientation.current_euler;
+  _frameArray->euler_rate = _orientation.current_rate_euler;
+  _frameArray->servos = _servoDeflections;
 }
 
 void update_sensors(M5611_data* _M5611_data, ADXL375_data* _ADXL375_data, LSM6DS3_data* _LSM6DS3_data, orientation_data* _orientation, uint32_t dt) {
@@ -97,6 +100,11 @@ int main(void) {
   M5611_data _M5611_data;
   ADXL375_data _ADXL375_data;
   LSM6DS3_data _LSM6DS3_data;
+  GNSS_Data _GNSS_data;
+  _GNSS_data.latitude = 0;
+  _GNSS_data.longitude = 0;
+  _GNSS_data.altitude = 0;
+  _GNSS_data.velocity = 0;
 
   // Sensor initialisation
   MS5611_init(SPI2);          // Barometer
@@ -119,6 +127,11 @@ int main(void) {
   servos[2] = ServoInit(UART1, 103);
   servos[3] = ServoInit(UART1, 104);
   ServoStartup(&(servos));
+  ServoDeflections _servoDeflections;
+  _servoDeflections.servo_deflection_1 = 0;
+  _servoDeflections.servo_deflection_2 = 0;
+  _servoDeflections.servo_deflection_3 = 0;
+  _servoDeflections.servo_deflection_4 = 0;
 
   // Additional variables
   int _data[WINDOW_SIZE];
@@ -129,7 +142,6 @@ int main(void) {
   // Controller
   LQR_controller _LQR_controller;
   orientation_data _orientation;
-  float servoDeflection[4] = {0, 0, 0, 0};
   LQR_init(&_LQR_controller);
   orientation_init(&_orientation, &_LSM6DS3_data);  //initialise orientation
 
@@ -166,14 +178,15 @@ int main(void) {
             
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
-            get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data); 
+            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, 
+                            _GNSS_data, _orientation, _servoDeflections); 
 
             // Update buffer and window
             update_buffer(&frame, &frame_buffer);
             if (frame_buffer.count > WINDOW_SIZE*2) {
               // Get the window barometer median
               for (int i = 0; i < WINDOW_SIZE; i++) {
-                _data[i] = frame_buffer.window[i].barometer;
+                _data[i] = frame_buffer.window[i].barometer.pressure;
               }
               current_value = get_median(_data, WINDOW_SIZE); // get pressure median
 
@@ -201,7 +214,8 @@ int main(void) {
 
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
-            get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data);
+            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, 
+                            _GNSS_data, _orientation, _servoDeflections); 
 
             // Log data
             log_frame(frame);
@@ -211,7 +225,7 @@ int main(void) {
 
             // Get window median readings
             for (int i = 0; i < WINDOW_SIZE; i++) {
-              _data[i] = frame_buffer.window[i].barometer;
+              _data[i] = frame_buffer.window[i].barometer.pressure;
             }
             current_value = get_median(_data, WINDOW_SIZE); // get pressure median
 
@@ -232,7 +246,8 @@ int main(void) {
             oldTime = newTime;  // Old time = new time
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
-            get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data); 
+            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, 
+                            _GNSS_data, _orientation, _servoDeflections); 
 
             // Log data
             log_frame(frame);
@@ -258,7 +273,8 @@ int main(void) {
             
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
-            get_frame_array(&frame, &_M5611_data, &_ADXL375_data, &_LSM6DS3_data); 
+            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, 
+                            _GNSS_data, _orientation, _servoDeflections); 
 
             // Log data
             log_frame(frame);
@@ -269,7 +285,7 @@ int main(void) {
             // Get window median readings
             int _data[WINDOW_SIZE];
             for (int i = 0; i < WINDOW_SIZE; i++) {
-              _data[i] = frame_buffer.window[i].barometer;
+              _data[i] = frame_buffer.window[i].barometer.pressure;
             }
 
             // Check for landing

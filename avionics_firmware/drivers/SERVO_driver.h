@@ -1,4 +1,4 @@
-#ifndef SERVO_DRIVER_HRegisters
+#ifndef SERVO_DRIVER_H
 #define SERVO_DRIVER_H
 
 // DATASHEET: https://files.waveshare.com/upload/2/27/Communication_Protocol_User_Manual-EN%28191218-0923%29.pdf
@@ -6,6 +6,7 @@
 
 //================== INCLUDES ===================
 #include "mcu.h"
+#include <stdint.h>
 
 //------------------------------------------------------------------------------
 // Registers
@@ -96,7 +97,6 @@ typedef struct SmartServo
     uint8_t servo_error_status;
     USART_TypeDef* servo_uart;
 } SmartServo;
-
 //============================= FUNCTIONS ===================================================
 
 /**
