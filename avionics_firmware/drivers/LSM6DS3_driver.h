@@ -103,9 +103,6 @@
 
 typedef struct LSM6DS3_data
 {
-  int32_t x;
-  int32_t y;
-  int32_t z;
   int32_t x_rate;
   int32_t y_rate;
   int32_t z_rate;
@@ -115,7 +112,6 @@ typedef struct LSM6DS3_data
   int16_t x_accel;
   int16_t y_accel;
   int16_t z_accel;
-  int32_t time;
 } LSM6DS3_data;
 
 /**

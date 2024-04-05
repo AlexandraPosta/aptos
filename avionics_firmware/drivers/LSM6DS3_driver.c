@@ -35,9 +35,6 @@ uint8_t Lsm6ds3Init(SPI_TypeDef *spi, LSM6DS3_data* gyro)
         delay_microseconds(10); //give delay after setting the settings
 
         //initialise variables to 0
-        gyro->x = 0;
-        gyro->y = 0;
-        gyro->z = 0;
         gyro->x_offset = 0;
         gyro->y_offset = 0;
         gyro->z_offset = 0;
@@ -46,7 +43,6 @@ uint8_t Lsm6ds3Init(SPI_TypeDef *spi, LSM6DS3_data* gyro)
         Lsm6ds3GyroOffsets(spi, gyro);
         Lsm6ds3AccRead(spi, gyro);
         
-        gyro->time = get_time_us();
         return 1;
     }else{
         printf("LSM6DS3: Incorrect ChipID\r\n");
@@ -189,48 +185,6 @@ bool Lsm6ds3GyroRead(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     return true;
 }
 
-//get IMU accelerometer values
-bool Lsm6ds3GyroReadAngle(SPI_TypeDef *spi, LSM6DS3_data* gyro)
-{
-    //first reading
-    Lsm6ds3GyroRead(spi, gyro);
-    int32_t dx = gyro->x_rate;  //mdeg/s
-    int32_t dy = gyro->y_rate;
-    int32_t dz = gyro->z_rate;
-
-    //subsequent readings for downsampling
-    for (uint8_t i = 1; i < LSM6DS6_DOWNSAMPLE_SIZE; i ++){
-        Lsm6ds3GyroRead(spi, gyro);
-        dx += gyro->x_rate;  //mdeg/s
-        dy += gyro->y_rate;
-        dz += gyro->z_rate;
-        delay_microseconds(1);
-    }
-
-    //time 
-    int32_t currentTime = get_time_us() & 0x7FFFFFFF; //convert time to signed number but don't let it be negative.
-    int32_t dt = (currentTime - gyro->time);
-    //printf("DT:%i", dt);
-    gyro->time = currentTime;
-
-    //calculate downsample value and then integrate.
-    dx = (dx/LSM6DS6_DOWNSAMPLE_SIZE) *dt;
-    dy = (dy/LSM6DS6_DOWNSAMPLE_SIZE) *dt;
-    dz = (dz/LSM6DS6_DOWNSAMPLE_SIZE) *dt;
-    
-    //divide by 1,000,000 because of micro seconds
-    dx = dx/1000000;
-    dy = dy/1000000;
-    dz = dz/1000000;
-
-    //add angle change
-    gyro->x = Lsm6ds3AngleOverflow(gyro->x + dx);  
-    gyro->y = Lsm6ds3AngleOverflow(gyro->y + dy);
-    gyro->z = Lsm6ds3AngleOverflow(gyro->z + dz);
-    
-    //printf("GryoA: X:%6li, \tY:%6li,\tZ:%6li\r\n", gyro->x/100, gyro->y/100, gyro->z/100);
-    return 1;
-}
 
 //calculates the gyro offset values
 bool Lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
