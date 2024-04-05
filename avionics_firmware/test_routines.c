@@ -183,7 +183,12 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
   uint32_t oldTimer = get_time_us();
 
   // Initialise servos
-  char servoDeflection[4] = {0};
+  ServoDeflections _servoDeflection;
+  _servoDeflection.servo_deflection_1 = 0;
+  _servoDeflection.servo_deflection_2 = 0;
+  _servoDeflection.servo_deflection_3 = 0;
+  _servoDeflection.servo_deflection_4 = 0;
+
   SmartServo servo1 = ServoInit(UART1, 101);
   SmartServo servo2 = ServoInit(UART1, 102);
   SmartServo servo3 = ServoInit(UART1, 103);
@@ -218,7 +223,7 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     orientation_update((newTimer - oldTimer), &_orientation, &_LSM6DS3_data);
 
     // Perform LQR control
-    LQR_perform_control(&_LQR_controller, _orientation, servoDeflection);
+    LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflection);
     /*
     printf_float(" Servo 1", servoDeflection[0]);
     printf_float(" Servo 2", servoDeflection[1]);
@@ -228,12 +233,12 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     printf("\r\n");
     */
 
-    servoDeflection[1] = _orientation.current_euler.pitch*10;
-    servoDeflection[2] = _orientation.current_euler.roll*10;
-    ServoSetTargetAngle(&servo1, (int32_t)servoDeflection[0]*1000);
-    ServoSetTargetAngle(&servo2, (int32_t)servoDeflection[1]*1000);
-    ServoSetTargetAngle(&servo3, (int32_t)servoDeflection[2]*1000);
-    ServoSetTargetAngle(&servo4, (int32_t)servoDeflection[3]*1000);
+    _servoDeflection.servo_deflection_1 = _orientation.current_euler.pitch*10;
+    _servoDeflection.servo_deflection_2 = _orientation.current_euler.roll*10;
+    ServoSetTargetAngle(&servo1, (int32_t)_servoDeflection.servo_deflection_1);
+    ServoSetTargetAngle(&servo2, (int32_t)_servoDeflection.servo_deflection_2);
+    ServoSetTargetAngle(&servo3, (int32_t)_servoDeflection.servo_deflection_3);
+    ServoSetTargetAngle(&servo4, (int32_t)_servoDeflection.servo_deflection_4);
     delay_milliseconds(10);
 
     // TODO

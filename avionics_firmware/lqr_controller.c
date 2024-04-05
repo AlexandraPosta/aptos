@@ -354,7 +354,7 @@ void LQR_update_gain(LQR_controller* lqr, int velocity) {
     }
 }
 
-void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, char* servo_defs) {
+void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, ServoDeflections* servo_defs) {
     // Extract Euler angles and Rates
     float _orientation[STATE_SPACE_DIM] = {orientation.current_euler.roll, 
                                            orientation.current_euler.pitch, 
@@ -364,10 +364,19 @@ void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, char
                                            orientation.current_rate_euler.yaw};
     
     // Perform control
-    for (int row = 0; row < NUM_SERVOS; row++) {
-        servo_defs[row] = 0.0f;
-        for (int col = 0; col < STATE_SPACE_DIM; col++) {
-            servo_defs[row] += lqr->current_gain[_ravel_index_2d(row, col)] * _orientation[col];
-        }
+    for (int col = 0; col < STATE_SPACE_DIM; col++) {
+        servo_defs->servo_deflection_1 += lqr->current_gain[_ravel_index_2d(1, col)] * _orientation[col];
+    }
+
+    for (int col = 0; col < STATE_SPACE_DIM; col++) {
+        servo_defs->servo_deflection_2 += lqr->current_gain[_ravel_index_2d(2, col)] * _orientation[col];
+    }
+
+    for (int col = 0; col < STATE_SPACE_DIM; col++) {
+        servo_defs->servo_deflection_3 += lqr->current_gain[_ravel_index_2d(3, col)] * _orientation[col];
+    }
+
+    for (int col = 0; col < STATE_SPACE_DIM; col++) {
+        servo_defs->servo_deflection_4 += lqr->current_gain[_ravel_index_2d(4, col)] * _orientation[col];
     }
 }

@@ -44,6 +44,6 @@ void LQR_update_gain(LQR_controller* lqr, int velocity);
   @param orientation Current orientation data
   @param servo_defs Servo deflections angles
 */
-void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, char* servo_defs);
+void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, ServoDeflections* servo_defs);
 
 #endif /* LQR_CONTROLLER_DRIVER_H */
