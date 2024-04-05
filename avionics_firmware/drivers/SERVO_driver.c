@@ -26,6 +26,7 @@ SmartServo ServoInit(USART_TypeDef* uart, uint8_t id){
     ServoReset(&servo);
 
     //---------- Configure the servo settings ----------
+    delay_milliseconds(10);
     ServoUnlockEeprom(&servo);
     uint8_t send_byte;
     //set respone mode to 0, no response unless requested

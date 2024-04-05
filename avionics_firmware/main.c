@@ -110,6 +110,8 @@ int main(void) {
   MS5611_init(SPI2);          // Barometer
   ADXL375_init(SPI2);         // Accelerometer
   Lsm6ds3Init(SPI2, &_LSM6DS3_data);
+  orientation_data _orientation;
+  orientation_init(&_orientation, &_LSM6DS3_data);  //initialise orientation
 
   // Buffer
   FrameArray frame;                         // initialise the frameArray that keeps updating
@@ -122,7 +124,7 @@ int main(void) {
   // Servo
   ServoUartInit(UART1);
   SmartServo servos[4];
-  servos[0] = ServoInit(UART1, 101);
+  servos[0] = ServoInit(UART1, 1);
   servos[1] = ServoInit(UART1, 102);
   servos[2] = ServoInit(UART1, 103);
   servos[3] = ServoInit(UART1, 104);
@@ -141,9 +143,9 @@ int main(void) {
 
   // Controller
   LQR_controller _LQR_controller;
-  orientation_data _orientation;
   LQR_init(&_LQR_controller);
-  orientation_init(&_orientation, &_LSM6DS3_data);  //initialise orientation
+
+  
 
   // Initialisation complete
   gpio_write(RGB2_R, LOW);

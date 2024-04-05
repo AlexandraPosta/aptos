@@ -77,6 +77,7 @@ void run_test_routine_LSM6DS3()
   //delay_milliseconds(50);
   Lsm6ds3Init(SPI2, &gyro_data);
   orientation_init(&_orientation, &gyro_data);
+  printf("A, X: %i, Y: %i, Z:%i \r\n", gyro_data.x_accel, gyro_data.y_accel, gyro_data.z_accel);
 
   uint32_t start_time = get_time_us();
   uint32_t current_time;
@@ -84,7 +85,7 @@ void run_test_routine_LSM6DS3()
   while (1){
     current_time = get_time_us();
     dt = current_time - start_time;
-    if(dt > 1000000/10){
+    if(dt > 1000000/100){
       start_time = current_time;
       Lsm6ds3GyroRead(SPI2, &gyro_data);
       Lsm6ds3AccRead(SPI2, &gyro_data);
@@ -227,11 +228,13 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     printf("\r\n");
     */
 
+    servoDeflection[1] = _orientation.current_euler.pitch*10;
+    servoDeflection[2] = _orientation.current_euler.roll*10;
     ServoSetTargetAngle(&servo1, (int32_t)servoDeflection[0]*1000);
     ServoSetTargetAngle(&servo2, (int32_t)servoDeflection[1]*1000);
     ServoSetTargetAngle(&servo3, (int32_t)servoDeflection[2]*1000);
     ServoSetTargetAngle(&servo4, (int32_t)servoDeflection[3]*1000);
-    delay_milliseconds(200);
+    delay_milliseconds(10);
 
     // TODO
     // Set servos to 0 deflection if angle to vertical is low

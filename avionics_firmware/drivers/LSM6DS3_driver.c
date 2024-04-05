@@ -44,6 +44,7 @@ uint8_t Lsm6ds3Init(SPI_TypeDef *spi, LSM6DS3_data* gyro)
 
         // calculate gyro offsets
         Lsm6ds3GyroOffsets(spi, gyro);
+        Lsm6ds3AccRead(spi, gyro);
         
         gyro->time = get_time_us();
         return 1;
