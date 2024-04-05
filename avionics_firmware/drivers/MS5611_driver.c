@@ -25,8 +25,9 @@ typedef struct PROM_data
 } PROM_data;
 
 PROM_data ms5611_prom_data;
-
 SPI_TypeDef* MS5611_SPI;
+int32_t dT = 0;
+int32_t temp = 0;
 
 uint8_t MS5611_init(SPI_TypeDef* spi)
 {
@@ -37,9 +38,30 @@ uint8_t MS5611_init(SPI_TypeDef* spi)
     printf("MS5611 init\r\n");
     spi_disable_cs(MS5611_CS);
 
+    // Read PROM data
     MS5611_read_PROM(MS5611_SPI);
-    M5611_data data;
-    MS5611_get_data(&data);
+
+    // Calculate dT and temperature on startup
+    spi_enable_cs(MS5611_CS);
+    cmd = MS5611_CMD_CONVERT_D2;
+    spi_transmit_receive(MS5611_SPI, &cmd, 1, 0, NULL);
+    spi_disable_cs(MS5611_CS);
+    delay_microseconds(8000);
+    uint32_t D2 = 0;
+    spi_enable_cs(MS5611_CS);
+    cmd = MS5611_CMD_READ_ADC;
+    spi_transmit_receive(MS5611_SPI, &cmd, 1, 3, &D2);
+    spi_disable_cs(MS5611_CS);
+    dT = (D2) - ((int32_t)ms5611_prom_data.T_REF << 8);
+    temp = 2000 + dT * ms5611_prom_data.TEMPSENS / (2<<23);
+
+    // Set up in pressure reading mode
+    spi_enable_cs(MS5611_CS);
+    cmd = MS5611_CMD_CONVERT_D2;
+    spi_transmit_receive(MS5611_SPI, &cmd, 1, 0, NULL);
+    spi_disable_cs(MS5611_CS);
+    delay_microseconds(8000);
+
 	return 0;
 }
 
@@ -59,17 +81,35 @@ uint8_t MS5611_read_PROM()
         
         // Fill struct using ptr arithmatic
         *(prom_ptr + i) = result;
-
         printf("%d\r\n", result);
     }
-    
     return 0;
 }
 
+// Read pressure data
+uint8_t MS5611_get_data(M5611_data* data)
+{
+    int cmd = MS5611_CMD_READ_ADC;
+    uint32_t D1 = 0;
+    spi_enable_cs(MS5611_CS);
+    spi_transmit_receive(MS5611_SPI, &cmd, 1, 3, &D1);
+    spi_disable_cs(MS5611_CS);
+    
+    int64_t OFF = (ms5611_prom_data.OFF * pow(2,16)) + (ms5611_prom_data.TCO*dT)/pow(2,7);
+    int64_t SENS = (ms5611_prom_data.SENS * pow(2,15)) + (ms5611_prom_data.TCS*dT)/pow(2,8);
+    int32_t PRESSURE = (D1 * SENS / pow(2,21) - OFF) / pow(2,15);
+
+    data->temp = temp;
+    data->pressure = PRESSURE;
+
+    return 0;
+}
+
+/* OLD READING ROUTINE
 uint8_t MS5611_get_data(M5611_data* data)
 {
     int cmd = 0;
-    // check if the device has a register that checks if the conversion is complete?
+
     spi_enable_cs(MS5611_CS);
     cmd = MS5611_CMD_CONVERT_D2;
     spi_transmit_receive(MS5611_SPI, &cmd, 1, 0, NULL);
@@ -106,3 +146,4 @@ uint8_t MS5611_get_data(M5611_data* data)
 
     return 0;
 }
+*/
