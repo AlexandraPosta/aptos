@@ -30,9 +30,6 @@
 
 typedef struct DateTime {
   uint8_t year;          // 0 - 128
-  uint8_t month;         // 1 - 12
-  uint8_t day;           // 1 - 32
-  uint8_t hour;          // 0 - 23
   uint8_t minute;        // 0 - 59
   uint8_t second;        // 0 - 59
   uint16_t millisecond;  // 0 - 999
@@ -56,7 +53,7 @@ typedef struct ServoDeflections
 
 extern volatile uint32_t s_ticks;
 
-static void printf_float(char* name, float value) {
+static void printf_float(char* name, float value, bool value_flag) {
   char str[30];
 
   char *tmpSign = (value < 0) ? "-" : "";
@@ -67,9 +64,15 @@ static void printf_float(char* name, float value) {
   int tmpInt2 = trunc(tmpFrac * 1000);   // Turn into integer (123).
 
   // Print as parts, note that you need 0-padding for fractional bit.
-  sprintf(str, "%s = %s%d.%03d", name, tmpSign, tmpInt1, tmpInt2);
+  // value_flag prints in format "123.456" or "value = 123.456"
+  if (value_flag)
+    sprintf(str, "%s%d.%03d", tmpSign, tmpInt1, tmpInt2);
+  else
+    sprintf(str, "%s: %s%d.%03d", name, tmpSign, tmpInt1, tmpInt2);
+
+  // Print the string
   printf("%s", str);
-}
+  }
 
 #pragma region System Clk
 /**

@@ -55,14 +55,14 @@ void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data
         orientation->previous_euler.roll = orientation->current_euler.roll;
         orientation->previous_euler.pitch = orientation->current_euler.pitch;
         orientation->previous_euler.yaw = orientation->current_euler.yaw;
-        printf_float("Initial quaternion, w:", orientation->current_quaternion.w);
-        printf_float(", x: ", orientation->current_quaternion.x);
-        printf_float(", y: ", orientation->current_quaternion.y);
-        printf_float(", z: ", orientation->current_quaternion.z);
+        printf_float("Initial quaternion, w:", orientation->current_quaternion.w, false);
+        printf_float(", x: ", orientation->current_quaternion.x, false);
+        printf_float(", y: ", orientation->current_quaternion.y, false);
+        printf_float(", z: ", orientation->current_quaternion.z, false);
         printf("\r\n");
-        printf_float("Initial euler, p:", orientation->current_euler.pitch/M_PI_F*180);
-        printf_float(", r: ", orientation->current_euler.roll/M_PI_F*180);
-        printf_float(", y: ", orientation->current_euler.yaw/M_PI_F*180);
+        printf_float("Initial euler, p:", orientation->current_euler.pitch/M_PI_F*180, false);
+        printf_float(", r: ", orientation->current_euler.roll/M_PI_F*180, false);
+        printf_float(", y: ", orientation->current_euler.yaw/M_PI_F*180, false);
         printf("\r\n");
     }else{  //accel wasn't close enough to 1g
         // Set initial values for current_quaternion
@@ -152,9 +152,9 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     orientation_quaternion_to_euler(&orientation->current_quaternion, &orientation->current_euler);
 
     /*
-    printf_float(" Roll", orientation->current_euler.roll);
-    printf_float(" Pitch", orientation->current_euler.pitch);
-    printf_float(" Yaw", orientation->current_euler.yaw);
+    printf_float(" Roll", orientation->current_euler.roll, false);
+    printf_float(" Pitch", orientation->current_euler.pitch, false);
+    printf_float(" Yaw", orientation->current_euler.yaw, false);
     printf("\r\n");
     */
 

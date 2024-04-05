@@ -93,14 +93,14 @@ void run_test_routine_LSM6DS3()
       orientation_update(dt, &_orientation, &gyro_data);
       /*
       printf("R, X: %i, Y: %i, Z:%i \r\n", gyro_data.x_rate, gyro_data.y_rate, gyro_data.z_rate);
-      printf_float("Q, W:", _orientation.current_quaternion.w);
-      printf_float(", X: ", _orientation.current_quaternion.x);
-      printf_float(", Y: ", _orientation.current_quaternion.y);
-      printf_float(", Z: ", _orientation.current_quaternion.z);
+      printf_float("Q, W:", _orientation.current_quaternion.w, false);
+      printf_float(", X: ", _orientation.current_quaternion.x, false);
+      printf_float(", Y: ", _orientation.current_quaternion.y, false);
+      printf_float(", Z: ", _orientation.current_quaternion.z, false);
       printf("\r\n");*/
-      printf_float("E, p:", _orientation.current_euler.pitch/M_PI_F*180);
-      printf_float(", r: ", _orientation.current_euler.roll/M_PI_F*180);
-      printf_float(", y: ", _orientation.current_euler.yaw/M_PI_F*180);
+      printf_float("E, p:", _orientation.current_euler.pitch/M_PI_F*180, false);
+      printf_float(", r: ", _orientation.current_euler.roll/M_PI_F*180, false);
+      printf_float(", y: ", _orientation.current_euler.yaw/M_PI_F*180, false);
       printf("\r\n");
     }
     watchdog_pat();
@@ -213,9 +213,9 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     Lsm6ds3GyroReadAngle(SPI2, &_LSM6DS3_data);
 
     /*
-    printf_float(" x", _LSM6DS3_data.x_rate);
-    printf_float(" y", _LSM6DS3_data.y_rate);
-    printf_float(" z", _LSM6DS3_data.z_rate);
+    printf_float(" x", _LSM6DS3_data.x_rate, false);
+    printf_float(" y", _LSM6DS3_data.y_rate, false);
+    printf_float(" z", _LSM6DS3_data.z_rate, false);
     printf("\r\n");
     */
 
@@ -225,10 +225,10 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     // Perform LQR control
     LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflection);
     /*
-    printf_float(" Servo 1", servoDeflection[0]);
-    printf_float(" Servo 2", servoDeflection[1]);
-    printf_float(" Servo 3", servoDeflection[2]);
-    printf_float(" Servo 4", servoDeflection[3]);
+    printf_float(" Servo 1", _servoDeflection.servo_deflection_1, false, false);
+    printf_float(" Servo 2", _servoDeflection.servo_deflection_2, false, false);
+    printf_float(" Servo 3", _servoDeflection.servo_deflection_3, false, false);
+    printf_float(" Servo 4", _servoDeflection.servo_deflection_4, false, false);
     printf("\r\n");
     printf("\r\n");
     */
