@@ -106,7 +106,7 @@ typedef BME280_INTF_RET_TYPE (*BME280_write_fptr_t)(uint8_t reg_addr, const uint
 typedef struct BME280_data
 {
   uint32_t pressure;    // Compensated pressure
-  int32_t temperature;  // Compensated temperature
+  int16_t temperature;  // Compensated temperature
   uint32_t humidity;    // Compensated humidity
 } BME280_data;
 
@@ -295,7 +295,7 @@ void interleave_reg_addr(const uint8_t *reg_addr, uint8_t *tempBuff, const uint8
     @brief This private function is used to compensate the raw temperature data and
     return the compensated temperature data in integer data type.
 */
-int32_t compensate_temperature(const BME280_uncomp_data *uncomp_data, BME280_calib_data *calib_data);
+int16_t compensate_temperature(const BME280_uncomp_data *uncomp_data, BME280_calib_data *calib_data);
 
 /**
     @brief This private function is used to compensate the raw pressure data and

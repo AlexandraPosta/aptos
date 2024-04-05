@@ -385,18 +385,18 @@ void interleave_reg_addr(const uint8_t *reg_addr, uint8_t *tempBuff, const uint8
     @brief This private function is used to compensate the raw temperature data and
     return the compensated temperature data in integer data type.
 */
-int32_t compensate_temperature(const BME280_uncomp_data *uncomp_data, BME280_calib_data *calib_data)
+int16_t compensate_temperature(const BME280_uncomp_data *uncomp_data, BME280_calib_data *calib_data)
 {
-    int32_t var1;
-    int32_t var2;
-    int32_t temperature;
-    int32_t temperature_min = -4000;
-    int32_t temperature_max = 8500;
+    int16_t var1;
+    int16_t var2;
+    int16_t temperature;
+    int16_t temperature_min = -4000;
+    int16_t temperature_max = 8500;
 
-    var1 = (int32_t)((uncomp_data->temperature / 8) - ((int32_t)calib_data->dig_t1 * 2));
-    var1 = (var1 * ((int32_t)calib_data->dig_t2)) / 2048;
-    var2 = (int32_t)((uncomp_data->temperature / 16) - ((int32_t)calib_data->dig_t1));
-    var2 = (((var2 * var2) / 4096) * ((int32_t)calib_data->dig_t3)) / 16384;
+    var1 = (int16_t)((uncomp_data->temperature / 8) - ((int16_t)calib_data->dig_t1 * 2));
+    var1 = (var1 * ((int16_t)calib_data->dig_t2)) / 2048;
+    var2 = (int16_t)((uncomp_data->temperature / 16) - ((int16_t)calib_data->dig_t1));
+    var2 = (((var2 * var2) / 4096) * ((int16_t)calib_data->dig_t3)) / 16384;
     calib_data->t_fine = var1 + var2;
     temperature = (calib_data->t_fine * 5 + 128) / 256;
 
