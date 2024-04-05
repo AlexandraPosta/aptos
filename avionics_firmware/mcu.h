@@ -39,16 +39,16 @@ typedef struct DateTime {
 typedef struct GNSS_Data{
   uint16_t latitude;
   uint16_t longitude;
-  uint32_t altitude;
-  uint32_t velocity;
+  uint16_t altitude;
+  uint16_t velocity;
 } GNSS_Data;
 
 typedef struct ServoDeflections
 {
-	uint8_t servo_deflection_1;
-	uint8_t servo_deflection_2;
-	uint8_t servo_deflection_3;
-	uint8_t servo_deflection_4;
+	int16_t servo_deflection_1;
+	int16_t servo_deflection_2;
+	int16_t servo_deflection_3;
+	int16_t servo_deflection_4;
 } ServoDeflections;
 
 extern volatile uint32_t s_ticks;

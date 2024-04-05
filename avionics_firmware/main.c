@@ -7,6 +7,7 @@
 #include "drivers/LSM6DS3_driver.h"
 #include "drivers/ADXL375_driver.h"
 #include "drivers/NAND_flash_driver.h"
+#include "drivers/BME280_driver.h"
 #include "test_routines.h"
 #include "data_buffer.h"
 #include "LQR_controller.h"
@@ -29,6 +30,7 @@ void get_frame_array(FrameArray* _frameArray,
                     M5611_data _M5611_data, 
                     ADXL375_data _ADXL375_data, 
                     LSM6DS3_data _LSM6DS3_data,
+                    BME280_data _BME280_data,
                     GNSS_Data _GNSS_data,
                     orientation_data _orientation,
                     ServoDeflections _servoDeflections) {
@@ -44,12 +46,18 @@ void get_frame_array(FrameArray* _frameArray,
   _frameArray->imu =_LSM6DS3_data;
   _frameArray->barometer = _M5611_data;
   _frameArray->GNSS = _GNSS_data;
+  _frameArray->bme = _BME280_data;
   _frameArray->euler = _orientation.current_euler;
   _frameArray->euler_rate = _orientation.current_rate_euler;
   _frameArray->servos = _servoDeflections;
 }
 
-void update_sensors(M5611_data* _M5611_data, ADXL375_data* _ADXL375_data, LSM6DS3_data* _LSM6DS3_data, orientation_data* _orientation, uint32_t dt) {
+void update_sensors(M5611_data* _M5611_data, 
+                    ADXL375_data* _ADXL375_data, 
+                    LSM6DS3_data* _LSM6DS3_data, 
+                    orientation_data* 
+                    _orientation, 
+                    uint32_t dt) {
   MS5611_get_data(_M5611_data);
   ADXL375_get_data(_ADXL375_data);
   Lsm6ds3GyroRead(SPI2, _LSM6DS3_data);
@@ -100,6 +108,10 @@ int main(void) {
   M5611_data _M5611_data;
   ADXL375_data _ADXL375_data;
   LSM6DS3_data _LSM6DS3_data;
+  BME280_data _BME280_data;
+  _BME280_data.temperature = 0;
+  _BME280_data.pressure = 0;
+  _BME280_data.humidity = 0;
   GNSS_Data _GNSS_data;
   _GNSS_data.latitude = 0;
   _GNSS_data.longitude = 0;
@@ -180,7 +192,7 @@ int main(void) {
             
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
-            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, 
+            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
                             _GNSS_data, _orientation, _servoDeflections); 
 
             // Update buffer and window
@@ -216,7 +228,7 @@ int main(void) {
 
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
-            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, 
+            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
                             _GNSS_data, _orientation, _servoDeflections); 
 
             // Log data
@@ -248,7 +260,7 @@ int main(void) {
             oldTime = newTime;  // Old time = new time
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
-            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, 
+            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
                             _GNSS_data, _orientation, _servoDeflections); 
 
             // Log data
@@ -275,7 +287,7 @@ int main(void) {
             
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
-            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, 
+            get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
                             _GNSS_data, _orientation, _servoDeflections); 
 
             // Log data
