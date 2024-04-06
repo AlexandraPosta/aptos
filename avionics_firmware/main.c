@@ -77,6 +77,7 @@ void run_nand_flash_erase(){
 */
 void NAND_flash_read()
 {
+  uart_init(USART1, 921600); //921600
   printf("==================== Reading NAND FLASH ====================\r\n");
   read_all_csv();
   print_capacity_info();
@@ -159,7 +160,7 @@ int main(void) {
 
   
 
-  // Initialisation complete
+  // Initialisation complete, set LED2 to green
   gpio_write(RGB2_R, LOW);
   gpio_write(RGB2_G, HIGH);
 
@@ -168,20 +169,21 @@ int main(void) {
   //delay_milliseconds(1000);
   //run_test_routine_BME280();
   //run_ADXL375_routine();
-  run_test_routine_LSM6DS3();
+  //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
   //NAND_flash_read();
   //DFU_programming_test();
   //ServoTest();
   //run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
-  
+  flightStage = LAUNCHPAD;
   
   printf("============= ENTER MAIN PROCEDURE ============\r\n");
   gpio_write(RGB1_G, HIGH); //green LED for ready to launch
   uint32_t newTime = get_time_us();
   uint32_t oldTime = get_time_us();
   uint32_t dt = 0;
+  uint8_t buzz_count = 0;
   for (;;) {
     switch (flightStage) {
         case LAUNCHPAD:
@@ -190,6 +192,13 @@ int main(void) {
             dt = newTime - oldTime;
             oldTime = newTime;  //old time = new time
             
+            buzz_count ++;
+            if (buzz_count == 0){
+              gpio_write(_buzzer, HIGH);
+            }else if(buzz_count == 10){
+              gpio_write(_buzzer, LOW);
+            }
+
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
@@ -208,8 +217,12 @@ int main(void) {
               printf("Diff: %i\r\n", frame_buffer.ground_ref - current_value);
               if ((frame_buffer.ground_ref - current_value) > LAUNCH_THRESHOLD) {
                 flightStage = ASCENT;
-                gpio_write(RGB1_G, LOW); //green LED for ready to launch
-                gpio_write(RGB1_R, LOW); //RED LED for ascent
+                //set LED 1 to orange for ascent triggered.
+                gpio_write(RGB1_G, HIGH);
+                gpio_write(RGB1_R, HIGH); 
+                //make sure buzzer is off
+                gpio_write(_buzzer, LOW);
+                
                 printf("FLIGHT STAGE = ASCENT\r\n");
                 // Log all data from the buffer
                 for (int i = 0; i < BUFFER_SIZE; i++) {
