@@ -31,12 +31,6 @@ void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data
     float accel_vector[3];
     if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector)){ //try to get an acceleration vector to use as starting angle
         // Set initial values for current_quaternion
-        /*
-        orientation->current_quaternion.w = sqrtf(0.5f * (1 + accel_vector[2]));;
-        orientation->current_quaternion.x = accel_vector[1] * sqrtf(0.5f * (1 - accel_vector[2])); // Handle sign ambiguity;
-        orientation->current_quaternion.y = accel_vector[0] * sqrtf(0.5f * (1 - accel_vector[2])); // Handle sign ambiguity;
-        orientation->current_quaternion.z = 0.0f; // No assumption about device's initial orientation
-        */
         // Estimate roll and pitch angles
         float pitch = atan2(accel_vector[1], accel_vector[2]);
         float roll = atan2(-accel_vector[0], sqrt(accel_vector[1] * accel_vector[1] + accel_vector[2] * accel_vector[2]));
@@ -55,15 +49,6 @@ void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data
         orientation->previous_euler.roll = orientation->current_euler.roll;
         orientation->previous_euler.pitch = orientation->current_euler.pitch;
         orientation->previous_euler.yaw = orientation->current_euler.yaw;
-        printf_float("Initial quaternion, w:", orientation->current_quaternion.w, false);
-        printf_float(", x: ", orientation->current_quaternion.x, false);
-        printf_float(", y: ", orientation->current_quaternion.y, false);
-        printf_float(", z: ", orientation->current_quaternion.z, false);
-        printf("\r\n");
-        printf_float("Initial euler, p:", orientation->current_euler.pitch/M_PI_F*180, false);
-        printf_float(", r: ", orientation->current_euler.roll/M_PI_F*180, false);
-        printf_float(", y: ", orientation->current_euler.yaw/M_PI_F*180, false);
-        printf("\r\n");
     }else{  //accel wasn't close enough to 1g
         // Set initial values for current_quaternion
         orientation->current_quaternion.w = 1.0;
@@ -120,13 +105,13 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector) && false){ //check if accceleration can be used to assist
         //use acceleration vector to help.
         // Update quaternion using the derivative & acceleration
-        printf("Using acceleration\r\n");
-        float acceleration_error[3];
-        OrientationAccelerationQuaternion(orientation, &accel_vector, &acceleration_error);
-        orientation->current_quaternion.w += orientation->current_rate_quaternion.w * (float)dt * 1e-6f;
-        orientation->current_quaternion.x += (orientation->current_rate_quaternion.x * (float)dt * 1e-6f * 0.5) + (acceleration_error[0] * 0.02);
-        orientation->current_quaternion.y += (orientation->current_rate_quaternion.y * (float)dt * 1e-6f * 0.5) + (acceleration_error[1] * 0.02);
-        orientation->current_quaternion.z += (orientation->current_rate_quaternion.z * (float)dt * 1e-6f * 0.5) + (acceleration_error[2] * 0.02);
+        //printf("Using acceleration\r\n");
+        Quaternion acceleration_correction;
+        OrientationAccelerationQuaternion(orientation, &accel_vector, &acceleration_correction);
+        orientation->current_quaternion.w += (orientation->current_rate_quaternion.w * (float)dt * 1e-6f) + acceleration_correction.w * (float)dt * 1e-6f;
+        orientation->current_quaternion.x += (orientation->current_rate_quaternion.x * (float)dt * 1e-6f) + acceleration_correction.z * (float)dt * 1e-6f;
+        orientation->current_quaternion.y += (orientation->current_rate_quaternion.y * (float)dt * 1e-6f) + acceleration_correction.y * (float)dt * 1e-6f;
+        orientation->current_quaternion.z += (orientation->current_rate_quaternion.z * (float)dt * 1e-6f) + acceleration_correction.x * (float)dt * 1e-6f;
     }else{
         // Update quaternion using the derivative
         orientation->current_quaternion.w += orientation->current_rate_quaternion.w * (float)dt * 1e-6f;
@@ -185,30 +170,41 @@ bool OrientationAccelerationVector(LSM6DS3_data* _LSM6DS3_data, float vector[]){
     return true;
 }
 
-void OrientationAccelerationQuaternion(orientation_data* _orientation, float accel[], float e[]){
-    float w = _orientation->current_quaternion.w;
-    float x = _orientation->current_quaternion.x;
-    float y = _orientation->current_quaternion.y;
-    float z = _orientation->current_quaternion.z;
-    //calculate cross product
-    float ww = w * w;
-    float wx = w * x;
-    float wy = w * y;
-    float wz = w * z;
-    float xx = x * x;
-    float xy = x * y;
-    float xz = x * z;
-    float yy = y * y;
-    float yz = y * z;
-    float zz = z * z;
+void OrientationAccelerationQuaternion(orientation_data* _orientation, float accel_vector[], Quaternion* correction){
+    Quaternion q_est = _orientation->current_quaternion;
+    
+    // Estimate gravity direction in the world frame using current orientation estimate
+    float gw_x = 2 * (q_est.x * q_est.z - q_est.w * q_est.y);
+    float gw_y = 2 * (q_est.w * q_est.x + q_est.y * q_est.z);
+    float gw_z = q_est.w * q_est.w - q_est.x * q_est.x - q_est.y * q_est.y + q_est.z * q_est.z;
 
-    //
-    float rMat[3];
-    rMat[0] = 2.0f * (xz + -wy);
-    rMat[1] = 2.0f * (yz - -wx);
-    rMat[2] = 1.0f - 2.0f * xx - 2.0f * yy;
-    //
-    e[0] = (accel[1] * rMat[2] - accel[2] * rMat[1]);
-    e[1] = (accel[2] * rMat[0] - accel[0] * rMat[2]);
-    e[2] = (accel[0] * rMat[1] - accel[1] * rMat[0]);
+    // Calculate error between estimated gravity direction and accelerometer readings
+    float error_x = 2 * (accel_vector[0] * gw_x + accel_vector[1] * gw_y + accel_vector[2] * gw_z);
+    float error_y = 2 * ((accel_vector[1] * gw_z - accel_vector[2] * gw_y));
+    float error_z = 2 * ((accel_vector[2] * gw_x - accel_vector[0] * gw_z));
+
+    // Compute feedback correction quaternion
+    float alpha = 0.02f; // Correction gain
+    correction->w = 1.0f;
+    correction->x = alpha * error_x;
+    correction->y = alpha * error_y;
+    correction->z = alpha * error_z;
+
+    
+    /*
+    // Estimate roll and pitch angles
+    float pitch = atan2(accel_vector[1], accel_vector[2]);
+    float roll = atan2(-accel_vector[0], sqrt(accel_vector[1] * accel_vector[1] + accel_vector[2] * accel_vector[2]));
+    // Calculate initial quaternion components based on the estimated roll and pitch angles
+    float cy = cos(roll * 0.5f);
+    float sy = sin(roll * 0.5f);
+    float cp = cos(pitch * 0.5f);
+    float sp = sin(pitch * 0.5f);
+
+    float alpha = 0.001;
+    correction->w = (q_est.w - cy * cp) * alpha;
+    correction->x = (q_est.x - cy * sp) * alpha;
+    correction->y = (q_est.x - sy * cp) * alpha;
+    correction->z = (q_est.x - (-sy * sp)) * alpha;
+    */
 }
