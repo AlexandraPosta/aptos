@@ -343,21 +343,19 @@ static inline FrameArray unzip(uint8_t *zippedData) {
   unzippedData.GNSS.velocity |= zippedData[i++];
 
   // BME280
-  unzippedData.bme.temperature = (zippedData[i++] << 24) & (0xFF << 24);
-  unzippedData.bme.temperature |= (zippedData[i++] << 16) & (0xFF << 16);
-  unzippedData.bme.temperature |= (zippedData[i++] << 8) & (0xFF << 8);
-  unzippedData.bme.temperature |= zippedData[i++];
   unzippedData.bme.pressure = (zippedData[i++] << 24) & (0xFF << 24);
   unzippedData.bme.pressure |= (zippedData[i++] << 16) & (0xFF << 16);
   unzippedData.bme.pressure |= (zippedData[i++] << 8) & (0xFF << 8);
   unzippedData.bme.pressure |= zippedData[i++];
+  unzippedData.bme.temperature |= (zippedData[i++] << 8) & (0xFF << 8);
+  unzippedData.bme.temperature |= zippedData[i++];
   unzippedData.bme.humidity = (zippedData[i++] << 24) & (0xFF << 24);
   unzippedData.bme.humidity |= (zippedData[i++] << 16) & (0xFF << 16);
   unzippedData.bme.humidity |= (zippedData[i++] << 8) & (0xFF << 8);
   unzippedData.bme.humidity |= zippedData[i++];
 
   // Current euler - read back to float
-  uint32_t temp = 0;
+  int32_t temp = 0;
   temp = (zippedData[i++] << 24) & (0xFF << 24);
   temp |= (zippedData[i++] << 16) & (0xFF << 16);
   temp |= (zippedData[i++] << 8) & (0xFF << 8);
