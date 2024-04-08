@@ -62,7 +62,6 @@ function plotSimulinkData(simData_obj, n)
         % ylabel('Pitch Angle (deg)');
         % xlim([0 12]);
         % grid on
-
     else
         disp('Please choose a valid data set');
     end
