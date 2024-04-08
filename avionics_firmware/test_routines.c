@@ -43,10 +43,12 @@ void run_test_routine() {
 void run_test_routine_MS5611() {
   
   MS5611_init(SPI2);
+  M5611_data data;
   while (1){
-    MS5611_get_data_test();
+    MS5611_get_data(&data);
+    printf("Pressure: %i\r\n", data.pressure);
     watchdog_pat();
-    delay_milliseconds(500);
+    delay_milliseconds(10);
   }
 }
 /**

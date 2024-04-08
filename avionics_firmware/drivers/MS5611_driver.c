@@ -86,27 +86,6 @@ uint8_t MS5611_read_PROM()
     return 0;
 }
 
-// Read pressure data
-/*
-uint8_t MS5611_get_data(M5611_data* data)
-{
-    int cmd = MS5611_CMD_READ_ADC;
-    uint32_t D1 = 0;
-    spi_enable_cs(MS5611_CS);
-    spi_transmit_receive(MS5611_SPI, &cmd, 1, 3, &D1);
-    spi_disable_cs(MS5611_CS);
-    
-    int64_t OFF = (ms5611_prom_data.OFF * pow(2,16)) + (ms5611_prom_data.TCO*dT)/pow(2,7);
-    int64_t SENS = (ms5611_prom_data.SENS * pow(2,15)) + (ms5611_prom_data.TCS*dT)/pow(2,8);
-    int32_t PRESSURE = (D1 * SENS / pow(2,21) - OFF) / pow(2,15);
-
-    data->temp = temp;
-    data->pressure = PRESSURE;
-
-    return 0;
-}
-*/
-// OLD READING ROUTINE
 uint8_t MS5611_get_data(M5611_data* data)
 {
     int cmd = 0;
@@ -116,7 +95,7 @@ uint8_t MS5611_get_data(M5611_data* data)
     spi_transmit_receive(MS5611_SPI, &cmd, 1, 0, NULL);
     spi_disable_cs(MS5611_CS);
 
-    delay_microseconds(8000);
+    delay_microseconds(600);
     uint32_t D2 = 0;
     spi_enable_cs(MS5611_CS);
     cmd = MS5611_CMD_READ_ADC;
@@ -131,7 +110,7 @@ uint8_t MS5611_get_data(M5611_data* data)
     spi_transmit_receive(MS5611_SPI, &cmd, 1, 0, NULL);
     spi_disable_cs(MS5611_CS);
 
-    delay_microseconds(8000);
+    delay_microseconds(600);
 
     uint32_t D1 = 0;
     spi_enable_cs(MS5611_CS);
