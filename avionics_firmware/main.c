@@ -18,6 +18,9 @@
 #define APOGEEREADFREQ 1000 //frequency to read data during ascent
 #define DESCENTREADFREQ 100 //frequency to read data during descent
 
+#define SERVOS_RUN      0 //enable or disable servos
+
+
 // Flags
 FlightStages flightStage = LAUNCHPAD;
 volatile uint32_t s_ticks;
@@ -35,10 +38,11 @@ void get_frame_array(FrameArray* _frameArray,
                     orientation_data _orientation,
                     ServoDeflections _servoDeflections) {
   // Add time stamp
-  _frameArray->date.minute = (get_time_us()/(1000000*60))%60; //minuts
-  _frameArray->date.second = (get_time_us()/1000000)%60; //seconds
-  _frameArray->date.millisecond = (get_time_us()/1000)%1000; //milli seconds
-  _frameArray->date.microsecond = get_time_us()%1000; //Mirco seconds
+  uint32_t time = get_time_us();
+  _frameArray->date.minute = (time/(1000000*60))%60; //minuts
+  _frameArray->date.second = (time/1000000)%60; //seconds
+  _frameArray->date.millisecond = (time/1000)%1000; //milli seconds
+  _frameArray->date.microsecond = time%1000; //Mirco seconds
   
   // Add data to the frame
   _frameArray->changeFlag = flightStage;
@@ -67,6 +71,7 @@ void update_sensors(M5611_data* _M5611_data,
 #pragma endregion Updates
 
 void run_nand_flash_erase(){
+  uart_init(USART1, 115200);
   watchdog_pat();
   erase_all();
   while(1);
@@ -77,7 +82,7 @@ void run_nand_flash_erase(){
 */
 void NAND_flash_read()
 {
-  uart_init(USART1, 921600); //921600
+  uart_init(USART1, 115200); //921600
   printf("==================== Reading NAND FLASH ====================\r\n");
   read_all_csv();
   print_capacity_info();
@@ -89,7 +94,7 @@ void NAND_flash_read()
 int main(void) {
   // STM32 setup
   STM32_init();
-  uart_init(USART1, 1000000); //921600
+  uart_init(USART1, 115200); //921600
   spi_init(SPI2);
   DFU_programming_check();
   printf("==================== PROGRAM START ==================\r\n");
@@ -135,13 +140,15 @@ int main(void) {
   init_buffer(&frame_buffer);               // initialise the buffer
 
   // Servo
-  ServoUartInit(UART1);
-  SmartServo servos[4];
-  servos[0] = ServoInit(UART1, 1);
-  servos[1] = ServoInit(UART1, 102);
-  servos[2] = ServoInit(UART1, 103);
-  servos[3] = ServoInit(UART1, 104);
-  ServoStartup(&(servos));
+  if (SERVOS_RUN){
+    ServoUartInit(UART1);
+    SmartServo servos[4];
+    servos[0] = ServoInit(UART1, 1);
+    servos[1] = ServoInit(UART1, 102);
+    servos[2] = ServoInit(UART1, 103);
+    servos[3] = ServoInit(UART1, 104);
+  }
+  //ServoStartup(&(servos));
   ServoDeflections _servoDeflections;
   _servoDeflections.servo_deflection_1 = 0;
   _servoDeflections.servo_deflection_2 = 0;

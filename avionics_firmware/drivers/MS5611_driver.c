@@ -87,6 +87,7 @@ uint8_t MS5611_read_PROM()
 }
 
 // Read pressure data
+/*
 uint8_t MS5611_get_data(M5611_data* data)
 {
     int cmd = MS5611_CMD_READ_ADC;
@@ -104,8 +105,8 @@ uint8_t MS5611_get_data(M5611_data* data)
 
     return 0;
 }
-
-/* OLD READING ROUTINE
+*/
+// OLD READING ROUTINE
 uint8_t MS5611_get_data(M5611_data* data)
 {
     int cmd = 0;
@@ -146,4 +147,4 @@ uint8_t MS5611_get_data(M5611_data* data)
 
     return 0;
 }
-*/
+

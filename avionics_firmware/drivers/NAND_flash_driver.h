@@ -850,7 +850,7 @@ static inline void erase_all(){
     printf("ERASING DATA IN: ");
     printf("%i", countDown);
     printf(" Seconds\r\n");
-    delay_miliseconds(1000);
+    delay_milliseconds(1000);
   }
 
   for (uint32_t block = 0; block < 64*4096; block++) {
