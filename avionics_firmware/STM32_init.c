@@ -16,6 +16,7 @@ FREQ = (uint32_t) 4000000;
 void STM32_init()
 {
   STM32_init_clock(RCC_CFGR_SW_HSI); // set clock to 16MHz internal HSI
+  //STM32_init_clock(RCC_CFGR_SW_MSI); // set clock to 48MHz internal MSI
   uint32_t ticks_per_ms = FREQ / 1000;
   systick_init(ticks_per_ms);   // Tick every 1 us
   init_delay_timer();

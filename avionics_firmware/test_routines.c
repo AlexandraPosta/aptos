@@ -191,14 +191,14 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
   _servoDeflection.servo_deflection_3 = 0;
   _servoDeflection.servo_deflection_4 = 0;
 
-  SmartServo servo1 = ServoInit(UART1, 101);
+  SmartServo servo1 = ServoInit(UART1, 1);
   SmartServo servo2 = ServoInit(UART1, 102);
   SmartServo servo3 = ServoInit(UART1, 103);
   SmartServo servo4 = ServoInit(UART1, 104);
   delay_milliseconds(300);
-  ServoSetTargetAngle(&servo3, 30*1000);
+  ServoSetTargetAngle(&servo2, 30*1000);
   delay_milliseconds(200);
-  ServoSetTargetAngle(&servo3, 0*1000);
+  ServoSetTargetAngle(&servo2, 0*1000);
   delay_milliseconds(200);
   ServoSetTargetAngle(&servo4, 30*1000);
   delay_milliseconds(200);
@@ -212,7 +212,7 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     newTimer = get_time_us();
 
     // Read the gyro data
-    Lsm6ds3GyroReadAngle(SPI2, &_LSM6DS3_data);
+    Lsm6ds3GyroRead(SPI2, &_LSM6DS3_data);
 
     /*
     printf_float(" x", _LSM6DS3_data.x_rate, false);
@@ -235,13 +235,15 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     printf("\r\n");
     */
 
-    _servoDeflection.servo_deflection_1 = _orientation.current_euler.pitch*10;
-    _servoDeflection.servo_deflection_2 = _orientation.current_euler.roll*10;
-    ServoSetTargetAngle(&servo1, (int32_t)_servoDeflection.servo_deflection_1);
-    ServoSetTargetAngle(&servo2, (int32_t)_servoDeflection.servo_deflection_2);
-    ServoSetTargetAngle(&servo3, (int32_t)_servoDeflection.servo_deflection_3);
-    ServoSetTargetAngle(&servo4, (int32_t)_servoDeflection.servo_deflection_4);
-    delay_milliseconds(10);
+    //_servoDeflection.servo_deflection_4 = _orientation.current_euler.pitch*1000*180/M_PI_F;
+    //_servoDeflection.servo_deflection_2 = _orientation.current_euler.roll*1000*180/M_PI_F;
+    ServoSetTargetAngle(&servo1, (int32_t)_servoDeflection.servo_deflection_1*10);
+    ServoSetTargetAngle(&servo2, (int32_t)_servoDeflection.servo_deflection_2*10);
+    ServoSetTargetAngle(&servo3, (int32_t)_servoDeflection.servo_deflection_3*10);
+    ServoSetTargetAngle(&servo4, (int32_t)_servoDeflection.servo_deflection_4*10);
+    printf("Angles: %i,%i,%i,%i\r\n", (int32_t)_servoDeflection.servo_deflection_1*10, (int32_t)_servoDeflection.servo_deflection_2*10,
+          (int32_t)_servoDeflection.servo_deflection_3*10,(int32_t)_servoDeflection.servo_deflection_4*10);
+    delay_milliseconds(1);
 
     // TODO
     // Set servos to 0 deflection if angle to vertical is low
