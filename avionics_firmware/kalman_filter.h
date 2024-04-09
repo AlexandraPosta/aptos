@@ -9,6 +9,9 @@
 
 #include "drivers/LSM6DS3_driver.h"
 #include "orientation_utils.h"
+#include "mcu.h"
+
+#include <math.h>
 
 #pragma region Structs/Emun
 typedef struct LSM6DS3_data
@@ -56,9 +59,9 @@ typedef struct kalman_data{
     float gain_restriction_low;
 }kalman_data;
 
-void kalman_filterInit(orientation_data* data, ADXL375_data* data, kalman_data* kalman_data);
+void kalmanFilterInit(orientation_data* data, ADXL375_data* data, kalman_data* kalman_data);
 
-void kalman_filter(orientation_data* data, ADXL375_data* data);
+void kalmanFilter(orientation_data* data, ADXL375_data* data);
 
 float kalman1D(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement);
 
