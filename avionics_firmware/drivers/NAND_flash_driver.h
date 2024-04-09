@@ -985,7 +985,7 @@ static inline void hash(uint8_t *_input, uint8_t *_output) {
 
 /**
   @brief Check if power of 2
-  @return
+  @return true if power of 2
 */
 static inline bool is_power_of_two(int x) {
     return (x != 0) && ((x & (x - 1)) == 0);
@@ -1007,6 +1007,12 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
   hash(condition, hashedData);
   printf("HASHT = %i\r\n", t1 - get_time_us());
   t1 = get_time_us();
+
+  // Initialise variables
+  uint8_t _word[15];
+  uint8_t parities = 0;
+  uint8_t parity = 0;
+  int k = 0;
   for (int _set = 0; _set < 8; _set++) {
     uint8_t _word[15];
     for (int i = 0; i < 15; i ++) {
@@ -1014,7 +1020,8 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
     }
     
     // Initialize parity bits to 0
-    uint8_t parities = 0;
+    parities = 0;
+
     // Calculate parity bits
     for (int i = 0; i < 8; i++) {
       // Calculate bit position of this parity bit
