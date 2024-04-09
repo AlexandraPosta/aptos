@@ -28,6 +28,13 @@ typedef struct Euler {
     float yaw;
 } Euler;
 
+typedef struct Quaternion {
+    float w;
+    float x;
+    float y;
+    float z;
+} Quaternion;
+
 typedef struct orientation_data {
     Quaternion current_quaternion;
     Quaternion current_rate_quaternion;
@@ -35,6 +42,10 @@ typedef struct orientation_data {
     Euler current_rate_euler;
     Euler previous_euler;
 } orientation_data;
+
+typedef struct kalman_filter{
+    //not sure what should go in here yet.
+}kalman_filter;
 
 float kalman_filterInit(orientation_data* data, ADXL375_data* data);
 
