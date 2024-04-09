@@ -36,7 +36,13 @@ typedef struct orientation_data {
     Euler previous_euler;
 } orientation_data;
 
-void kalman_init((orientation_data* data, ADXL375_data* data));
-void kalman1D(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement);
+float kalman_filterInit(orientation_data* data, ADXL375_data* data);
+
+float kalman_filter(orientation_data* data, ADXL375_data* data);
+
+float kalman1D(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement);
+
+float kalmanAngleRestriction(float restriction_angle, float input_angle);
+float kalmanGainRestriction(float restriction_gain_high, float restriction_gain_low, float input_gain);
 
 #endif /* KALMAN_FILTER_H */
