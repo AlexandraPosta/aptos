@@ -232,9 +232,10 @@ int main(void) {
                 gpio_write(_buzzer, LOW);
                 
                 printf("FLIGHT STAGE = ASCENT\r\n");
-                // Log all data from the buffer
-                for (int i = 0; i < BUFFER_SIZE; i++) {
-                  log_frame(frame_buffer.frames[i]);
+
+                // Log data from the the last window
+                for (int i = 0; i < WINDOW_SIZE; i++) {
+                  log_frame(frame_buffer.window[i]);
                 }
               }
             }
