@@ -8,17 +8,21 @@
 #define KALMAN_FILTER_H
 
 #include "drivers/LSM6DS3_driver.h"
-#include "drivers/ADXL375_driver.h"
-#include <math.h>
+#include "orientation_utils.h"
 
-#define M_PI_F 3.14159265358979323846f
 #pragma region Structs/Emun
-typedef struct ADXL375_data
+typedef struct LSM6DS3_data
 {
-  int16_t x;
-  int16_t y;
-  int16_t z;
-} ADXL375_data;
+  int32_t x_rate;
+  int32_t y_rate;
+  int32_t z_rate;
+  int32_t x_offset;
+  int32_t y_offset;
+  int32_t z_offset;
+  int16_t x_accel;
+  int16_t y_accel;
+  int16_t z_accel;
+} LSM6DS3_data;
 
 #pragma endregion Structs/Emun
 
@@ -43,13 +47,18 @@ typedef struct orientation_data {
     Euler previous_euler;
 } orientation_data;
 
-typedef struct kalman_filter{
-    //not sure what should go in here yet.
-}kalman_filter;
+typedef struct kalman_data{
+    Euler state;
+    Euler gain;
+    Euler uncertainty;
+    float angle_restriction;
+    float gain_restriction_high; 
+    float gain_restriction_low;
+}kalman_data;
 
-float kalman_filterInit(orientation_data* data, ADXL375_data* data);
+void kalman_filterInit(orientation_data* data, ADXL375_data* data, kalman_data* kalman_data);
 
-float kalman_filter(orientation_data* data, ADXL375_data* data);
+void kalman_filter(orientation_data* data, ADXL375_data* data);
 
 float kalman1D(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement);
 

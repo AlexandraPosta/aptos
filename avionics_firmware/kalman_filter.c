@@ -17,6 +17,7 @@ Loop ->
 6. Log Kalman Values: Kalman Roll Angle, Kalman Pitch Angle, Kalman Roll Gain, Kalman Pitch Gain 
 -> Loop end.
 */
+#include "kalman_filter.h"
 
 float kalman_filter_init(orientation_data* gyro_data, LSM6DS3_data* accel_data, kalman_data* kalman_data){
     //Kalman Output Angle Restriction:
@@ -40,33 +41,45 @@ float kalman_filter_init(orientation_data* gyro_data, LSM6DS3_data* accel_data, 
 //Update Kalman Roll and Pitch Angles, Kalman Roll and Pitch Gains.
 float kalman_filter(orientation_data* gyro_data, LSM6DS3_data* accel_data, kalman_data* kalman_data){
     //Gyro Rotation Rates:
-    float roll_rate = gyro_data->current_rate_euler.roll;
-    float pitch_rate = gyro_data->current_rate_euler.pitch; 
+    //float roll_rate = gyro_data->current_rate_euler.roll;
+    //float pitch_rate = gyro_data->current_rate_euler.pitch; 
+    float roll_angle_gyro = gyro_data->current_euler.roll;
+    float pitch_angle_gyro = gyro_data->current_euler.pitch; 
     
     //Accelerometer Rotation Angles:
     //Add calibration values here:
+    //This value is obtained by tilting the IMU in each axis direction and it is the difference between the value and 1.00.
     float acc_x_calibration = 0; 
     float acc_y_calibration = 0; 
     float acc_z_calibration = 0; 
     float acc_x = (accel_data->x)/(4096-acc_x_calibration);
     float acc_y = (accel_data->y)/(4096-acc_y_calibration);
     float acc_z = (accel_data->z)/(4096-acc_z_calibration);
-    float roll_angle = atan(acc_y/sqrt((acc_x*acc_x)+(acc_z*acc_z)))*(1/(3.142/180));
-    float pitch_angle = atan(acc_x/sqrt((acc_y*acc_y)+(acc_z*acc_z)))*(1/(3.142/180));
+    float roll_angle_accel = atan(acc_y/sqrt((acc_x*acc_x)+(acc_z*acc_z)))*(1/(3.142/180));
+    float pitch_angle_accel = atan(acc_x/sqrt((acc_y*acc_y)+(acc_z*acc_z)))*(1/(3.142/180));
+    printf_float(" Acc_x Value", acc_x);
+    printf_float(" Acc_y Value", acc_y);
+    printf_float(" Acc_z Value", acc_z);
+    printf_float(" Accelerometer Roll Angle", roll_angle_accel);
+    printf_float(" Accelerometer Roll Angle", pitch_angle_accel);
+    printf_float(" Gyro Roll Angle", roll_angle_gyro);
+    printf_float(" Gyro Pitch Angle", pitch_angle_gyro);
+    printf("\r\n");
+    //Gyro and Accel angles should be similar, with accel reacting to vibrations.
 
-    float kalman_1d_output[]{0,0,0};
+    float kalman_1d_output[] = {0,0,0};
 
     //Kalman Roll:
-    kalman1D(kalman_data->state.roll, kalman_data->uncertainty.roll, roll_rate, roll_angle, float* kalman_1d_output[]);
-    kalman_data->state.roll = kalmanAngleRestriction(kalman_data->angle_restriction, kalman_1d_roll_output[0]);
+    kalman1D(kalman_data->state.roll, kalman_data->uncertainty.roll, roll_angle_gyro, roll_angle_accel, &kalman_1d_output);
+    kalman_data->state.roll = kalmanAngleRestriction(kalman_data->angle_restriction, kalman_1d_output[0]);
     kalman_data->uncertainty.roll = kalman_1d_roll_output[1];
     //kalman_data->kalman_gain.roll = kalmanGainRestriction(kalman_restriction_gain_high, kalman_restriction_gain_low, kalman_1d_roll_output[2]);
     kalman_data->gain.roll  = kalman_1d_roll_output[2];
 
 
     //Kalman Pitch:
-    kalman1D(kalman_data->state.pitch, kalman_data->uncertainty.pitch, pitch_rate, pitch_angle, float* kalman_1d_output[];)
-    kalman_data->state.pitch = kalmanAngleRestriction(kalman_data->angle_restriction, kalman_1d_pitch_output[0]);
+    kalman1D(kalman_data->state.pitch, kalman_data->uncertainty.pitch, pitch_angle_gyro, pitch_angle_accel, &kalman_1d_output);
+    kalman_data->state.pitch = kalmanAngleRestriction(kalman_data->angle_restriction, kalman_1d_output[0]);
     kalman_data->uncertainty.pitch = kalman_1d_pitch_output[1];
     //kalman_data->kalman_gain.pitch = kalmanGainRestriction(kalman_restriction_gain_high, kalman_restriction_gain_low, kalman_1d_pitch_output[2]);
     kalman_data->gain.pitch  = kalman_1d_pitch_output[2];
