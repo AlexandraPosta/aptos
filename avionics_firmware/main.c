@@ -20,7 +20,6 @@
 
 #define SERVOS_RUN      0 //enable or disable servos
 
-
 // Flags
 FlightStages flightStage = LAUNCHPAD;
 volatile uint32_t s_ticks;

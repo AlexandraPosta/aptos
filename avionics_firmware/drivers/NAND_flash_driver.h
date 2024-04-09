@@ -986,7 +986,7 @@ static inline void hash(uint8_t *_input, uint8_t *_output) {
 
 /**
   @brief Check if power of 2
-  @return
+  @return true if power of 2
 */
 static inline bool is_power_of_two(int x) {
     return (x != 0) && ((x & (x - 1)) == 0);
@@ -1005,31 +1005,36 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
     condition[i] = _input[i];
   }
   
-  hash(condition, hashedData);
+  hash(condition, hashedData); //1.8ms
 
+  // Initialise variables
+  uint8_t _word[15];
+  uint8_t parities = 0;
+  uint8_t parity = 0;
+  int k = 0;
+  int _powers_of_two[] = {2, 4, 8, 16, 32, 64, 128};
+
+  //11-12ms
   for (int _set = 0; _set < 8; _set++) {
-    uint8_t _word[15];
     for (int i = 0; i < 15; i ++) {
       _word[i] = hashedData[(_set * 15) + i];
     }
     
     // Initialize parity bits to 0
-    uint8_t parities = 0;
+    parities = 0;
+    
     // Calculate parity bits
     for (int i = 0; i < 8; i++) {
-      // Calculate bit position of this parity bit
-      int bit_pos = 1 << i;
-      
-      // Calculate parity for this bit position
-      uint8_t parity = 0;
-      int k = 0;
-      for (int j = 0; j < 128; j++) { // j from 0 - 128
-        if (j + 1 != 1 && is_power_of_two(j + 1) == 0) {
-          if (bit_pos & (j + 1)) {
-            parity ^= (_word[k / 8] >> (k % 8)) & 1;
-          }
-          k++;
+      int bit_pos = 1 << i; // Calculate bit position of this parity bit
+      parity = 0;           // Calculate parity for this bit position
+      k = 0;
+
+      // Get the power of two values from 2 till 128
+      for (int j = 0; j < sizeof(_powers_of_two)/sizeof(_powers_of_two[0]); j++) {
+        if (bit_pos & (_powers_of_two[j])) {
+          parity ^= (_word[k / 8] >> (k % 8)) & 1;
         }
+        k++;
       }
       parities |= parity << (i%8);
     }
