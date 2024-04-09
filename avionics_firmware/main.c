@@ -123,19 +123,19 @@ int main(void) {
   _GNSS_data.longitude = 0;
   _GNSS_data.altitude = 0;
   _GNSS_data.velocity = 0;
+  orientation_data _orientation;
 
   // Sensor initialisation
-  MS5611_init(SPI2);          // Barometer
-  ADXL375_init(SPI2);         // Accelerometer
-  Lsm6ds3Init(SPI2, &_LSM6DS3_data);
-  orientation_data _orientation;
-  orientation_init(&_orientation, &_LSM6DS3_data);  //initialise orientation
+  MS5611_init(SPI2);                                // Barometer
+  ADXL375_init(SPI2);                               // Accelerometer
+  Lsm6ds3Init(SPI2, &_LSM6DS3_data);                // IMU
+  orientation_init(&_orientation, &_LSM6DS3_data);  // Orientation
 
   // Buffer
   FrameArray frame;                         // initialise the frameArray that keeps updating
   uint8_t dataArray[128];                   // dummy array to store the frame data
   _memset(dataArray, 0, sizeof(dataArray)); // set the necessary memory and set values to 0
-  frame = unzip(&dataArray);                    // convert from normal array into FrameArray
+  frame = unzip(&dataArray);                // convert from normal array into FrameArray
   dataBuffer frame_buffer;                  // contains FrameArrays
   init_buffer(&frame_buffer);               // initialise the buffer
 
@@ -148,24 +148,15 @@ int main(void) {
     servos[2] = ServoInit(UART1, 103);
     servos[3] = ServoInit(UART1, 104);
   }
-  //ServoStartup(&(servos));
   ServoDeflections _servoDeflections;
   _servoDeflections.servo_deflection_1 = 0;
   _servoDeflections.servo_deflection_2 = 0;
   _servoDeflections.servo_deflection_3 = 0;
   _servoDeflections.servo_deflection_4 = 0;
 
-  // Additional variables
-  int _data[WINDOW_SIZE];
-  int previous_value = 999999999;
-  int current_value = 999999999;
-  int apogee_incr = 3;
-
   // Controller
   LQR_controller _LQR_controller;
   LQR_init(&_LQR_controller);
-
-  
 
   // Initialisation complete, set LED2 to green
   gpio_write(RGB2_R, LOW);
@@ -184,20 +175,29 @@ int main(void) {
   //ServoTest();
   //run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
   flightStage = LAUNCHPAD;
-  
-  printf("============= ENTER MAIN PROCEDURE ============\r\n");
-  gpio_write(RGB1_G, HIGH); //green LED for ready to launch
-  uint32_t newTime = get_time_us();
-  uint32_t oldTime = get_time_us();
+
+  // Additional variables
+  int _data[WINDOW_SIZE];
+  int previous_pressure = 999999999;
+  int current_pressure = 999999999;
+  float current_velocity = 0;
+  int apogee_incr = 3;
+  uint32_t newTime, oldTime;
   uint32_t dt = 0;
   uint8_t buzz_count = 0;
+  
+  printf("============= ENTER MAIN PROCEDURE ============\r\n");
+  gpio_write(RGB1_G, HIGH); // Green LED for ready to launch
+  newTime = get_time_us();
+  oldTime = get_time_us();
+  
   for (;;) {
     switch (flightStage) {
         case LAUNCHPAD:
-          newTime = get_time_us();  //get current time
+          newTime = get_time_us();  // Get current time
           if (newTime - oldTime > 1000000/PADREADFREQ){
             dt = newTime - oldTime;
-            oldTime = newTime;  //old time = new time
+            oldTime = newTime;
             
             buzz_count ++;
             if (buzz_count == 0){
@@ -214,15 +214,16 @@ int main(void) {
             // Update buffer and window
             update_buffer(&frame, &frame_buffer);
             if (frame_buffer.count > WINDOW_SIZE*2) {
-              // Get the window barometer median
+              // Get the window barometer readings
               for (int i = 0; i < WINDOW_SIZE; i++) {
                 _data[i] = frame_buffer.window[i].barometer.pressure;
               }
-              current_value = get_median(_data, WINDOW_SIZE); // get pressure median
+              current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
+              current_velocity = get_vertical_velocity(_data, WINDOW_SIZE, dt);
 
               // Check for launch given pressure decrease
-              printf("Diff: %i\r\n", frame_buffer.ground_ref - current_value);
-              if ((frame_buffer.ground_ref - current_value) > LAUNCH_THRESHOLD) {
+              printf("Diff: %i\r\n", frame_buffer.ground_ref - current_pressure);
+              if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD) {
                 flightStage = ASCENT;
                 //set LED 1 to orange for ascent triggered.
                 gpio_write(RGB1_G, HIGH);
@@ -261,14 +262,15 @@ int main(void) {
             for (int i = 0; i < WINDOW_SIZE; i++) {
               _data[i] = frame_buffer.window[i].barometer.pressure;
             }
-            current_value = get_median(_data, WINDOW_SIZE); // get pressure median
+            current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
+            current_velocity = get_vertical_velocity(_data, WINDOW_SIZE, dt);
 
             // Check for apogee given pressure increase
-            if (current_value - previous_value > APOGEE_THRESHOLD){
+            if (current_pressure - previous_pressure > APOGEE_THRESHOLD){
               flightStage = APOGEE;
               printf("FLIGHT STAGE = APOGEE\r\n");
-            }else if (previous_value > current_value){  //storing the minimum, (median), pressure value during ascent
-              previous_value = current_value;
+            }else if (previous_pressure > current_pressure){  //storing the minimum, (median), pressure value during ascent
+              previous_pressure = current_pressure;
             }
           }
           break;
