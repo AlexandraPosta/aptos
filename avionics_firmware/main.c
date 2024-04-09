@@ -197,12 +197,13 @@ int main(void) {
           newTime = get_time_us();  //get current time
           if (newTime - oldTime > 1000000/PADREADFREQ){
             dt = newTime - oldTime;
+            printf("DT: %i\r\n", dt);
             oldTime = newTime;  //old time = new time
             
             buzz_count ++;
             if (buzz_count == 0){
               gpio_write(_buzzer, HIGH);
-            }else if(buzz_count == 10){
+            }else if(buzz_count == 20){
               gpio_write(_buzzer, LOW);
             }
 
@@ -252,8 +253,10 @@ int main(void) {
                             _GNSS_data, _orientation, _servoDeflections); 
 
             // Log data
+            uint32_t data_log_time = get_time_us();
             log_frame(frame);
-
+            printf("LT = %i\r\n", data_log_time - get_time_us());
+            
             // Update buffer and window  
             update_buffer(&frame, &frame_buffer);
 
@@ -289,6 +292,8 @@ int main(void) {
             // Update buffer and window  
             update_buffer(&frame, &frame_buffer);
 
+            //TODO: lock canards stright.
+
             // Run for a few cycles to record apogee when switch to descent
             if (apogee_incr == 0){
               flightStage = DESCENT;
@@ -316,6 +321,8 @@ int main(void) {
             // Update buffer and window  
             update_buffer(&frame, &frame_buffer);
             
+            //TODO: lock canards stright.
+
             // Get window median readings
             int _data[WINDOW_SIZE];
             for (int i = 0; i < WINDOW_SIZE; i++) {
@@ -331,6 +338,8 @@ int main(void) {
           break;
 
       case LANDING:
+        //TODO: lock canards stright.
+
         // Beep continuously
         STM32_beep_buzzer(200, 200, 10);
         break;
