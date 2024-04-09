@@ -1030,7 +1030,7 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
       k = 0;
 
       // Get the power of two values from 2 till 128
-      for (int j = 0; j < sizeof(_powers_of_two)/sizeof(_powers_of_two[0]); j++) {
+      for (int j = 0; j < sizeof(_powers_of_two); j++) {
         if (bit_pos & (_powers_of_two[j])) {
           parity ^= (_word[k / 8] >> (k % 8)) & 1;
         }
