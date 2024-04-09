@@ -1012,7 +1012,6 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
   uint8_t parities = 0;
   uint8_t parity = 0;
   int k = 0;
-  int _powers_of_two[] = {2, 4, 8, 16, 32, 64, 128};
 
   //11-12ms
   for (int _set = 0; _set < 8; _set++) {
@@ -1022,19 +1021,22 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
     
     // Initialize parity bits to 0
     parities = 0;
-    
+
     // Calculate parity bits
     for (int i = 0; i < 8; i++) {
-      int bit_pos = 1 << i; // Calculate bit position of this parity bit
-      parity = 0;           // Calculate parity for this bit position
+      // Calculate bit position of this parity bit
+      int bit_pos = 1 << i;
+      
+      // Calculate parity for this bit position
+      parity = 0;
       k = 0;
-
-      // Get the power of two values from 2 till 128
-      for (int j = 0; j < sizeof(_powers_of_two); j++) {
-        if (bit_pos & (_powers_of_two[j])) {
-          parity ^= (_word[k / 8] >> (k % 8)) & 1;
+      for (int j = 2; j <= 128; j++) { // j from 0 - 128
+        if (is_power_of_two(j) == 0) {
+          if (bit_pos & j) {
+            parity ^= (_word[k / 8] >> (k % 8)) & 1;
+          }
+          k++;
         }
-        k++;
       }
       parities |= parity << (i%8);
     }
