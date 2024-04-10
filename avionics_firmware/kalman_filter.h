@@ -42,6 +42,12 @@ typedef struct Quaternion {
     float z;
 } Quaternion;
 
+typedef struct Axis {
+    float x;
+    float y;
+    float z;
+} Axis;
+
 typedef struct orientation_data {
     Quaternion current_quaternion;
     Quaternion current_rate_quaternion;
@@ -52,18 +58,19 @@ typedef struct orientation_data {
 
 typedef struct kalman_data{
     Euler state;
-    Euler gain;
     Euler uncertainty;
+    Euler gain;
     float angle_restriction;
     float gain_restriction_high; 
     float gain_restriction_low;
-}kalman_data;
+    Axis accel_calibration;
+} kalman_data;
 
-void kalmanFilterInit(orientation_data* data, ADXL375_data* data, kalman_data* kalman_data);
+void kalmanFilterInit(kalman_data* kalman_data);
 
-void kalmanFilter(orientation_data* data, ADXL375_data* data);
+void kalmanFilterUpdate(orientation_data* data, LSM6DS3_data* data, kalman_data* kalman_data);
 
-float kalman1D(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement);
+float kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement, float* kalman_output);
 
 float kalmanAngleRestriction(float restriction_angle, float input_angle);
 float kalmanGainRestriction(float restriction_gain_high, float restriction_gain_low, float input_gain);
