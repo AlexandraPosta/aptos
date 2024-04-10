@@ -578,7 +578,7 @@ static inline void print_csv_header() {
   @param frameFormat
 */
 static inline void print_frame_csv(FrameArray frameFormat) {
-  printf("%i,", frameFormat.date.year) 
+  printf("%i,", frameFormat.date.year);
   printf("%i:%i:%i:%i,", frameFormat.date.minute,
                          frameFormat.date.second,
                          frameFormat.date.millisecond,
