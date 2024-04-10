@@ -528,6 +528,7 @@ static inline void print_frame_array(FrameArray frameFormat) {
   printf("BME280: \tPressure: %i,\tTemperature: %i,\tHumidity: %i\r\n", frameFormat.bme.pressure, 
                                                                       frameFormat.bme.temperature, 
                                                                       frameFormat.bme.humidity); 
+  
   printf("Euler: ");                                                               
   printf_float("\tRoll", frameFormat.euler.roll, true);
   printf_float("\tPitch", frameFormat.euler.pitch, true);
@@ -1108,7 +1109,7 @@ static inline void print_capacity_info() {
 }
 
 /**
-  @brief Log a frame array 
+  @brief Writes a single FrameArray to the next available space on the flash
 */
 static inline int log_frame(FrameArray _input) {
   // FrameArray to array of bytes; 8388607 is 2Gb end
@@ -1144,20 +1145,7 @@ static inline FrameArray recall_frame(uint32_t frameAddr) {
   uint8_t encoded[128];
   _memset(encoded, 0, 128);
   FrameArray _output;
-  
-  // Attempts re-reading the data from the flash 10 times before it gives up
-  //_output.successFlag = DATA_CORRUPTED;
-  //int timeout = 10;  
-  //while(_output.successFlag == DATA_CORRUPTED && timeout > 0){
-  //  timeout--;
   read_frame(frameAddr, encoded, 128);
-  //  if ((encoded[0] & encoded[1]) != 0xFF) {
-  //    _output = decodeParity(encoded);  // CHANGE TO ALLOW FOR INT RETURN OF STATUS
-  //  } else {
-  //    _output = unzip(encoded);  // Don't bother decoding parity bits
-  //    _output.successFlag = EMPTY;
-  //  }
-  //}
   _output = unzip(encoded);  // Don't bother decoding parity bits
   return _output;
 }
@@ -1175,8 +1163,7 @@ static inline void read_all_raw(){
   bool skipBlank = true;
 
   for(uint32_t i = 0; i < lastFrameToRead; i++) {
-
-    //check if frame has no data written to it
+    // check if frame has no data written to it
     read_frame(i, &_check, 1);
     if (_check == 0xFF && skipBlank){
       printf("End of data in block.\r\n");
@@ -1207,18 +1194,17 @@ static inline void read_all_frame(){
   bool skipBlank = true;
 
   for(uint32_t i = 0; i < lastFrameToRead; i++) {
-
-    //check if frame has no data written to it
+    // check if frame has no data written to it
     read_frame(i, &_check, 1);
     if (_check == 0xFF && skipBlank){
       printf("End of data in block.\r\n");
-      i += 2048; //move to the next block
+      i += 2048; // move to the next block
       i = i - (i%2048) - 1;
 
-    }else{
-      //rpint out as a frame
+    } else {
+      // rpint out as a frame
       _output = recall_frame(i);
-       printf("FN:%i\r\n", i);
+        printf("FN:%i\r\n", i);
       print_frame_array(_output);
     } 
   }
@@ -1241,12 +1227,11 @@ static inline void read_all_csv(){
   print_csv_header();
 
   for(uint32_t i = 0; i < lastFrameToRead; i++) {
-
-    //check if frame has no data written to it
+    // check if frame has no data written to it
     read_frame(i, &_check, 1);
     if (_check == 0xFF && skipBlank){
       printf("End of data in block.\r\n");
-      i += 2048; //move to the next block
+      i += 2048; // move to the next block
       i = i - (i%2048) - 1;
 
     }else{
@@ -1264,11 +1249,8 @@ static inline void read_all_csv(){
 static inline void read_all(){
   FrameArray _output;
   _output.successFlag = NONE;
-
   uint32_t lastFrameToRead = get_next_available_frame_addr();
-
   uint8_t _check = 0;
-  
   int data_intact = 0;
   int data_fixed = 0;
   int data_error = 0;
@@ -1283,7 +1265,6 @@ static inline void read_all(){
       printf("End of data in block.\r\n");
       i += 2048; //move to the next block
       i = i - (i%2048) - 1;
-
     } else {
       // Read as a uint8_t array
       read_frame(i, &array, 128);
