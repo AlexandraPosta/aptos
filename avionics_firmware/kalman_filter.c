@@ -57,15 +57,19 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     //Gyro Rotation Rates:
     //float roll_rate_gyro = gyro_data->current_rate_euler.roll;
     //float pitch_rate_gyro = gyro_data->current_rate_euler.pitch; 
-    float roll_angle_gyro = (gyro_data->current_euler.roll)*(1/(3.142/180));
-    float pitch_angle_gyro = (gyro_data->current_euler.pitch)*(1/(3.142/180)); 
+    //float roll_angle_gyro = (gyro_data->current_euler.roll)*(1/(3.142/180));
+    //float pitch_angle_gyro = (gyro_data->current_euler.pitch)*(1/(3.142/180)); 
+    float roll_angle_gyro = (gyro_data->current_euler.roll);
+    float pitch_angle_gyro = (gyro_data->current_euler.pitch);
     
     //Accelerometer Rotation Angles:
     float accel_x = (accel_data->x_accel)/1000.0f;
     float accel_y = (accel_data->y_accel)/1000.0f;
     float accel_z = (accel_data->z_accel)/1000.0f;
-    float roll_angle_accel = atan(accel_y/sqrt((accel_x*accel_x)+(accel_z*accel_z)))*(1/(3.142/180));
-    float pitch_angle_accel = atan(accel_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)))*(1/(3.142/180));
+    //float roll_angle_accel = atan(accel_y/sqrt((accel_x*accel_x)+(accel_z*accel_z)))*(1/(3.142/180));
+    //float pitch_angle_accel = atan(accel_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)))*(1/(3.142/180));
+    float roll_angle_accel = atan(accel_y/sqrt((accel_x*accel_x)+(accel_z*accel_z)));
+    float pitch_angle_accel = atan(accel_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)));
 
     uint32_t current_time = get_time_ms();
     printf(", %i", current_time);
@@ -77,14 +81,13 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     printf_float(",", pitch_angle_accel, true);
     printf_float(",", roll_angle_gyro, true);
     printf_float(",", pitch_angle_gyro, true);
-    //printf("\r\n");
     //Gyro and Accel angles should be similar, with accel reacting to vibrations.
 
     //Output from the Kalman1D function, this gets over written every time the function is called:
     float kalman_output[] = {0,0,0};
 
     //Kalman Roll:
-    kalmanFilter(kalman_data->state.roll, kalman_data->uncertainty.roll, roll_angle_gyro, roll_angle_accel, &kalman_output);
+    kalmanFilter(kalman_data->state.roll, kalman_data->uncertainty.roll, roll_angle_accel, roll_angle_gyro, &kalman_output);
     //kalman_data->state.roll = kalmanAngleRestriction(kalman_data->angle_restriction, kalman_output[0]);
     kalman_data->state.roll = kalman_output[0];
     kalman_data->uncertainty.roll = kalman_output[1];
@@ -92,7 +95,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     kalman_data->gain.roll  = kalman_output[2];
 
     //Kalman Pitch:
-    kalmanFilter(kalman_data->state.pitch, kalman_data->uncertainty.pitch, pitch_angle_gyro, pitch_angle_accel, &kalman_output);
+    kalmanFilter(kalman_data->state.pitch, kalman_data->uncertainty.pitch, pitch_angle_accel, pitch_angle_gyro,  &kalman_output);
     //kalman_data->state.pitch = kalmanAngleRestriction(kalman_data->angle_restriction, kalman_output[0]);
     kalman_data->state.roll = kalman_output[0];
     kalman_data->uncertainty.pitch = kalman_output[1];

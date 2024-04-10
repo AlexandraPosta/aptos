@@ -188,7 +188,7 @@ void ServoSetId(SmartServo* servo, uint8_t new_id){
 void ServoSetTargetAngle(SmartServo* servo, int32_t target_angle_mdeg){
     int32_t convert_angle_to_position = target_angle_mdeg;
     convert_angle_to_position = (convert_angle_to_position*4096)/360000 + 2048;
-    printf("Position: %i\r\n", convert_angle_to_position);
+    //printf("Position: %i\r\n", convert_angle_to_position);
     ServoSetTargetPosition(servo, convert_angle_to_position);
 }
 

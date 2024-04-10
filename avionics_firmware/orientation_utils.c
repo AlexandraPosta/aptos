@@ -143,9 +143,9 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     printf("\r\n");
     */
 
-    orientation->current_rate_euler.roll = 1e-6f * (orientation->current_rate_euler.roll - orientation->previous_euler.roll) / (float)dt;
-    orientation->current_rate_euler.pitch = 1e-6f * (orientation->current_rate_euler.pitch - orientation->previous_euler.pitch) / (float)dt;
-    orientation->current_rate_euler.yaw = 1e-6f * (orientation->current_rate_euler.yaw - orientation->previous_euler.yaw) / (float)dt;
+    orientation->current_rate_euler.roll = (orientation->current_euler.roll - orientation->previous_euler.roll) / ((float)dt* 1e-6f);
+    orientation->current_rate_euler.pitch = (orientation->current_euler.pitch - orientation->previous_euler.pitch) / ((float)dt* 1e-6f);
+    orientation->current_rate_euler.yaw = (orientation->current_euler.yaw - orientation->previous_euler.yaw) / ((float)dt * 1e-6f);
 
     // Calculate the derivative of the euler angles
     /*

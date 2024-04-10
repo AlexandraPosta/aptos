@@ -148,9 +148,9 @@ int main(void) {
   kalmanFilterInit(&_kalman_data);
 
   // Servo
+  SmartServo servos[4];
   if (SERVOS_RUN){
     ServoUartInit(UART1);
-    SmartServo servos[4];
     servos[0] = ServoInit(UART1, 1);
     servos[1] = ServoInit(UART1, 102);
     servos[2] = ServoInit(UART1, 103);
@@ -258,33 +258,29 @@ int main(void) {
             dt = newTime - oldTime;
             printf("DT: %i\r\n", dt);
             oldTime = newTime;  //old time = new time
-            uint32_t t1 = get_time_us();
+            
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data);
-            printf("ST = %i\r\n", t1 - get_time_us());
-            t1 = get_time_us();
+            LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections);
+            //ServoSetTargetAngle(&(servos[0]), _servoDeflections.servo_deflection_1);
+            //ServoSetTargetAngle(&(servos[1]), _servoDeflections.servo_deflection_2);
+            //ServoSetTargetAngle(&(servos[2]), _servoDeflections.servo_deflection_3);
+            //ServoSetTargetAngle(&(servos[3]), _servoDeflections.servo_deflection_4);
+
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
                             _GNSS_data, _orientation, _servoDeflections, _kalman_data); 
-            printf("FT = %i\r\n", t1 - get_time_us());
+            
             // Log data
-            t1 = get_time_us();
             log_frame(frame);
-            printf("LT = %i\r\n", t1 - get_time_us());
             
             // Update buffer and window  
-            t1 = get_time_us();
             update_buffer(&frame, &frame_buffer);
-            printf("BT = %i\r\n", t1 - get_time_us());
             // Get window median readings
             for (int i = 0; i < WINDOW_SIZE; i++) {
               _data[i] = frame_buffer.window[i].barometer.pressure;
             }
-            t1 = get_time_us();
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
-            printf("PMT = %i\r\n", t1 - get_time_us());
-            t1 = get_time_us();
-            current_velocity = get_vertical_velocity(_data, WINDOW_SIZE, dt);
-            printf("VT = %i\r\n", t1 - get_time_us());
+            current_velocity = get_vertical_velocity(_data, 3, dt);
             // Check for apogee given pressure increase
             if (current_pressure - previous_pressure > APOGEE_THRESHOLD){
               flightStage = APOGEE;
