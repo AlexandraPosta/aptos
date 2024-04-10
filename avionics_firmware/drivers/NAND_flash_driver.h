@@ -574,9 +574,11 @@ static inline void print_csv_header() {
   @param frameFormat
 */
 static inline void print_frame_csv(FrameArray frameFormat) {
-  printf("%i,%i:%i:%i:%i:%i,", frameFormat.date.year, frameFormat.date.minute, 
-                                      frameFormat.date.second, frameFormat.date.millisecond, 
-                                      frameFormat.date.microsecond );
+  printf("%i,", frameFormat.date.year) 
+  printf("%i:%i:%i:%i,", frameFormat.date.minute,
+                         frameFormat.date.second,
+                         frameFormat.date.millisecond,
+                         frameFormat.date.microsecond);
 
   printf("%i,", frameFormat.changeFlag);
 
@@ -1021,7 +1023,7 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
     for (int i = 0; i < 15; i ++) {
       _word[i] = hashedData[(_set * 15) + i];
     }
-    
+
     // Initialize parity bits to 0
     parities = 0;
 
@@ -1057,6 +1059,7 @@ static inline void encode_parity(FrameArray dataFrame, uint8_t *bytes) {
   zip(dataFrame, bytes);
   //printf("ZipT = %i\r\n", t1 - get_time_us());
 
+<<<<<<< Updated upstream
   /*uint8_t parities[8];
   t1 = get_time_us();
   calculate_parity_bits(bytes, parities);
@@ -1065,6 +1068,13 @@ static inline void encode_parity(FrameArray dataFrame, uint8_t *bytes) {
     bytes[118+i] = parities[i];
   }*/
   //t1 = get_time_us();
+=======
+  //uint8_t parities[8];
+  //calculate_parity_bits(bytes, parities);
+  //for (int i = 0; i < 8; i++) {
+  //  bytes[118+i] = parities[i];
+  //}
+>>>>>>> Stashed changes
   uint16_t CRC_Check = calculate_CRC(bytes, 126);
   //printf("CRCT = %i\r\n", t1 - get_time_us());
   bytes[126] = (uint8_t)((CRC_Check >> 8) & 0xFF);
