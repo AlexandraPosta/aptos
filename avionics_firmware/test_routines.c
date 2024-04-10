@@ -225,7 +225,7 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     orientation_update((newTimer - oldTimer), &_orientation, &_LSM6DS3_data);
 
     // Perform LQR control
-    LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflection);
+    LQR_perform_control(_LSM6DS3_data, &_LQR_controller, _orientation, &_servoDeflection);
     /*
     printf_float(" Servo 1", _servoDeflection.servo_deflection_1, false, false);
     printf_float(" Servo 2", _servoDeflection.servo_deflection_2, false, false);

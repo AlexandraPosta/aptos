@@ -354,7 +354,7 @@ void LQR_update_gain(LQR_controller* lqr, int velocity) {
     }
 }
 
-void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, ServoDeflections* servo_defs) {
+void LQR_perform_control(LSM6DS3_data LSM6DS3_data, LQR_controller* lqr, orientation_data orientation, ServoDeflections* servo_defs) {
     // Extract Euler angles and Rates
     float _orientation[STATE_SPACE_DIM] = {orientation.current_euler.roll, 
                                            orientation.current_euler.pitch, 
@@ -363,6 +363,17 @@ void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, Serv
                                            orientation.current_rate_euler.pitch, 
                                            orientation.current_rate_euler.yaw};
     
+    float orientation_1 = orientation.current_euler.roll;
+    float orientation_2 = orientation.current_euler.pitch;
+    float orientation_3 = orientation.current_euler.yaw;
+    float orientation_4 = orientation.current_rate_euler.roll;
+    float orientation_5 = orientation.current_rate_euler.pitch;
+    float orientation_6 = orientation.current_rate_euler.yaw;
+
+    float orientation_7 = ((LSM6DS3_data.x_rate*3.1415)/180.0f)/1000.0f;
+    float orientation_8 = ((LSM6DS3_data.y_rate*3.1415)/180.0f)/1000.0f;
+    float orientation_9 = ((LSM6DS3_data.z_rate*3.1415)/180.0f)/1000.0f;
+
     // Perform control
     for (int col = 0; col < STATE_SPACE_DIM; col++) {
         servo_defs->servo_deflection_1 += lqr->current_gain[_ravel_index_2d(1, col)] * _orientation[col] * 100 * 180 /M_PI_F; //store in degrees * 100

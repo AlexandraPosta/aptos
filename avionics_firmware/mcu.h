@@ -64,7 +64,7 @@ static void printf_float(char* name, float value, bool value_flag) {
   int tmpInt2 = trunc(tmpFrac * 1000);   // Turn into integer (123).
 
   // Print as parts, note that you need 0-padding for fractional bit.
-  // value_flag prints in format "123.456" or "value = 123.456"
+  // value_flag prints in format "123.456" or "value: 123.456"
   if (value_flag)
     sprintf(str, "%s%d.%03d", tmpSign, tmpInt1, tmpInt2);
   else

@@ -8,6 +8,7 @@
 #define LQR_CONTROLLER_DRIVER_H
 
 #include "orientation_utils.h"
+#include "drivers/LSM6DS3_driver.h"
 
 #define STATE_SPACE_DIM     6   // Euler 3xangle 3xrates
 #define NUM_GAINS           50
@@ -44,6 +45,6 @@ void LQR_update_gain(LQR_controller* lqr, int velocity);
   @param orientation Current orientation data
   @param servo_defs Servo deflections angles
 */
-void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, ServoDeflections* servo_defs);
+void LQR_perform_control(LSM6DS3_data LSM6DS3_data, LQR_controller* lqr, orientation_data orientation, ServoDeflections* servo_defs);
 
 #endif /* LQR_CONTROLLER_DRIVER_H */
