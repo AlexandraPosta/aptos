@@ -229,7 +229,7 @@ int main(void) {
                 _data[i] = frame_buffer.window[i].barometer.pressure;
               }
               current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
-              current_velocity = get_vertical_velocity(_data, WINDOW_SIZE, dt);
+              current_velocity = get_vertical_velocity(_data, 3, dt);
 
               // Check for launch given pressure decrease
               //printf("Diff: %i\r\n", frame_buffer.ground_ref - current_pressure);

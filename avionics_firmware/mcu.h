@@ -53,7 +53,13 @@ typedef struct ServoDeflections
 
 extern volatile uint32_t s_ticks;
 
-static void printf_float(char* name, float value, bool value_flag) {
+/**
+  @brief Print a float
+  @param name Name of the float
+  @param value Value of the float
+  @param print_text Print text or not
+*/
+static void printf_float(char* name, float value, bool print_text) {
   char str[30];
 
   char *tmpSign = (value < 0) ? "-" : "";
@@ -64,11 +70,11 @@ static void printf_float(char* name, float value, bool value_flag) {
   int tmpInt2 = trunc(tmpFrac * 1000);   // Turn into integer (123).
 
   // Print as parts, note that you need 0-padding for fractional bit.
-  // value_flag prints in format "123.456" or "value = 123.456"
-  if (value_flag)
-    sprintf(str, "%s%d.%03d", tmpSign, tmpInt1, tmpInt2);
-  else
+  // Prints in format "123.456" or "value: 123.456"
+  if (print_text)
     sprintf(str, "%s: %s%d.%03d", name, tmpSign, tmpInt1, tmpInt2);
+  else
+    sprintf(str, "%s%d.%03d", tmpSign, tmpInt1, tmpInt2);
 
   // Print the string
   printf("%s", str);

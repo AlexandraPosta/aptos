@@ -71,7 +71,7 @@ float get_vertical_velocity(int barometer_data[], int size, int dt) {
   // Iterate over the barometer readings
   for (int i = 1; i < size; ++i) {
       // Convert current reading to altitude
-      current_altitude = 44330.0 * (1.0 - pow(barometer_data[i] / sea_level_pressure, 0.1903));
+      current_altitude = 44330.7692 * (1.0 - pow(barometer_data[i] / sea_level_pressure, 0.1902));
       // Calculate the change in altitude
       altitude_change_sum += current_altitude - previous_altitude;
       previous_altitude = current_altitude;
