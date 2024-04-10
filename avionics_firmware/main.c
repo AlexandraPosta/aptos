@@ -12,13 +12,14 @@
 #include "data_buffer.h"
 #include "LQR_controller.h"
 #include "orientation_utils.h"
+#include "kalman_filter.h"
 
 #define PADREADFREQ 100 //frequency to read data during ascent
 #define ASCENTREADFREQ 1000 //frequency to read data during ascent
 #define APOGEEREADFREQ 1000 //frequency to read data during ascent
 #define DESCENTREADFREQ 100 //frequency to read data during descent
 
-#define SERVOS_RUN      1 //enable or disable servos
+#define SERVOS_RUN      0 //enable or disable servos
 
 // Flags
 FlightStages flightStage = LAUNCHPAD;
@@ -35,7 +36,8 @@ void get_frame_array(FrameArray* _frameArray,
                     BME280_data _BME280_data,
                     GNSS_Data _GNSS_data,
                     orientation_data _orientation,
-                    ServoDeflections _servoDeflections) {
+                    ServoDeflections _servoDeflections,
+                    kalman_data _kalman_data) {
   // Add time stamp
   uint32_t time = get_time_us();
   _frameArray->date.minute = (time/(1000000*60))%60; //minuts
@@ -53,6 +55,7 @@ void get_frame_array(FrameArray* _frameArray,
   _frameArray->euler = _orientation.current_euler;
   _frameArray->euler_rate = _orientation.current_rate_euler;
   _frameArray->servos = _servoDeflections;
+  _frameArray->euler_kalman = _kalman_data.state;
 }
 
 void update_sensors(M5611_data* _M5611_data, 
@@ -60,12 +63,14 @@ void update_sensors(M5611_data* _M5611_data,
                     LSM6DS3_data* _LSM6DS3_data, 
                     orientation_data* 
                     _orientation, 
-                    uint32_t dt) {
+                    uint32_t dt,
+                    kalman_data* _kalman_data) {
   MS5611_get_data(_M5611_data);
   ADXL375_get_data(_ADXL375_data);
   Lsm6ds3GyroRead(SPI2, _LSM6DS3_data);
   Lsm6ds3AccRead(SPI2, _LSM6DS3_data);
   orientation_update(dt , _orientation, _LSM6DS3_data);
+  kalmanFilterUpdate(_orientation, _LSM6DS3_data, _kalman_data);
 }
 #pragma endregion Updates
 
@@ -138,6 +143,10 @@ int main(void) {
   dataBuffer frame_buffer;                  // contains FrameArrays
   init_buffer(&frame_buffer);               // initialise the buffer
 
+  //kalman filter
+  kalman_data _kalman_data;
+  kalmanFilterInit(&_kalman_data);
+
   // Servo
   if (SERVOS_RUN){
     ServoUartInit(UART1);
@@ -170,10 +179,10 @@ int main(void) {
   //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
-  NAND_flash_read();
+  //NAND_flash_read();
   //DFU_programming_test();
   //ServoTest();
-  run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
+  //run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
   flightStage = LAUNCHPAD;
 
   // Additional variables
@@ -197,7 +206,7 @@ int main(void) {
           newTime = get_time_us();  // Get current time
           if (newTime - oldTime > 1000000/PADREADFREQ){
             dt = newTime - oldTime;
-            printf("DT: %i\r\n", dt);
+            //printf("DT: %i\r\n", dt);
             oldTime = newTime;  //old time = new time
             
             buzz_count ++;
@@ -208,9 +217,9 @@ int main(void) {
             }
 
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data);
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
-                            _GNSS_data, _orientation, _servoDeflections); 
+                            _GNSS_data, _orientation, _servoDeflections, _kalman_data); 
 
             // Update buffer and window
             update_buffer(&frame, &frame_buffer);
@@ -223,7 +232,7 @@ int main(void) {
               current_velocity = get_vertical_velocity(_data, WINDOW_SIZE, dt);
 
               // Check for launch given pressure decrease
-              printf("Diff: %i\r\n", frame_buffer.ground_ref - current_pressure);
+              //printf("Diff: %i\r\n", frame_buffer.ground_ref - current_pressure);
               if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD) {
                 flightStage = ASCENT;
                 //set LED 1 to orange for ascent triggered.
@@ -251,11 +260,11 @@ int main(void) {
             oldTime = newTime;  //old time = new time
             uint32_t t1 = get_time_us();
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data);
             printf("ST = %i\r\n", t1 - get_time_us());
             t1 = get_time_us();
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
-                            _GNSS_data, _orientation, _servoDeflections); 
+                            _GNSS_data, _orientation, _servoDeflections, _kalman_data); 
             printf("FT = %i\r\n", t1 - get_time_us());
             // Log data
             t1 = get_time_us();
@@ -292,9 +301,9 @@ int main(void) {
             dt = newTime - oldTime;
             oldTime = newTime;  // Old time = new time
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data);
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
-                            _GNSS_data, _orientation, _servoDeflections); 
+                            _GNSS_data, _orientation, _servoDeflections, _kalman_data); 
 
             // Log data
             log_frame(frame);
@@ -321,9 +330,9 @@ int main(void) {
             oldTime = newTime;  //old time = new time
             
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data);
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
-                            _GNSS_data, _orientation, _servoDeflections); 
+                            _GNSS_data, _orientation, _servoDeflections, _kalman_data); 
 
             // Log data
             log_frame(frame);

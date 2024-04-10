@@ -28,9 +28,9 @@ void kalmanFilterInit (kalman_data* kalman_data){
 
     //Add calibration values here:
     //This value is obtained by tilting the IMU in each axis direction and it is the difference between the value and 1.00.
-    kalman_data->acc_calibration.x = 0; 
-    kalman_data->acc_calibration.y = 0; 
-    kalman_data->acc_calibration.z = 0; 
+    kalman_data->accel_calibration.x = 0; 
+    kalman_data->accel_calibration.y = 0; 
+    kalman_data->accel_calibration.z = 0; 
  
     //THE BELOW VALUES SHOULD ONLY BE SET ON INIT OF FUNCTION
     //kalman1D Function Outputs Initialisation:
@@ -62,16 +62,16 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     float accel_x = (accel_data->x_accel)/(4096 - kalman_data->accel_calibration.x);
     float accel_y = (accel_data->y_accel)/(4096 - kalman_data->accel_calibration.y);
     float accel_z = (accel_data->z_accel)/(4096 - kalman_data->accel_calibration.z);
-    float roll_angle_accel = atan(acc_y/sqrt((accel_x*accel_x)+(accel_z*accel_z)))*(1/(3.142/180));
-    float pitch_angle_accel = atan(acc_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)))*(1/(3.142/180));
-    printf_float(" Acc_x Value", accel_x, true);
-    printf_float(" Acc_y Value", accel_y, true);
-    printf_float(" Acc_z Value", accel_z, true);
-    printf_float(" Accelerometer Roll Angle", roll_angle_accel, true);
-    printf_float(" Accelerometer Roll Angle", pitch_angle_accel, true);
-    printf_float(" Gyro Roll Angle", roll_angle_gyro, true);
-    printf_float(" Gyro Pitch Angle", pitch_angle_gyro, true);
-    printf("\r\n");
+    float roll_angle_accel = atan(accel_y/sqrt((accel_x*accel_x)+(accel_z*accel_z)))*(1/(3.142/180));
+    float pitch_angle_accel = atan(accel_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)))*(1/(3.142/180));
+    printf_float(", Acc_x Value", accel_x, false);
+    printf_float(", Acc_y Value", accel_y, false);
+    printf_float(", Acc_z Value", accel_z, false);
+    printf_float(", Accelerometer Roll Angle", roll_angle_accel, false);
+    printf_float(", Accelerometer Roll Angle", pitch_angle_accel, false);
+    printf_float(", Gyro Roll Angle", roll_angle_gyro, false);
+    printf_float(", Gyro Pitch Angle", pitch_angle_gyro, false);
+    //printf("\r\n");
     //Gyro and Accel angles should be similar, with accel reacting to vibrations.
 
     //Output from the Kalman1D function, this gets over written every time the function is called:
@@ -93,20 +93,20 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
 
     //Print statements for debugging:
     //Kalman Roll:
-    printf_float(" Kalman Roll Angle", kalman_data->state.roll, true);
-    printf_float(" Kalman Roll Uncertainty", kalman_data->uncertainty.roll, true);
-    printf_float(" Kalman Roll Gain", kalman_data->gain.roll, true);
+    printf_float(", Kalman Roll Angle", kalman_data->state.roll, false);
+    printf_float(", Kalman Roll Uncertainty", kalman_data->uncertainty.roll, false);
+    printf_float(", Kalman Roll Gain", kalman_data->gain.roll, false);
     //Kalman Pitch:
-    printf_float(" Kalman Pitch Angle", kalman_data->state.pitch, true);
-    printf_float(" Kalman Pitch Uncertainty", kalman_data->uncertainty.pitch, true);
-    printf_float(" Kalman Pitch Gain", kalman_data->gain.pitch, true);
+    printf_float(", Kalman Pitch Angle", kalman_data->state.pitch, false);
+    printf_float(", Kalman Pitch Uncertainty", kalman_data->uncertainty.pitch, false);
+    printf_float(", Kalman Pitch Gain", kalman_data->gain.pitch, false);
     //New Line:
     printf("\r\n");
 
 };
 
 //Kalman Filter Function:
-float kalman1D(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement, float* kalman_output){
+float kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement, float* kalman_output){
     //kalman_state = angle calculated with the kalman filter
     //kalman_uncertainty = uncertainty of the state predicted by the kalman filter
     //kalman_input = rotation rate (gyro)
