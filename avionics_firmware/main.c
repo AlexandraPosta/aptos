@@ -70,7 +70,7 @@ void update_sensors(M5611_data* _M5611_data,
 #pragma endregion Updates
 
 void run_nand_flash_erase(){
-  uart_init(USART1, 115200);
+  uart_init(USART1, 256000);
   watchdog_pat();
   erase_all();
   while(1);
@@ -81,7 +81,7 @@ void run_nand_flash_erase(){
 */
 void NAND_flash_read()
 {
-  uart_init(USART1, 115200); //921600
+  uart_init(USART1, 256000); //921600
   printf("==================== Reading NAND FLASH ====================\r\n");
   read_all_csv();
   print_capacity_info();
@@ -93,7 +93,7 @@ void NAND_flash_read()
 int main(void) {
   // STM32 setup
   STM32_init();
-  uart_init(USART1, 115200); //921600
+  uart_init(USART1, 256000); //921600
   spi_init(SPI2);
   DFU_programming_check();
   printf("==================== PROGRAM START ==================\r\n");
@@ -169,7 +169,7 @@ int main(void) {
   //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
-  //NAND_flash_read();
+  NAND_flash_read();
   //DFU_programming_test();
   //ServoTest();
   //run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
@@ -246,28 +246,35 @@ int main(void) {
           newTime = get_time_us();  //get current time
           if (newTime - oldTime > 1000000/ASCENTREADFREQ){
             dt = newTime - oldTime;
+            printf("DT: %i\r\n", dt);
             oldTime = newTime;  //old time = new time
-
+            uint32_t t1 = get_time_us();
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
+            printf("ST = %i\r\n", t1 - get_time_us());
+            t1 = get_time_us();
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
                             _GNSS_data, _orientation, _servoDeflections); 
-
+            printf("FT = %i\r\n", t1 - get_time_us());
             // Log data
-            uint32_t data_log_time = get_time_us();
+            t1 = get_time_us();
             log_frame(frame);
-            printf("LT = %i\r\n", data_log_time - get_time_us());
+            printf("LT = %i\r\n", t1 - get_time_us());
             
             // Update buffer and window  
+            t1 = get_time_us();
             update_buffer(&frame, &frame_buffer);
-
+            printf("BT = %i\r\n", t1 - get_time_us());
             // Get window median readings
             for (int i = 0; i < WINDOW_SIZE; i++) {
               _data[i] = frame_buffer.window[i].barometer.pressure;
             }
+            t1 = get_time_us();
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
+            printf("PMT = %i\r\n", t1 - get_time_us());
+            t1 = get_time_us();
             current_velocity = get_vertical_velocity(_data, WINDOW_SIZE, dt);
-
+            printf("VT = %i\r\n", t1 - get_time_us());
             // Check for apogee given pressure increase
             if (current_pressure - previous_pressure > APOGEE_THRESHOLD){
               flightStage = APOGEE;
