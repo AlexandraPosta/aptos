@@ -62,30 +62,30 @@ uint32_t frameAddressPointer = 0;
 uint8_t globalPinMode = GPIO_MODE_OUTPUT;
 
 /**
-  @brief Get a byte from an array of bits
-  @param arr
-  @param pos
-  @return
+  @brief: This function returns only the specified bit from an array of bytes
+  @param arr: an array of bytes (uint8)
+  @param pos: which bit in the array of bytes to access (msb: 0 to lsb: 8*length(arr)-1)
+  @return: the value of the bit at position "pos" in the byte array "arr"
 */
 static inline bool get_bit_arr(uint8_t *arr, int pos) {
   return (bool)(arr[pos/8] & (1 << (7-(pos%8))));
 }
 
 /**
-  @brief Get a single bit at a specified position from a byte
-  @param byte
-  @param pos
-  @return
+  @brief This function returns the specific bit within a byte
+  @param byte: the input byte
+  @param pos: the position of the bit in question (msb: 0 to lsb: 7)
+  @return: The value of the "pos" bit in the byte
 */
 static inline bool get_bit(uint8_t byte, int pos) {
   return (bool)(byte & (1 << (7-(pos%8))));
 }
 
 /**
-  @brief FrameArray to Array
-  @param unzippedData
-  @param zippedData
-  @return
+  @brief Converts a FrameArray struct to an array of bytes
+  @param unzippedData: the frame array object to zip
+  @param zippedData: a pass by reference to the byte array where the output is stored
+  @return: None
 */
 static inline void zip(FrameArray unzippedData, uint8_t *zippedData) {
   int i = -1;
@@ -257,7 +257,11 @@ static inline void zip(FrameArray unzippedData, uint8_t *zippedData) {
   zippedData[127] = (uint8_t)(unzippedData.CRC_Check & 0xFF);
 }
 
-// Array to FrameArray
+/**
+  @brief Converts a byte array to a FrameArray struct
+  @param zippedData: a pass by reference to the byte array to be converted
+  @return: the FrameArray
+*/
 static inline FrameArray unzip(uint8_t *zippedData) {
   FrameArray unzippedData;
   int i = -1;
@@ -525,21 +529,21 @@ static inline void print_frame_array(FrameArray frameFormat) {
                                                                       frameFormat.bme.temperature, 
                                                                       frameFormat.bme.humidity); 
   printf("Euler: ");                                                               
-  printf_float("\tRoll", frameFormat.euler.roll, false);
-  printf_float("\tPitch", frameFormat.euler.pitch, false);
-  printf_float("\tYaw", frameFormat.euler.yaw, false);
+  printf_float("\tRoll", frameFormat.euler.roll, true);
+  printf_float("\tPitch", frameFormat.euler.pitch, true);
+  printf_float("\tYaw", frameFormat.euler.yaw, true);
   printf("\r\n");                                                                                                                            
 
   printf("Euler Rate: ");                                                               
-  printf_float("\tRoll", frameFormat.euler_rate.roll, false);
-  printf_float("\tPitch", frameFormat.euler_rate.pitch, false);
-  printf_float("\tYaw", frameFormat.euler_rate.yaw, false);
+  printf_float("\tRoll", frameFormat.euler_rate.roll, true);
+  printf_float("\tPitch", frameFormat.euler_rate.pitch, true);
+  printf_float("\tYaw", frameFormat.euler_rate.yaw, true);
   printf("\r\n");  
 
   printf("Euler Kalman: ");                                                               
-  printf_float("\tRoll", frameFormat.euler_kalman.roll, false);
-  printf_float("\tPitch", frameFormat.euler_kalman.pitch, false);
-  printf_float("\tYaw", frameFormat.euler_kalman.yaw, false);
+  printf_float("\tRoll", frameFormat.euler_kalman.roll, true);
+  printf_float("\tPitch", frameFormat.euler_kalman.pitch, true);
+  printf_float("\tYaw", frameFormat.euler_kalman.yaw, true);
   printf("\r\n");
 
   printf("Servo Deflection:\t1: %i,\t2: %i,\t3: %i,\t4: %i\r\n", frameFormat.servos.servo_deflection_1, 
@@ -600,25 +604,25 @@ static inline void print_frame_csv(FrameArray frameFormat) {
   
   printf("%i,%i,%i,", frameFormat.bme.pressure, frameFormat.bme.temperature, frameFormat.bme.humidity);
 
-  printf_float(NULL, frameFormat.euler.roll, true);
+  printf_float(NULL, frameFormat.euler.roll, false);
   printf(",");
-  printf_float(NULL, frameFormat.euler.pitch, true);
+  printf_float(NULL, frameFormat.euler.pitch, false);
   printf(",");
-  printf_float(NULL, frameFormat.euler.yaw, true);
-  printf(",");
-
-  printf_float(NULL, frameFormat.euler_rate.roll, true);
-  printf(",");
-  printf_float(NULL, frameFormat.euler_rate.pitch, true);
-  printf(",");
-  printf_float(NULL, frameFormat.euler_rate.yaw, true);
+  printf_float(NULL, frameFormat.euler.yaw, false);
   printf(",");
 
-  printf_float(NULL, frameFormat.euler_kalman.roll, true);
+  printf_float(NULL, frameFormat.euler_rate.roll, false);
   printf(",");
-  printf_float(NULL, frameFormat.euler_kalman.pitch, true);
+  printf_float(NULL, frameFormat.euler_rate.pitch, false);
   printf(",");
-  printf_float(NULL, frameFormat.euler_kalman.yaw, true);
+  printf_float(NULL, frameFormat.euler_rate.yaw, false);
+  printf(",");
+
+  printf_float(NULL, frameFormat.euler_kalman.roll, false);
+  printf(",");
+  printf_float(NULL, frameFormat.euler_kalman.pitch, false);
+  printf(",");
+  printf_float(NULL, frameFormat.euler_kalman.yaw, false);
   printf(",");
 
   printf("%i,%i,%i,%i,", frameFormat.servos.servo_deflection_1, 

@@ -64,13 +64,13 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     float accel_z = (accel_data->z_accel)/(4096 - kalman_data->accel_calibration.z);
     float roll_angle_accel = atan(accel_y/sqrt((accel_x*accel_x)+(accel_z*accel_z)))*(1/(3.142/180));
     float pitch_angle_accel = atan(accel_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)))*(1/(3.142/180));
-    printf_float(", Acc_x Value", accel_x, false);
-    printf_float(", Acc_y Value", accel_y, false);
-    printf_float(", Acc_z Value", accel_z, false);
-    printf_float(", Accelerometer Roll Angle", roll_angle_accel, false);
-    printf_float(", Accelerometer Roll Angle", pitch_angle_accel, false);
-    printf_float(", Gyro Roll Angle", roll_angle_gyro, false);
-    printf_float(", Gyro Pitch Angle", pitch_angle_gyro, false);
+    printf_float(", Acc_x Value", accel_x, true);
+    printf_float(", Acc_y Value", accel_y, true);
+    printf_float(", Acc_z Value", accel_z, true);
+    printf_float(", Accelerometer Roll Angle", roll_angle_accel, true);
+    printf_float(", Accelerometer Roll Angle", pitch_angle_accel, true);
+    printf_float(", Gyro Roll Angle", roll_angle_gyro, true);
+    printf_float(", Gyro Pitch Angle", pitch_angle_gyro, true);
     //printf("\r\n");
     //Gyro and Accel angles should be similar, with accel reacting to vibrations.
 
@@ -93,13 +93,13 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
 
     //Print statements for debugging:
     //Kalman Roll:
-    printf_float(", Kalman Roll Angle", kalman_data->state.roll, false);
-    printf_float(", Kalman Roll Uncertainty", kalman_data->uncertainty.roll, false);
-    printf_float(", Kalman Roll Gain", kalman_data->gain.roll, false);
+    printf_float(", Kalman Roll Angle", kalman_data->state.roll, true);
+    printf_float(", Kalman Roll Uncertainty", kalman_data->uncertainty.roll, true);
+    printf_float(", Kalman Roll Gain", kalman_data->gain.roll, true);
     //Kalman Pitch:
-    printf_float(", Kalman Pitch Angle", kalman_data->state.pitch, false);
-    printf_float(", Kalman Pitch Uncertainty", kalman_data->uncertainty.pitch, false);
-    printf_float(", Kalman Pitch Gain", kalman_data->gain.pitch, false);
+    printf_float(", Kalman Pitch Angle", kalman_data->state.pitch, true);
+    printf_float(", Kalman Pitch Uncertainty", kalman_data->uncertainty.pitch, true);
+    printf_float(", Kalman Pitch Gain", kalman_data->gain.pitch, true);
     //New Line:
     printf("\r\n");
 

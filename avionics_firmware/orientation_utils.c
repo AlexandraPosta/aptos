@@ -143,12 +143,19 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     printf("\r\n");
     */
 
+    orientation->current_rate_euler.roll = 1e-6f * (orientation->current_rate_euler.roll - orientation->previous_euler.roll) / (float)dt;
+    orientation->current_rate_euler.pitch = 1e-6f * (orientation->current_rate_euler.pitch - orientation->previous_euler.pitch) / (float)dt;
+    orientation->current_rate_euler.yaw = 1e-6f * (orientation->current_rate_euler.yaw - orientation->previous_euler.yaw) / (float)dt;
+
     // Calculate the derivative of the euler angles
+    /*
     if ((orientation->current_euler.roll < (M_PI_F - 0.6f)) && orientation->previous_euler.roll > (-M_PI_F + 0.6f)) {
         orientation->current_rate_euler.roll = 1e-6f * (orientation->current_rate_euler.roll + 2 * M_PI_F - orientation->previous_euler.roll) / (float)dt;
+        orientation->current_rate_euler.
     } else {
         orientation->current_rate_euler.roll = 1e-6f * (orientation->current_rate_euler.roll - orientation->previous_euler.roll) / (float)dt;
     }
+    */
 }
 
 bool OrientationAccelerationVector(LSM6DS3_data* _LSM6DS3_data, float vector[]){
