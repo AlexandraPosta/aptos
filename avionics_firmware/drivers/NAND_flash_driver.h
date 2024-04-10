@@ -662,7 +662,7 @@ static inline void set_pin_modes() {
 }
 
 /**
-  @brief Set the control pins on the STM32  
+  @brief Set the control pins based on the input byte (i.e. COMMAND_INPUT, DATA_INPUT)
 */
 static inline void set_control_pins(uint8_t controlRegister) {  // CE# CLE ALE WE# RE# WP#
   //gpio_write(CE, get_bit(controlRegister, 0));
@@ -674,7 +674,7 @@ static inline void set_control_pins(uint8_t controlRegister) {  // CE# CLE ALE W
 }
 
 /**
-  @brief Write to the data pins 
+  @brief Set the data pins to the desired input byte (can be data, control or address information)
 */
 static inline void set_data_pins(uint8_t Byte) {
   if (globalPinMode == GPIO_MODE_INPUT) {
@@ -698,17 +698,16 @@ static inline void set_data_pins(uint8_t Byte) {
   @param mode: composed of the control pins
 */
 static inline void send_byte_to_flash(uint8_t cmd, uint8_t mode) {
-  //delay_ms(DELAY); // pins were swicthed too quickly at 600MHZ
+  //delay_microseconds(DELAY); // pins were swicthed too quickly at 600MHZ
   set_control_pins(mode);
   set_data_pins(cmd);
-  //delay_ms(DELAY);
+  //delay_microseconds(DELAY);
   set_control_pins(mode | WE_HIGH); // lanch what is in the data bus in the memory
-  //delay_ms(DELAY);
+  //delay_microseconds(DELAY);
 }
 
 /**
-  @brief Receive bytes
-  @return 
+  @brief Read a single byte from the flash (assumes address to read from has been set before calling this function)
 */
 static inline uint8_t receive_byte_from_flash() {
   delay_microseconds(DELAY);
@@ -772,8 +771,8 @@ static inline uint8_t read_flash_status() {
 }
 
 /**
-  @brief Read the ID register from the nand flash
-  @return 
+  @brief Read the ID register from the nand flash (not unique to each nand flash?)
+  @return ID register of the nand flash
 */
 static inline uint64_t read_flash_ID() {
   uint64_t id = 0;
@@ -790,12 +789,12 @@ static inline uint64_t read_flash_ID() {
     id |= byte << (4-i);
     print_byte(byte);
   }
-
   return id;
 }
 
 /**
-  @brief Write Protection
+  @brief Enable the flash write protection to prevent writing on 
+  accident. More info in flash data sheet
 */
 static inline void write_protection() {
   wait_for_ready_flag();
@@ -803,7 +802,10 @@ static inline void write_protection() {
 }
 
 /**
-  @brief Code to read 1 frame from flash
+  @brief Code to read 1 frame (128 consecutive bytes) from flash
+  @frameAddr: The address of the frame to read from (0 to 8,388,608)
+  @readFrameBytes: A pass by reference array of 128 bytes to store the read data
+  @_length: How many bytes to read (typically 128 to get the full frame)
 */
 static inline void read_frame(uint32_t frameAddr, uint8_t *readFrameBytes, uint8_t _length) {
   wait_for_ready_flag();
@@ -818,7 +820,9 @@ static inline void read_frame(uint32_t frameAddr, uint8_t *readFrameBytes, uint8
 }
 
 /**
-  @brief Code to write 1 frame to the flash
+  @brief Code to write 1 frame (128 consecutive bytes) to the flash
+  @frameAddr: The address of the frame to write to (0 to 8,388,608)
+  @bytes: A pass by reference array of 128 bytes to write to the flash
 */
 static inline void write_frame(uint32_t frameAddr, uint8_t *bytes) {
   wait_for_ready_flag();
@@ -837,6 +841,7 @@ static inline void write_frame(uint32_t frameAddr, uint8_t *bytes) {
 
 /**
   @brief A blocking function which will erase a block on the flash
+  @blockAddr: 0 to 4095
 */
 static inline void erase_block(uint32_t blockAddr) {
   wait_for_ready_flag();
@@ -933,7 +938,8 @@ static inline uint32_t get_next_available_frame_addr() {
 }
 
 /**
-  @brief Initialise the NAND flash memory
+  @brief Initialisation function to set pin modes and get the 
+  next free frame on the flash (saving this in frameAddressPointer)
 */
 static inline void init_flash() {
   gpio_set_mode(data0, GPIO_MODE_OUTPUT);
@@ -1022,6 +1028,7 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
   uint8_t parities = 0;
   uint8_t parity = 0;
   int k = 0;
+
   for (int _set = 0; _set < 8; _set++) {
     uint8_t _word[15];
     for (int i = 0; i < 15; i ++) {
@@ -1063,22 +1070,11 @@ static inline void encode_parity(FrameArray dataFrame, uint8_t *bytes) {
   zip(dataFrame, bytes);
   //printf("ZipT = %i\r\n", t1 - get_time_us());
 
-<<<<<<< Updated upstream
-  /*uint8_t parities[8];
-  t1 = get_time_us();
-  calculate_parity_bits(bytes, parities);
-  printf("CpT = %i\r\n", t1 - get_time_us());
-  for (int i = 0; i < 8; i++) {
-    bytes[118+i] = parities[i];
-  }*/
-  //t1 = get_time_us();
-=======
   //uint8_t parities[8];
   //calculate_parity_bits(bytes, parities);
   //for (int i = 0; i < 8; i++) {
   //  bytes[118+i] = parities[i];
   //}
->>>>>>> Stashed changes
   uint16_t CRC_Check = calculate_CRC(bytes, 126);
   //printf("CRCT = %i\r\n", t1 - get_time_us());
   bytes[126] = (uint8_t)((CRC_Check >> 8) & 0xFF);
