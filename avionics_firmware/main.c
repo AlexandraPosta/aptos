@@ -210,7 +210,7 @@ int main(void) {
             // Get the sensor readings
             update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt);
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
-                            _GNSS_data, _orientation, _servoDeflections); 
+                            _GNSS_data, _orientation, _servoDeflections);
 
             // Update buffer and window
             update_buffer(&frame, &frame_buffer);
@@ -220,7 +220,7 @@ int main(void) {
                 _data[i] = frame_buffer.window[i].barometer.pressure;
               }
               current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
-              current_velocity = get_vertical_velocity(_data, WINDOW_SIZE, dt);
+              current_velocity = get_vertical_velocity(_data, 3, dt);
 
               // Check for launch given pressure decrease
               printf("Diff: %i\r\n", frame_buffer.ground_ref - current_pressure);
