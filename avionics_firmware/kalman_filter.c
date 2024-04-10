@@ -57,8 +57,8 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     //Gyro Rotation Rates:
     //float roll_rate_gyro = gyro_data->current_rate_euler.roll;
     //float pitch_rate_gyro = gyro_data->current_rate_euler.pitch; 
-    float roll_angle_gyro = gyro_data->current_euler.roll;
-    float pitch_angle_gyro = gyro_data->current_euler.pitch; 
+    float roll_angle_gyro = (gyro_data->current_euler.roll)*(1/(3.142/180));
+    float pitch_angle_gyro = (gyro_data->current_euler.pitch)*(1/(3.142/180)); 
     
     //Accelerometer Rotation Angles:
     float accel_x = (accel_data->x_accel)/1000.0f;
@@ -85,14 +85,16 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
 
     //Kalman Roll:
     kalmanFilter(kalman_data->state.roll, kalman_data->uncertainty.roll, roll_angle_gyro, roll_angle_accel, &kalman_output);
-    kalman_data->state.roll = kalmanAngleRestriction(kalman_data->angle_restriction, kalman_output[0]);
+    //kalman_data->state.roll = kalmanAngleRestriction(kalman_data->angle_restriction, kalman_output[0]);
+    kalman_data->state.roll = kalman_output[0];
     kalman_data->uncertainty.roll = kalman_output[1];
     //kalman_data->kalman_gain.roll = kalmanGainRestriction(kalman_restriction_gain_high, kalman_restriction_gain_low, kalman_1d_roll_output[2]);
     kalman_data->gain.roll  = kalman_output[2];
 
     //Kalman Pitch:
     kalmanFilter(kalman_data->state.pitch, kalman_data->uncertainty.pitch, pitch_angle_gyro, pitch_angle_accel, &kalman_output);
-    kalman_data->state.pitch = kalmanAngleRestriction(kalman_data->angle_restriction, kalman_output[0]);
+    //kalman_data->state.pitch = kalmanAngleRestriction(kalman_data->angle_restriction, kalman_output[0]);
+    kalman_data->state.roll = kalman_output[0];
     kalman_data->uncertainty.pitch = kalman_output[1];
     //kalman_data->kalman_gain.pitch = kalmanGainRestriction(kalman_restriction_gain_high, kalman_restriction_gain_low, kalman_1d_pitch_output[2]);
     kalman_data->gain.pitch  = kalman_output[2];
