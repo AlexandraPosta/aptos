@@ -18,7 +18,7 @@
 
 // Define Constants and Thresholds
 #define BUFFER_SIZE       50
-#define LAUNCH_THRESHOLD  50      // micro bar for detecting a decrease
+#define LAUNCH_THRESHOLD  5//50      // micro bar for detecting a decrease
 #define APOGEE_THRESHOLD  50      // micro bar for detecting apogee
 #define DESCENT_THRESHOLD 50      // micro bar for detecting an increase
 #define GROUND_THRESHOLD  30      // micro bar for detecting ground

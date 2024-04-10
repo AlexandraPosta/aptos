@@ -17,7 +17,7 @@
 #define EMPTY 4
 
 #define DELAY 1
-#define DELAY_PINMODE 50
+#define DELAY_PINMODE 5
 
 // Manipulate control pins for commands
 #define STANDBY           0b10001100 // CE# CLE ALE WE# RE# WP# X X
@@ -630,9 +630,9 @@ static inline void print_frame_csv(FrameArray frameFormat) {
   @brief Wait for the ready flag to be set 
 */
 static inline void wait_for_ready_flag() {
-  int count = 1000*100; // Try for 1 second before giving error
+  int count = 1000*10; // Try for 1 second before giving error
   while (gpio_read(RB) == LOW && count > 0) {
-    delay_nanoseconds(1);
+    delay_microseconds(1);
     count--;
   }
   if (count < 1) {
@@ -705,11 +705,11 @@ static inline void send_byte_to_flash(uint8_t cmd, uint8_t mode) {
   @return 
 */
 static inline uint8_t receive_byte_from_flash() {
-  delay_nanoseconds(DELAY);
+  delay_microseconds(DELAY);
   set_control_pins(DATA_OUTPUT);
-  delay_nanoseconds(DELAY);
+  delay_microseconds(DELAY);
   set_control_pins(DATA_OUTPUT & (~RE_HIGH));  // setting RE LOW
-  delay_nanoseconds(DELAY);
+  delay_microseconds(DELAY);
 
   if (globalPinMode != GPIO_MODE_INPUT) {
     globalPinMode = GPIO_MODE_INPUT;
@@ -818,11 +818,14 @@ static inline void write_frame(uint32_t frameAddr, uint8_t *bytes) {
   wait_for_ready_flag();
   send_byte_to_flash(0x80, COMMAND_INPUT);
   send_addr_to_flash(frameAddr, 0);  // Address Input
-  delay_nanoseconds(10); // Was 1 ms but I think that needs decreasing
+  delay_microseconds(1); // Was 1 ms but I think that needs decreasing
+  set_control_pins(DATA_INPUT);
   for (int byteAddr = 0; byteAddr < 128; byteAddr++) {
-    send_byte_to_flash(bytes[byteAddr], DATA_INPUT);
+    //send_byte_to_flash(bytes[byteAddr], DATA_INPUT);
+    gpio_write(WE, 0);
+    set_data_pins(bytes[byteAddr]);
+    gpio_write(WE, 1);
   }
-  
   send_byte_to_flash(0x10, COMMAND_INPUT);
 }
 
@@ -977,7 +980,6 @@ static inline uint16_t calculate_CRC(uint8_t* data, uint8_t length) {
 */
 static inline void hash(uint8_t *_input, uint8_t *_output) {
   _memset(_output, 0, 120);
-
   for (int i = 0; i < 8*120; i++) {
     int j = ((i%120)*8) + (i/120);
     _output[i/8] |= get_bit_arr(_input, j) << (7-(i%8));
@@ -1004,17 +1006,18 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
   for (int i = 0; i < 118; i++) {
     condition[i] = _input[i];
   }
-  
-  hash(condition, hashedData); //1.8ms
+  uint32_t t1 = get_time_us();
+  hash(condition, hashedData);
+  printf("HASHT = %i\r\n", t1 - get_time_us());
+  t1 = get_time_us();
 
   // Initialise variables
   uint8_t _word[15];
   uint8_t parities = 0;
   uint8_t parity = 0;
   int k = 0;
-
-  //11-12ms
   for (int _set = 0; _set < 8; _set++) {
+    uint8_t _word[15];
     for (int i = 0; i < 15; i ++) {
       _word[i] = hashedData[(_set * 15) + i];
     }
@@ -1028,11 +1031,11 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
       int bit_pos = 1 << i;
       
       // Calculate parity for this bit position
-      parity = 0;
-      k = 0;
-      for (int j = 2; j <= 128; j++) { // j from 0 - 128
-        if (is_power_of_two(j) == 0) {
-          if (bit_pos & j) {
+      uint8_t parity = 0;
+      int k = 0;
+      for (int j = 2; j < 127; j++) { // j from 1 - 128
+        if (!is_power_of_two(j + 1)) {
+          if (bit_pos & (j + 1)) {
             parity ^= (_word[k / 8] >> (k % 8)) & 1;
           }
           k++;
@@ -1042,6 +1045,7 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
     }
     _output[_set] = parities;
   }
+  printf("CPLT = %i\r\n", t1 - get_time_us());
 }
 
 /**
@@ -1049,14 +1053,20 @@ static inline void calculate_parity_bits(uint8_t *_input, uint8_t *_output) {
   @return bytes
 */
 static inline void encode_parity(FrameArray dataFrame, uint8_t *bytes) {
+  //uint32_t t1 = get_time_us();
   zip(dataFrame, bytes);
+  //printf("ZipT = %i\r\n", t1 - get_time_us());
 
-  uint8_t parities[8];
+  /*uint8_t parities[8];
+  t1 = get_time_us();
   calculate_parity_bits(bytes, parities);
+  printf("CpT = %i\r\n", t1 - get_time_us());
   for (int i = 0; i < 8; i++) {
     bytes[118+i] = parities[i];
-  }
+  }*/
+  //t1 = get_time_us();
   uint16_t CRC_Check = calculate_CRC(bytes, 126);
+  //printf("CRCT = %i\r\n", t1 - get_time_us());
   bytes[126] = (uint8_t)((CRC_Check >> 8) & 0xFF);
   bytes[127] = (uint8_t)(CRC_Check & 0xFF);
 }
@@ -1094,10 +1104,16 @@ static inline int log_frame(FrameArray _input) {
   // FrameArray to array of bytes; 8388607 is 2Gb end
   if (frameAddressPointer <= 8388607) {
     uint8_t encoded[128];
+    //uint32_t t1 = get_time_us();
     _memset(encoded, 0, 128);
+    //printf("MT = %i\r\n", t1 - get_time_us());
+    //t1 = get_time_us();
     encode_parity(_input, encoded);
+    //printf("ET = %i\r\n", t1 - get_time_us());
     //printFrame(encoded);
+    //t1 = get_time_us();
     write_frame(frameAddressPointer, encoded);
+    //printf("WT = %i\r\n", t1 - get_time_us());
     frameAddressPointer++;
   } else {
     printf("Overflow Error\r\n");  // ERROR

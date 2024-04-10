@@ -81,7 +81,7 @@ uint8_t MS5611_read_PROM()
         
         // Fill struct using ptr arithmatic
         *(prom_ptr + i) = result;
-        printf("%d\r\n", result);
+        //printf("%d\r\n", result);
     }
     return 0;
 }
