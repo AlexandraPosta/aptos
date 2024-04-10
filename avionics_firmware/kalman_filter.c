@@ -48,6 +48,8 @@ void kalmanFilterInit (kalman_data* kalman_data){
     kalman_data->state.yaw = 0;
     kalman_data->uncertainty.yaw = 0.5*0.5;
     kalman_data->gain.yaw = 0;
+
+    printCSVHeaderKalman();
 }
 
 //Update Kalman Roll and Pitch Angles, Kalman Roll and Pitch Gains.
@@ -64,6 +66,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     float accel_z = (accel_data->z_accel)/(4096 - kalman_data->accel_calibration.z);
     float roll_angle_accel = atan(accel_y/sqrt((accel_x*accel_x)+(accel_z*accel_z)))*(1/(3.142/180));
     float pitch_angle_accel = atan(accel_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)))*(1/(3.142/180));
+<<<<<<< Updated upstream
     printf_float(", Acc_x Value", accel_x, true);
     printf_float(", Acc_y Value", accel_y, true);
     printf_float(", Acc_z Value", accel_z, true);
@@ -71,6 +74,19 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     printf_float(", Accelerometer Roll Angle", pitch_angle_accel, true);
     printf_float(", Gyro Roll Angle", roll_angle_gyro, true);
     printf_float(", Gyro Pitch Angle", pitch_angle_gyro, true);
+=======
+
+    uint32_t current_time = get_time_ms();
+    printf(", %i", current_time);
+
+    printf_float(",", accel_x, true);
+    printf_float(",", accel_y, true);
+    printf_float(",", accel_z, true);
+    printf_float(",", roll_angle_accel, true);
+    printf_float(",", pitch_angle_accel, true);
+    printf_float(",", roll_angle_gyro, true);
+    printf_float(",", pitch_angle_gyro, true);
+>>>>>>> Stashed changes
     //printf("\r\n");
     //Gyro and Accel angles should be similar, with accel reacting to vibrations.
 
@@ -93,6 +109,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
 
     //Print statements for debugging:
     //Kalman Roll:
+<<<<<<< Updated upstream
     printf_float(", Kalman Roll Angle", kalman_data->state.roll, true);
     printf_float(", Kalman Roll Uncertainty", kalman_data->uncertainty.roll, true);
     printf_float(", Kalman Roll Gain", kalman_data->gain.roll, true);
@@ -100,6 +117,15 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     printf_float(", Kalman Pitch Angle", kalman_data->state.pitch, true);
     printf_float(", Kalman Pitch Uncertainty", kalman_data->uncertainty.pitch, true);
     printf_float(", Kalman Pitch Gain", kalman_data->gain.pitch, true);
+=======
+    printf_float(",", kalman_data->state.roll, true);
+    printf_float(",", kalman_data->uncertainty.roll, true);
+    printf_float(",", kalman_data->gain.roll, true);
+    //Kalman Pitch:
+    printf_float(",", kalman_data->state.pitch, true);
+    printf_float(",", kalman_data->uncertainty.pitch, true);
+    printf_float(",", kalman_data->gain.pitch, true);
+>>>>>>> Stashed changes
     //New Line:
     printf("\r\n");
 
@@ -156,4 +182,26 @@ float kalmanGainRestriction(float restriction_gain_high, float restriction_gain_
     else {
         return input_gain;
     }
+}
+
+static inline void printCSVHeaderKalman() {
+    printf(",Time");
+    printf(", Acc_x Value");
+    printf_float(", Acc_y Value");
+    printf_float(", Acc_z Value");
+    printf_float(", Accelerometer Roll Angle");
+    printf_float(", Accelerometer Roll Angle");
+    printf_float(", Gyro Roll Angle");
+    printf_float(", Gyro Pitch Angle");
+
+    //Kalman Roll:
+    printf_float(", Kalman Roll Angle");
+    printf_float(", Kalman Roll Uncertainty");
+    printf_float(", Kalman Roll Gain");
+    //Kalman Pitch:
+    printf_float(", Kalman Pitch Angle");
+    printf_float(", Kalman Pitch Uncertainty");
+    printf_float(", Kalman Pitch Gain");
+    //New Line:
+    printf("\r\n");
 }

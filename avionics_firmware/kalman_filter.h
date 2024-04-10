@@ -33,6 +33,8 @@ typedef struct kalman_data{
 
 void kalmanFilterInit(kalman_data* kalman_data);
 
+static inline void printCSVHeaderKalman();
+
 void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, kalman_data* kalman_data);
 
 float kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement, float* kalman_output);
