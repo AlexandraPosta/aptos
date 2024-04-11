@@ -78,7 +78,7 @@ static void printf_float(char* name, float value, bool print_text) {
 
   // Print the string
   printf("%s", str);
-  }
+}
 
 #pragma region System Clk
 /**

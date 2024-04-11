@@ -1,11 +1,11 @@
 /*
-    Leeds University Rocketry Organisation - LURA
-    Author Name: Oliver Martin
-    Created on: 13 March 2024
-    Description: Different data filter options for sensors
-    ------------------------------------------------------
-    Updates:
-    13/03/24 - Oliver Martin - Initial version
+  Leeds University Rocketry Organisation - LURA
+  Author Name: Oliver Martin
+  Created on: 13 March 2024
+  Description: Different data filter options for sensors
+  ------------------------------------------------------
+  Updates:
+  13/03/24 - Oliver Martin - Initial version
 */
 #ifndef FILTERS_H
 #define FILTERS_H

@@ -1,3 +1,10 @@
+/*
+	Leeds University Rocketry Organisation - LURA
+  Author Name: Alexnadra Posta
+  Created on: 09 March 2023
+  Description: NAND Flash driver
+*/
+
 #pragma once
 
 #ifndef NAND_DRIVER_H
@@ -6,16 +13,19 @@
 #include "mcu.h"
 #include "frame_array.h"
 
+// Defines which are used when returning the status of a write to flash
 #define NONE 0
 #define SUCCESS 1
 #define STORAGE_FULL_WARNING 2
 #define STORAGE_FULL_ERROR 3
 
+// Defines used in the status of frames which have been gone through error correction
 #define DATA_INTACT 1
 #define DATA_FIXED 2
 #define DATA_CORRUPTED 3
 #define EMPTY 4
 
+// Defines a global delay mostly for debugging
 #define DELAY 1
 #define DELAY_PINMODE 5
 
@@ -32,6 +42,7 @@
 #define WE_HIGH           0b00010000  // CE# CLE ALE WE# RE# WP# X X
 #define RE_HIGH           0b00001000
 
+// Structure used to break the address bits into block->page->column which have meanings defined by the flash chip
 typedef struct Address {
     uint16_t block;  // 12 bits
     uint8_t page;    // 6 bits
@@ -58,7 +69,11 @@ uint16_t CLE = PIN('C', 12);    // Command latch enable (When on, you can sent c
 uint16_t RE  = PIN('C', 11);    // Read Enable;
 uint16_t RB  = PIN('C', 10);    // Ready/Busy;
 
+// Stores the address of the next available frame (set of 128 bytes) (assumes all frames prior to this are full of valuable data)
+// This variable is set by the get_next_available_frame_addr() function
 uint32_t frameAddressPointer = 0;
+
+// Set all pins as gpio outputs by default
 uint8_t globalPinMode = GPIO_MODE_OUTPUT;
 
 /**
@@ -181,7 +196,6 @@ static inline void zip(FrameArray unzippedData, uint8_t *zippedData) {
   zippedData[i++] = (uint8_t)((unzippedData.bme.humidity >> 16) & 0xFF);
   zippedData[i++] = (uint8_t)((unzippedData.bme.humidity >> 8) & 0xFF);
   zippedData[i++] = (uint8_t) (unzippedData.bme.humidity & 0xFF);
-
 
   // Current euler - convert to int for storage
   int32_t roll = (int32_t)(unzippedData.euler.roll * 1000);
@@ -1112,7 +1126,7 @@ static inline void print_capacity_info() {
   @brief Writes a single FrameArray to the next available space on the flash
 */
 static inline int log_frame(FrameArray _input) {
-  // FrameArray to array of bytes; 8388607 is 2Gb end
+  // FrameArray to array of bytes; 8388607 is 8Gb end
   if (frameAddressPointer <= 8388607) {
     uint8_t encoded[128];
     //uint32_t t1 = get_time_us();
