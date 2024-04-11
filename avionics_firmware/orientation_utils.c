@@ -8,6 +8,7 @@
 #include "orientation_utils.h"
 
 void orientation_quaternion_to_euler(Quaternion* q, Euler* e) {
+    
     // XYZ order
     float qw2 = q->w * q->w;
     float qx2 = q->x * q->x;
@@ -25,6 +26,27 @@ void orientation_quaternion_to_euler(Quaternion* q, Euler* e) {
     e->roll = (float)atan2(-dcm32, dcm33);
     e->pitch = (float)asin(dcm31);
     e->yaw = (float)atan2(-dcm21, dcm11);
+    
+    /*
+    //new Quaternion to euler equations from https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles 
+
+    //roll (X)
+    float sinr_cosp = 2.0f * (q->w * q->x + q->y * q->z);
+    float cosr_cosp = 1.0f - 2.0f * (q->x * q->x + q->y * q->y);
+    e->roll = atan2f(sinr_cosp, cosr_cosp);
+
+    // pitch (y-axis rotation)
+    float t2 = 2.0f * (q->w * q->y - q->z * q->x);
+    if (t2 > 1.0f) t2 = 1.0f;
+    if (t2 < -1.0f) t2 = -1.0f;
+    e->pitch = asinf(t2);
+
+    // yaw (z-axis rotation)
+    float siny_cosp = 2.0f * (q->w * q->z + q->x * q->y);
+    float cosy_cosp = 1.0f - 2.0f * (q->y * q->y + q->z * q->z);
+    e->yaw = atan2f(siny_cosp, cosy_cosp);
+    */
+
 }
 
 void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data) {
@@ -90,6 +112,17 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     float wx = (float)_LSM6DS3_data->x_rate*M_PI_F / 180 /1000.0; //convert from milli degrees to radians
     float wy = (float)_LSM6DS3_data->y_rate*M_PI_F / 180 /1000.0;
     float wz = (float)_LSM6DS3_data->z_rate*M_PI_F / 180 /1000.0;
+
+    orientation->previous_euler = orientation->current_euler;
+    
+    orientation->current_rate_euler.roll = wx;
+    orientation->current_rate_euler.pitch = wy;
+    orientation->current_rate_euler.yaw = wz;
+
+    orientation->current_euler.roll += wx * (float)dt * 1e-6f;
+    orientation->current_euler.pitch += wy * (float)dt * 1e-6f;
+    orientation->current_euler.yaw += wz * (float)dt * 1e-6f;
+    /*
     float qw = orientation->current_quaternion.w;
     float qx = orientation->current_quaternion.x;
     float qy = orientation->current_quaternion.y;
@@ -135,18 +168,18 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     // Convert quaternion to euler angles
     orientation->previous_euler = orientation->current_euler;
     orientation_quaternion_to_euler(&orientation->current_quaternion, &orientation->current_euler);
-
+    */
     /*
     printf_float(" Roll", orientation->current_euler.roll, false);
     printf_float(" Pitch", orientation->current_euler.pitch, false);
     printf_float(" Yaw", orientation->current_euler.yaw, false);
     printf("\r\n");
     */
-
+    /*
     orientation->current_rate_euler.roll = (orientation->current_euler.roll - orientation->previous_euler.roll) / ((float)dt* 1e-6f);
     orientation->current_rate_euler.pitch = (orientation->current_euler.pitch - orientation->previous_euler.pitch) / ((float)dt* 1e-6f);
     orientation->current_rate_euler.yaw = (orientation->current_euler.yaw - orientation->previous_euler.yaw) / ((float)dt * 1e-6f);
-
+    */
     // Calculate the derivative of the euler angles
     /*
     if ((orientation->current_euler.roll < (M_PI_F - 0.6f)) && orientation->previous_euler.roll > (-M_PI_F + 0.6f)) {
@@ -156,6 +189,7 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
         orientation->current_rate_euler.roll = 1e-6f * (orientation->current_rate_euler.roll - orientation->previous_euler.roll) / (float)dt;
     }
     */
+   
 }
 
 bool OrientationAccelerationVector(LSM6DS3_data* _LSM6DS3_data, float vector[]){

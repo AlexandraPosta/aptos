@@ -70,12 +70,12 @@ void update_sensors(M5611_data* _M5611_data,
   Lsm6ds3GyroRead(SPI2, _LSM6DS3_data);
   Lsm6ds3AccRead(SPI2, _LSM6DS3_data);
   orientation_update(dt , _orientation, _LSM6DS3_data);
-  kalmanFilterUpdate(_orientation, _LSM6DS3_data, _kalman_data);
+  //kalmanFilterUpdate(_orientation, _LSM6DS3_data, _kalman_data);
 }
 #pragma endregion Updates
 
 void run_nand_flash_erase(){
-  uart_init(USART1, 256000);
+  uart_init(USART1, 921600);
   watchdog_pat();
   erase_all();
   while(1);
@@ -86,7 +86,7 @@ void run_nand_flash_erase(){
 */
 void NAND_flash_read()
 {
-  uart_init(USART1, 256000); //921600
+  uart_init(USART1, 921600); //921600
   printf("==================== Reading NAND FLASH ====================\r\n");
   read_all_csv();
   print_capacity_info();
@@ -98,7 +98,7 @@ void NAND_flash_read()
 int main(void) {
   // STM32 setup
   STM32_init();
-  uart_init(USART1, 256000); //921600
+  uart_init(USART1, 921600); //921600
   spi_init(SPI2);
   DFU_programming_check();
   printf("==================== PROGRAM START ==================\r\n");
@@ -179,7 +179,7 @@ int main(void) {
   //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
-  //NAND_flash_read();
+  NAND_flash_read();
   //DFU_programming_test();
   //ServoTest();
   //run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
@@ -282,7 +282,7 @@ int main(void) {
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
             current_velocity = get_vertical_velocity(_data, 3, dt);
             // Check for apogee given pressure increase
-            if (current_pressure - previous_pressure > APOGEE_THRESHOLD){
+            if (current_pressure - previous_pressure > APOGEE_THRESHOLD && false){
               flightStage = APOGEE;
               printf("FLIGHT STAGE = APOGEE\r\n");
             }else if (previous_pressure > current_pressure){  //storing the minimum, (median), pressure value during ascent
