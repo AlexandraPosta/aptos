@@ -60,6 +60,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
 
     float roll_angle_gyro = (gyro_data->current_euler.roll)*(1/(3.142/180));
     float pitch_angle_gyro = -(gyro_data->current_euler.pitch)*(1/(3.142/180)); 
+    float yaw_angle_gyro = (gyro_data->current_euler.pitch)*(1/(4.142/180));
     
     //Accelerometer Rotation Angles:
     float accel_x = (accel_data->x_accel)/1000.0f;
@@ -67,22 +68,29 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     float accel_z = (accel_data->z_accel)/1000.0f;
     float roll_angle_accel = atan(accel_y/sqrt((accel_x*accel_x)+(accel_z*accel_z)))*(1/(3.142/180));
     float pitch_angle_accel = atan(accel_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)))*(1/(3.142/180));
+    float yaw_angle_accel = atan((sqrt((accel_x*accel_x)+(accel_y*accel_y)))/accel_z)*(1/(3.142/180));
 
     uint32_t current_time = get_time_ms();
     printf(", %i", current_time);
 
+    //Acceleration in each axis:
     printf_float(",", accel_x, true);
     printf_float(",", accel_y, true);
     printf_float(",", accel_z, true);
+    //Calculated Accelerometer angles:
     printf_float(",", roll_angle_accel, true);
     printf_float(",", pitch_angle_accel, true);
+    printf_float(",", yaw_angle_accel, true);
+    //Gyroscope angles:
     printf_float(",", roll_angle_gyro, true);
     printf_float(",", pitch_angle_gyro, true);
+    printf_float(",", yaw_angle_gyro, true);
+
 
     //printf("\r\n");
     //Gyro and Accel angles should be similar, with accel reacting to vibrations.
 
-    //Output from the Kalman1D function, this gets over written every time the function is called:
+    //Output from the kalmanFilter function, this gets over written every time the function is called:
     float kalman_output[] = {0,0,0};
 
     //Kalman Roll:
@@ -101,6 +109,14 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     //kalman_data->kalman_gain.pitch = kalmanGainRestriction(kalman_restriction_gain_high, kalman_restriction_gain_low, kalman_1d_pitch_output[2]);
     kalman_data->gain.pitch  = kalman_output[2];
 
+    //Kalman Yaw:
+    kalmanFilter(kalman_data->state.yaw, kalman_data->uncertainty.yaw, yaw_angle_gyro, yaw_angle_accel, &kalman_output);
+    //kalman_data->state.yaw = kalmanAngleRestriction(kalman_data->angle_restriction, kalman_output[0]);
+    kalman_data->state.yaw = kalman_output[0];
+    kalman_data->uncertainty.yaw = kalman_output[1];
+    //kalman_data->kalman_gain.yaw = kalmanGainRestriction(kalman_restriction_gain_high, kalman_restriction_gain_low, kalman_1d_pitch_output[2]);
+    kalman_data->gain.yaw  = kalman_output[2];
+
     //Print statements for debugging:
     //Kalman Roll:
     printf_float(",", kalman_data->state.roll, true);
@@ -110,6 +126,10 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, k
     printf_float(",", kalman_data->state.pitch, true);
     printf_float(",", kalman_data->uncertainty.pitch, true);
     printf_float(",", kalman_data->gain.pitch, true);
+    //Kalman Yaw:
+    printf_float(",", kalman_data->state.yaw, true);
+    printf_float(",", kalman_data->uncertainty.yaw, true);
+    printf_float(",", kalman_data->gain.yaw, true);
     //New Line:
     printf("\r\n");
 
@@ -168,6 +188,7 @@ float kalmanGainRestriction(float restriction_gain_high, float restriction_gain_
     }
 }
 
+//Print Headers for .csv file:
 static inline void printCSVHeaderKalman() {
     printf(",Time");
     printf(", Accelerometer X Value");
@@ -175,10 +196,13 @@ static inline void printCSVHeaderKalman() {
     printf(", Accelerometer Z Value");
     printf(", Accelerometer Roll Angle");
     printf(", Accelerometer Picth Angle");
+    printf(", Accelerometer Yaw Angle");
     printf(", Gyro Roll Angle");
     printf(", Gyro Pitch Angle");
+    printf(", Gyro Yaw Angle");
     printf(", Gyro Roll Rate");
     printf(", Gyro Pitch Rate");
+    printf(", Gyro Yaw Angle");
 
     //Kalman Roll:
     printf(", Kalman Roll Angle");
@@ -188,6 +212,10 @@ static inline void printCSVHeaderKalman() {
     printf(", Kalman Pitch Angle");
     printf(", Kalman Pitch Uncertainty");
     printf(", Kalman Pitch Gain");
+    //Kalman Yaw:
+    printf(", Kalman Yaw Angle");
+    printf(", Kalman Yaw Uncertainty");
+    printf(", Kalman Yaw Gain");
     //New Line:
     printf("\r\n");
 }
