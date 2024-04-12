@@ -364,6 +364,11 @@ void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, Serv
                                            orientation.current_rate_euler.yaw};
     
     // Perform control
+    servo_defs->servo_deflection_1 = 0;
+    servo_defs->servo_deflection_2 = 0;
+    servo_defs->servo_deflection_3 = 0;
+    servo_defs->servo_deflection_4 = 0;
+
     for (int col = 0; col < STATE_SPACE_DIM; col++) {
         servo_defs->servo_deflection_1 += lqr->current_gain[_ravel_index_2d(1, col)] * _orientation[col] * 100 * 180 /M_PI_F; //store in degrees * 100
     }
