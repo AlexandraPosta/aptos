@@ -229,11 +229,11 @@ int main(void) {
                 _data[i] = frame_buffer.window[i].barometer.pressure;
               }
               current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
-              current_velocity = get_vertical_velocity(frame_buffer.window[1].barometer.pressure,
-                                                      frame_buffer.window[0].barometer.pressure, 2, dt);
+              current_velocity = get_vertical_velocity(_data, frame_buffer.window[1].barometer.pressure,
+                                                      frame_buffer.window[0].barometer.pressure, WINDOW_SIZE, dt);
 
               // Check for launch given pressure decrease
-              //printf("Diff: %i\r\n", frame_buffer.ground_ref - current_pressure);
+              printf("Diff: %i\r\n", frame_buffer.ground_ref - current_pressure);
               if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD) {
                 flightStage = ASCENT;
                 //set LED 1 to orange for ascent triggered.
@@ -245,7 +245,7 @@ int main(void) {
                 printf("FLIGHT STAGE = ASCENT\r\n");
 
                 // Log data from the the last window
-                for (int i = 0; i < WINDOW_SIZE; i++) {
+                for (int i = 0; i < 10; i++) {
                   log_frame(frame_buffer.window[i]);
                 }
               }
@@ -282,7 +282,10 @@ int main(void) {
             }
 
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
-            current_velocity = get_vertical_velocity(frame_buffer.window[1].barometer.pressure, frame_buffer.window[0].barometer.pressure, 2, dt);
+            current_velocity = get_vertical_velocity(_data, frame_buffer.window[1].barometer.pressure, 
+                                                            frame_buffer.window[0].barometer.pressure, 
+                                                            WINDOW_SIZE, 
+                                                            dt);
 
 
             printf_float("Velocity", current_velocity, true);
@@ -351,19 +354,25 @@ int main(void) {
             update_buffer(&frame, &frame_buffer);
             
             //TODO: lock canards stright.
-            current_velocity = get_vertical_velocity(frame_buffer.window[1].barometer.pressure, frame_buffer.window[0].barometer.pressure, 2, dt);
+
+            // Get window barometer readings
+            LSM6DS3_data _data_imu[WINDOW_SIZE];
+            for (int i = 0; i < WINDOW_SIZE; i++) {
+              _data_imu[i] = frame_buffer.window[i].imu;
+              _data[i] = frame_buffer.window[i].barometer.pressure;
+            }
+
+            current_velocity = get_vertical_velocity(_data, 
+                                                    frame_buffer.window[1].barometer.pressure, 
+                                                    frame_buffer.window[0].barometer.pressure, 
+                                                    WINDOW_SIZE, 
+                                                    dt);
 
             printf_float("Velocity", current_velocity, true);
             printf("\r\n");
 
-            // Get window barometer readings
-            LSM6DS3_data _data[WINDOW_SIZE];
-            for (int i = 0; i < WINDOW_SIZE; i++) {
-              _data[i] = frame_buffer.window[i].imu;
-            }
-
             // Check for landing
-            if (Lsmds3GyroStandardDev(_data, WINDOW_SIZE, 500)) {
+            if (Lsmds3GyroStandardDev(_data_imu, WINDOW_SIZE, 500)) {
               flightStage = LANDING;
               printf("FLIGHT STAGE = LANDING\r\n");
               //set LED 1 to red for ascent triggered.
