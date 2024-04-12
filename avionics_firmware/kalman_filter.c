@@ -145,9 +145,9 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     kalman_data->velocity_measurement.accel = vertical_velocity_accel;  //Vertical Velocity measured in m/s
 
     //Calculate Altitude:
-    float pressure = (barometer_data->pressure);    //Pressure in hPa(/this is the same as milliBar)
+    float pressure = (barometer_data->pressure)/100;    //Pressure in hPa(/this is the same as milliBar)
     kalman_data->altitude = ((44330*(1 - pow(pressure/1013.25, 1/5.255))/1000) - kalman_data->altitude_init);  //Altitude in m
-    kalman_data->altitude_change = kalman_data->altitude_change + kalman_data->altitude - kalman_data->altitude_previous;
+    kalman_data->altitude_change = kalman_data->altitude - kalman_data->altitude_previous;
     kalman_data->altitude_previous = kalman_data->altitude;
     // Calculate the total time covered by the readings (microseconds):
     float total_time = dt * 1e-6; 
