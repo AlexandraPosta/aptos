@@ -43,9 +43,9 @@ function stopWorker() {
  * Main function that updates all charts on the dashboard. Checks if the
  * flight data is composed of arrays and if not, converts it to an array.
  * This is a requirements for Plotly.extendTraces() to work.
- * @param   {Flight}           flight      Contains flight information
- * @param   {dict} flight_data Contains points of data for each flight
- * @return  {void}             None
+ * @param   {Flight}  flight        Contains flight information
+ * @param   {dict}    flight_data   Contains points of data for each flight
+ * @return  {void}                  None
  */
 function updateSequence(flight, flight_data) {
   Object.entries(flight_data).forEach(([key, value]) => {
@@ -55,12 +55,11 @@ function updateSequence(flight, flight_data) {
         });
     }
   });
-
   updateLaunch(flight);
   updateAlt(flight_data.timestamp, flight_data.altitude);
   updateVelocity(flight_data.timestamp, flight_data.acceleration_x, flight_data.acceleration_z);
-  updateControl(flight_data.longitude, flight_data.latitude, flight_data.altitude);
-  updateMap(flight_data.longitude, flight_data.latitude, flight_data.altitude);
+  updateControl(altitude, flight_data.euler_pitch, flight_data.euler_yaw);
+  updateMap(flight_data.gps_longitude, flight_data.gps_latitude, flight_data.gps_altitude);
   updateStats(flight_data);
   updateFlightStages(flight_data.flight_stage);
 }
@@ -144,20 +143,20 @@ function updateVelocity(timestamp, velocity, acceleration) {
  * the flight of a perfectly vertical ascend with the actual data of the
  * flight. Takes advantage of Plotly.extendTraces() to update the chart
  * in real time.
- * @param  {list} longitude   List of longitudes in degrees
- * @param  {list} latitude    List of latitudes in degrees
- * @param  {list} altitude    List of altitudes in meters
- * @return {void}             None
+ * @param  {list} altitude      List of altitudes in meters
+ * @param  {list} euler_pitch   List of euler pitch angles
+ * @param  {list} euler_yaw     List of euler yaw angles
+ * @return {void}               None
  */
-function updateControl(longitude, latitude, altitude) {
+function updateControl(altitude, euler_pitch, euler_yaw) {
   var update_0 = { // ideal
-    x: [Array(longitude.length).fill(longitude[0])],
-    y: [Array(latitude.length).fill(latitude[0])],
+    x: [Array(euler_pitch.length).fill(euler_pitch[0])],
+    y: [Array(euler_yaw.length).fill(euler_yaw[0])],
     z: [altitude]
   };
 
   var update_1 = { // real
-    x:  [longitude],
+    x:  [euler_pitch],
     y:  [latitude],
     z:  [altitude]
   };
@@ -186,12 +185,12 @@ function updateMap(longitude, latitude, altitude) {
  */
 function updateStats(flight_data) {
   end = flight_data.timestamp.length - 1;
-  document.getElementById('pressure').innerHTML  = flight_data.pressure[end];
-  document.getElementById('temperature').innerHTML  = flight_data.temperature[end];
-  document.getElementById('humidity').innerHTML  = flight_data.humidity[end];
+  document.getElementById('pressure').innerHTML  = flight_data.ms5611_pressure[end];
+  document.getElementById('temperature').innerHTML  = flight_data.ms5611_temperature[end];
+  document.getElementById('humidity').innerHTML  = flight_data.bme_humidity[end];
   document.getElementById('sattelites').innerHTML  = flight_data.sattelites[end];
   document.getElementById('velocity').innerHTML  = 0; // TODO
-  document.getElementById('acceleration').innerHTML  = flight_data.acceleration_z[end];
+  document.getElementById('acceleration').innerHTML  = flight_data.imu_acceleration_z[end];
   document.getElementById('flight-stage').innerHTML  = flight_data.flight_stage[end];
   document.getElementById('battery').innerHTML  = flight_data.battery[end];
   document.getElementById('nr-errors').innerHTML  = flight_data.errors[end];

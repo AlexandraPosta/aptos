@@ -89,5 +89,10 @@ bool is_stationary(int data[]) {
   for (int i = 0; i < WINDOW_SIZE; i++) {
     sum += data[i];
   }
-  return (sum / WINDOW_SIZE) < GROUND_THRESHOLD;
+  int mean = sum / WINDOW_SIZE;
+  int variance = 0;
+  for (int i = 0; i < WINDOW_SIZE; i++) {
+    variance += pow((data[i] - mean), 2);
+  }
+  return sqrt(variance / WINDOW_SIZE) < GROUND_THRESHOLD;
 }
