@@ -16,6 +16,7 @@
         "filters.h": "c",
         "atomic": "c",
         "cstdint": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "*.rh": "c"
     }
 }

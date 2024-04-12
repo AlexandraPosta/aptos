@@ -70,7 +70,7 @@ void update_sensors(M5611_data* _M5611_data,
   Lsm6ds3GyroRead(SPI2, _LSM6DS3_data);
   Lsm6ds3AccRead(SPI2, _LSM6DS3_data);
   orientation_update(dt , _orientation, _LSM6DS3_data);
-  kalmanFilterUpdate(_orientation, _LSM6DS3_data, _M5611_data, _kalman_data);
+  kalmanFilterUpdate(_orientation, _LSM6DS3_data, _M5611_data, _kalman_data, dt);
 }
 #pragma endregion Updates
 
@@ -229,7 +229,8 @@ int main(void) {
                 _data[i] = frame_buffer.window[i].barometer.pressure;
               }
               current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
-              current_velocity = get_vertical_velocity(_data, 3, dt);
+              current_velocity = get_vertical_velocity(frame_buffer.window[1].barometer.pressure,
+                                                      frame_buffer.window[0].barometer.pressure, 2, dt);
 
               // Check for launch given pressure decrease
               //printf("Diff: %i\r\n", frame_buffer.ground_ref - current_pressure);
@@ -281,9 +282,11 @@ int main(void) {
             }
 
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
-            current_velocity = get_vertical_velocity(_data, 3, dt);
+            current_velocity = get_vertical_velocity(frame_buffer.window[1].barometer.pressure, frame_buffer.window[0].barometer.pressure, 2, dt);
+
 
             printf_float("Velocity", current_velocity, true);
+            printf("\r\n");
 
             // Check for apogee given pressure increase
             if (current_pressure - previous_pressure > APOGEE_THRESHOLD){
@@ -348,6 +351,10 @@ int main(void) {
             update_buffer(&frame, &frame_buffer);
             
             //TODO: lock canards stright.
+            current_velocity = get_vertical_velocity(frame_buffer.window[1].barometer.pressure, frame_buffer.window[0].barometer.pressure, 2, dt);
+
+            printf_float("Velocity", current_velocity, true);
+            printf("\r\n");
 
             // Get window barometer readings
             LSM6DS3_data _data[WINDOW_SIZE];

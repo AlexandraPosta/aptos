@@ -18,7 +18,7 @@
 
 // Define Constants and Thresholds
 #define BUFFER_SIZE       50
-#define LAUNCH_THRESHOLD  5      // micro bar for detecting a decrease
+#define LAUNCH_THRESHOLD  50      // micro bar for detecting a decrease
 #define APOGEE_THRESHOLD  50      // micro bar for detecting apogee
 #define DESCENT_THRESHOLD 50      // micro bar for detecting an increase
 #define GROUND_THRESHOLD  30      // micro bar for detecting ground
@@ -63,7 +63,7 @@ void update_buffer(FrameArray* frame, dataBuffer* buffer);
   @param dt - time interval between readings in microseconds
   @return float vertical velocity value in m/s
 */
-float get_vertical_velocity(int barometer_data[], int size, int dt);
+float get_vertical_velocity(int previous_barometer, int new_barometer, int size, int dt);
 
 /**
   @brief Check if the rocket is stationary

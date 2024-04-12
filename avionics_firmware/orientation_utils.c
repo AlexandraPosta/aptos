@@ -112,9 +112,9 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     float wx = (float)_LSM6DS3_data->x_rate*M_PI_F / 180 /1000.0; //convert from milli degrees to radians
     float wy = (float)_LSM6DS3_data->y_rate*M_PI_F / 180 /1000.0;
     float wz = (float)_LSM6DS3_data->z_rate*M_PI_F / 180 /1000.0;
-
+    /*
     orientation->previous_euler = orientation->current_euler;
-    
+
     orientation->current_rate_euler.roll = wx;
     orientation->current_rate_euler.pitch = wy;
     orientation->current_rate_euler.yaw = wz;
@@ -122,7 +122,7 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     orientation->current_euler.roll += wx * (float)dt * 1e-6f;
     orientation->current_euler.pitch += wy * (float)dt * 1e-6f;
     orientation->current_euler.yaw += wz * (float)dt * 1e-6f;
-    /*
+    */
     float qw = orientation->current_quaternion.w;
     float qx = orientation->current_quaternion.x;
     float qy = orientation->current_quaternion.y;
@@ -168,18 +168,18 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     // Convert quaternion to euler angles
     orientation->previous_euler = orientation->current_euler;
     orientation_quaternion_to_euler(&orientation->current_quaternion, &orientation->current_euler);
-    */
+    
     /*
     printf_float(" Roll", orientation->current_euler.roll, false);
     printf_float(" Pitch", orientation->current_euler.pitch, false);
     printf_float(" Yaw", orientation->current_euler.yaw, false);
     printf("\r\n");
     */
-    /*
+    
     orientation->current_rate_euler.roll = (orientation->current_euler.roll - orientation->previous_euler.roll) / ((float)dt* 1e-6f);
     orientation->current_rate_euler.pitch = (orientation->current_euler.pitch - orientation->previous_euler.pitch) / ((float)dt* 1e-6f);
     orientation->current_rate_euler.yaw = (orientation->current_euler.yaw - orientation->previous_euler.yaw) / ((float)dt * 1e-6f);
-    */
+    
     // Calculate the derivative of the euler angles
     /*
     if ((orientation->current_euler.roll < (M_PI_F - 0.6f)) && orientation->previous_euler.roll > (-M_PI_F + 0.6f)) {
