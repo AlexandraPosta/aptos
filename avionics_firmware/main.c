@@ -70,7 +70,7 @@ void update_sensors(M5611_data* _M5611_data,
   Lsm6ds3GyroRead(SPI2, _LSM6DS3_data);
   Lsm6ds3AccRead(SPI2, _LSM6DS3_data);
   orientation_update(dt , _orientation, _LSM6DS3_data);
-  kalmanFilterUpdate(_orientation, _LSM6DS3_data, _kalman_data);
+  kalmanFilterUpdate(_orientation, _LSM6DS3_data, _M5611_data, _kalman_data);
 }
 #pragma endregion Updates
 
@@ -145,7 +145,7 @@ int main(void) {
 
   //kalman filter
   kalman_data _kalman_data;
-  kalmanFilterInit(&_kalman_data);
+  kalmanFilterInit(&_M5611_data, &_kalman_data);
 
   // Servo
   SmartServo servos[4];

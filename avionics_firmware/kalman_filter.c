@@ -58,7 +58,7 @@ void kalmanFilterInit (M5611_data* barometer_data, kalman_data* kalman_data){
     //Altitude:
     kalman_data->altitude = 0;
     //Initial Altitude Value:
-    float pressure_intial = (M5611_data->pressure)/100;    //Pressure in hPa
+    float pressure_intial = (barometer_data->pressure)/100;    //Pressure in hPa
     kalman_data->altitude_init = 44330*(1- pow(pressure_intial/1013.25, 1/5.255))*100;  //Altitude in cm
 
     printCSVHeaderKalman();
@@ -111,7 +111,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     kalman_data->vertial_velocity = vertical_velocity;  //Vertical Velocity measured in cm/s
 
     //Calculate Altitude:
-    float pressure = (M5611_data->pressure)/100;    //Pressure in hPa
+    float pressure = (barometer_data->pressure)/100;    //Pressure in hPa
     kalman_data->altitude = ((44330*(1- pow(pressure/1013.25, 1/5.255))*100) - kalman_data->altitude_init);  //Altitude in cm
 
     //Kalman Roll:

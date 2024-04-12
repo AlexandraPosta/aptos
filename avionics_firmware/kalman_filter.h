@@ -11,7 +11,7 @@
 #include "orientation_utils.h"
 #include "mcu.h"
 #include "drivers/LSM6DS3_driver.h"
-#include "MS5611_driver.h"
+#include "drivers/MS5611_driver.h"
 #include <math.h>
 
 typedef struct Axis {
