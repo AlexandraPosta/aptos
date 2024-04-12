@@ -70,7 +70,7 @@ void update_sensors(M5611_data* _M5611_data,
   Lsm6ds3GyroRead(SPI2, _LSM6DS3_data);
   Lsm6ds3AccRead(SPI2, _LSM6DS3_data);
   orientation_update(dt , _orientation, _LSM6DS3_data);
-  //kalmanFilterUpdate(_orientation, _LSM6DS3_data, _kalman_data);
+  kalmanFilterUpdate(_orientation, _LSM6DS3_data, _kalman_data);
 }
 #pragma endregion Updates
 
@@ -179,7 +179,7 @@ int main(void) {
   //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
-  NAND_flash_read();
+  //NAND_flash_read();
   //DFU_programming_test();
   //ServoTest();
   //run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
@@ -256,7 +256,7 @@ int main(void) {
           newTime = get_time_us();  //get current time
           if (newTime - oldTime > 1000000/ASCENTREADFREQ){
             dt = newTime - oldTime;
-            printf("DT: %i\r\n", dt);
+            //printf("DT: %i\r\n", dt);
             oldTime = newTime;  //old time = new time
             
             // Get the sensor readings
@@ -285,6 +285,9 @@ int main(void) {
             if (current_pressure - previous_pressure > APOGEE_THRESHOLD && false){
               flightStage = APOGEE;
               printf("FLIGHT STAGE = APOGEE\r\n");
+              //set LED 1 to red for ascent triggered.
+              gpio_write(RGB1_G, LOW);
+              gpio_write(RGB1_R, HIGH); 
             }else if (previous_pressure > current_pressure){  //storing the minimum, (median), pressure value during ascent
               previous_pressure = current_pressure;
             }
@@ -313,6 +316,10 @@ int main(void) {
             if (apogee_incr == 0){
               flightStage = DESCENT;
               printf("FLIGHT STAGE = DESCENT\r\n");
+              //set LED 1 to blue for ascent triggered.
+              gpio_write(RGB1_G, LOW);
+              gpio_write(RGB1_R, LOW);
+              gpio_write(RGB1_B, HIGH);
             }else{
               apogee_incr--;
             }
@@ -348,6 +355,10 @@ int main(void) {
             if (is_stationary(_data)) {
               flightStage = LANDING;
               printf("FLIGHT STAGE = LANDING\r\n");
+              //set LED 1 to red for ascent triggered.
+              gpio_write(RGB1_G, LOW);
+              gpio_write(RGB1_R, HIGH);
+              gpio_write(RGB1_B, LOW);
             }
           }
           break;
