@@ -196,9 +196,10 @@ int main(void) {
   uint8_t buzz_count = 0;
   
   printf("============= ENTER MAIN PROCEDURE ============\r\n");
-  gpio_write(RGB1_G, HIGH); // Green LED for ready to launch
+  gpio_write(RGB1_G, HIGH);       // Green LED for ready to launch
   newTime = get_time_us();
   oldTime = get_time_us();
+  delay_microseconds(1000*1000);  // One second delay before launch for sensors to stabilise 
   
   for (;;) {
     switch (flightStage) {
@@ -231,7 +232,7 @@ int main(void) {
               current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median                                 
 
               // Check for launch given pressure decrease
-              //printf("Diff: %i\r\n", frame_buffer.ground_ref - current_pressure);
+              //printf("Diff: %i, ground: %i, cur_read: %i\r\n", frame_buffer.ground_ref - current_pressure, frame_buffer.ground_ref, current_pressure);
               if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD) {
                 flightStage = ASCENT;
 

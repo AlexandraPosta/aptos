@@ -371,17 +371,8 @@ void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, Serv
 
     for (int col = 0; col < STATE_SPACE_DIM; col++) {
         servo_defs->servo_deflection_1 += lqr->current_gain[_ravel_index_2d(1, col)] * _orientation[col] * 100 * 180 /M_PI_F; //store in degrees * 100
-    }
-
-    for (int col = 0; col < STATE_SPACE_DIM; col++) {
         servo_defs->servo_deflection_2 += lqr->current_gain[_ravel_index_2d(2, col)] * _orientation[col] * 100 * 180 /M_PI_F;
-    }
-
-    for (int col = 0; col < STATE_SPACE_DIM; col++) {
         servo_defs->servo_deflection_3 += lqr->current_gain[_ravel_index_2d(3, col)] * _orientation[col] * 100 * 180 /M_PI_F;
-    }
-
-    for (int col = 0; col < STATE_SPACE_DIM; col++) {
         servo_defs->servo_deflection_4 += lqr->current_gain[_ravel_index_2d(4, col)] * _orientation[col] * 100 * 180 /M_PI_F;
     }
 }

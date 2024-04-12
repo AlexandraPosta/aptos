@@ -97,7 +97,6 @@ void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data
     orientation->current_rate_euler.roll = 0.0;
     orientation->current_rate_euler.pitch = 0.0;
     orientation->current_rate_euler.yaw = 0.0;
-
 }
 
 void orientation_change_coordinate_system(LSM6DS3_data* _LSM6DS3_data) {
