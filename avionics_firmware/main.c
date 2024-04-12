@@ -266,7 +266,6 @@ int main(void) {
             //ServoSetTargetAngle(&(servos[1]), _servoDeflections.servo_deflection_2);
             //ServoSetTargetAngle(&(servos[2]), _servoDeflections.servo_deflection_3);
             //ServoSetTargetAngle(&(servos[3]), _servoDeflections.servo_deflection_4);
-
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
                             _GNSS_data, _orientation, _servoDeflections, _kalman_data); 
             
@@ -275,14 +274,19 @@ int main(void) {
             
             // Update buffer and window  
             update_buffer(&frame, &frame_buffer);
+
             // Get window median readings
             for (int i = 0; i < WINDOW_SIZE; i++) {
               _data[i] = frame_buffer.window[i].barometer.pressure;
             }
+
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
             current_velocity = get_vertical_velocity(_data, 3, dt);
+
+            printf_float("Velocity", current_velocity, true);
+
             // Check for apogee given pressure increase
-            if (current_pressure - previous_pressure > APOGEE_THRESHOLD && false){
+            if (current_pressure - previous_pressure > APOGEE_THRESHOLD){
               flightStage = APOGEE;
               printf("FLIGHT STAGE = APOGEE\r\n");
               //set LED 1 to red for ascent triggered.
