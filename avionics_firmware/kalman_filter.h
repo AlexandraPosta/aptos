@@ -11,8 +11,7 @@
 #include "orientation_utils.h"
 #include "mcu.h"
 #include "drivers/LSM6DS3_driver.h"
-
-
+#include "MS5611_driver.h"
 #include <math.h>
 
 typedef struct Axis {
@@ -29,13 +28,18 @@ typedef struct kalman_data{
     float gain_restriction_high; 
     float gain_restriction_low;
     Axis accel_calibration;
+    float vertial_velocity;
+    float accel_z_inertial;
+    float pressure;
+    float altitude;
+    float altitude_init;
 } kalman_data;
 
-void kalmanFilterInit(kalman_data* kalman_data);
+void kalmanFilterInit(M5611_data* barometer_data, kalman_data* kalman_data);
 
 static inline void printCSVHeaderKalman();
 
-void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, kalman_data* kalman_data);
+void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M5611_data* barometer_data ,kalman_data* kalman_data);
 
 float kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement, float* kalman_output);
 
