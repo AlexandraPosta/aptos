@@ -20,6 +20,17 @@ typedef struct Axis {
     float z;
 } Axis;
 
+typedef struct vertical_velocity {
+    float accel;
+    float barom;
+} vertical_velocity;
+
+typedef struct kalman_velocity{
+    float state;
+    float uncertainty;
+    float gain;
+}kalman_velocity;
+
 typedef struct kalman_data{
     Euler state;
     Euler uncertainty;
@@ -28,20 +39,24 @@ typedef struct kalman_data{
     float gain_restriction_high; 
     float gain_restriction_low;
     Axis accel_calibration;
-    float vertial_velocity;
     float accel_z_inertial;
     float pressure;
     float altitude;
     float altitude_init;
+    float altitude_change;
+    float altitude_previous;
+    vertical_velocity velocity_measurement;
+    kalman_velocity velocity;
 } kalman_data;
 
 void kalmanFilterInit(M5611_data* barometer_data, kalman_data* kalman_data);
 
+void printDataForCollection(uint32_t current_time, float accel_x, float accel_y, float accel_z, float roll_angle_accel, float pitch_angle_accel, float yaw_angle_accel, float roll_angle_gyro, float pitch_angle_gyro, float yaw_angle_gyro, kalman_data* kalman_data);
 static inline void printCSVHeaderKalman();
 
-void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M5611_data* barometer_data ,kalman_data* kalman_data);
+void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M5611_data* barometer_data ,kalman_data* kalman_data, int dt);
 
-float kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement, float* kalman_output);
+void kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement, float* kalman_output);
 
 float kalmanAngleRestriction(float restriction_angle, float input_angle);
 float kalmanGainRestriction(float restriction_gain_high, float restriction_gain_low, float input_gain);
