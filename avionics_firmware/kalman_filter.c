@@ -76,13 +76,13 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     uint32_t current_time = get_time_ms();
     //Gyro Rotation Rates:
     float roll_rate_gyro = gyro_data->current_rate_euler.roll;
-    float pitch_rate_gyro = -gyro_data->current_rate_euler.pitch; 
-    float yaw_rate_gyro = -gyro_data->current_rate_euler.yaw;
+    float pitch_rate_gyro = gyro_data->current_rate_euler.pitch; 
+    float yaw_rate_gyro = gyro_data->current_rate_euler.yaw;
 
     //Gyro Rotation Angles:
     float roll_angle_gyro = (gyro_data->current_euler.roll)*(1/(3.142/180));
-    float pitch_angle_gyro = -(gyro_data->current_euler.pitch)*(1/(3.142/180)); 
-    float yaw_angle_gyro = -(gyro_data->current_euler.pitch)*(1/(4.142/180));
+    float pitch_angle_gyro = (gyro_data->current_euler.pitch)*(1/(3.142/180)); 
+    float yaw_angle_gyro = (gyro_data->current_euler.pitch)*(1/(4.142/180));
     
     //Accelerometer Rotation Angles:
     //Convert From Milli G:
@@ -92,7 +92,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     //Calculate Angle Using Trig Method:
     //Note: Trig Method produces noisy signal.
     float roll_angle_accel = atan(accel_y/sqrt((accel_x*accel_x)+(accel_z*accel_z)))*(1/(3.142/180));
-    float pitch_angle_accel = atan(accel_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)))*(1/(3.142/180));
+    float pitch_angle_accel = -atan(accel_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)))*(1/(3.142/180));
     float yaw_angle_accel = atan((sqrt((accel_x*accel_x)+(accel_y*accel_y)))/accel_z)*(1/(3.142/180));
     //Gyro and Accel angles should be similar, with accel reacting to vibrations.
 
@@ -135,7 +135,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     float accel_z_inertial_part3 = cos(pitch_angle_accel*(3.142/180))*cos(roll_angle_accel*(3.142/180))*accel_z;
     float accel_z_inertial = accel_z_inertial_part1 + accel_z_inertial_part2 + accel_z_inertial_part3;
     //Convert to m/s^2:
-    accel_z_inertial = (accel_z_inertial - 1)*9.81;     //Vertical Acceleration measured in m/s^2
+    accel_z_inertial = (accel_z_inertial - 1)*9.81/1000;     //Vertical Acceleration measured in m/s^2
     //Store Acceleration Z Inertial;
     kalman_data->accel_z_inertial = accel_z_inertial;
     //Calculate Velocity:
@@ -145,8 +145,8 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     kalman_data->velocity_measurement.accel = vertical_velocity_accel;  //Vertical Velocity measured in m/s
 
     //Calculate Altitude:
-    float pressure = (barometer_data->pressure)/100;    //Pressure in hPa
-    kalman_data->altitude = ((44330*(1- pow(pressure/1013.25, 1/5.255))) - kalman_data->altitude_init);  //Altitude in m
+    float pressure = (barometer_data->pressure);    //Pressure in hPa(/this is the same as milliBar)
+    kalman_data->altitude = ((44330*(1 - pow(pressure/1013.25, 1/5.255))/1000) - kalman_data->altitude_init);  //Altitude in m
     kalman_data->altitude_change = kalman_data->altitude_change + kalman_data->altitude - kalman_data->altitude_previous;
     kalman_data->altitude_previous = kalman_data->altitude;
     // Calculate the total time covered by the readings (microseconds):
