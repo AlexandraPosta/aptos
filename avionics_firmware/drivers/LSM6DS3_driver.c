@@ -204,7 +204,7 @@ bool Lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
             //printf("Offset Sums: %i, %i, %i\r\n", avg[0], avg[1], avg[2]);
             delay_microseconds(1000000/100);//delay to read at 50Hz
         }
-    }while(!Lsmds3GyroStandardDev(buff, 500));   //if standard deviation of readings is not within limit then its not steady enough & try again
+    }while(!Lsmds3GyroStandardDev(buff, LSM6DSO_OFFSET_BUFF_LEN, 500));   //if standard deviation of readings is not within limit then its not steady enough & try again
     
     gyro->x_offset = (avg[0] / LSM6DSO_OFFSET_BUFF_LEN);
     gyro->y_offset = (avg[1] / LSM6DSO_OFFSET_BUFF_LEN);
@@ -214,30 +214,30 @@ bool Lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
     return 1;
 }
 
-bool Lsmds3GyroStandardDev(LSM6DS3_data buff[], uint16_t limit){
+bool Lsmds3GyroStandardDev(LSM6DS3_data buff[], uint16_t buffer_limit, uint16_t limit){
     //calculate mean
     int means[3] = {0,0,0};
-    for (int i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i ++){
+    for (int i = 0; i < buffer_limit; i ++){
         means[0] += buff[i].x_rate;
         means[1] += buff[i].y_rate;
         means[2] += buff[i].z_rate;
     }
-    means[0] /= LSM6DSO_OFFSET_BUFF_LEN;
-    means[1] /= LSM6DSO_OFFSET_BUFF_LEN;
-    means[2] /= LSM6DSO_OFFSET_BUFF_LEN;
+    means[0] /= buffer_limit;
+    means[1] /= buffer_limit;
+    means[2] /= buffer_limit;
     //printf("Means: %i, %i, %i\r\n", means[0], means[1], means[2]);
 
     //calculate variance through (sum of (squares of deviations))/num_samples
     long variance[3] = {0,0,0};
-    for (int i = 0; i < LSM6DSO_OFFSET_BUFF_LEN; i ++){
-        variance[0] += powl(buff[i].x_rate - means[0],2);
-        variance[1] += powl(buff[i].y_rate - means[1],2);
-        variance[2] += powl(buff[i].z_rate - means[2],2);
+    for (int i = 0; i < buffer_limit; i ++){
+        variance[0] += powl(buff[i].x_rate - means[0], 2);
+        variance[1] += powl(buff[i].y_rate - means[1], 2);
+        variance[2] += powl(buff[i].z_rate - means[2], 2);
     }
     //divide by samples to get variance
-    variance[0] /= LSM6DSO_OFFSET_BUFF_LEN;
-    variance[1] /= LSM6DSO_OFFSET_BUFF_LEN;
-    variance[2] /= LSM6DSO_OFFSET_BUFF_LEN;
+    variance[0] /= buffer_limit;
+    variance[1] /= buffer_limit;
+    variance[2] /= buffer_limit;
     //printf("Variance: %i, %i, %i\r\n", variance[0], variance[1], variance[2]);
 
     //sqrt to get standard deviation

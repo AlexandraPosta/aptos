@@ -155,7 +155,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     printf_float(",", pitch_angle_gyro, true);
     printf_float(",", yaw_angle_gyro, true);
     //Gyro Rates:
-    rintf_float(",", roll_angle_gyro, true);
+    printf_float(",", roll_angle_gyro, true);
     printf_float(",", pitch_angle_gyro, true);
     printf_float(",", yaw_angle_gyro, true);
     //Kalman Roll:

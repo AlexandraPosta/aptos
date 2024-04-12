@@ -345,14 +345,14 @@ int main(void) {
             
             //TODO: lock canards stright.
 
-            // Get window median readings
-            int _data[WINDOW_SIZE];
+            // Get window barometer readings
+            LSM6DS3_data _data[WINDOW_SIZE];
             for (int i = 0; i < WINDOW_SIZE; i++) {
-              _data[i] = frame_buffer.window[i].barometer.pressure;
+              _data[i] = frame_buffer.window[i].imu;
             }
 
             // Check for landing
-            if (is_stationary(_data)) {
+            if (Lsmds3GyroStandardDev(_data, WINDOW_SIZE, 500)) {
               flightStage = LANDING;
               printf("FLIGHT STAGE = LANDING\r\n");
               //set LED 1 to red for ascent triggered.

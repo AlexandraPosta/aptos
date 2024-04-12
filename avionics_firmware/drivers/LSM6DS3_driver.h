@@ -159,7 +159,7 @@ bool Lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro);
 	@note Used to work out if the board is stationary enough to use offsets
   @returns true if within limits
 */
-bool Lsmds3GyroStandardDev(LSM6DS3_data buff[], uint16_t limit);
+bool Lsmds3GyroStandardDev(LSM6DS3_data buff[], uint16_t buffer_limit, uint16_t limit);
 
 /**
 	@brief Stops angle from overflowing.
