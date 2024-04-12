@@ -228,17 +228,17 @@ int main(void) {
               for (int i = 0; i < WINDOW_SIZE; i++) {
                 _data[i] = frame_buffer.window[i].barometer.pressure;
               }
-              current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
-              current_velocity = get_vertical_velocity(_data, frame_buffer.window[1].barometer.pressure,
-                                                      frame_buffer.window[0].barometer.pressure, WINDOW_SIZE, dt);
+              current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median                                 
 
               // Check for launch given pressure decrease
-              printf("Diff: %i\r\n", frame_buffer.ground_ref - current_pressure);
+              //printf("Diff: %i\r\n", frame_buffer.ground_ref - current_pressure);
               if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD) {
                 flightStage = ASCENT;
+
                 //set LED 1 to orange for ascent triggered.
                 gpio_write(RGB1_G, HIGH);
                 gpio_write(RGB1_R, HIGH); 
+                
                 //make sure buzzer is off
                 gpio_write(_buzzer, LOW);
                 
@@ -261,15 +261,10 @@ int main(void) {
             oldTime = newTime;  //old time = new time
             
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data);
-            LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections);
-            //ServoSetTargetAngle(&(servos[0]), _servoDeflections.servo_deflection_1);
-            //ServoSetTargetAngle(&(servos[1]), _servoDeflections.servo_deflection_2);
-            //ServoSetTargetAngle(&(servos[2]), _servoDeflections.servo_deflection_3);
-            //ServoSetTargetAngle(&(servos[3]), _servoDeflections.servo_deflection_4);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data); 
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
-                            _GNSS_data, _orientation, _servoDeflections, _kalman_data); 
-            
+                            _GNSS_data, _orientation, _servoDeflections, _kalman_data);
+
             // Log data
             log_frame(frame);
             
@@ -280,16 +275,15 @@ int main(void) {
             for (int i = 0; i < WINDOW_SIZE; i++) {
               _data[i] = frame_buffer.window[i].barometer.pressure;
             }
-
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
-            current_velocity = get_vertical_velocity(_data, frame_buffer.window[1].barometer.pressure, 
-                                                            frame_buffer.window[0].barometer.pressure, 
-                                                            WINDOW_SIZE, 
-                                                            dt);
+            current_velocity = get_vertical_velocity(_data, WINDOW_SIZE, dt);
 
-
-            printf_float("Velocity", current_velocity, true);
-            printf("\r\n");
+            // Complete LQR Control
+            LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections);
+            //ServoSetTargetAngle(&(servos[0]), _servoDeflections.servo_deflection_1);
+            //ServoSetTargetAngle(&(servos[1]), _servoDeflections.servo_deflection_2);
+            //ServoSetTargetAngle(&(servos[2]), _servoDeflections.servo_deflection_3);
+            //ServoSetTargetAngle(&(servos[3]), _servoDeflections.servo_deflection_4);
 
             // Check for apogee given pressure increase
             if (current_pressure - previous_pressure > APOGEE_THRESHOLD){
@@ -361,15 +355,7 @@ int main(void) {
               _data_imu[i] = frame_buffer.window[i].imu;
               _data[i] = frame_buffer.window[i].barometer.pressure;
             }
-
-            current_velocity = get_vertical_velocity(_data, 
-                                                    frame_buffer.window[1].barometer.pressure, 
-                                                    frame_buffer.window[0].barometer.pressure, 
-                                                    WINDOW_SIZE, 
-                                                    dt);
-
-            printf_float("Velocity", current_velocity, true);
-            printf("\r\n");
+            current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
 
             // Check for landing
             if (Lsmds3GyroStandardDev(_data_imu, WINDOW_SIZE, 500)) {
