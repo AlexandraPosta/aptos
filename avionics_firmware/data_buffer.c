@@ -64,11 +64,10 @@ void update_buffer(FrameArray* frame, dataBuffer* buffer) {
   }
 }
 
-float get_vertical_velocity(int data[], int size, int dt) {
+int get_vertical_velocity(int data[], int size, int dt) {
   qsort(data, WINDOW_SIZE, sizeof(int), cmpfunc);
   float altitude_change = 0.0;
   float previous_altitude, current_altitude;
-  float test = 0.0;
 
   previous_altitude = 44330.7692 * (1.0 - pow(((float)data[0] / 100.0f) / sea_level_pressure, 0.1902));
   current_altitude = 44330.7692 * (1.0 - pow(((float)data[19] / 100.0f) / sea_level_pressure, 0.1902));
@@ -79,7 +78,7 @@ float get_vertical_velocity(int data[], int size, int dt) {
   float velocity = altitude_change / total_time;
   
   // Return vertical velocity in m/s
-  return velocity;
+  return (int) velocity;
 }
 
 // Check if stationary

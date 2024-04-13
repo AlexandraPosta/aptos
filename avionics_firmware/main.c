@@ -182,14 +182,13 @@ int main(void) {
   //NAND_flash_read();
   //DFU_programming_test();
   //ServoTest();
-  run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
-  flightStage = LAUNCHPAD;
-
+  //run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
+  
   // Additional variables
   int _data[WINDOW_SIZE];
   int previous_pressure = 999999999;
   int current_pressure = 999999999;
-  float current_velocity = 0;
+  int current_velocity = 0;
   int apogee_incr = 3;
   float accel_vector[4] = {0,0,0,0};
   uint32_t newTime, oldTime;
@@ -197,10 +196,10 @@ int main(void) {
   uint8_t buzz_count = 0;
   
   printf("============= ENTER MAIN PROCEDURE ============\r\n");
-  gpio_write(RGB1_G, HIGH);       // Green LED for ready to launch
   newTime = get_time_us();
   oldTime = get_time_us();
-  delay_microseconds(1000*1000);  // One second delay before launch for sensors to stabilise 
+  delay_microseconds(5000*1000);  // 5 second delay before launch for sensors to stabilise 
+  gpio_write(RGB1_G, HIGH);       // Green LED for ready to launch
 
   for (;;) {
     switch (flightStage) {
@@ -229,20 +228,13 @@ int main(void) {
               for (int i = 0; i < WINDOW_SIZE; i++) {
                 _data[i] = frame_buffer.window[i].barometer.pressure;
               }
-              current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median    
-
-              // Complete LQR Control
-              LQR_update_gain(&_LQR_controller, 35);
-              LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections);
-              ServoSetTargetAngle(&servos[0], (int32_t)_servoDeflection.servo_deflection_3*10);
-              ServoSetTargetAngle(&servos[1], (int32_t)_servoDeflection.servo_deflection_4*10);
-              ServoSetTargetAngle(&servos[2], (int32_t)_servoDeflection.servo_deflection_2*10);
-              ServoSetTargetAngle(&servos[3], (int32_t)_servoDeflection.servo_deflection_1*10);                       
+              current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median                         
 
               // Check for launch given pressure decrease
               //printf("Diff: %i, ground: %i, cur_read: %i\r\n", frame_buffer.ground_ref - current_pressure, frame_buffer.ground_ref, current_pressure);
               OrientationAccelerationVector(&_LSM6DS3_data, &accel_vector);
-              if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD){ //&& accel_vector[3] > 1.5) {
+
+              if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD && accel_vector[3] > 1.4) {
                 flightStage = ASCENT;
 
                 //set LED 1 to orange for ascent triggered.
@@ -287,14 +279,14 @@ int main(void) {
             }
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
             current_velocity = get_vertical_velocity(_data, WINDOW_SIZE, dt);
-
+            
             // Complete LQR Control
-            LQR_update_gain(&_LQR_controller, (int)current_velocity);
+            LQR_update_gain(&_LQR_controller, current_velocity);
             LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections);
-            ServoSetTargetAngle(&servos[0], (int32_t)_servoDeflection.servo_deflection_3*10);
-            ServoSetTargetAngle(&servos[1], (int32_t)_servoDeflection.servo_deflection_4*10);
-            ServoSetTargetAngle(&servos[2], (int32_t)_servoDeflection.servo_deflection_2*10);
-            ServoSetTargetAngle(&servos[3], (int32_t)_servoDeflection.servo_deflection_1*10);
+            ServoSetTargetAngle(&servos[0], (int32_t)_servoDeflections.servo_deflection_3*10);
+            ServoSetTargetAngle(&servos[1], (int32_t)_servoDeflections.servo_deflection_4*10);
+            ServoSetTargetAngle(&servos[2], (int32_t)_servoDeflections.servo_deflection_2*10);
+            ServoSetTargetAngle(&servos[3], (int32_t)_servoDeflections.servo_deflection_1*10);
 
             // Check for apogee given pressure increase
             if (current_pressure - previous_pressure > APOGEE_THRESHOLD){

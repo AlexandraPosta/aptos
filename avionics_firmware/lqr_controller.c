@@ -345,8 +345,11 @@ void LQR_init(LQR_controller* lqr) {
 
 void LQR_update_gain(LQR_controller* lqr, int velocity) {
     // Update gains based on speed
-    if (MAX_VELOCITY < velocity && velocity < MIN_VELOCITY) {  // Stop controller if speed to high or low
+    if (velocity < MIN_VELOCITY) {  // Stop controller if speed to high or low
         lqr->current_gain = &lqr->zero_gains[0];
+    } else if (velocity > MAX_VELOCITY) {
+        lqr->current_gain_index = 49;
+        lqr->current_gain = &lqr->available_gains[_ravel_index_3d((int)lqr->current_gain_index, 0, 0)];
     } else {
         lqr->current_gain_index = ((float)NUM_GAINS - 1) * (float)(velocity - MIN_VELOCITY) / (float)(MAX_VELOCITY - MIN_VELOCITY);
         lqr->current_gain = &lqr->available_gains[_ravel_index_3d((int)lqr->current_gain_index, 0, 0)];
