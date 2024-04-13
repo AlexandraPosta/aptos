@@ -52,13 +52,13 @@ void kalmanFilterInit (M5611_data* barometer_data, kalman_data* kalman_data){
     //Vertial Acceleration:
     kalman_data->accel_z_inertial = 0;
     //Barometer Pressure:
-    kalman_data->pressure = 0;
+    //kalman_data->pressure = 0;
     //Altitude:
-    kalman_data->altitude = 0;
+    //kalman_data->altitude = 0;
     //Initial Altitude Value:
-    float pressure_intial = (barometer_data->pressure)/100;    //Pressure in hPa
-    kalman_data->altitude_init = 44330*(1- pow(pressure_intial/1013.25, 1/5.255))*100;  //Altitude in cm
-    kalman_data->altitude_change = 0;
+    //float pressure_intial = (barometer_data->pressure)/100;    //Pressure in hPa
+    //kalman_data->altitude_init = 44330*(1- pow(pressure_intial/1013.25, 1/5.255))*100;  //Altitude in cm
+    //kalman_data->altitude_change = 0;
     //Vertical Velocity:
     kalman_data->velocity_measurement.accel = 0;
     kalman_data->velocity_measurement.barom = 0;
@@ -71,7 +71,7 @@ void kalmanFilterInit (M5611_data* barometer_data, kalman_data* kalman_data){
 }
 
 //Update Kalman Roll and Pitch Angles, Kalman Roll and Pitch Gains.
-void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M5611_data* barometer_data, kalman_data* kalman_data, int dt){
+void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M5611_data* barometer_data, kalman_data* kalman_data, int dt, float vertical_velocity_barom){
     //Get Current Time for Data Entry
     uint32_t current_time = get_time_ms();
     //Gyro Rotation Rates:
@@ -135,7 +135,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     float accel_z_inertial_part3 = cos(pitch_angle_accel*(3.142/180))*cos(roll_angle_accel*(3.142/180))*accel_z;
     float accel_z_inertial = accel_z_inertial_part1 + accel_z_inertial_part2 + accel_z_inertial_part3;
     //Convert to m/s^2:
-    accel_z_inertial = (accel_z_inertial - 1)*9.81/1000;     //Vertical Acceleration measured in m/s^2
+    accel_z_inertial = -(accel_z_inertial - 1)*9.81;     //Vertical Acceleration measured in m/s^2
     //Store Acceleration Z Inertial;
     kalman_data->accel_z_inertial = accel_z_inertial;
     //Calculate Velocity:
@@ -144,15 +144,17 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     //Store Vertical Velocity:
     kalman_data->velocity_measurement.accel = vertical_velocity_accel;  //Vertical Velocity measured in m/s
 
-    //Calculate Altitude:
-    float pressure = (barometer_data->pressure)/100.0f;    //Pressure in hPa(/this is the same as milliBar)
+    /*Calculate Altitude:
+    float pressure = (barometer_data->pressure);    //Pressure in hPa(/this is the same as milliBar)
     kalman_data->altitude = ((44330*(1 - pow(pressure/1013.25, 1/5.255))/1000.0f) - kalman_data->altitude_init);  //Altitude in m
-    kalman_data->altitude_change = kalman_data->altitude - kalman_data->altitude_previous;
+    kalman_data->altitude_change = kalman_data->altitude_change + (kalman_data->altitude - kalman_data->altitude_previous);
     kalman_data->altitude_previous = kalman_data->altitude;
     // Calculate the total time covered by the readings (microseconds):
     float total_time = dt * 1e-6; 
     // Return vertical velocity in m/s
-    kalman_data->velocity_measurement.barom = kalman_data->altitude_change / total_time;
+    kalman_data->velocity_measurement.barom = kalman_data->altitude_change / total_time;*/
+    //Barometer Velocity Calculated from Pressure Change:
+    kalman_data->velocity_measurement.barom = vertical_velocity_barom;
 
     //Kalman Velocity:
     kalmanFilter(kalman_data->velocity.state, kalman_data->velocity.uncertainty, kalman_data->velocity_measurement.barom, kalman_data->velocity_measurement.accel, &kalman_output_velocity);
@@ -170,10 +172,10 @@ void kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_inp
     //kalman_input = rotation rate (gyro)
     //kalman_measurement = accelerometer angle
     //Control Matrix Value:
-    float control_matrix = 0.01;
+    float control_matrix = 0.005;
     //Standard Deviation of Gyro/Accel Values:
-    float gyro_angle_stddev = 10;
-    float accel_angle_stddev = 8;
+    float gyro_angle_stddev = 3;
+    float accel_angle_stddev = 2;
 
     //1. Predict current state of the system:
     kalman_state = kalman_state + (control_matrix*kalman_input);
@@ -223,7 +225,7 @@ float kalmanGainRestriction(float restriction_gain_high, float restriction_gain_
 
 //Print Data for .csv file:
 void printDataForCollection(uint32_t current_time, float accel_x, float accel_y, float accel_z, float roll_angle_accel, float pitch_angle_accel, float yaw_angle_accel, float roll_angle_gyro, float pitch_angle_gyro, float yaw_angle_gyro, kalman_data* kalman_data){
-    printf(", %i", current_time);
+    printf(", %li", current_time);
     //Acceleration in each axis:
     printf_float(",", accel_x, true);
     printf_float(",", accel_y, true);

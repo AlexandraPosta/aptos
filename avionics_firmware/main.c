@@ -64,13 +64,13 @@ void update_sensors(M5611_data* _M5611_data,
                     orientation_data* 
                     _orientation, 
                     uint32_t dt,
-                    kalman_data* _kalman_data) {
+                    kalman_data* _kalman_data, float current_velocity) {
   MS5611_get_data(_M5611_data);
   ADXL375_get_data(_ADXL375_data);
   Lsm6ds3GyroRead(SPI2, _LSM6DS3_data);
   Lsm6ds3AccRead(SPI2, _LSM6DS3_data);
   orientation_update(dt , _orientation, _LSM6DS3_data);
-  kalmanFilterUpdate(_orientation, _LSM6DS3_data, _M5611_data, _kalman_data, dt);
+  kalmanFilterUpdate(_orientation, _LSM6DS3_data, _M5611_data, _kalman_data, dt, current_velocity);
 }
 #pragma endregion Updates
 
@@ -219,7 +219,7 @@ int main(void) {
             }
 
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data, current_velocity);
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
                             _GNSS_data, _orientation, _servoDeflections, _kalman_data); 
 
@@ -265,7 +265,7 @@ int main(void) {
             oldTime = newTime;  //old time = new time
             
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data); 
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data, current_velocity); 
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
                             _GNSS_data, _orientation, _servoDeflections, _kalman_data);
 
@@ -281,6 +281,7 @@ int main(void) {
             }
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
             current_velocity = get_vertical_velocity(_data, WINDOW_SIZE, dt);
+            
 
             // Complete LQR Control
             LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections);
@@ -311,7 +312,7 @@ int main(void) {
             dt = newTime - oldTime;
             oldTime = newTime;  // Old time = new time
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data, current_velocity);
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
                             _GNSS_data, _orientation, _servoDeflections, _kalman_data); 
 
@@ -344,7 +345,7 @@ int main(void) {
             oldTime = newTime;  //old time = new time
             
             // Get the sensor readings
-            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data);
+            update_sensors(&_M5611_data, &_ADXL375_data, &_LSM6DS3_data, &_orientation, dt, &_kalman_data, current_velocity);
             get_frame_array(&frame, _M5611_data, _ADXL375_data, _LSM6DS3_data, _BME280_data,
                             _GNSS_data, _orientation, _servoDeflections, _kalman_data); 
 
