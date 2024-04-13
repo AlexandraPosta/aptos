@@ -285,10 +285,6 @@ int main(void) {
 
             // Complete LQR Control
             LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections);
-            //ServoSetTargetAngle(&(servos[0]), _servoDeflections.servo_deflection_1);
-            //ServoSetTargetAngle(&(servos[1]), _servoDeflections.servo_deflection_2);
-            //ServoSetTargetAngle(&(servos[2]), _servoDeflections.servo_deflection_3);
-            //ServoSetTargetAngle(&(servos[3]), _servoDeflections.servo_deflection_4);
 
             //printf_float("Velocity", current_velocity, true);
             //printf("\r\n");

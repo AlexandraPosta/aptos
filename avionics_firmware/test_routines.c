@@ -229,40 +229,21 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     // Read the gyro data
     Lsm6ds3GyroRead(SPI2, &_LSM6DS3_data);
 
-    /*
-    printf_float(" x", _LSM6DS3_data.x_rate, true);
-    printf_float(" y", _LSM6DS3_data.y_rate, true);
-    printf_float(" z", _LSM6DS3_data.z_rate, true);
-    printf("\r\n");
-    */
-
     // Return the Euler and Quaternion angles in microseconds
     orientation_update((newTimer - oldTimer), &_orientation, &_LSM6DS3_data);
 
     // Perform LQR control
-    LQR_perform_control( &_LQR_controller, _orientation, &_servoDeflection);
-    //printf_float(" Servo 1", _servoDeflection.servo_deflection_1, true);
-    //printf_float(" Servo 2", _servoDeflection.servo_deflection_2, true);
-    //printf_float(" Servo 3", _servoDeflection.servo_deflection_3, true);
-    //printf_float(" Servo 4", _servoDeflection.servo_deflection_4, true);
-    //printf("\r\n");
-    //printf("\r\n");
+    LQR_update_gain(&_LQR_controller, 35);
+    LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflection);
 
-    ServoSetTargetAngle(&servo1, (int32_t)_servoDeflection.servo_deflection_1*10);
-    ServoSetTargetAngle(&servo2, (int32_t)_servoDeflection.servo_deflection_2*10);
-    ServoSetTargetAngle(&servo3, (int32_t)_servoDeflection.servo_deflection_3*10);
-    ServoSetTargetAngle(&servo4, (int32_t)_servoDeflection.servo_deflection_4*10);
-    /*
-    //printf("Angles: %i,%i,%i,%i\r\n", (int32_t)_servoDeflection.servo_deflection_1*10, (int32_t)_servoDeflection.servo_deflection_2*10,
-    //     (int32_t)_servoDeflection.servo_deflection_3*10,(int32_t)_servoDeflection.servo_deflection_4*10);
-    //delay_milliseconds(1);
+    ServoSetTargetAngle(&servo1, (int32_t)_servoDeflection.servo_deflection_3*10);
+    ServoSetTargetAngle(&servo2, (int32_t)_servoDeflection.servo_deflection_4*10);
+    ServoSetTargetAngle(&servo3, (int32_t)_servoDeflection.servo_deflection_2*10);
+    ServoSetTargetAngle(&servo4, (int32_t)_servoDeflection.servo_deflection_1*10);
 
     // TODO
     // Set servos to 0 deflection if angle to vertical is low
-    // Check if gain timer reached update interval
-    // Calculate velocity based on barometer data
     // Update gains based on velocity
-    */
 
     oldTimer = newTimer;
   }
