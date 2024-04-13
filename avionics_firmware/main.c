@@ -208,7 +208,6 @@ int main(void) {
           newTime = get_time_us();  // Get current time
           if (newTime - oldTime > 1000000/PADREADFREQ){
             dt = newTime - oldTime;
-            //printf("DT: %i\r\n", dt);
             oldTime = newTime;  //old time = new time
             
             buzz_count ++;
@@ -230,8 +229,15 @@ int main(void) {
               for (int i = 0; i < WINDOW_SIZE; i++) {
                 _data[i] = frame_buffer.window[i].barometer.pressure;
               }
-              current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median   
-              LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections); // Update orientation                           
+              current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median    
+
+              // Complete LQR Control
+              LQR_update_gain(&_LQR_controller, 35);
+              LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections);
+              ServoSetTargetAngle(&servos[0], (int32_t)_servoDeflection.servo_deflection_3*10);
+              ServoSetTargetAngle(&servos[1], (int32_t)_servoDeflection.servo_deflection_4*10);
+              ServoSetTargetAngle(&servos[2], (int32_t)_servoDeflection.servo_deflection_2*10);
+              ServoSetTargetAngle(&servos[3], (int32_t)_servoDeflection.servo_deflection_1*10);                       
 
               // Check for launch given pressure decrease
               //printf("Diff: %i, ground: %i, cur_read: %i\r\n", frame_buffer.ground_ref - current_pressure, frame_buffer.ground_ref, current_pressure);
@@ -281,13 +287,14 @@ int main(void) {
             }
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
             current_velocity = get_vertical_velocity(_data, WINDOW_SIZE, dt);
-            
 
             // Complete LQR Control
+            LQR_update_gain(&_LQR_controller, (int)current_velocity);
             LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections);
-
-            //printf_float("Velocity", current_velocity, true);
-            //printf("\r\n");
+            ServoSetTargetAngle(&servos[0], (int32_t)_servoDeflection.servo_deflection_3*10);
+            ServoSetTargetAngle(&servos[1], (int32_t)_servoDeflection.servo_deflection_4*10);
+            ServoSetTargetAngle(&servos[2], (int32_t)_servoDeflection.servo_deflection_2*10);
+            ServoSetTargetAngle(&servos[3], (int32_t)_servoDeflection.servo_deflection_1*10);
 
             // Check for apogee given pressure increase
             if (current_pressure - previous_pressure > APOGEE_THRESHOLD){
@@ -318,7 +325,11 @@ int main(void) {
             // Update buffer and window  
             update_buffer(&frame, &frame_buffer);
 
-            //TODO: lock canards stright.
+            // Lock canards straight
+            ServoSetTargetAngle(&servos[0], 0);
+            ServoSetTargetAngle(&servos[1], 0);
+            ServoSetTargetAngle(&servos[2], 0);
+            ServoSetTargetAngle(&servos[3], 0);
 
             // Run for a few cycles to record apogee when switch to descent
             if (apogee_incr == 0){
@@ -351,7 +362,11 @@ int main(void) {
             // Update buffer and window  
             update_buffer(&frame, &frame_buffer);
             
-            //TODO: lock canards stright.
+            // Lock canards straight
+            ServoSetTargetAngle(&servos[0], 0);
+            ServoSetTargetAngle(&servos[1], 0);
+            ServoSetTargetAngle(&servos[2], 0);
+            ServoSetTargetAngle(&servos[3], 0);
 
             // Get window barometer readings
             LSM6DS3_data _data_imu[WINDOW_SIZE];
@@ -360,9 +375,6 @@ int main(void) {
               _data[i] = frame_buffer.window[i].barometer.pressure;
             }
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
-
-            //printf_float("Velocity", current_velocity, true);
-            //printf("\r\n");
 
             // Check for landing
             if (Lsmds3GyroStandardDev(_data_imu, WINDOW_SIZE, 1500) && (frame_buffer.ground_ref - current_pressure) < GROUND_THRESHOLD) {
@@ -377,7 +389,11 @@ int main(void) {
           break;
 
       case LANDING:
-        //TODO: lock canards stright.
+        // Lock canards straight
+        ServoSetTargetAngle(&servos[0], 0);
+        ServoSetTargetAngle(&servos[1], 0);
+        ServoSetTargetAngle(&servos[2], 0);
+        ServoSetTargetAngle(&servos[3], 0);
 
         // Beep continuously
         STM32_beep_buzzer(200, 200, 10);

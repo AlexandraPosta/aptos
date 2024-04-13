@@ -242,10 +242,6 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     ServoSetTargetAngle(&servo3, (int32_t)_servoDeflection.servo_deflection_2*10);
     ServoSetTargetAngle(&servo4, (int32_t)_servoDeflection.servo_deflection_1*10);
 
-    // TODO
-    // Set servos to 0 deflection if angle to vertical is low
-    // Update gains based on velocity
-
     oldTimer = newTimer;
   }
 }
