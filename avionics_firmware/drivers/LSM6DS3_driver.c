@@ -204,7 +204,7 @@ bool Lsm6ds3GyroOffsets(SPI_TypeDef *spi, LSM6DS3_data* gyro)
             //printf("Offset Sums: %i, %i, %i\r\n", avg[0], avg[1], avg[2]);
             delay_microseconds(1000000/100);//delay to read at 50Hz
         }
-    }while(!Lsmds3GyroStandardDev(buff, LSM6DSO_OFFSET_BUFF_LEN, 500));   //if standard deviation of readings is not within limit then its not steady enough & try again
+    }while(!Lsmds3GyroStandardDev(buff, LSM6DSO_OFFSET_BUFF_LEN, 1000));   //if standard deviation of readings is not within limit then its not steady enough & try again
     
     gyro->x_offset = (avg[0] / LSM6DSO_OFFSET_BUFF_LEN);
     gyro->y_offset = (avg[1] / LSM6DSO_OFFSET_BUFF_LEN);

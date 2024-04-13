@@ -21,7 +21,7 @@
 #define LAUNCH_THRESHOLD  50      // micro bar for detecting a decrease
 #define APOGEE_THRESHOLD  50      // micro bar for detecting apogee
 #define DESCENT_THRESHOLD 50      // micro bar for detecting an increase
-#define GROUND_THRESHOLD  30      // micro bar for detecting ground
+#define GROUND_THRESHOLD  100      // micro bar for detecting ground
 #define WINDOW_SIZE       20      // Number of readings to compute
 
 static float sea_level_pressure = 1013.25;    // Sea level presser in micro bar

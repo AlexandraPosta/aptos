@@ -49,7 +49,7 @@ void orientation_quaternion_to_euler(Quaternion* q, Euler* e) {
 }
 
 void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data) {
-    float accel_vector[3];
+    float accel_vector[4];
     if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector)){ //try to get an acceleration vector to use as starting angle
         // Set initial values for current_quaternion
         // Estimate roll and pitch angles
@@ -186,14 +186,16 @@ bool OrientationAccelerationVector(LSM6DS3_data* _LSM6DS3_data, float vector[]){
 
     //check magnitude (in g)
     float magnitude = sqrtf(vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2]);
-    if (magnitude < 0.9 || magnitude > 1.1){   //if not close to 1G
-        return false;
-    }
+    
     //normalise the vector
     vector[0] /= magnitude;
     vector[1] /= magnitude;
     vector[2] /= magnitude;
+    vector[3] = magnitude;
 
+    if (magnitude < 0.9 || magnitude > 1.1){   //if not close to 1G
+        return false;
+    }
     return true;
 }
 

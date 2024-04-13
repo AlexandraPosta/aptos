@@ -181,7 +181,7 @@ int main(void) {
   //run_nand_flash_erase();
   //NAND_flash_read();
   //DFU_programming_test();
-  //ServoTest();
+  ServoTest();
   run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
   flightStage = LAUNCHPAD;
 
@@ -191,6 +191,7 @@ int main(void) {
   int current_pressure = 999999999;
   float current_velocity = 0;
   int apogee_incr = 3;
+  float accel_vector[4] = {0,0,0,0};
   uint32_t newTime, oldTime;
   uint32_t dt = 0;
   uint8_t buzz_count = 0;
@@ -234,7 +235,8 @@ int main(void) {
 
               // Check for launch given pressure decrease
               //printf("Diff: %i, ground: %i, cur_read: %i\r\n", frame_buffer.ground_ref - current_pressure, frame_buffer.ground_ref, current_pressure);
-              if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD) {
+              OrientationAccelerationVector(&_LSM6DS3_data, &accel_vector);
+              if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD){ //&& accel_vector[3] > 1.5) {
                 flightStage = ASCENT;
 
                 //set LED 1 to orange for ascent triggered.
@@ -286,6 +288,9 @@ int main(void) {
             //ServoSetTargetAngle(&(servos[1]), _servoDeflections.servo_deflection_2);
             //ServoSetTargetAngle(&(servos[2]), _servoDeflections.servo_deflection_3);
             //ServoSetTargetAngle(&(servos[3]), _servoDeflections.servo_deflection_4);
+
+            //printf_float("Velocity", current_velocity, true);
+            //printf("\r\n");
 
             // Check for apogee given pressure increase
             if (current_pressure - previous_pressure > APOGEE_THRESHOLD){
@@ -359,8 +364,11 @@ int main(void) {
             }
             current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median
 
+            //printf_float("Velocity", current_velocity, true);
+            //printf("\r\n");
+
             // Check for landing
-            if (Lsmds3GyroStandardDev(_data_imu, WINDOW_SIZE, 500)) {
+            if (Lsmds3GyroStandardDev(_data_imu, WINDOW_SIZE, 1500) && (frame_buffer.ground_ref - current_pressure) < GROUND_THRESHOLD) {
               flightStage = LANDING;
               printf("FLIGHT STAGE = LANDING\r\n");
               //set LED 1 to red for ascent triggered.
