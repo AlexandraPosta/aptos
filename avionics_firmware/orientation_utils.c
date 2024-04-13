@@ -48,13 +48,23 @@ void orientation_quaternion_to_euler(Quaternion* q, Euler* e) {
 
 }
 
+void orientation_change_accel_coordinate_system(LSM6DS3_data* _LSM6DS3_data) {
+    int32_t temp_x = _LSM6DS3_data->x_accel;
+    _LSM6DS3_data->x_accel = _LSM6DS3_data->y_accel;
+    _LSM6DS3_data->y_accel = temp_x;
+    _LSM6DS3_data->z_accel *= - 1;
+}
+
 void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data) {
     float accel_vector[4];
-    if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector)){ //try to get an acceleration vector to use as starting angle
+    //orientation_change_accel_coordinate_system(_LSM6DS3_data);
+    if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector) && false){ //try to get an acceleration vector to use as starting angle
         // Set initial values for current_quaternion
         // Estimate roll and pitch angles
-        float pitch = atan2(accel_vector[1], accel_vector[2]);
-        float roll = atan2(-accel_vector[0], sqrt(accel_vector[1] * accel_vector[1] + accel_vector[2] * accel_vector[2]));
+        //float pitch = atan2(accel_vector[1], accel_vector[2]);
+        //float roll = atan2(-accel_vector[0], sqrt(accel_vector[1] * accel_vector[1] + accel_vector[2] * accel_vector[2]));
+        float pitch = atan2(accel_vector[0], accel_vector[2]); // Use X and Z axes
+        float roll = atan2(-accel_vector[1], sqrt(accel_vector[0] * accel_vector[0] + accel_vector[2] * accel_vector[2])); // Use X and Z axes
         // Calculate initial quaternion components based on the estimated roll and pitch angles
         float cy = cos(roll * 0.5f);
         float sy = sin(roll * 0.5f);
@@ -105,13 +115,14 @@ void orientation_change_coordinate_system(LSM6DS3_data* _LSM6DS3_data) {
     _LSM6DS3_data->z_rate *= - 1;
 }
 
+
 // Update orientation data
 // On the sensor     -> X: PITCH, Y: ROLL,  Z:  YAW (right rule)
 // On the controller -> X: ROLL,  Y: PITCH, Z: -YAW (left rule)
 void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data) {
     // Change orientation data to match the controller coordinate system
     orientation_change_coordinate_system(_LSM6DS3_data);
-
+    orientation_change_accel_coordinate_system(_LSM6DS3_data);
     float wx = ((float)_LSM6DS3_data->x_rate * M_PI_F / 180.0f) / 1000.0f; // millidegrees/second -> radians/second
     float wy = ((float)_LSM6DS3_data->y_rate * M_PI_F / 180.0f) / 1000.0f;
     float wz = ((float)_LSM6DS3_data->z_rate * M_PI_F / 180.0f) / 1000.0f;

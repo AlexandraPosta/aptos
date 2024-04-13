@@ -243,11 +243,8 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
     //printf("\r\n");
 
     ServoSetTargetAngle(&servo1, (int32_t)_servoDeflection.servo_deflection_1*10);
-    delay_milliseconds(100);
     ServoSetTargetAngle(&servo2, (int32_t)_servoDeflection.servo_deflection_2*10);
-    delay_milliseconds(100);
     ServoSetTargetAngle(&servo3, (int32_t)_servoDeflection.servo_deflection_3*10);
-    delay_milliseconds(100);
     ServoSetTargetAngle(&servo4, (int32_t)_servoDeflection.servo_deflection_4*10);
     /*
     //printf("Angles: %i,%i,%i,%i\r\n", (int32_t)_servoDeflection.servo_deflection_1*10, (int32_t)_servoDeflection.servo_deflection_2*10,

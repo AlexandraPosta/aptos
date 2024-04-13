@@ -19,7 +19,7 @@
 #define APOGEEREADFREQ  1000  // Frequency to read data during ascent
 #define DESCENTREADFREQ 100   // Frequency to read data during descent
 
-#define SERVOS_RUN      1     // Enable or disable servos
+#define SERVOS_RUN      0     // Enable or disable servos
 
 // Flags
 FlightStages flightStage = LAUNCHPAD;
@@ -176,12 +176,12 @@ int main(void) {
   //delay_milliseconds(1000);
   //run_test_routine_BME280();
   //run_ADXL375_routine();
-  //run_test_routine_LSM6DS3();
+  run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
   //NAND_flash_read();
   //DFU_programming_test();
-  ServoTest();
+  //ServoTest();
   run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
   flightStage = LAUNCHPAD;
 
