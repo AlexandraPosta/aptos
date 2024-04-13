@@ -67,7 +67,7 @@ void kalmanFilterInit (M5611_data* barometer_data, kalman_data* kalman_data){
     kalman_data->velocity.uncertainty = 0;
     kalman_data->velocity.gain = 0;
 
-    printCSVHeaderKalman();
+    //printCSVHeaderKalman();
 }
 
 //Update Kalman Roll and Pitch Angles, Kalman Roll and Pitch Gains.
@@ -162,7 +162,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     kalman_data->velocity.uncertainty = kalman_output_velocity[1];
     kalman_data->velocity.gain  = kalman_output_velocity[2];
 
-    printDataForCollection(current_time, accel_x, accel_y, accel_z, roll_angle_accel, pitch_angle_accel, yaw_angle_accel, roll_angle_gyro, pitch_angle_gyro, yaw_angle_gyro, kalman_data);
+    //printDataForCollection(current_time, accel_x, accel_y, accel_z, roll_angle_accel, pitch_angle_accel, yaw_angle_accel, roll_angle_gyro, pitch_angle_gyro, yaw_angle_gyro, kalman_data);
 }
 
 //Kalman Filter Function:

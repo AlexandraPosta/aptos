@@ -176,7 +176,7 @@ int main(void) {
   //delay_milliseconds(1000);
   //run_test_routine_BME280();
   //run_ADXL375_routine();
-  //run_test_routine_LSM6DS3();
+  run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
   //NAND_flash_read();
