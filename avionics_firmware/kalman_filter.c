@@ -174,8 +174,8 @@ void kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_inp
     //Control Matrix Value:
     float control_matrix = 0.01;
     //Standard Deviation of Gyro/Accel Values:
-    float gyro_angle_stddev = 3;
-    float accel_angle_stddev = 2;
+    float gyro_angle_stddev = 6;
+    float accel_angle_stddev = 10;
 
     //1. Predict current state of the system:
     kalman_state = kalman_state + (control_matrix*kalman_input);
