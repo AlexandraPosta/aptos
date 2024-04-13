@@ -76,11 +76,7 @@ float get_vertical_velocity(int data[], int size, int dt) {
 
   // Calculate the total time covered by the readings (microseconds)
   float total_time = dt * WINDOW_SIZE * 1e-6f;
-
   float velocity = altitude_change / total_time;
-
-  printf_float("Velocity", velocity, true);
-  printf("\r\n");
   
   // Return vertical velocity in m/s
   return velocity;

@@ -339,7 +339,6 @@ void LQR_init(LQR_controller* lqr) {
             }
         }
     }
-    
     // Set the current gain
     lqr->current_gain = &lqr->available_gains[0];
 }
@@ -370,9 +369,33 @@ void LQR_perform_control(LQR_controller* lqr, orientation_data orientation, Serv
     servo_defs->servo_deflection_4 = 0;
 
     for (int col = 0; col < STATE_SPACE_DIM; col++) {
-        servo_defs->servo_deflection_1 += lqr->current_gain[_ravel_index_2d(1, col)] * _orientation[col] * 100 * 180 /M_PI_F; //store in degrees * 100
-        servo_defs->servo_deflection_2 += lqr->current_gain[_ravel_index_2d(2, col)] * _orientation[col] * 100 * 180 /M_PI_F;
-        servo_defs->servo_deflection_3 += lqr->current_gain[_ravel_index_2d(3, col)] * _orientation[col] * 100 * 180 /M_PI_F;
-        servo_defs->servo_deflection_4 += lqr->current_gain[_ravel_index_2d(4, col)] * _orientation[col] * 100 * 180 /M_PI_F;
+        servo_defs->servo_deflection_1 += lqr->current_gain[_ravel_index_2d(1, col)] * _orientation[col] * 100.0f * 180.0f / M_PI_F; //store in degrees * 100
+        servo_defs->servo_deflection_2 += lqr->current_gain[_ravel_index_2d(2, col)] * _orientation[col] * 100.0f * 180.0f / M_PI_F;
+        servo_defs->servo_deflection_3 += lqr->current_gain[_ravel_index_2d(3, col)] * _orientation[col] * 100.0f * 180.0f / M_PI_F;
+        servo_defs->servo_deflection_4 += lqr->current_gain[_ravel_index_2d(4, col)] * _orientation[col] * 100.0f * 180.0f / M_PI_F;
+    }
+
+    if (servo_defs->servo_deflection_1 > CANANDS_THRESHOLD) {
+        servo_defs->servo_deflection_1 = CANANDS_THRESHOLD;
+    } else if (servo_defs->servo_deflection_1 < -CANANDS_THRESHOLD) {
+        servo_defs->servo_deflection_1 = -CANANDS_THRESHOLD;
+    }
+
+    if (servo_defs->servo_deflection_2 > CANANDS_THRESHOLD) {
+        servo_defs->servo_deflection_2 = CANANDS_THRESHOLD;
+    } else if (servo_defs->servo_deflection_2 < -CANANDS_THRESHOLD) {
+        servo_defs->servo_deflection_2 = -CANANDS_THRESHOLD;
+    }
+
+    if (servo_defs->servo_deflection_3 > CANANDS_THRESHOLD) {
+        servo_defs->servo_deflection_3 = CANANDS_THRESHOLD;
+    } else if (servo_defs->servo_deflection_3 < -CANANDS_THRESHOLD) {
+        servo_defs->servo_deflection_3 = -CANANDS_THRESHOLD;
+    }
+
+    if (servo_defs->servo_deflection_4 > CANANDS_THRESHOLD) {
+        servo_defs->servo_deflection_4 = CANANDS_THRESHOLD;
+    } else if (servo_defs->servo_deflection_4 < -CANANDS_THRESHOLD) {
+        servo_defs->servo_deflection_4 = -CANANDS_THRESHOLD;
     }
 }

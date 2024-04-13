@@ -8,7 +8,6 @@
 #include "orientation_utils.h"
 
 void orientation_quaternion_to_euler(Quaternion* q, Euler* e) {
-    
     // XYZ order
     float qw2 = q->w * q->w;
     float qx2 = q->x * q->x;
@@ -101,16 +100,22 @@ void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data
 
 void orientation_change_coordinate_system(LSM6DS3_data* _LSM6DS3_data) {
     int32_t temp_x = _LSM6DS3_data->x_rate;
-    _LSM6DS3_data->x_rate = _LSM6DS3_data->z_rate;
-    _LSM6DS3_data->z_rate = -temp_x;
+    _LSM6DS3_data->x_rate = _LSM6DS3_data->y_rate;
+    _LSM6DS3_data->y_rate = temp_x;
+    _LSM6DS3_data->z_rate *= - 1;
 }
 
+// Update orientation data
+// On the sensor     -> X: PITCH, Y: ROLL,  Z:  YAW (right rule)
+// On the controller -> X: ROLL,  Y: PITCH, Z: -YAW (left rule)
 void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data) {
+    // Change orientation data to match the controller coordinate system
+    orientation_change_coordinate_system(_LSM6DS3_data);
+
+    float wx = ((float)_LSM6DS3_data->x_rate * M_PI_F / 180.0f) / 1000.0f; // millidegrees/second -> radians/second
+    float wy = ((float)_LSM6DS3_data->y_rate * M_PI_F / 180.0f) / 1000.0f;
+    float wz = ((float)_LSM6DS3_data->z_rate * M_PI_F / 180.0f) / 1000.0f;
     
-    //assign measured sensor rotations
-    float wx = (float)_LSM6DS3_data->x_rate*M_PI_F / 180 /1000.0; //convert from milli degrees to radians
-    float wy = (float)_LSM6DS3_data->y_rate*M_PI_F / 180 /1000.0;
-    float wz = (float)_LSM6DS3_data->z_rate*M_PI_F / 180 /1000.0;
     /*
     orientation->previous_euler = orientation->current_euler;
 
@@ -133,24 +138,11 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     orientation->current_rate_quaternion.y = 0.5f * ( wy * qw - wz * qx + wx * qz);	
     orientation->current_rate_quaternion.z = 0.5f * ( wz * qw + wy * qx - wx * qy);
 
-    float accel_vector[3];
-    if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector) && false){ //check if accceleration can be used to assist
-        //use acceleration vector to help.
-        // Update quaternion using the derivative & acceleration
-        //printf("Using acceleration\r\n");
-        Quaternion acceleration_correction;
-        OrientationAccelerationQuaternion(orientation, &accel_vector, &acceleration_correction);
-        orientation->current_quaternion.w += (orientation->current_rate_quaternion.w * (float)dt * 1e-6f) + acceleration_correction.w * (float)dt * 1e-6f;
-        orientation->current_quaternion.x += (orientation->current_rate_quaternion.x * (float)dt * 1e-6f) + acceleration_correction.z * (float)dt * 1e-6f;
-        orientation->current_quaternion.y += (orientation->current_rate_quaternion.y * (float)dt * 1e-6f) + acceleration_correction.y * (float)dt * 1e-6f;
-        orientation->current_quaternion.z += (orientation->current_rate_quaternion.z * (float)dt * 1e-6f) + acceleration_correction.x * (float)dt * 1e-6f;
-    }else{
-        // Update quaternion using the derivative
-        orientation->current_quaternion.w += orientation->current_rate_quaternion.w * (float)dt * 1e-6f;
-        orientation->current_quaternion.x += orientation->current_rate_quaternion.x * (float)dt * 1e-6f;
-        orientation->current_quaternion.y += orientation->current_rate_quaternion.y * (float)dt * 1e-6f;
-        orientation->current_quaternion.z += orientation->current_rate_quaternion.z * (float)dt * 1e-6f;
-    }
+    // Update quaternion using the derivative
+    orientation->current_quaternion.w += orientation->current_rate_quaternion.w * (float)dt * 1e-6f;
+    orientation->current_quaternion.x += orientation->current_rate_quaternion.x * (float)dt * 1e-6f;
+    orientation->current_quaternion.y += orientation->current_rate_quaternion.y * (float)dt * 1e-6f;
+    orientation->current_quaternion.z += orientation->current_rate_quaternion.z * (float)dt * 1e-6f;
 
     // Normalise quaternions
     float norm = sqrtf(orientation->current_quaternion.w * orientation->current_quaternion.w +
@@ -175,20 +167,15 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     printf("\r\n");
     */
     
-    orientation->current_rate_euler.roll = (orientation->current_euler.roll - orientation->previous_euler.roll) / ((float)dt* 1e-6f);
+    // Calculate the derivative of the euler angles
+    if ((orientation->current_euler.roll < (-(M_PI_F) + 0.6f)) && orientation->previous_euler.roll > (M_PI_F - 0.6f)) {
+        orientation->current_rate_euler.roll = (orientation->current_euler.roll + 2 * M_PI_F - orientation->previous_euler.roll) / ((float)dt * 1e-6f);
+    } else {
+        orientation->current_rate_euler.roll = (orientation->current_euler.roll - orientation->previous_euler.roll) / ((float)dt * 1e-6f);
+    }
+
     orientation->current_rate_euler.pitch = (orientation->current_euler.pitch - orientation->previous_euler.pitch) / ((float)dt* 1e-6f);
     orientation->current_rate_euler.yaw = (orientation->current_euler.yaw - orientation->previous_euler.yaw) / ((float)dt * 1e-6f);
-    
-    // Calculate the derivative of the euler angles
-    /*
-    if ((orientation->current_euler.roll < (M_PI_F - 0.6f)) && orientation->previous_euler.roll > (-M_PI_F + 0.6f)) {
-        orientation->current_rate_euler.roll = 1e-6f * (orientation->current_rate_euler.roll + 2 * M_PI_F - orientation->previous_euler.roll) / (float)dt;
-        orientation->current_rate_euler.
-    } else {
-        orientation->current_rate_euler.roll = 1e-6f * (orientation->current_rate_euler.roll - orientation->previous_euler.roll) / (float)dt;
-    }
-    */
-   
 }
 
 bool OrientationAccelerationVector(LSM6DS3_data* _LSM6DS3_data, float vector[]){

@@ -14,12 +14,12 @@
 #include "orientation_utils.h"
 #include "kalman_filter.h"
 
-#define PADREADFREQ 100 //frequency to read data during ascent
-#define ASCENTREADFREQ 1000 //frequency to read data during ascent
-#define APOGEEREADFREQ 1000 //frequency to read data during ascent
-#define DESCENTREADFREQ 100 //frequency to read data during descent
+#define PADREADFREQ     100   // Frequency to read data during ascent
+#define ASCENTREADFREQ  1000  // Frequency to read data during ascent
+#define APOGEEREADFREQ  1000  // Frequency to read data during ascent
+#define DESCENTREADFREQ 100   // Frequency to read data during descent
 
-#define SERVOS_RUN      0 //enable or disable servos
+#define SERVOS_RUN      1     // Enable or disable servos
 
 // Flags
 FlightStages flightStage = LAUNCHPAD;
@@ -182,7 +182,7 @@ int main(void) {
   //NAND_flash_read();
   //DFU_programming_test();
   //ServoTest();
-  //run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
+  run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
   flightStage = LAUNCHPAD;
 
   // Additional variables
@@ -200,7 +200,7 @@ int main(void) {
   newTime = get_time_us();
   oldTime = get_time_us();
   delay_microseconds(1000*1000);  // One second delay before launch for sensors to stabilise 
-  
+
   for (;;) {
     switch (flightStage) {
         case LAUNCHPAD:
@@ -229,7 +229,8 @@ int main(void) {
               for (int i = 0; i < WINDOW_SIZE; i++) {
                 _data[i] = frame_buffer.window[i].barometer.pressure;
               }
-              current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median                                 
+              current_pressure = get_median(_data, WINDOW_SIZE); // get pressure median   
+              LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections); // Update orientation                           
 
               // Check for launch given pressure decrease
               //printf("Diff: %i, ground: %i, cur_read: %i\r\n", frame_buffer.ground_ref - current_pressure, frame_buffer.ground_ref, current_pressure);

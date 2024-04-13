@@ -51,7 +51,6 @@
 #define LSM6DSO_REG_OUTZ_L_A 0x2C   // acc Z axis LSB
 #define LSM6DSO_REG_OUTZ_H_A 0x2D   // acc Z axis MSB
 
-
 // LSM6DSO register configuration values
 #define LSM6DSO_VAL_INT1_CTRL 0x02             // enable gyro data ready interrupt pin 1
 #define LSM6DSO_VAL_INT2_CTRL 0x02             // enable gyro data ready interrupt pin 2
@@ -81,10 +80,7 @@
 #define LSM6DSO_VAL_CTRL6_C_FTYPE_609HZ 0x03   // (bits 2:0) gyro LPF1 cutoff 609.0hz
 #define LSM6DSO_VAL_CTRL9_XL_I3C_DISABLE BIT(1)// (bit 1) disable I3C interface
 
-
-
 // LSM6DSO register configuration bit masks
-
 #define LSM6DSO_MASK_CTRL3_C 0x7C         // 0b01111100
 #define LSM6DSO_MASK_CTRL3_C_RESET BIT(0) // 0b00000001
 #define LSM6DSO_MASK_CTRL4_C 0x06         // 0b00000110

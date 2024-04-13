@@ -9,11 +9,12 @@
 
 #include "orientation_utils.h"
 
-#define STATE_SPACE_DIM     6   // Euler 3xangle 3xrates
+#define STATE_SPACE_DIM     6       // Euler 3xangle 3xrates
 #define NUM_GAINS           50
 #define NUM_SERVOS          4
-#define MAX_VELOCITY        120 // ms-1
-#define MIN_VELOCITY        30  // ms-1
+#define MAX_VELOCITY        120     // ms-1
+#define MIN_VELOCITY        30      // ms-1
+#define CANANDS_THRESHOLD   1500    // milidegree*1000
 
 typedef struct LQR_controller {
     float* current_gain;
