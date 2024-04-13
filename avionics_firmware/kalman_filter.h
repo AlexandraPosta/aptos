@@ -54,7 +54,7 @@ void kalmanFilterInit(M5611_data* barometer_data, kalman_data* kalman_data);
 void printDataForCollection(uint32_t current_time, float accel_x, float accel_y, float accel_z, float roll_angle_accel, float pitch_angle_accel, float yaw_angle_accel, float roll_angle_gyro, float pitch_angle_gyro, float yaw_angle_gyro, kalman_data* kalman_data);
 static inline void printCSVHeaderKalman();
 
-void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M5611_data* barometer_data ,kalman_data* kalman_data, int dt, float vertical_velocity_barom);
+void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M5611_data* barometer_data ,kalman_data* kalman_data, int dt);
 
 void kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement, float* kalman_output);
 

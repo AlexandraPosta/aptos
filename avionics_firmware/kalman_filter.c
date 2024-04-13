@@ -67,11 +67,11 @@ void kalmanFilterInit (M5611_data* barometer_data, kalman_data* kalman_data){
     kalman_data->velocity.uncertainty = 0;
     kalman_data->velocity.gain = 0;
 
-    //printCSVHeaderKalman();
+    printCSVHeaderKalman();
 }
 
 //Update Kalman Roll and Pitch Angles, Kalman Roll and Pitch Gains.
-void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M5611_data* barometer_data, kalman_data* kalman_data, int dt, float vertical_velocity_barom){
+void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M5611_data* barometer_data, kalman_data* kalman_data, int dt){
     //Get Current Time for Data Entry
     uint32_t current_time = get_time_ms();
     //Gyro Rotation Rates:
@@ -82,7 +82,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     //Gyro Rotation Angles:
     float roll_angle_gyro = (gyro_data->current_euler.roll)*(1/(3.142/180));
     float pitch_angle_gyro = (gyro_data->current_euler.pitch)*(1/(3.142/180)); 
-    float yaw_angle_gyro = (gyro_data->current_euler.pitch)*(1/(4.142/180));
+    float yaw_angle_gyro = (gyro_data->current_euler.yaw)*(1/(4.142/180));
     
     //Accelerometer Rotation Angles:
     //Convert From Milli G:
@@ -91,9 +91,9 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     float accel_z = (accel_data->z_accel)/1000.0f;
     //Calculate Angle Using Trig Method:
     //Note: Trig Method produces noisy signal.
-    float roll_angle_accel = atan(accel_y/sqrt((accel_x*accel_x)+(accel_z*accel_z)))*(1/(3.142/180));
-    float pitch_angle_accel = -atan(accel_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)))*(1/(3.142/180));
-    float yaw_angle_accel = atan((sqrt((accel_x*accel_x)+(accel_y*accel_y)))/accel_z)*(1/(3.142/180));
+    float pitch_angle_accel = atan(accel_y/sqrt((accel_x*accel_x)+(accel_z*accel_z)))*(1/(3.142/180));
+    float yaw_angle_accel = atan(accel_x/sqrt((accel_y*accel_y)+(accel_z*accel_z)))*(1/(3.142/180));
+    float roll_angle_accel = atan((sqrt((accel_x*accel_x)+(accel_y*accel_y)))/accel_z)*(1/(3.142/180));
     //Gyro and Accel angles should be similar, with accel reacting to vibrations.
 
     //Output from the kalmanFilter function, this gets over written every time the function is called:
@@ -154,7 +154,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     // Return vertical velocity in m/s
     kalman_data->velocity_measurement.barom = kalman_data->altitude_change / total_time;*/
     //Barometer Velocity Calculated from Pressure Change:
-    kalman_data->velocity_measurement.barom = vertical_velocity_barom;
+    //kalman_data->velocity_measurement.barom = vertical_velocity_barom;
 
     //Kalman Velocity:
     kalmanFilter(kalman_data->velocity.state, kalman_data->velocity.uncertainty, kalman_data->velocity_measurement.barom, kalman_data->velocity_measurement.accel, &kalman_output_velocity);
@@ -162,7 +162,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     kalman_data->velocity.uncertainty = kalman_output_velocity[1];
     kalman_data->velocity.gain  = kalman_output_velocity[2];
 
-    //printDataForCollection(current_time, accel_x, accel_y, accel_z, roll_angle_accel, pitch_angle_accel, yaw_angle_accel, roll_angle_gyro, pitch_angle_gyro, yaw_angle_gyro, kalman_data);
+    printDataForCollection(current_time, accel_x, accel_y, accel_z, roll_angle_accel, pitch_angle_accel, yaw_angle_accel, roll_angle_gyro, pitch_angle_gyro, yaw_angle_gyro, kalman_data);
 }
 
 //Kalman Filter Function:
@@ -172,7 +172,7 @@ void kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_inp
     //kalman_input = rotation rate (gyro)
     //kalman_measurement = accelerometer angle
     //Control Matrix Value:
-    float control_matrix = 0.005;
+    float control_matrix = 0.01;
     //Standard Deviation of Gyro/Accel Values:
     float gyro_angle_stddev = 3;
     float accel_angle_stddev = 2;
@@ -225,7 +225,7 @@ float kalmanGainRestriction(float restriction_gain_high, float restriction_gain_
 
 //Print Data for .csv file:
 void printDataForCollection(uint32_t current_time, float accel_x, float accel_y, float accel_z, float roll_angle_accel, float pitch_angle_accel, float yaw_angle_accel, float roll_angle_gyro, float pitch_angle_gyro, float yaw_angle_gyro, kalman_data* kalman_data){
-    printf(", %li", current_time);
+    printf(", %i", current_time);
     //Acceleration in each axis:
     printf_float(",", accel_x, true);
     printf_float(",", accel_y, true);

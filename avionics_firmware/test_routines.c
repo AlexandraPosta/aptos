@@ -79,8 +79,14 @@ void run_test_routine_LSM6DS3()
   //delay_milliseconds(50);
   Lsm6ds3Init(SPI2, &gyro_data);
   orientation_init(&_orientation, &gyro_data);
-  printf("A, X: %i, Y: %i, Z:%i \r\n", gyro_data.x_accel, gyro_data.y_accel, gyro_data.z_accel);
-
+  
+  /*
+  while(1){
+    Lsm6ds3AccRead(SPI2, &gyro_data);
+    printf("A, X: %i, Y: %i, Z:%i \r\n", gyro_data.x_accel, gyro_data.y_accel, gyro_data.z_accel);
+    delay(10);
+  }
+  */
   uint32_t start_time = get_time_us();
   uint32_t current_time;
   uint32_t dt;
