@@ -126,7 +126,7 @@ void orientation_change_coordinate_system(LSM6DS3_data* _LSM6DS3_data) {
 // Update orientation data
 // On the sensor     -> X: PITCH, Y: ROLL,  Z:  YAW (right rule)
 // On the controller -> X: ROLL,  Y: PITCH, Z: -YAW (left rule)
-void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data) {
+void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data, bool pad) {
     // Change orientation data to match the controller coordinate system
     orientation_change_coordinate_system(_LSM6DS3_data);
     orientation_change_accel_coordinate_system(_LSM6DS3_data);
@@ -152,7 +152,7 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
     orientation->current_quaternion.z += orientation->current_rate_quaternion.z * (float)dt * 1e-6f;
 
     float accel_vector[4];
-    if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector)){ //try to get an acceleration vector to use as starting angle
+    if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector) && pad){ //try to get an acceleration vector to use as starting angle
         float pitch_angle_accel = atan(accel_vector[1]/sqrt((accel_vector[0]*accel_vector[0])+(accel_vector[2]*accel_vector[2])));
         float yaw_angle_accel = atan(accel_vector[0]/sqrt((accel_vector[1]*accel_vector[1])+(accel_vector[2]*accel_vector[2])));
         // Calculate initial quaternion components based on the estimated roll and pitch angles

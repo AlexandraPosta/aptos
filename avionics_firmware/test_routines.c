@@ -98,7 +98,7 @@ void run_test_routine_LSM6DS3()
       Lsm6ds3GyroRead(SPI2, &gyro_data);
       Lsm6ds3AccRead(SPI2, &gyro_data);
       //printf("A, X: %i, Y: %i, Z:%i \r\n", gyro_data.x_accel, gyro_data.y_accel, gyro_data.z_accel);
-      orientation_update(dt, &_orientation, &gyro_data);
+      orientation_update(dt, &_orientation, &gyro_data, 1);
       /*
       printf("R, X: %i, Y: %i, Z:%i \r\n", gyro_data.x_rate, gyro_data.y_rate, gyro_data.z_rate);
       printf_float("Q, W:", _orientation.current_quaternion.w, true);
@@ -228,9 +228,10 @@ void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orient
 
     // Read the gyro data
     Lsm6ds3GyroRead(SPI2, &_LSM6DS3_data);
+    Lsm6ds3AccRead(SPI2, &_LSM6DS3_data);
 
     // Return the Euler and Quaternion angles in microseconds
-    orientation_update((newTimer - oldTimer), &_orientation, &_LSM6DS3_data);
+    orientation_update((newTimer - oldTimer), &_orientation, &_LSM6DS3_data, 0);
 
     // Perform LQR control
     LQR_update_gain(&_LQR_controller, 35);
