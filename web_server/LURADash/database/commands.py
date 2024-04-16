@@ -7,7 +7,7 @@ from sqlalchemy import Table
 from datetime import datetime, time
 
 from database.connect import db
-from database.models import Flight, FlightData
+from database.models import Flight, FlightData, ControlCommand
 
 def load_flights():
     """Dababase query to load all flights
@@ -134,3 +134,79 @@ def get_filtered_table(table, column, filter):
         return objs
     else:
         raise ValueError("Invalid table or column name")
+    
+
+def upload_data(data):
+    # Upload flight first to return ID
+    new_flight = Flight(
+        rocket_name=data.get('rocket_name', 'None'),
+        motor=data.get('motor', 'None'),
+        date_of_launch=data.get('date_of_launch', '1000-01-01'),
+        time_of_launch=data.get('time_of_launch', '00:00:00'),
+        location=data.get('location', 'None'),
+        wind_speed=data.get('wind_speed', 0),
+        wind_direction=data.get('wind_direction', 0),
+        active_control=data.get('active_control', 0),
+        comments=data.get('comments', '')
+    )
+    db.session.add(new_flight)
+    db.session.flush()  # Flush to get the new_flight id_flight generated
+
+    # Using the ID from the previous command, parse the csv data
+    # into flight_data and control_command
+    if 'csvData' in data:
+        for entry in data['csvData']:
+            flight_data = FlightData(
+                id_flight=new_flight.id_flight,
+                data_source=data.get('data_source', 'None'),
+                raw_data=1,
+                timestamp=entry.get('timestamp', '00:00:000:000'),
+                flight_stage=entry.get('flight_stage', 'None'),
+                high_g_acceleration_x=entry.get('high_g_acceleration_x', 0),
+                high_g_acceleration_y=entry.get('high_g_acceleration_y', 0),
+                high_g_acceleration_z=entry.get('high_g_acceleration_z', 0),
+                imu_gyro_rate_x=entry.get('imu_gyro_rate_x', 0),
+                imu_gyro_rate_y=entry.get('imu_gyro_rate_y', 0),
+                imu_gyro_rate_z=entry.get('imu_gyro_rate_z', 0),
+                imu_gyro_offset_x=entry.get('imu_gyro_offset_x', 0),
+                imu_gyro_offset_y=entry.get('imu_gyro_offset_y', 0),
+                imu_gyro_offset_z=entry.get('imu_gyro_offset_z', 0),
+                imu_acceleration_x=entry.get('imu_acceleration_x', 0),
+                imu_acceleration_y=entry.get('imu_acceleration_y', 0),
+                imu_acceleration_z=entry.get('imu_acceleration_z', 0),
+                ms5611_temperature=entry.get('ms5611_temperature', 0),
+                ms5611_pressure=entry.get('ms5611_pressure', 0),
+                gps_latitude=entry.get('gps_latitude', 0),
+                gps_longitude=entry.get('gps_longitude', 0),
+                gps_altitude=entry.get('gps_altitude', 0),
+                gps_velocity=entry.get('gps_velocity', 0),
+                bme_pressure=entry.get('bme_pressure', 0),
+                bme_temperature=entry.get('bme_temperature', 0),
+                bme_humidity=entry.get('bme_humidity', 0),
+                euler_roll=entry.get('euler_roll', 0),
+                euler_pitch=entry.get('euler_pitch', 0),
+                euler_yaw=entry.get('euler_yaw', 0),
+                euler_rate_roll=entry.get('euler_rate_roll', 0),
+                euler_rate_pitch=entry.get('euler_rate_pitch', 0),
+                euler_rate_yaw=entry.get('euler_rate_yaw', 0),
+                euler_kalman_roll=entry.get('euler_kalman_roll', 0),
+                euler_kalman_pitch=entry.get('euler_kalman_pitch', 0),
+                euler_kalman_yaw=entry.get('euler_kalman_yaw', 0),
+                battery=entry.get('battery', 0),
+                sattelites=entry.get('sattelites', 0),
+                errors=entry.get('errors', 'None')
+            )
+            db.session.add(flight_data)
+            control_command = ControlCommand(
+                id_flight=new_flight.id_flight,
+                timestamp=entry.get('timestamp', '00:00:000:000'),
+                servo_deflection_1=entry.get('servo_deflection_1', 0),
+                servo_deflection_2=entry.get('servo_deflection_2', 0),
+                servo_deflection_3=entry.get('servo_deflection_3', 0),
+                servo_deflection_4=entry.get('servo_deflection_4', 0),
+            )
+            db.session.add(control_command)
+
+    db.session.commit()
+
+    # Using the same ID, update the controller

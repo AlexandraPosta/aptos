@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block include %}
+<script src="{{ url_for('static', filename='js/add-data.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="header-container">
+    <h3>Launch Data Entry</h3>
+</div>
+
+<form id="rocket-data-form">
+    <label style="margin: 10px" for="rocket_name">Rocket Name:</label>
+    <input type="text" id="rocket_name" name="rocket_name" value="Pathfinder"><br><br>
+
+    <label style="margin: 10px" for="motor">Motor:</label>
+    <input type="text" id="motor" name="motor" value="J570W-14A"><br><br>
+
+    <label style="margin: 10px" for="date_of_launch">Date of Launch:</label>
+    <input type="date" id="date_of_launch" name="date_of_launch" value="2024-04-14"><br><br>
+
+    <label style="margin: 10px" for="time_of_launch">Time of Launch:</label>
+    <input type="time" id="time_of_launch" name="time_of_launch" value="15:30:00"><br><br>
+
+    <label style="margin: 10px" for="location">Location:</label>
+    <input type="text" id="location" name="location" value="MRC"><br><br>
+
+    <label style="margin: 10px" for="wind_speed">Wind Speed:</label>
+    <input type="number" id="wind_speed" name="wind_speed" value="6"><br><br>
+
+    <label style="margin: 10px" for="wind_direction">Wind Direction:</label>
+    <input type="text" id="wind_direction" name="wind_direction" value="NE-SW"><br><br>
+
+    <label style="margin: 10px" for="active_control">Active Control:</label>
+    <input type="checkbox" id="active_control" name="active_control" checked><br><br>
+
+    <label style="margin: 10px" for="raw_data">Raw Data:</label>
+    <input type="checkbox" id="raw_data" name="raw_data" checked><br><br>
+
+    <label style="margin: 10px" for="comments">Comments:</label>
+    
+<textarea id="comments" name="comments">Data was not logged from Servo 4</textarea><br><br>
+    <label style="margin: 10px" for="data_source">Data Source:</label>
+    <input type="text" id="data_source" name="data_source" value="NAND Flash"><br><br>
+
+    <label style="margin: 10px" for="csvFile">Upload CSV Data:</label>
+    <input type="file" id="csvFile" name="csvFile" accept=".csv"><br><br>
+
+    <input style="margin: 10px" type="submit" value="Submit Data">
+    <div id="loadingIndicator">Loading...</div>
+    <div id="successIndicator">Done!</div>
+    <div id="failIndicator">Failed!</div>
+</form>
+</div>
+{% endblock %}

@@ -5,6 +5,7 @@
 '''
 
 from flask import Flask, render_template, request, jsonify, after_this_request
+from flask_cors import CORS, cross_origin
 
 from database.connect import db, setup_db_model
 from database.commands import *
@@ -170,10 +171,39 @@ def database_table_all_data():
     return jsonify({'data': data})
 
 
+@app.route('/add-data', methods=['GET', 'POST'])
+def add_data():
+    """Data ingestion page of the web app
+
+    Returns:
+        The data ingestion page of the web app
+    """
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template("add-data.html")
+    
+
+@app.route('/add-data/upload', methods=['POST'])
+@cross_origin()
+def upload():
+    """API store flight data to the database
+
+    Returns:
+        The flight and the flight data
+    """
+    data = request.json
+    # Process all data only if CSV exists
+    if 'csvData' in data:
+        upload_data(data)
+    return jsonify({"message": "Data stored successfully"}), 200
+
+
 if __name__ == "__main__":
     # SqlAlchemy Database Configuration With Mysql
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin''@localhost/aptosdb'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    CORS(app)
     db.init_app(app)
     app.app_context().push()
     setup_db_model()
@@ -186,4 +216,6 @@ if __name__ == "__main__":
         all_columns[column.name] = column.type
 
     # Run the app
-    app.run(debug=False) # set to false, VSCode debug does not work otherwise
+    # VSCode debug works if debug=false
+    # Frontend updates on reload if debug=true
+    app.run(debug=True)

@@ -7,7 +7,7 @@
 import sys
 from datetime import datetime, time
 from sqlalchemy import Column
-from sqlalchemy.types import Integer, Float, String, Date, Time, Text, BINARY
+from sqlalchemy.types import Integer, Float, String, Date, Time, Text
 
 from database.connect import db
 
@@ -57,7 +57,7 @@ class Flight(db.Model):
     location = Column(String(20), nullable=False, default="None")
     wind_speed = Column(Float)
     wind_direction = Column(Float)
-    active_control = Column(BINARY, nullable=False, default=0)
+    active_control = Column(Integer, nullable=False, default=0)
     comments = Column(Text())
 
     def __init__(self,
@@ -68,7 +68,7 @@ class Flight(db.Model):
                  location="None",
                  wind_speed=0,
                  wind_direction=0,
-                 active_control=0,
+                 active_control=b'\x01',
                  comments=None):
         self.rocket_name = rocket_name
         self.motor = motor
@@ -115,30 +115,39 @@ class FlightData(db.Model):
 
     Attributes:
         id_flight: list of flight ids
-        raw_data: list of raw data values; normally True
         data_source: list of data sources as string: flash or telemetry
-        timestamp: list of timestamps as string in HH:MM:SS format
+        timestamp: list of timestamps as string in MIN:SEC:MILI:MICRO format
         flight_stage: list of flight stages as string
-        pressure: list of pressures in mbar
-        altitude: list of altitudes in meters
-        latitude: list of latitudes in degrees
-        longitude: list of longitudes in degrees
-        acceleration_x: list of x-axis accelerations in m/s^2
-        acceleration_y: list of y-axis accelerations in m/s^2
-        acceleration_z: list of z-axis accelerations in m/s^2
-        orientation_x: list of x-axis orientations in degrees
-        orientation_y: list of y-axis orientations in degrees  
-        orientation_z: list of z-axis orientations in degrees
-        temperature: list of temperatures in degrees Celsius
-        humidity: list of humidities in percentage
+        high_g_acceleration_x: list of x-axis accelerations in m/s^2
+        high_g_acceleration_y: list of y-axis accelerations in m/s^2
+        high_g_acceleration_z: list of z-axis accelerations in m/s^2
+        imu_gyro_rate_x: list of x-axis gyro rates in degrees/s
+        imu_gyro_rate_y: list of y-axis gyro rates in degrees/s
+        imu_gyro_rate_z: list of z-axis gyro rates in degrees/s
+        imu_gyro_offset_x: list of x-axis gyro offsets in degrees/s
+        imu_gyro_offset_y: list of y-axis gyro offsets in degrees/s
+        imu_gyro_offset_z: list of z-axis gyro offsets in degrees/s
+        imu_acceleration_x: list of x-axis accelerations in m/s^2
+        imu_acceleration_y: list of y-axis accelerations in m/s^2
+        imu_acceleration_z: list of z-axis accelerations in m/s^2
+        ms5611_temperature: list of temperatures in degrees Celsius
+        ms5611_pressure: list of pressures in mbar
+        gps_latitude: list of latitudes in degrees
+        gps_longitude: list of longitudes in degrees
+        gps_altitude: list of altitudes in meters
+        gps_velocity: list of velocities in m/s
+        bme_pressure: list of pressures in mbar
+        bme_temperature: list of temperatures in degrees Celsius
+        bme_humidity: list of humidities in percentage
+        euler_roll: list of rolls in degrees
+        euler_pitch: list of pitches in degrees
+        euler_yaw: list of yaws in degrees
+        euler_rate_roll: list of rates of rolls in degrees/s
+        euler_rate_pitch: list of rates of pitches in degrees/s
+        euler_rate_yaw: list of rates of yaws in degrees/s
         battery: list of battery levels in voltage
         sattelites: list of sattelite counts
-        errors: list of errors as string
-        servo_1: list of servo 1 positions as float
-        servo_2: list of servo 2 positions as float
-        servo_3: list of servo 3 positions as float
-        servo_4: list of servo 4 positions as float
-    
+        errors: list of errors as string    
     """
     __tablename__ = "flight_data"
 
@@ -150,79 +159,121 @@ class FlightData(db.Model):
                       ondelete="SET NULL"),
         nullable=False
     )
-    raw_data = Column(BINARY, nullable=False, default=1)
+    raw_data = Column(Integer, nullable=False, default=1)
     data_source = Column(String(10), nullable=False, default="None")
-    timestamp = Column(Time, nullable=False, default="00:00:00")
+    timestamp = Column(String(255), nullable=False, default="00:00:00")
     flight_stage = Column(String(10), nullable=False, default="None")
-    pressure = Column(Float)
-    altitude = Column(Float)
-    latitude = Column(Float)
-    longitude = Column(Float)
-    acceleration_x = Column(Float)
-    acceleration_y = Column(Float)
-    acceleration_z = Column(Float)
-    orientation_x = Column(Float)
-    orientation_y = Column(Float)
-    orientation_z = Column(Float)
-    temperature = Column(Float)
-    humidity = Column(Float)
-    battery = Column(Float)
-    sattelites = Column(Integer)
+    high_g_acceleration_x = Column(Float, default="0")
+    high_g_acceleration_y = Column(Float, default="0")
+    high_g_acceleration_z = Column(Float, default="0")
+    imu_gyro_rate_x = Column(Float, default="0")
+    imu_gyro_rate_y = Column(Float, default="0")
+    imu_gyro_rate_z = Column(Float, default="0")
+    imu_gyro_offset_x = Column(Float, default="0")
+    imu_gyro_offset_y = Column(Float, default="0")
+    imu_gyro_offset_z = Column(Float, default="0")
+    imu_acceleration_x = Column(Float, default="0")
+    imu_acceleration_y = Column(Float, default="0")
+    imu_acceleration_z = Column(Float, default="0")
+    ms5611_temperature = Column(Float, default="0")
+    ms5611_pressure = Column(Float, default="0")
+    gps_latitude = Column(Float, default="0")
+    gps_longitude = Column(Float, default="0")
+    gps_altitude = Column(Float, default="0")
+    gps_velocity = Column(Float, default="0")
+    bme_pressure = Column(Integer, default="0")
+    bme_temperature = Column(Integer, default="0")
+    bme_humidity = Column(Integer, default="0")
+    euler_roll = Column(Float, default="0")
+    euler_pitch = Column(Float, default="0")
+    euler_yaw = Column(Float, default="0")
+    euler_rate_roll = Column(Float, default="0")
+    euler_rate_pitch = Column(Float, default="0")
+    euler_rate_yaw = Column(Float, default="0")
+    euler_kalman_roll = Column(Float, default="0")
+    euler_kalman_pitch = Column(Float, default="0")
+    euler_kalman_yaw = Column(Float, default="0")
+    battery = Column(Float, default="0")
+    sattelites = Column(Integer, default="0")
     errors = Column(Text())
-    servo_1 = Column(Integer, default=0)
-    servo_2 = Column(Integer, default=0)
-    servo_3 = Column(Integer, default=0)
-    servo_4 = Column(Integer, default=0)
 
     def __init__(self,
                  id_flight=0,
                  raw_data=1,
                  data_source="None",
-                 timestamp="00:00:00",
+                 timestamp="00:00:000:000",
                  flight_stage="None",
-                 pressure=None,
-                 altitude=None,
-                 latitude=None,
-                 longitude=None,
-                 acceleration_x=None,
-                 acceleration_y=None,
-                 acceleration_z=None,
-                 orientation_x=None,
-                 orientation_y=None,
-                 orientation_z=None,
-                 temperature=None,
-                 humidity=None,
-                 battery=None,
-                 sattelites=None,
-                 errors=None,
-                 servo_1=0,
-                 servo_2=0,
-                 servo_3=0,
-                 servo_4=0):
+                 high_g_acceleration_x=0,
+                 high_g_acceleration_y=0,
+                 high_g_acceleration_z=0,
+                 imu_gyro_rate_x=0,
+                 imu_gyro_rate_y=0,
+                 imu_gyro_rate_z=0,
+                 imu_gyro_offset_x=0,
+                 imu_gyro_offset_y=0,
+                 imu_gyro_offset_z=0,
+                 imu_acceleration_x=0,
+                 imu_acceleration_y=0,
+                 imu_acceleration_z=0,
+                 ms5611_temperature=0,
+                 ms5611_pressure=0,
+                 gps_latitude=0,
+                 gps_longitude=0,
+                 gps_altitude=0,
+                 gps_velocity=0,
+                 bme_pressure=0,
+                 bme_temperature=0,
+                 bme_humidity=0,
+                 euler_roll=0,
+                 euler_pitch=0,
+                 euler_yaw=0,
+                 euler_rate_roll=0,
+                 euler_rate_pitch=0,
+                 euler_rate_yaw=0,
+                 euler_kalman_roll=0,
+                 euler_kalman_pitch=0,
+                 euler_kalman_yaw=0,
+                 battery=0,
+                 sattelites=0,
+                 errors="None"):
         self.id_flight = id_flight
         self.raw_data = raw_data
         self.data_source = data_source
         self.timestamp = timestamp
         self.flight_stage = flight_stage
-        self.pressure = pressure
-        self.altitude = altitude
-        self.latitude = latitude
-        self.longitude = longitude
-        self.acceleration_x = acceleration_x
-        self.acceleration_y = acceleration_y
-        self.acceleration_z = acceleration_z
-        self.orientation_x = orientation_x
-        self.orientation_y = orientation_y
-        self.orientation_z = orientation_z
-        self.temperature = temperature
-        self.humidity = humidity
+        self.high_g_acceleration_x = high_g_acceleration_x
+        self.high_g_acceleration_y = high_g_acceleration_y
+        self.high_g_acceleration_z = high_g_acceleration_z
+        self.imu_gyro_rate_x = imu_gyro_rate_x
+        self.imu_gyro_rate_y = imu_gyro_rate_y
+        self.imu_gyro_rate_z = imu_gyro_rate_z
+        self.imu_gyro_offset_x = imu_gyro_offset_x
+        self.imu_gyro_offset_y = imu_gyro_offset_y
+        self.imu_gyro_offset_z = imu_gyro_offset_z
+        self.imu_acceleration_x = imu_acceleration_x
+        self.imu_acceleration_y = imu_acceleration_y
+        self.imu_acceleration_z = imu_acceleration_z
+        self.ms5611_temperature = ms5611_temperature
+        self.ms5611_pressure = ms5611_pressure
+        self.gps_latitude = gps_latitude
+        self.gps_longitude = gps_longitude
+        self.gps_altitude = gps_altitude
+        self.gps_velocity = gps_velocity
+        self.bme_pressure = bme_pressure
+        self.bme_temperature = bme_temperature
+        self.bme_humidity = bme_humidity
+        self.euler_roll = euler_roll
+        self.euler_pitch = euler_pitch
+        self.euler_yaw = euler_yaw
+        self.euler_rate_roll = euler_rate_roll
+        self.euler_rate_pitch = euler_rate_pitch
+        self.euler_rate_yaw = euler_rate_yaw
+        self.euler_kalman_roll = euler_kalman_roll,
+        self.euler_kalman_pitch = euler_kalman_pitch,
+        self.euler_kalman_yaw = euler_kalman_yaw,
         self.battery = battery
         self.sattelites = sattelites
         self.errors = errors
-        self.servo_1 = servo_1
-        self.servo_2 = servo_2
-        self.servo_3 = servo_3
-        self.servo_4 = servo_4
 
     def __repr__(self):
         return unicode_to_str("<Flight Data: id_flight_data=%s id_flight='%s' timestamp='%s'>" % 
@@ -259,7 +310,7 @@ class ControlCommand(db.Model):
 
     Attributes:
         id_flight: list of flight ids
-        timestamp: list of timestamps as string in HH:MM:SS format
+        timestamp: list of timestamps as string in MIN:SEC:MILI:MICRO format
         command_servo_1: list of servo 1 commands as integer
         command_servo_2: list of servo 2 commands as integer
         command_servo_3: list of servo 3 commands as integer
@@ -276,25 +327,25 @@ class ControlCommand(db.Model):
                       ondelete="SET NULL"),
         nullable=False
     )
-    timestamp = Column(Time, nullable=False, default="00:00:00")
-    command_servo_1 = Column(Integer, default=0)
-    command_servo_2 = Column(Integer, default=0)
-    command_servo_3 = Column(Integer, default=0)
-    command_servo_4 = Column(Integer, default=0)
+    timestamp = Column(String(255), nullable=False, default="00:00:000:000")
+    servo_deflection_1 = Column(Float, default=0)
+    servo_deflection_2 = Column(Float, default=0)
+    servo_deflection_3 = Column(Float, default=0)
+    servo_deflection_4 = Column(Float, default=0)
 
     def __init__(self,
                  id_flight=0,
-                 timestamp="00:00:00",
-                 command_servo_1=0,
-                 command_servo_2=0,
-                 command_servo_3=0,
-                 command_servo_4=0):
+                 timestamp="00:00:000:000",
+                 servo_deflection_1=0,
+                 servo_deflection_2=0,
+                 servo_deflection_3=0,
+                 servo_deflection_4=0):
         self.id_flight = id_flight
         self.timestamp = timestamp
-        self.command_servo_1 = command_servo_1
-        self.command_servo_2 = command_servo_2
-        self.command_servo_3 = command_servo_3
-        self.command_servo_4 = command_servo_4
+        self.servo_deflection_1 = servo_deflection_1
+        self.servo_deflection_2 = servo_deflection_2
+        self.servo_deflection_3 = servo_deflection_3
+        self.servo_deflection_4 = servo_deflection_4
 
     def __repr__(self):
         return unicode_to_str("<Control Command: id_control_commands=%s id_flight='%s' timestamp='%s'>" % 

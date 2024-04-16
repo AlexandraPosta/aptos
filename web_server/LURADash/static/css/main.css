@@ -170,6 +170,7 @@ model-viewer {
 }
 /*#endregion Dashboard Content*/
 
+
 /*#region Database*/
 .db-container {
     display: block;
@@ -195,3 +196,23 @@ model-viewer {
     background-color: white;
 }
 /*#endregion Database*/
+
+
+/*#region Form*/
+#loadingIndicator {
+    margin-left: 10px;
+    display: none;
+}
+
+#successIndicator {
+    color: green;
+    margin-left: 10px;
+    display: none;
+}
+
+#failIndicator {
+    color: red;
+    margin-left: 10px;
+    display: none;
+}
+/*#endregion Form*/

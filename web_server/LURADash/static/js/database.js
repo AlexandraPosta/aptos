@@ -55,7 +55,8 @@ function dbDisplayTable(table_data) {
     tbl.appendChild(tbl_body);
     document.getElementById('db-container').appendChild(tbl);
 }
-//#region Table
+//#endregion
+
 
 //#region Search Bar
 function dbTableSearch() {
