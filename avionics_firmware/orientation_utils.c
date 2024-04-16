@@ -25,32 +25,10 @@ void orientation_quaternion_to_euler(Quaternion* q, Euler* e) {
     e->roll = (float)atan2(-dcm32, dcm33);
     e->pitch = (float)asin(dcm31);
     e->yaw = (float)atan2(-dcm21, dcm11);
-    
-    /*
-    //new Quaternion to euler equations from https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles 
-
-    //roll (X)
-    float sinr_cosp = 2.0f * (q->w * q->x + q->y * q->z);
-    float cosr_cosp = 1.0f - 2.0f * (q->x * q->x + q->y * q->y);
-    e->roll = atan2f(sinr_cosp, cosr_cosp);
-
-    // pitch (y-axis rotation)
-    float t2 = 2.0f * (q->w * q->y - q->z * q->x);
-    if (t2 > 1.0f) t2 = 1.0f;
-    if (t2 < -1.0f) t2 = -1.0f;
-    e->pitch = asinf(t2);
-
-    // yaw (z-axis rotation)
-    float siny_cosp = 2.0f * (q->w * q->z + q->x * q->y);
-    float cosy_cosp = 1.0f - 2.0f * (q->y * q->y + q->z * q->z);
-    e->yaw = atan2f(siny_cosp, cosy_cosp);
-    */
-
 }
 
 void orientation_change_accel_coordinate_system(LSM6DS3_data* _LSM6DS3_data) {
     int32_t temp_y = _LSM6DS3_data->y_accel;
-    //_LSM6DS3_data->x_accel = _LSM6DS3_data->y_accel;
     _LSM6DS3_data->y_accel = _LSM6DS3_data->z_accel;
     _LSM6DS3_data->z_accel = -temp_y;
 }
@@ -59,17 +37,6 @@ void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data
     float accel_vector[4];
     orientation_change_accel_coordinate_system(_LSM6DS3_data);
     if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector)){ //try to get an acceleration vector to use as starting angle
-        // Set initial values for current_quaternion
-        // Estimate roll and pitch angles
-        //float pitch = atan2(accel_vector[1], accel_vector[2]);
-        //float roll = atan2(-accel_vector[0], sqrt(accel_vector[1] * accel_vector[1] + accel_vector[2] * accel_vector[2]));
-        // Calculate initial quaternion components based on the estimated roll and pitch angles
-        //float cy = cos(roll * 0.5f);
-        //float sy = sin(roll * 0.5f);
-        //float cp = cos(pitch * 0.5f);
-        //float sp = sin(pitch * 0.5f);
-
-        //new
         float pitch_angle_accel = atan(accel_vector[1]/sqrt((accel_vector[0]*accel_vector[0])+(accel_vector[2]*accel_vector[2])));
         float yaw_angle_accel = atan(accel_vector[0]/sqrt((accel_vector[1]*accel_vector[1])+(accel_vector[2]*accel_vector[2])));
         // Calculate initial quaternion components based on the estimated roll and pitch angles
@@ -121,7 +88,6 @@ void orientation_change_coordinate_system(LSM6DS3_data* _LSM6DS3_data) {
     _LSM6DS3_data->y_rate = temp_x;
     _LSM6DS3_data->z_rate *= -1;
 }
-
 
 // Update orientation data
 // On the sensor     -> X: PITCH, Y: ROLL,  Z:  YAW (right rule)
