@@ -431,14 +431,14 @@ static inline FrameArray unzip(uint8_t *zippedData) {
   unzippedData.euler_kalman.yaw = ((float) temp) / 1000.0f;
 
   // Servo Deflection
-  unzippedData.servos.servo_deflection_1 |= (zippedData[i++] << 8) & (0xFF << 8);
-  unzippedData.servos.servo_deflection_1 = zippedData[i++];
-  unzippedData.servos.servo_deflection_2 |= (zippedData[i++] << 8) & (0xFF << 8);
-  unzippedData.servos.servo_deflection_2 = zippedData[i++];
-  unzippedData.servos.servo_deflection_3 |= (zippedData[i++] << 8) & (0xFF << 8);
-  unzippedData.servos.servo_deflection_3 = zippedData[i++];
-  unzippedData.servos.servo_deflection_4 |= (zippedData[i++] << 8) & (0xFF << 8);
-  unzippedData.servos.servo_deflection_4 = zippedData[i++];
+  unzippedData.servos.servo_deflection_1 = (zippedData[i++] << 8) & (0xFF << 8);
+  unzippedData.servos.servo_deflection_1 |= zippedData[i++];
+  unzippedData.servos.servo_deflection_2 = (zippedData[i++] << 8) & (0xFF << 8);
+  unzippedData.servos.servo_deflection_2 |= zippedData[i++];
+  unzippedData.servos.servo_deflection_3 = (zippedData[i++] << 8) & (0xFF << 8);
+  unzippedData.servos.servo_deflection_3 |= zippedData[i++];
+  unzippedData.servos.servo_deflection_4 = (zippedData[i++] << 8) & (0xFF << 8);
+  unzippedData.servos.servo_deflection_4 |= zippedData[i++];
 
   unzippedData.hammingCode[0] = zippedData[118];
   unzippedData.hammingCode[1] = zippedData[119];
