@@ -8,7 +8,7 @@
             "name": "Python: Flask",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceRoot}/web-server/LURADash/app.py",
+            "program": "${workspaceRoot}/web_server/LURADash/app.py",
             "env": {
                 "FLASK_APP": "${workspaceRoot}/app.py",
                 "FLASK_ENV": "development",

@@ -10,6 +10,7 @@ To set up the webserver:
 - create environment ```virtualenv env```
 - activate ```.\env\Scripts\activate```
 - ```pip install flask```
+- ```pip install flask-cors```
 - ```pip install sqlalchemy```
 - ```pip install Flask-SQLAlchemy```
 - ```pip install mysql-connector-python```
