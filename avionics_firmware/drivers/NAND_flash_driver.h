@@ -572,19 +572,20 @@ static inline void print_frame_array(FrameArray frameFormat) {
   @param frameFormat
 */
 static inline void print_csv_header() {
-  printf("Date,");
-  printf("Time,");
-  printf("ChangeFlag,");
-  printf("ACC X,ACC Y,ACC Z,");
-  printf("IMU X_RATE,IMU Y_RATE,IMU Z_RATE,\
-          IMU X_OFFSET,IMU Y_OFFSET,IMU Z_OFFSET,IMU ACC_X,IMU ACC_Y,IMU ACC_Z,");
-  printf("MS5611 Temperature,MS5611 Pressure,");
-  printf("GNSS Lat,GNSS Long,GNSS Alt,GNSS velocity,");
-  printf("BME280 Pressure,BME280 Temperature,BME280 Humidity,");
-  printf("Euler Roll,Euler Pitch,Euler Yaw,");
-  printf("Euler Rate Roll,Euler Rate Pitch,Euler Rate Yaw,");
-  printf("Euler Kalman Roll,Euler Kalman Pitch,Euler Kalman Yaw,");
-  printf("Servo 1,Servo 2,Servo 3,Servo 4,");
+  printf("date,");
+  printf("timestamp,");
+  printf("flight_stage,");
+  printf("high_g_acceleration_x,high_g_acceleration_y,high_g_acceleration_z,");
+  printf("imu_gyro_rate_x,imu_gyro_rate_y,imu_gyro_rate_z,\
+          imu_gyro_offset_x,imu_gyro_offset_y,imu_gyro_offset_z, \
+          imu_acceleration_x,imu_acceleration_y,imu_acceleration_z,");
+  printf("ms5611_temperature,ms5611_pressure,");
+  printf("gps_latitude,gps_longitude,gps_altitude,gps_velocity,");
+  printf("bme_pressure,bme_temperature,bme_humidity,");
+  printf("euler_roll,euler_pitch,euler_yaw,");
+  printf("euler_rate_roll,euler_rate_pitch,euler_rate_yaw,");
+  printf("euler_kalman_roll,euler_kalman_pitch,euler_kalman_yaw,");
+  printf("servo_deflection_1,servo_deflection_2,servo_deflection_3,servo_deflection_4,");
   printf("\r\n");
 }
 
