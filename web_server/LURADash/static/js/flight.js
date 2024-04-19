@@ -39,6 +39,8 @@ function stopWorker() {
 
 
 //#region Dashboard Charts
+let times = [];
+
 /**
  * Main function that updates all charts on the dashboard. Checks if the
  * flight data is composed of arrays and if not, converts it to an array.
@@ -84,6 +86,33 @@ function deleteSequence() {
         }
     }
   });
+}
+
+function timeStringToSeconds(time_string) {
+  const parts = time_string.split(':'); // Splitting by ':'
+  if (parts.length !== 4) {
+    throw new Error('Invalid time format');
+  }
+  const minutes = parseInt(parts[0], 10);
+  const seconds = parseInt(parts[1], 10);
+  const milliseconds = parseInt(parts[2], 10);
+  const microseconds = parseInt(parts[3], 10);
+
+  // Convert everything into seconds
+  return minutes * 60 + seconds + (milliseconds / 1000) + (microseconds / 1000000);
+}
+
+function updateTimestamp(times) {
+  let _new = [];
+  const base_time = times[0];
+  const base_seconds = timeStringToSeconds(base_time);
+
+  times.map(time => {
+    const total_seconds = timeStringToSeconds(time);
+    let diff_seconds = total_seconds - base_seconds; // Subtracting the base time converted to seconds
+    _new.push(diff_seconds.toFixed(5));
+  });
+  return _new;
 }
 
 /**
@@ -348,6 +377,19 @@ function flightRun() {
         if (loader && data) {
           getVelocity(data.flight_data);
           getAltitude(data.flight_data);
+          times = [];
+
+          data.flight_data.forEach(entry => {
+            times.push(entry.timestamp); 
+          });
+
+          let new_timestamp = updateTimestamp(times);
+
+          data.flight_data.forEach((entry, index) => {
+            entry.timestamp = new_timestamp[index];
+          });
+
+          flight_data.timestamp = new_timestamp;
           loader.postMessage(data);
         }
       });
@@ -385,7 +427,9 @@ function flightDisplay() {
           flight_data = new FlightData(); // Convert from object to list of entries
           getVelocity(data.flight_data);
           getAltitude(data.flight_data);
-          flight_data.entries_to_lists(data.flight_data)
+          flight_data.entries_to_lists(data.flight_data);
+          let new_timestamp = updateTimestamp(flight_data.timestamp);
+          flight_data.timestamp = new_timestamp;
           updateSequence(data.flight, flight_data);
         }
       });
@@ -440,11 +484,21 @@ async function fetchFlightData(id_flight) {
   }
 }
 
+/**
+ * 
+ * @param  {}     
+ * @return {}    
+ */
 function parseTime(timestamp) {
   let parts = timestamp.split(':');
   return parseInt(parts[0]) * 60 + parseInt(parts[1]) + parseInt(parts[2]) / 1000 + parseInt(parts[3]) / 1000000;
 }
 
+/**
+ * 
+ * @param  {}     
+ * @return {}    
+ */
 function getVelocity(flight_data) {
   let previousTime = parseTime(flight_data[0].timestamp);
   let previousVelocity = 0;
@@ -464,11 +518,16 @@ function getVelocity(flight_data) {
   });
 }
 
+/**
+ * 
+ * @param  {}     
+ * @return {}    
+ */
 function getAltitude(flight_data) {
-  const P0 = 1013.25; // Standard atmospheric pressure at sea level in mbar
+  const P0 = 1021.6; // Standard atmospheric pressure at sea level in mbar
   flight_data.forEach(data => {
     let pressureInMbar = data.ms5611_pressure / 100; // converting from mbar*100 to mbar
-    data.altitude = 44330 * (1 - Math.pow(pressureInMbar / P0, 1/5.255));
+    data.altitude = 44330 * (1 - Math.pow(pressureInMbar / P0, 1/5.255)) + 100;
   });
 }
 //#endregion
