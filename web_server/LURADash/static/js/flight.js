@@ -580,8 +580,8 @@ window.onload = function() {
     });
 
     // Create charts
-    getGraph('altChart', 250, window.innerWidth * 0.35,  ['time', 'altitude'], ['altitude']);
-    getGraph('velChart', 250, window.innerWidth * 0.35, ['time', 'parameters'], ['v', 'acc']);
+    getGraph('altChart', 250, window.innerWidth * 0.35,  ['time', 'altitude (m)'], ['altitude']);
+    getGraph('velChart', 250, window.innerWidth * 0.35, ['time', 'parameters (m/s, g)'], ['v', 'acc']);
     getGraph('controlChart', 250, window.innerWidth * 0.35, ['altitude', 'latitude', 'longitude'], ['ideal', 'real']);
 
     // Attach event handlers
