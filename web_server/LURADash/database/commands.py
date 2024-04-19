@@ -147,6 +147,9 @@ def upload_data(data):
         wind_speed=data.get('wind_speed', 0),
         wind_direction=data.get('wind_direction', 0),
         active_control=data.get('active_control', 0),
+        initial_mass=data.get('initial_mass', 0),
+        CG_location=data.get('CG_location', 0),
+        CP_location=data.get('CP_location', 0),
         comments=data.get('comments', '')
     )
     db.session.add(new_flight)

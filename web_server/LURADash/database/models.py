@@ -58,6 +58,9 @@ class Flight(db.Model):
     wind_speed = Column(Float)
     wind_direction = Column(String(20), nullable=False, default="None")
     active_control = Column(Integer, nullable=False, default=0)
+    initial_mass = Column(Float, nullable=False, default=0)
+    CG_location = Column(Float, nullable=False, default=0)
+    CP_location = Column(Float, nullable=False, default=0)
     comments = Column(Text())
 
     def __init__(self,
@@ -69,6 +72,9 @@ class Flight(db.Model):
                  wind_speed=0,
                  wind_direction=0,
                  active_control=b'\x01',
+                 initial_mass=0,
+                 CG_location=0,
+                 CP_location=0,
                  comments=None):
         self.rocket_name = rocket_name
         self.motor = motor
@@ -78,6 +84,9 @@ class Flight(db.Model):
         self.wind_speed = wind_speed
         self.wind_direction = wind_direction
         self.active_control = active_control
+        self.initial_mass = initial_mass
+        self.CG_location = CG_location
+        self.CP_location = CP_location
         self.comments = comments
 
     def __repr__(self):
