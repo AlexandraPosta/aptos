@@ -29,9 +29,11 @@ function updateTimestamp(flight_data) {
             base_time = data.timestamp;
             base_seconds = timeStringToSeconds(base_time);
         } else {
-            const total_seconds = timeStringToSeconds(data.timestamp);
-            // Subtracting the base time converted to seconds
-            _new.push((total_seconds - base_seconds).toFixed(5));
+            if (data.flight_stage < 3) {
+                const total_seconds = timeStringToSeconds(data.timestamp);
+                // Subtracting the base time converted to seconds
+                _new.push((total_seconds - base_seconds).toFixed(5));
+            }
         }
     });
     return _new;
@@ -46,8 +48,10 @@ function getAltitude(flight_data) {
     let altitudes = [];     // meters
     const P0 = 1021.6;      // Standard atmospheric pressure at sea level in mbar
     flight_data.forEach(data => {
-        let pressureInMbar = data.ms5611_pressure / 100; // converting from mbar*100 to mbar
-        altitudes.push(44330 * (1 - Math.pow(pressureInMbar / P0, 1/5.255)) + 100);
+        if (data.flight_stage < 3) {
+            let pressureInMbar = data.ms5611_pressure / 100; // converting from mbar*100 to mbar
+            altitudes.push(44330 * (1 - Math.pow(pressureInMbar / P0, 1/5.255)) + 100);
+        }
     });
     return altitudes;
 }
@@ -61,37 +65,41 @@ function getVerticalVelocity(flight_data) {
         if (index === 0) {
             vertical_velocity.push(0); // Assuming initial velocity is zero
         } else {
-            let currentTime = parseTime(data.timestamp);
-            let deltaTime = currentTime - previousTime;
-            let currentAcceleration = data.imu_acceleration_z * 0.00980665; // converting from mg to m/s^2
-            let currentVelocity = previousVelocity + currentAcceleration * deltaTime;
-            vertical_velocity.push(currentVelocity.toFixed(3));
-            previousTime = currentTime;
-            previousVelocity = currentVelocity;
+            if (data.flight_stage < 3) {
+                let currentTime = parseTime(data.timestamp);
+                let deltaTime = currentTime - previousTime;
+                let currentAcceleration = data.imu_acceleration_z * 0.00980665; // converting from mg to m/s^2
+                let currentVelocity = previousVelocity + currentAcceleration * deltaTime;
+                vertical_velocity.push(currentVelocity.toFixed(3));
+                previousTime = currentTime;
+                previousVelocity = currentVelocity;
+            }
         }
     });
     return vertical_velocity;
 }
 
-function getMass(flight, times) {
+function getMass(flight, flight_data, times) {
     const propellant_mass = 0.908;                  // kg
     const burn_time = 1.9;                          // seconds
     const burn_rate = propellant_mass / burn_time;  // kg per second
     let current_mass = [];                          // kg
 
-    times.forEach((time) => {
-        // Calculate mass only during the burn period
-        if (time <= burn_time) {
-            current_mass.push((flight.initial_mass - burn_rate * time));
-        } else {
-            // After burnout, mass remains constant (only hardware mass)
-            current_mass.push(flight.initial_mass - propellant_mass);
+    times.forEach((time, index) => {
+        if (flight_data[index].flight_stage < 3) {
+            // Calculate mass only during the burn period
+            if (time <= burn_time) {
+                current_mass.push((flight.initial_mass - burn_rate * time));
+            } else {
+                // After burnout, mass remains constant (only hardware mass)
+                current_mass.push(flight.initial_mass - propellant_mass);
+            }
         }
     });
     return current_mass;
 }
 
-function getLongitudinalMomentOfInertia(flight, masses) {
+function getLongitudinalMomentOfInertia(flight, flight_data, masses) {
     let long_moment_inertia = [];                                   // kg*m^2
     const propellant_height = 0.478;                                // meters
     const propellant_mass = 0.908;                                  // kg
@@ -100,44 +108,45 @@ function getLongitudinalMomentOfInertia(flight, masses) {
     const structure_mass = flight.initial_mass - propellant_mass;   // Constant structure mass
     const structure_height = total_height - propellant_height;      // Constant structure height
 
-    
-    masses.forEach((mass) => {
-        // Remaining propellant mass calculation
-        const remaining_propellant_mass = mass - structure_mass;
-        const effective_propellant_height = propellant_height * (remaining_propellant_mass / propellant_mass);
-
-        // Calculate moment of inertia for the remaining propellant
-        const propellant_I = (1/12) * remaining_propellant_mass * (3 * radius * radius + effective_propellant_height * effective_propellant_height);
-
-        // Moment of inertia of the remaining structure (assumed constant)
-        const structure_I = (1/12) * structure_mass * (3 * radius * radius + structure_height * structure_height);
-
-        // Total moment of inertia
-        long_moment_inertia.push(propellant_I + structure_I);
+    masses.forEach((mass, index) => {
+        if (flight_data[index].flight_stage < 3) {
+            // Remaining propellant mass calculation
+            const remaining_propellant_mass = mass - structure_mass;
+            const effective_propellant_height = propellant_height * (remaining_propellant_mass / propellant_mass);
+            // Calculate moment of inertia for the remaining propellant
+            const propellant_I = (1/12) * remaining_propellant_mass * (3 * radius * radius + effective_propellant_height * effective_propellant_height);
+            // Moment of inertia of the remaining structure (assumed constant)
+            const structure_I = (1/12) * structure_mass * (3 * radius * radius + structure_height * structure_height);
+            // Total moment of inertia
+            long_moment_inertia.push(propellant_I + structure_I);
+        }
     });
 
     return long_moment_inertia;
 }
 
-function getRotationalMomentOfInertia(masses) {
+function getRotationalMomentOfInertia(flight_data, masses) {
     let rotational_I = [];          // kg*m^2
     const radius = 0.103;           // meters
-    masses.forEach((mass) => {
-        // Calculate the rotational moment of inertia of the entire rocket, assuming the radius does not change
-        rotational_I.push(0.5 * mass * radius * radius);
+    masses.forEach((mass, index) => {
+        if (flight_data[index].flight_stage < 3) {
+            // Calculate the rotational moment of inertia of the entire rocket, assuming the radius does not change
+            rotational_I.push(0.5 * mass * radius * radius);
+        }
     });
     return rotational_I;
 }
 
-function getCGLocation(flight, masses) {
+function getCGLocation(flight, flight_data, masses) {
     let cg_locations = [];          // meters
 
-    masses.forEach((mass) => {
-        const consumed_mass = flight.initial_mass - mass;
-
-        // Assuming CG shifts linearly as the propellant burns, and the propellant is at the base of the rocket
-        const cg_shift = (consumed_mass / flight.initial_mass) * (flight.CG_location / 2);
-        cg_locations.push(flight.CG_location - cg_shift);
+    masses.forEach((mass, index) => {
+        if (flight_data[index].flight_stage < 3) {
+            const consumed_mass = flight.initial_mass - mass;
+            // Assuming CG shifts linearly as the propellant burns, and the propellant is at the base of the rocket
+            const cg_shift = (consumed_mass / flight.initial_mass) * (flight.CG_location / 2);
+            cg_locations.push(flight.CG_location - cg_shift);
+        }
     });
 
     return cg_locations;
@@ -149,14 +158,16 @@ function getMachNumber(flight_data, vertical_velocity) {
     const R = 287;      // Specific gas constant for air, J/(kg·K)
 
     flight_data.forEach((data, index) => {
-        // Convert temperature from Celsius to Kelvin
-        const temperature_K = data.ms5611_temperature/100 + 273.15;
+        if (data.flight_stage < 3) {
+            // Convert temperature from Celsius to Kelvin
+            const temperature_K = data.ms5611_temperature/100 + 273.15;
 
-        // Calculate the speed of sound in air at the given temperature
-        const speed_of_sound = Math.sqrt(gamma * R * temperature_K);
+            // Calculate the speed of sound in air at the given temperature
+            const speed_of_sound = Math.sqrt(gamma * R * temperature_K);
 
-        // Calculate the Mach number
-        mach.push(vertical_velocity[index] / speed_of_sound);
+            // Calculate the Mach number
+            mach.push(vertical_velocity[index] / speed_of_sound);
+        }
     });
 
     return mach;
@@ -207,13 +218,14 @@ function exportData() {
           if (data) {
             flight_data = new FlightData();
 
+            // Extract list of data from the flight
             let times = updateTimestamp(data.flight_data);
             let vertical_velocities = getVerticalVelocity(data.flight_data);
             let altitudes = getAltitude(data.flight_data);
-            let masses = getMass(data.flight, times);
-            let l_moment_of_inertia = getLongitudinalMomentOfInertia(data.flight, masses);
-            let r_moment_of_inertia = getRotationalMomentOfInertia(masses);
-            let cg_locations = getCGLocation(data.flight, masses);
+            let masses = getMass(data.flight, data.flight_data, times);
+            let l_moment_of_inertia = getLongitudinalMomentOfInertia(data.flight, data.flight_data, masses);
+            let r_moment_of_inertia = getRotationalMomentOfInertia(data.flight_data, masses);
+            let cg_locations = getCGLocation(data.flight, data.flight_data, masses);
             let mach_numbers = getMachNumber(data.flight_data, vertical_velocities);
             let pressure = [];
 
