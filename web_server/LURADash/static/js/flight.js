@@ -50,15 +50,15 @@ function stopWorker() {
 function updateSequence(flight, flight_data) {
   Object.entries(flight_data).forEach(([key, value]) => {
     if (!Array.isArray(value)) {
-        Object.defineProperty(flight_data, key, {
-            value: [value],
-        });
+      Object.defineProperty(flight_data, key, {
+          value: [value],
+      });
     }
   });
   updateLaunch(flight);
   updateAlt(flight_data.timestamp, flight_data.altitude);
-  updateVelocity(flight_data.timestamp, flight_data.acceleration_x, flight_data.acceleration_z);
-  updateControl(altitude, flight_data.euler_pitch, flight_data.euler_yaw);
+  updateVelocity(flight_data.timestamp, flight_data.vertical_velocity, flight_data.imu_acceleration_z);
+  //updateControl(altitude, flight_data.euler_pitch, flight_data.euler_yaw);
   updateMap(flight_data.gps_longitude, flight_data.gps_latitude, flight_data.gps_altitude);
   updateStats(flight_data);
   updateFlightStages(flight_data.flight_stage);
@@ -119,19 +119,20 @@ function updateAlt(timestamp, altitude) {
 /**
  * Function that updates the velocity chart on the dashboard. Takes advantage
  * of Plotly.extendTraces() to update the chart in real time.
- * @param  {list} timestamp     List of timestamps in HH:MM:SS
+ * @param  {list} timestamp     List of timestamps in MM:ff:SS
  * @param  {list} velocity      List of velocities in m/s
- * @param  {list} acceleration  List of accelerations in m/s^2
+ * @param  {list} acceleration  List of accelerations in milig
  * @return {void}               None
  */
 function updateVelocity(timestamp, velocity, acceleration) {
+  let acc = acceleration.map(element => element / 1000);
   var update_0 = {
     x:  [timestamp],
-    y:  [acceleration],
+    y:  [velocity],
   };
   var update_1 = {
     x:  [timestamp],
-    y:  [acceleration],
+    y:  [acc],
   };
 
   Plotly.extendTraces('velChart', update_0, [0]);
@@ -185,12 +186,16 @@ function updateMap(longitude, latitude, altitude) {
  */
 function updateStats(flight_data) {
   end = flight_data.timestamp.length - 1;
-  document.getElementById('pressure').innerHTML  = flight_data.ms5611_pressure[end];
-  document.getElementById('temperature').innerHTML  = flight_data.ms5611_temperature[end];
+  let pressure = flight_data.ms5611_pressure.map(element => element / 100);
+  let temperature = flight_data.ms5611_temperature.map(element => element / 100);
+  let acc = flight_data.imu_acceleration_z.map(element => element / 1000);
+
+  document.getElementById('pressure').innerHTML  = pressure[end];
+  document.getElementById('temperature').innerHTML  = temperature[end];
   document.getElementById('humidity').innerHTML  = flight_data.bme_humidity[end];
   document.getElementById('sattelites').innerHTML  = flight_data.sattelites[end];
-  document.getElementById('velocity').innerHTML  = 0; // TODO
-  document.getElementById('acceleration').innerHTML  = flight_data.imu_acceleration_z[end];
+  document.getElementById('velocity').innerHTML  = flight_data.vertical_velocity[end]; // TODO
+  document.getElementById('acceleration').innerHTML  = acc[end];
   document.getElementById('flight-stage').innerHTML  = flight_data.flight_stage[end];
   document.getElementById('battery').innerHTML  = flight_data.battery[end];
   document.getElementById('nr-errors').innerHTML  = flight_data.errors[end];
@@ -341,6 +346,8 @@ function flightRun() {
     try {
       fetchFlightData(id_flight).then(data => {      
         if (loader && data) {
+          getVelocity(data.flight_data);
+          getAltitude(data.flight_data);
           loader.postMessage(data);
         }
       });
@@ -376,6 +383,8 @@ function flightDisplay() {
       fetchFlightData(id_flight).then(data => {
         if (data) {
           flight_data = new FlightData(); // Convert from object to list of entries
+          getVelocity(data.flight_data);
+          getAltitude(data.flight_data);
           flight_data.entries_to_lists(data.flight_data)
           updateSequence(data.flight, flight_data);
         }
@@ -384,15 +393,6 @@ function flightDisplay() {
       console.error('Failed to fetch data:', error);
     }
   }
-}
-
-/**
- * Generates a report for the selected flight. The report is in both word and PDF 
- * format and downloaded automtically to the user's computer.
- * @return {void}     None
- */
-function flightGenerateReport() {
-  //TODO 
 }
 //#endregion
 
@@ -438,6 +438,38 @@ async function fetchFlightData(id_flight) {
   } catch (error) {
     console.error('Failed to fetch data:', error);
   }
+}
+
+function parseTime(timestamp) {
+  let parts = timestamp.split(':');
+  return parseInt(parts[0]) * 60 + parseInt(parts[1]) + parseInt(parts[2]) / 1000 + parseInt(parts[3]) / 1000000;
+}
+
+function getVelocity(flight_data) {
+  let previousTime = parseTime(flight_data[0].timestamp);
+  let previousVelocity = 0;
+
+  flight_data.forEach((data, index) => {
+    if (index === 0) {
+      data.vertical_velocity = 0; // Assuming initial velocity is zero
+    } else {
+      let currentTime = parseTime(data.timestamp);
+      let deltaTime = currentTime - previousTime;
+      let currentAcceleration = data.imu_acceleration_z / 1000; // converting from mGal to m/s^2
+      let currentVelocity = previousVelocity + currentAcceleration * deltaTime;
+      data.vertical_velocity = currentVelocity.toFixed(3);
+      previousTime = currentTime;
+      previousVelocity = currentVelocity;
+    }
+  });
+}
+
+function getAltitude(flight_data) {
+  const P0 = 1013.25; // Standard atmospheric pressure at sea level in mbar
+  flight_data.forEach(data => {
+    let pressureInMbar = data.ms5611_pressure / 100; // converting from mbar*100 to mbar
+    data.altitude = 44330 * (1 - Math.pow(pressureInMbar / P0, 1/5.255));
+  });
 }
 //#endregion
 

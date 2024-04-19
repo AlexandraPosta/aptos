@@ -216,6 +216,6 @@ if __name__ == "__main__":
         all_columns[column.name] = column.type
 
     # Run the app
-    # VSCode debug works if debug=false
-    # Frontend updates on reload if debug=true
+    # VSCode debug works if debug=False
+    # Frontend updates on reload if debug=True
     app.run(debug=True)
