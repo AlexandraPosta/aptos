@@ -37,6 +37,7 @@ def get_flights():
 
 
 @app.route('/flight-data/get-flight-data', methods=['GET'])
+@app.route('/export-data/get-flight-data', methods=['GET'])
 @app.route('/get-flight-data', methods=['GET'])
 def get_flight_data():
     """API to return flight data from the database
@@ -182,7 +183,7 @@ def add_data():
         pass
     else:
         return render_template("add-data.html")
-    
+
 
 @app.route('/add-data/upload', methods=['POST'])
 @cross_origin()
@@ -197,6 +198,19 @@ def upload():
     if 'csvData' in data:
         upload_data(data)
     return jsonify({"message": "Data stored successfully"}), 200
+
+
+@app.route('/export-data', methods=['GET', 'POST'])
+def export_data():
+    """Data extraction to csv for the MATLAB script
+
+    Returns:
+        CSV file that can be used as an input on the MATLAB model
+    """
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template("export-data.html")
 
 
 if __name__ == "__main__":

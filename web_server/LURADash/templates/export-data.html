@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block include %}
+<script src="{{ url_for('static', filename='js/export.js') }}"></script>
+<script src="{{ url_for('static', filename='js/custom-data.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="header-container">
+    <select style="width: 200px;" id="flight-search">
+        <option value="">--Select table in database--</option>
+    </select>
+    <button id="export-flight" onclick="exportData()">Export to CSV</button>
+</div>
+{% endblock %}
