@@ -60,7 +60,13 @@ function updateSequence(flight, flight_data) {
   updateLaunch(flight);
   updateAlt(flight_data.timestamp, flight_data.altitude);
   updateVelocity(flight_data.timestamp, flight_data.vertical_velocity, flight_data.imu_acceleration_z);
-  //updateControl(altitude, flight_data.euler_pitch, flight_data.euler_yaw);
+  updateControl(flight_data.altitude, 
+                flight_data.imu_acceleration_x, 
+                flight_data.imu_acceleration_y, 
+                flight_data.imu_acceleration_z, 
+                flight_data.imu_gyro_rate_x,
+                flight_data.imu_gyro_rate_y,
+                flight_data.imu_gyro_rate_z);
   updateMap(flight_data.gps_longitude, flight_data.gps_latitude, flight_data.gps_altitude);
   updateStats(flight_data);
   updateFlightStages(flight_data.flight_stage);
@@ -168,6 +174,16 @@ function updateVelocity(timestamp, velocity, acceleration) {
   Plotly.extendTraces('velChart', update_1, [1]);
 }
 
+function integrate(data) {
+  let integrated_data = [];
+  let sum = 0;
+  for (let i = 0; i < data.length; i++) {
+    sum += data[i];
+    integrated_data.push(sum);
+  }
+  return integrated_data;
+}
+
 /**
  * Function that updates the control chart on the dashboard. It compares 
  * the flight of a perfectly vertical ascend with the actual data of the
@@ -178,17 +194,35 @@ function updateVelocity(timestamp, velocity, acceleration) {
  * @param  {list} euler_yaw     List of euler yaw angles
  * @return {void}               None
  */
-function updateControl(altitude, euler_pitch, euler_yaw) {
+function updateControl(altitude, acc_x, acc_y, gyro_rate_x,gyro_rate_y) {
+  // Convert acc from milig to m/s^2
+  let acc_x_mps2 = acc_x.map(element => element * 9.8 / 1000);
+  let acc_y_mps2 = acc_y.map(element => element * 9.8 / 1000);
+
+  // Convert gyro from milidegrees/s to degrees/s
+  let gyro_rate_x_deg = gyro_rate_x.map(element => element / 1000);
+  let gyro_rate_y_deg = gyro_rate_y.map(element => element / 1000);
+
+  // Integrate acceleration to get velocity
+  let velocity_x = integrate(acc_x_mps2);
+  let velocity_y = integrate(acc_y_mps2);
+
+  // Integrate velocity to get position
+  let position_x = integrate(velocity_x);
+  let position_y = integrate(velocity_y);
+  position_x = position_x.map((val, i) => val + gyro_rate_x_deg[i]);
+  position_y = position_y.map((val, i) => val + gyro_rate_y_deg[i]);
+
   var update_0 = { // ideal
-    x: [Array(euler_pitch.length).fill(euler_pitch[0])],
-    y: [Array(euler_yaw.length).fill(euler_yaw[0])],
-    z: [altitude]
+    x: [Array(altitude.length).fill(altitude[0])],
+    y: [Array(altitude.length).fill(altitude[0])],
+    z: [altitude],
   };
 
   var update_1 = { // real
-    x:  [euler_pitch],
-    y:  [latitude],
-    z:  [altitude]
+    x:  [position_x],
+    y:  [position_y],
+    z:  [altitude],
   };
 
   Plotly.extendTraces('controlChart', update_0, [0]);
@@ -270,7 +304,11 @@ function getGraph(graph_name, height, width, axis_name, traces_name) {
         y: [],
         z: [],
         type: 'scatter3d',
-        name: trace_name
+        name: trace_name,
+        mode: 'markers',
+        marker: {
+          size: 3,
+        }
       });
     }
   });
@@ -580,9 +618,9 @@ window.onload = function() {
     });
 
     // Create charts
-    getGraph('altChart', 250, window.innerWidth * 0.35,  ['time', 'altitude (m)'], ['altitude']);
-    getGraph('velChart', 250, window.innerWidth * 0.35, ['time', 'parameters (m/s, g)'], ['v', 'acc']);
-    getGraph('controlChart', 250, window.innerWidth * 0.35, ['altitude', 'latitude', 'longitude'], ['ideal', 'real']);
+    getGraph('altChart', 250, window.innerWidth * 0.35,  ['Time (s)', 'Altitude (m)'], ['altitude']);
+    getGraph('velChart', 250, window.innerWidth * 0.35, ['Time (s)', 'Parameters (m/s, g)'], ['v', 'acc']);
+    getGraph('controlChart', 250, window.innerWidth * 0.35, ['Altitude', 'Position x', 'Position y'], ['ideal', 'real']);
 
     // Attach event handlers
     attachEventHandlers();
