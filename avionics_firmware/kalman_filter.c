@@ -131,8 +131,8 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     //Calculate Velocity from Accelerometer Values:
     //Initialise Acceleration Z Inertial axis variable:
     float accel_z_inertial_part1 = -sin(pitch_angle_accel*(3.142/180))*accel_x;
-    float accel_z_inertial_part2 = cos(pitch_angle_accel*(3.142/180))*sin(roll_angle_accel*(3.142/180))*accel_y;
-    float accel_z_inertial_part3 = cos(pitch_angle_accel*(3.142/180))*cos(roll_angle_accel*(3.142/180))*accel_z;
+    float accel_z_inertial_part2 = cos(pitch_angle_accel*(3.142/180))*sin(yaw_angle_accel*(3.142/180))*accel_y;
+    float accel_z_inertial_part3 = cos(pitch_angle_accel*(3.142/180))*cos(yaw_angle_accel*(3.142/180))*accel_z;
     float accel_z_inertial = accel_z_inertial_part1 + accel_z_inertial_part2 + accel_z_inertial_part3;
     //Convert to m/s^2:
     accel_z_inertial = -(accel_z_inertial - 1)*9.81;     //Vertical Acceleration measured in m/s^2
@@ -144,17 +144,15 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     //Store Vertical Velocity:
     kalman_data->velocity_measurement.accel = vertical_velocity_accel;  //Vertical Velocity measured in m/s
 
-    /*Calculate Altitude:
+    //Calculate Altitude:
     float pressure = (barometer_data->pressure);    //Pressure in hPa(/this is the same as milliBar)
-    kalman_data->altitude = ((44330*(1 - pow(pressure/1013.25, 1/5.255))/1000.0f) - kalman_data->altitude_init);  //Altitude in m
+    kalman_data->altitude = ((44330*(1 - pow(pressure/1013.25, 1/5.255))/100.0f) - kalman_data->altitude_init);  //Altitude in m
     kalman_data->altitude_change = kalman_data->altitude_change + (kalman_data->altitude - kalman_data->altitude_previous);
     kalman_data->altitude_previous = kalman_data->altitude;
     // Calculate the total time covered by the readings (microseconds):
     float total_time = dt * 1e-6; 
     // Return vertical velocity in m/s
-    kalman_data->velocity_measurement.barom = kalman_data->altitude_change / total_time;*/
-    //Barometer Velocity Calculated from Pressure Change:
-    //kalman_data->velocity_measurement.barom = vertical_velocity_barom;
+    kalman_data->velocity_measurement.barom = kalman_data->altitude_change / total_time;
 
     //Kalman Velocity:
     kalmanFilter(kalman_data->velocity.state, kalman_data->velocity.uncertainty, kalman_data->velocity_measurement.barom, kalman_data->velocity_measurement.accel, &kalman_output_velocity);
