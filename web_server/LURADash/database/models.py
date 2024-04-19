@@ -50,13 +50,13 @@ class Flight(db.Model):
     __tablename__ = "flight"
 
     id_flight = Column(Integer, autoincrement=True, nullable=False, primary_key=True)
-    rocket_name = Column(String(10), nullable=False, default="None")
+    rocket_name = Column(String(20), nullable=False, default="None")
     motor = Column(String(20), nullable=False, default="None")
     date_of_launch = Column(Date, nullable=False, default="1000-01-01")
     time_of_launch = Column(Time, nullable=False, default="00:00:00")
     location = Column(String(20), nullable=False, default="None")
     wind_speed = Column(Float)
-    wind_direction = Column(Float)
+    wind_direction = Column(String(20), nullable=False, default="None")
     active_control = Column(Integer, nullable=False, default=0)
     comments = Column(Text())
 
