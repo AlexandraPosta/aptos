@@ -146,10 +146,10 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     //Calculate Altitude:
     float pressure = (barometer_data->pressure);    //Pressure in hPa(/this is the same as milliBar)
     kalman_data->altitude = ((44330*(1 - pow(pressure/1013.25, 1/5.255))/100.0f) - kalman_data->altitude_init);  //Altitude in m
-    kalman_data->altitude_change = kalman_data->altitude_change + (kalman_data->altitude - kalman_data->altitude_previous);
+    kalman_data->altitude_change = kalman_data->altitude - kalman_data->altitude_previous;
     kalman_data->altitude_previous = kalman_data->altitude;
     // Calculate the total time covered by the readings (microseconds):
-    float total_time = dt * 1e-6; 
+    float total_time = dt; 
     // Return vertical velocity in m/s
     kalman_data->velocity_measurement.barom = kalman_data->altitude_change / total_time;
 
@@ -162,7 +162,7 @@ void kalmanFilterUpdate(orientation_data* gyro_data, LSM6DS3_data* accel_data, M
     //printDataForCollection(current_time, accel_x, accel_y, accel_z, roll_angle_accel, pitch_angle_accel, yaw_angle_accel, roll_angle_gyro, pitch_angle_gyro, yaw_angle_gyro, kalman_data);
 }
 
-//Kalman Filter Function:
+//Scalar Kalman Filter Function:
 void kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_input, float kalman_measurement, float* kalman_output){
     //kalman_state = angle calculated with the kalman filter
     //kalman_uncertainty = uncertainty of the state predicted by the kalman filter
@@ -171,8 +171,8 @@ void kalmanFilter(float kalman_state, float kalman_uncertainty, float kalman_inp
     //Control Matrix Value:
     float control_matrix = 0.01;
     //Standard Deviation of Gyro/Accel Values:
-    float gyro_angle_stddev = 6;
-    float accel_angle_stddev = 10;
+    float gyro_angle_stddev = 1;
+    float accel_angle_stddev = 0.5;
 
     //1. Predict current state of the system:
     kalman_state = kalman_state + (control_matrix*kalman_input);
