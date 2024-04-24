@@ -1,8 +1,7 @@
 /*
   Leeds University Rocketry Organisation - LURA
   Author Name: Alexandra Posta
-  Created on: 04 April 2024
-  Description: Frame struture used for storing and reading off the NAND Flash
+  Description: Frame structure used for storing and reading off the NAND Flash
 */  	
 
 #ifndef FRAME_ARRAY_H
