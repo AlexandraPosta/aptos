@@ -1,7 +1,6 @@
 /*
     Leeds University Rocketry Organisation - LURA
     Author Name: Sam Bruton
-    Created on: 8th April 2024
     Description: Combine Gyro Data with Accelerometer Data through utilisation of Kalman Filter
 */
 #ifndef KALMAN_FILTER_H

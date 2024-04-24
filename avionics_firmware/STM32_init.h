@@ -1,7 +1,6 @@
 /*
 	Leeds University Rocketry Organisation - LURA
   Author Name: Alexandra Posta, Oliver Martin
-  Created on: 10 June 2023
   Description: Header file for the STM32L4R5 firmware
 */
 #ifndef STM32_INIT_H

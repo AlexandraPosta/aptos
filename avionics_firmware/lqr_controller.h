@@ -1,7 +1,6 @@
 /*
   Leeds University Rocketry Organisation - LURA
   Author Name: Alexandra Posta
-  Created on: 19 March 2024
   Description: Include LQR Controller header file
 */
 #ifndef LQR_CONTROLLER_DRIVER_H
@@ -34,7 +33,7 @@ void LQR_init(LQR_controller* lqr);
 /**
   @brief Update the gains of the LQR controller
   @param lqr LQR controller structure
-  @param velocity Current velocity of the rocket
+  @param velocity Current velocity of the rocket in m/s
   @note the gains are set to zero if the velocity is below or above a threshold
 */
 void LQR_update_gain(LQR_controller* lqr, int velocity);

@@ -25,5 +25,5 @@ dfu: firmware.bin
 clean:
 	del -rf firmware.*
 
-debug: # TODO change debug path
+debug:
 	openocd -f "C:/Program Files/OpenOCD/openocd/scripts/board/st_nucleo_l4.cfg

@@ -1,7 +1,6 @@
 /*
   Leeds University Rocketry Organisation - LURA
   Author Name: Alexandra Posta
-  Created on: 19 March 2024
   Description: Include LQR Controller source file
 */
 

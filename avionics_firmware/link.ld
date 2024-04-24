@@ -1,9 +1,7 @@
 /*
 	Leeds University Rocketry Organisation - LURA
-    Author Name: Alexandra Posta
-    Created on: 27 Feb 2023
-	  Last modified on: 27 Feb 2023
-    Description: linker script for the HFC firmware; suitable for STM32L4R5
+  Author Name: Alexandra Posta
+  Description: linker script for the HFC firmware; suitable for STM32L4R5
 */
 
 ENTRY(_reset);

@@ -17,36 +17,50 @@
 #include "orientation_utils.h"
 
 /**
-  @brief Test Routine
+  @brief General Test Routine
 */
 void run_test_routine2() ;
 
 void run_test_routine() ;
 
 /**
-  @brief Test Routine
+  @brief Test Routine for Barometer MS5611
 */
 void run_test_routine_MS5611();
+
 /**
-  @brief Test Routine
+  @brief Test Routine for Temperature BME280
 */
 void run_test_routine_BME280();
 
+/**
+  @brief Test Routine for Gyroscope LSM6DS3
+*/
 void run_test_routine_LSM6DS3();
 
+/**
+  @brief Test Routine for Accelerometer ADXL375
+*/
 void run_ADXL375_routine();
 
+/**
+  @brief Test Routine for Servo
+*/
 void ServoTest();
 
+/**
+  @brief Test Routine for Timer
+*/
 void timer_test();
 
 /**
   @brief Routine to check if it should enter DFU boot mode.
 */
-//void NAND_flash_test_routine();
-
 void DFU_programming_check();
 
+/**
+  @brief Routine to check the LQR controller
+*/
 void run_controller_routine(LSM6DS3_data _LSM6DS3_data, orientation_data _orientation, LQR_controller _LQR_controller);
 
 #endif /*TESTING_ROUTINE_H*/

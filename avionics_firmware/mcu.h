@@ -1,8 +1,7 @@
 /*
 	Leeds University Rocketry Organisation - LURA
   Author Name: Alexandra Posta, Oliver Martin
-  Created on: 27 Feb 2023
-  Description: Main header file for the HFC firmware; suitable for STM32L4R5
+  Description: Main header file for the firmware; suitable for STM32L4R5
 */
 #ifndef MCU_H
 #define MCU_H

@@ -1,8 +1,7 @@
 /*
-    Leeds University Rocketry Organisation - LURA
-    Author Name: Alexandra Posta
-    Created on: 08 March 2024
-    Description: Buffer data for the sensors loop
+  Leeds University Rocketry Organisation - LURA
+  Author Name: Alexandra Posta
+  Description: Buffer data for the sensors loop
 */
 
 #include "data_buffer.h"

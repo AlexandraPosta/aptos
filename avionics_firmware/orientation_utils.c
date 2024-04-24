@@ -1,7 +1,6 @@
 /*
     Leeds University Rocketry Organisation - LURA
     Author Name: Alexandra Posta
-    Created on: 18 March 2024
     Description: Transform gyroscope data to quateniun and euler matrices
 */
 
@@ -199,22 +198,4 @@ void OrientationAccelerationQuaternion(orientation_data* _orientation, float acc
     correction->x = alpha * error_x;
     correction->y = alpha * error_y;
     correction->z = alpha * error_z;
-
-    
-    /*
-    // Estimate roll and pitch angles
-    float pitch = atan2(accel_vector[1], accel_vector[2]);
-    float roll = atan2(-accel_vector[0], sqrt(accel_vector[1] * accel_vector[1] + accel_vector[2] * accel_vector[2]));
-    // Calculate initial quaternion components based on the estimated roll and pitch angles
-    float cy = cos(roll * 0.5f);
-    float sy = sin(roll * 0.5f);
-    float cp = cos(pitch * 0.5f);
-    float sp = sin(pitch * 0.5f);
-
-    float alpha = 0.001;
-    correction->w = (q_est.w - cy * cp) * alpha;
-    correction->x = (q_est.x - cy * sp) * alpha;
-    correction->y = (q_est.x - sy * cp) * alpha;
-    correction->z = (q_est.x - (-sy * sp)) * alpha;
-    */
 }

@@ -1,8 +1,7 @@
 /*
-    Leeds University Rocketry Organisation - LURA
-    Author Name: Alexandra Posta
-    Created on: 18 March 2024
-    Description: Transform gyroscope data to quateniun and euler matrices
+  Leeds University Rocketry Organisation - LURA
+  Author Name: Alexandra Posta
+  Description: Transform gyroscope data to quateniun and euler matrices
 */
 
 #ifndef ORIENTATION_UTILS_H
@@ -55,6 +54,19 @@ void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data
 */
 void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data, bool pad);
 
+/**
+  @brief Check if rocket is moving based on acceleration vector
+  @param _LSM6DS3_data Gyroscope data
+  @param vector Acceleration vector
+  @return True if the vector is valid
+*/
 bool OrientationAccelerationVector(LSM6DS3_data* _LSM6DS3_data, float vector[]);
+
+/**
+  @brief Check if stationary, to correct gyro drift, based on acceleration vector
+  @param _orientation Orientation data structure
+  @param accel Acceleration vector
+  @param correction Quaternion correction
+*/
 void OrientationAccelerationQuaternion(orientation_data* _orientation, float accel[], Quaternion* correction);
 #endif /* ORIENTATION_UTILS_H */

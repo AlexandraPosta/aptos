@@ -1,3 +1,9 @@
+/**
+  Leeds University Rocketry Organisation - LURA
+  Author Name: Alexandra Posta
+  Description: System calls for newlib
+*/
+
 #include "mcu.h"
 #include <inttypes.h>
 #include <stdbool.h>

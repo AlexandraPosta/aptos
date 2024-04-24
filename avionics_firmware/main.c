@@ -1,3 +1,9 @@
+/*
+  Leeds University Rocketry Organisation - LURA
+  Author Name: Alexandra Posta, Oliver Martin
+  Description: Entry point for the Flight Computer Aptos firmware
+*/
+
 #include <stdio.h>
 #include "STM32_init.h"
 #include "mcu.h"
@@ -14,9 +20,9 @@
 #include "orientation_utils.h"
 #include "kalman_filter.h"
 
-#define PADREADFREQ     100   // Frequency to read data during ascent
+#define PADREADFREQ     100   // Frequency to read data during launchpad
 #define ASCENTREADFREQ  1000  // Frequency to read data during ascent
-#define APOGEEREADFREQ  1000  // Frequency to read data during ascent
+#define APOGEEREADFREQ  1000  // Frequency to read data during apogee
 #define DESCENTREADFREQ 100   // Frequency to read data during descent
 
 #define SERVOS_RUN      1     // Enable or disable servos
