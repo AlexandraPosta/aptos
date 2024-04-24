@@ -94,8 +94,8 @@ void orientation_change_coordinate_system(LSM6DS3_data* _LSM6DS3_data) {
 // On the controller -> X: ROLL,  Y: PITCH, Z: -YAW (left rule)
 void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data, bool pad) {
     // Change orientation data to match the controller coordinate system
-    orientation_change_coordinate_system(_LSM6DS3_data);
-    orientation_change_accel_coordinate_system(_LSM6DS3_data);
+    //orientation_change_coordinate_system(_LSM6DS3_data);
+    //orientation_change_accel_coordinate_system(_LSM6DS3_data);
     float wx = ((float)_LSM6DS3_data->x_rate * M_PI_F / 180.0f) / 1000.0f; // millidegrees/second -> radians/second
     float wy = ((float)_LSM6DS3_data->y_rate * M_PI_F / 180.0f) / 1000.0f;
     float wz = ((float)_LSM6DS3_data->z_rate * M_PI_F / 180.0f) / 1000.0f;
@@ -119,6 +119,7 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
 
     float accel_vector[4];
     if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector) && pad){ //try to get an acceleration vector to use as starting angle
+        /*
         float pitch_angle_accel = atan(accel_vector[1]/sqrt((accel_vector[0]*accel_vector[0])+(accel_vector[2]*accel_vector[2])));
         float yaw_angle_accel = atan(accel_vector[0]/sqrt((accel_vector[1]*accel_vector[1])+(accel_vector[2]*accel_vector[2])));
         // Calculate initial quaternion components based on the estimated roll and pitch angles
@@ -130,6 +131,18 @@ void orientation_update(unsigned int dt, orientation_data* orientation, LSM6DS3_
         orientation->current_quaternion.x = 0.9f * orientation->current_quaternion.x + 0.1f * sy * sp;
         orientation->current_quaternion.y = 0.9f * orientation->current_quaternion.y + 0.1f * cp * sy;
         orientation->current_quaternion.z = 0.9f * orientation->current_quaternion.z + 0.1f * sp * cy;
+        */
+
+        float pitch = atan2(accel_vector[1], accel_vector[2]);
+        float roll = atan2(-accel_vector[0], sqrt(accel_vector[1] * accel_vector[1] + accel_vector[2] * accel_vector[2]));
+        float cy = cos(roll * 0.5f);
+        float sy = sin(roll * 0.5f);
+        float cp = cos(pitch * 0.5f);
+        float sp = sin(pitch * 0.5f);
+        orientation->current_quaternion.w = 0.9f * orientation->current_quaternion.w + 0.1f * cy * cp;
+        orientation->current_quaternion.x = 0.9f * orientation->current_quaternion.x + 0.1f * cy * sp;
+        orientation->current_quaternion.y = 0.9f * orientation->current_quaternion.y + 0.1f * sy * cp;
+        orientation->current_quaternion.z = 0.9f * orientation->current_quaternion.z + 0.1f * -sy * sp;
     }
 
     // Normalise quaternions

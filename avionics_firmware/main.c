@@ -19,7 +19,7 @@
 #define APOGEEREADFREQ  1000  // Frequency to read data during ascent
 #define DESCENTREADFREQ 100   // Frequency to read data during descent
 
-#define SERVOS_RUN      1     // Enable or disable servos
+#define SERVOS_RUN      0     // Enable or disable servos
 
 // Flags
 FlightStages flightStage = LAUNCHPAD;
@@ -223,6 +223,10 @@ int main(void) {
 
             // Update buffer and window
             update_buffer(&frame, &frame_buffer);
+
+            // Log data
+            log_frame(frame);
+
             if (frame_buffer.count > WINDOW_SIZE*2) {
               // Get the window barometer readings
               for (int i = 0; i < WINDOW_SIZE; i++) {
@@ -234,7 +238,7 @@ int main(void) {
               //printf("Diff: %i, ground: %i, cur_read: %i\r\n", frame_buffer.ground_ref - current_pressure, frame_buffer.ground_ref, current_pressure);
               OrientationAccelerationVector(&_LSM6DS3_data, &accel_vector);
 
-              if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD && accel_vector[3] > 1.4) {
+              if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD && accel_vector[3] > 1.4 || accel_vector[3] < 0.6) {
                 flightStage = ASCENT;
 
                 //set LED 1 to orange for ascent triggered.
@@ -247,9 +251,9 @@ int main(void) {
                 printf("FLIGHT STAGE = ASCENT\r\n");
 
                 // Log data from the the last window
-                for (int i = 0; i < 10; i++) {
-                  log_frame(frame_buffer.window[i]);
-                }
+                //for (int i = 0; i < 10; i++) {
+                //  log_frame(frame_buffer.window[i]);
+                //}
               }
             }
           }
