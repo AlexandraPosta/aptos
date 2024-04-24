@@ -50,7 +50,11 @@ void get_frame_array(FrameArray* _frameArray,
   _frameArray->accel = _ADXL375_data;
   _frameArray->imu =_LSM6DS3_data;
   _frameArray->barometer = _M5611_data;
-  _frameArray->GNSS = _GNSS_data;
+  //_frameArray->GN(SS = _GNSS_data;
+  _frameArray->GNSS.latitude = (int16_t) _kalman_data.velocity_measurement.accel * 100.0f;
+  _frameArray->GNSS.longitude = (int16_t) _kalman_data.velocity_measurement.barom * 100.0f;
+  _frameArray->GNSS.altitude = (int16_t) _kalman_data.velocity.state *100.0f;
+  _frameArray->GNSS.velocity = (int16_t) _kalman_data.velocity.gain * 100.0f;
   _frameArray->bme = _BME280_data;
   _frameArray->euler = _orientation.current_euler;
   _frameArray->euler_rate = _orientation.current_rate_euler;
@@ -238,7 +242,7 @@ int main(void) {
               //printf("Diff: %i, ground: %i, cur_read: %i\r\n", frame_buffer.ground_ref - current_pressure, frame_buffer.ground_ref, current_pressure);
               OrientationAccelerationVector(&_LSM6DS3_data, &accel_vector);
 
-              if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD && accel_vector[3] > 1.4 || accel_vector[3] < 0.6) {
+              if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD && accel_vector[3] > 1.5 || accel_vector[3] < 0.5) {
                 flightStage = ASCENT;
 
                 //set LED 1 to orange for ascent triggered.
