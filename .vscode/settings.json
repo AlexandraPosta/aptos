@@ -17,6 +17,7 @@
         "atomic": "c",
         "cstdint": "c",
         "type_traits": "c",
-        "*.rh": "c"
+        "*.rh": "c",
+        "data_buffer.h": "c"
     }
 }

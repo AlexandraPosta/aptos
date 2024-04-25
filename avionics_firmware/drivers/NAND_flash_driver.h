@@ -355,9 +355,9 @@ static inline FrameArray unzip(uint8_t *zippedData) {
   unzippedData.GNSS.latitude |= zippedData[i++];
   unzippedData.GNSS.longitude = (zippedData[i++] << 8) & (0xFF << 8);
   unzippedData.GNSS.longitude |= zippedData[i++];
-  unzippedData.GNSS.altitude |= (zippedData[i++] << 8) & (0xFF << 8);
+  unzippedData.GNSS.altitude = (zippedData[i++] << 8) & (0xFF << 8);
   unzippedData.GNSS.altitude |= zippedData[i++];
-  unzippedData.GNSS.velocity |= (zippedData[i++] << 8) & (0xFF << 8);
+  unzippedData.GNSS.velocity = (zippedData[i++] << 8) & (0xFF << 8);
   unzippedData.GNSS.velocity |= zippedData[i++];
 
   // BME280
@@ -365,7 +365,7 @@ static inline FrameArray unzip(uint8_t *zippedData) {
   unzippedData.bme.pressure |= (zippedData[i++] << 16) & (0xFF << 16);
   unzippedData.bme.pressure |= (zippedData[i++] << 8) & (0xFF << 8);
   unzippedData.bme.pressure |= zippedData[i++];
-  unzippedData.bme.temperature |= (zippedData[i++] << 8) & (0xFF << 8);
+  unzippedData.bme.temperature = (zippedData[i++] << 8) & (0xFF << 8);
   unzippedData.bme.temperature |= zippedData[i++];
   unzippedData.bme.humidity = (zippedData[i++] << 24) & (0xFF << 24);
   unzippedData.bme.humidity |= (zippedData[i++] << 16) & (0xFF << 16);

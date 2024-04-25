@@ -15,7 +15,7 @@
 #include "kalman_filter.h"
 
 #define PADREADFREQ     100   // Frequency to read data during ascent
-#define ASCENTREADFREQ  1000  // Frequency to read data during ascent
+#define ASCENTREADFREQ  100  // Frequency to read data during ascent
 #define APOGEEREADFREQ  1000  // Frequency to read data during ascent
 #define DESCENTREADFREQ 100   // Frequency to read data during descent
 
@@ -51,10 +51,10 @@ void get_frame_array(FrameArray* _frameArray,
   _frameArray->imu =_LSM6DS3_data;
   _frameArray->barometer = _M5611_data;
   //_frameArray->GN(SS = _GNSS_data;
-  _frameArray->GNSS.latitude = (int16_t) _kalman_data.velocity_measurement.accel * 100.0f;
-  _frameArray->GNSS.longitude = (int16_t) _kalman_data.velocity_measurement.barom * 100.0f;
-  _frameArray->GNSS.altitude = (int16_t) _kalman_data.velocity.state *100.0f;
-  _frameArray->GNSS.velocity = (int16_t) _kalman_data.velocity.gain * 100.0f;
+  _frameArray->GNSS.latitude = (int16_t) _orientation.current_quaternion.w * 1000.0f;
+  _frameArray->GNSS.longitude = (int16_t) _orientation.current_quaternion.x * 1000.0f;
+  _frameArray->GNSS.altitude = (int16_t) _orientation.current_quaternion.y * 1000.0f;
+  _frameArray->GNSS.velocity = (int16_t) _orientation.current_quaternion.z * 1000.0f;
   _frameArray->bme = _BME280_data;
   _frameArray->euler = _orientation.current_euler;
   _frameArray->euler_rate = _orientation.current_rate_euler;
@@ -90,10 +90,11 @@ void run_nand_flash_erase(){
 */
 void NAND_flash_read()
 {
-  uart_init(USART1, 921600); //921600
+  uart_init(USART1, 115200); //921600
   printf("==================== Reading NAND FLASH ====================\r\n");
   read_all_csv();
   print_capacity_info();
+  while(1);
 }
 
 /**
@@ -183,7 +184,7 @@ int main(void) {
   //run_test_routine_LSM6DS3();
   //run_test_routine_MS5611();
   //run_nand_flash_erase();
-  //NAND_flash_read();
+  NAND_flash_read();
   //DFU_programming_test();
   //ServoTest();
   //run_controller_routine(_LSM6DS3_data, _orientation, _LQR_controller);
@@ -242,7 +243,7 @@ int main(void) {
               //printf("Diff: %i, ground: %i, cur_read: %i\r\n", frame_buffer.ground_ref - current_pressure, frame_buffer.ground_ref, current_pressure);
               OrientationAccelerationVector(&_LSM6DS3_data, &accel_vector);
 
-              if ((frame_buffer.ground_ref - current_pressure) > LAUNCH_THRESHOLD && accel_vector[3] > 1.5 || accel_vector[3] < 0.5) {
+              if (accel_vector[3] > 1.5 || accel_vector[3] < 0.5) {
                 flightStage = ASCENT;
 
                 //set LED 1 to orange for ascent triggered.
@@ -291,13 +292,13 @@ int main(void) {
             // Complete LQR Control
             LQR_update_gain(&_LQR_controller, current_velocity);
             LQR_perform_control(&_LQR_controller, _orientation, &_servoDeflections);
-            ServoSetTargetAngle(&servos[0], (int32_t)_servoDeflections.servo_deflection_3*10);
-            ServoSetTargetAngle(&servos[1], (int32_t)_servoDeflections.servo_deflection_4*10);
-            ServoSetTargetAngle(&servos[2], (int32_t)_servoDeflections.servo_deflection_2*10);
-            ServoSetTargetAngle(&servos[3], (int32_t)_servoDeflections.servo_deflection_1*10);
+            //ServoSetTargetAngle(&servos[0], (int32_t)_servoDeflections.servo_deflection_3*10);
+            //ServoSetTargetAngle(&servos[1], (int32_t)_servoDeflections.servo_deflection_4*10);
+            //ServoSetTargetAngle(&servos[2], (int32_t)_servoDeflections.servo_deflection_2*10);
+            //ServoSetTargetAngle(&servos[3], (int32_t)_servoDeflections.servo_deflection_1*10);
 
             // Check for apogee given pressure increase
-            if (current_pressure - previous_pressure > APOGEE_THRESHOLD){
+            if (current_pressure - previous_pressure > APOGEE_THRESHOLD && false){
               flightStage = APOGEE;
               printf("FLIGHT STAGE = APOGEE\r\n");
               //set LED 1 to red for ascent triggered.

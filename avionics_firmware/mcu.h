@@ -37,10 +37,10 @@ typedef struct DateTime {
 } DateTime;
 
 typedef struct GNSS_Data{
-  uint16_t latitude;
-  uint16_t longitude;
-  uint16_t altitude;
-  uint16_t velocity;
+  int16_t latitude;
+  int16_t longitude;
+  int16_t altitude;
+  int16_t velocity;
 } GNSS_Data;
 
 typedef struct ServoDeflections
