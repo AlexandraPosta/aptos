@@ -35,9 +35,10 @@ void orientation_change_accel_coordinate_system(LSM6DS3_data* _LSM6DS3_data) {
 void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data) {
     float accel_vector[4];
     orientation_change_accel_coordinate_system(_LSM6DS3_data);
-    if(OrientationAccelerationVector(_LSM6DS3_data, &accel_vector)){ //try to get an acceleration vector to use as starting angle
+    if (OrientationAccelerationVector(_LSM6DS3_data, &accel_vector)) { //try to get an acceleration vector to use as starting angle
         float pitch_angle_accel = atan(accel_vector[1]/sqrt((accel_vector[0]*accel_vector[0])+(accel_vector[2]*accel_vector[2])));
         float yaw_angle_accel = atan(accel_vector[0]/sqrt((accel_vector[1]*accel_vector[1])+(accel_vector[2]*accel_vector[2])));
+
         // Calculate initial quaternion components based on the estimated roll and pitch angles
         float cy = cos(pitch_angle_accel * 0.5f);
         float sy = sin(pitch_angle_accel * 0.5f);
@@ -53,7 +54,7 @@ void orientation_init(orientation_data* orientation, LSM6DS3_data* _LSM6DS3_data
         orientation->previous_euler.roll = orientation->current_euler.roll;
         orientation->previous_euler.pitch = orientation->current_euler.pitch;
         orientation->previous_euler.yaw = orientation->current_euler.yaw;
-    }else{  //accel wasn't close enough to 1g
+    } else {  //accel wasn't close enough to 1g
         // Set initial values for current_quaternion
         orientation->current_quaternion.w = 1.0;
         orientation->current_quaternion.x = 0.0;
