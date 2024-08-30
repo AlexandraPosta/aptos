@@ -199,9 +199,6 @@ class FlightData(db.Model):
     euler_rate_roll = Column(Float, default="0")
     euler_rate_pitch = Column(Float, default="0")
     euler_rate_yaw = Column(Float, default="0")
-    euler_kalman_roll = Column(Float, default="0")
-    euler_kalman_pitch = Column(Float, default="0")
-    euler_kalman_yaw = Column(Float, default="0")
     battery = Column(Float, default="0")
     sattelites = Column(Integer, default="0")
     errors = Column(Text())
@@ -239,9 +236,6 @@ class FlightData(db.Model):
                  euler_rate_roll=0,
                  euler_rate_pitch=0,
                  euler_rate_yaw=0,
-                 euler_kalman_roll=0,
-                 euler_kalman_pitch=0,
-                 euler_kalman_yaw=0,
                  battery=0,
                  sattelites=0,
                  errors="None"):
@@ -277,9 +271,6 @@ class FlightData(db.Model):
         self.euler_rate_roll = euler_rate_roll
         self.euler_rate_pitch = euler_rate_pitch
         self.euler_rate_yaw = euler_rate_yaw
-        self.euler_kalman_roll = euler_kalman_roll,
-        self.euler_kalman_pitch = euler_kalman_pitch,
-        self.euler_kalman_yaw = euler_kalman_yaw,
         self.battery = battery
         self.sattelites = sattelites
         self.errors = errors

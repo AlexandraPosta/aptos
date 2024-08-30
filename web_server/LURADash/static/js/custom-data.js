@@ -41,9 +41,6 @@
 * @param {list} euler_rate_roll         - List of roll rates in milidegrees per second
 * @param {list} euler_rate_pitch        - List of pitch rates in milidegrees per second
 * @param {list} euler_rate_yaw          - List of yaw rates in milidegrees per second
-* @param {list} euler_kalman_roll       - List of kalman roll angles in milidegrees
-* @param {list} euler_kalman_pitch      - List of kalman pitch angles in milidegrees
-* @param {list} euler_kalman_yaw        - List of kalman yaw angles in milidegrees
 * @param {list} battery                 - List of battery levels in voltage
 * @param {list} sattelites              - List of sattelite counts
 * @param {list} errors                  - List of errors as string
@@ -89,9 +86,6 @@ class FlightData {
         this.euler_rate_roll = [];
         this.euler_rate_pitch = [];
         this.euler_rate_yaw = [];
-        this.euler_kalman_roll = [];
-        this.euler_kalman_pitch = [];
-        this.euler_kalman_yaw = [];
         this.battery = [];
         this.sattelites = [];
         this.errors = [];
@@ -152,9 +146,6 @@ class FlightData {
         this.euler_rate_roll.push(entry.euler_rate_roll);
         this.euler_rate_pitch.push(entry.euler_rate_pitch);
         this.euler_rate_yaw.push(entry.euler_rate_yaw);
-        this.euler_kalman_roll.push(entry.euler_kalman_roll);
-        this.euler_kalman_pitch.push(entry.euler_kalman_pitch);
-        this.euler_kalman_yaw.push(entry.euler_kalman_yaw);
         this.battery.push(entry.battery);
         this.sattelites.push(entry.sattelites);
         this.errors.push(entry.errors);

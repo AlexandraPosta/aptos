@@ -231,23 +231,6 @@ static inline void zip(FrameArray unzippedData, uint8_t *zippedData) {
   zippedData[i++] = (int8_t)((yaw_rate >> 8) & 0xFF);
   zippedData[i++] = (int8_t)( yaw_rate & 0xFF);
 
-  // Current euler kalman
-  int32_t roll_kalman = (int32_t)(unzippedData.euler_kalman.roll * 1000);
-  int32_t pitch_kalman = (int32_t)(unzippedData.euler_kalman.pitch * 1000);
-  int32_t yaw_kalman = (int32_t)(unzippedData.euler_kalman.yaw * 1000);
-  zippedData[i++] = (int8_t)((roll_kalman >> 24) & 0xFF);
-  zippedData[i++] = (int8_t)((roll_kalman >> 16) & 0xFF);
-  zippedData[i++] = (int8_t)((roll_kalman >> 8) & 0xFF);
-  zippedData[i++] = (int8_t)( roll_kalman & 0xFF);
-  zippedData[i++] = (int8_t)((pitch_kalman >> 24) & 0xFF);
-  zippedData[i++] = (int8_t)((pitch_kalman >> 16) & 0xFF);
-  zippedData[i++] = (int8_t)((pitch_kalman >> 8) & 0xFF);
-  zippedData[i++] = (int8_t)( pitch_kalman & 0xFF);
-  zippedData[i++] = (int8_t)((yaw_kalman >> 24) & 0xFF);
-  zippedData[i++] = (int8_t)((yaw_kalman >> 16) & 0xFF);
-  zippedData[i++] = (int8_t)((yaw_kalman >> 8) & 0xFF);
-  zippedData[i++] = (int8_t)( yaw_kalman & 0xFF);
-
   // Servo Deflection
   zippedData[i++] = (int8_t)((unzippedData.servos.servo_deflection_1 >> 8) & 0xFF);
   zippedData[i++] = (int8_t)(unzippedData.servos.servo_deflection_1 & 0xFF);
@@ -411,25 +394,6 @@ static inline FrameArray unzip(uint8_t *zippedData) {
   temp |= zippedData[i++];
   unzippedData.euler_rate.yaw = ((float) temp) / 1000.0f;
 
-  // Kalman euler
-  temp = (zippedData[i++] << 24) & (0xFF << 24);
-  temp |= (zippedData[i++] << 16) & (0xFF << 16);
-  temp |= (zippedData[i++] << 8) & (0xFF << 8);
-  temp |= zippedData[i++];
-  unzippedData.euler_kalman.roll = ((float) temp) / 1000.0f;
-
-  temp = (zippedData[i++] << 24) & (0xFF << 24);
-  temp |= (zippedData[i++] << 16) & (0xFF << 16);
-  temp |= (zippedData[i++] << 8) & (0xFF << 8);
-  temp |= zippedData[i++];
-  unzippedData.euler_kalman.pitch = ((float) temp) / 1000.0f;
-
-  temp = (zippedData[i++] << 24) & (0xFF << 24);
-  temp |= (zippedData[i++] << 16) & (0xFF << 16);
-  temp |= (zippedData[i++] << 8) & (0xFF << 8);
-  temp |= zippedData[i++];
-  unzippedData.euler_kalman.yaw = ((float) temp) / 1000.0f;
-
   // Servo Deflection
   unzippedData.servos.servo_deflection_1 = (zippedData[i++] << 8) & (0xFF << 8);
   unzippedData.servos.servo_deflection_1 |= zippedData[i++];
@@ -555,12 +519,6 @@ static inline void print_frame_array(FrameArray frameFormat) {
   printf_float("\tYaw", frameFormat.euler_rate.yaw, true);
   printf("\r\n");  
 
-  printf("Euler Kalman: ");                                                               
-  printf_float("\tRoll", frameFormat.euler_kalman.roll, true);
-  printf_float("\tPitch", frameFormat.euler_kalman.pitch, true);
-  printf_float("\tYaw", frameFormat.euler_kalman.yaw, true);
-  printf("\r\n");
-
   printf("Servo Deflection:\t1: %i,\t2: %i,\t3: %i,\t4: %i\r\n", frameFormat.servos.servo_deflection_1, 
                                                                  frameFormat.servos.servo_deflection_2, 
                                                                  frameFormat.servos.servo_deflection_3, 
@@ -584,7 +542,6 @@ static inline void print_csv_header() {
   printf("bme_pressure,bme_temperature,bme_humidity,");
   printf("euler_roll,euler_pitch,euler_yaw,");
   printf("euler_rate_roll,euler_rate_pitch,euler_rate_yaw,");
-  printf("euler_kalman_roll,euler_kalman_pitch,euler_kalman_yaw,");
   printf("servo_deflection_1,servo_deflection_2,servo_deflection_3,servo_deflection_4,");
   printf("\r\n");
 }
@@ -632,13 +589,6 @@ static inline void print_frame_csv(FrameArray frameFormat) {
   printf_float(NULL, frameFormat.euler_rate.pitch, false);
   printf(",");
   printf_float(NULL, frameFormat.euler_rate.yaw, false);
-  printf(",");
-
-  printf_float(NULL, frameFormat.euler_kalman.roll, false);
-  printf(",");
-  printf_float(NULL, frameFormat.euler_kalman.pitch, false);
-  printf(",");
-  printf_float(NULL, frameFormat.euler_kalman.yaw, false);
   printf(",");
 
   printf("%i,%i,%i,%i,", frameFormat.servos.servo_deflection_1, 

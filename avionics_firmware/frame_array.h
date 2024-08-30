@@ -25,7 +25,6 @@ typedef struct FrameArray {
   BME280_data bme;          // 80 bits
   Euler euler;              // 96 bits
   Euler euler_rate;         // 96 bits
-  Euler euler_kalman;       // 96 bits
   ServoDeflections servos;  // 64 bits
   uint8_t hammingCode[8];
   uint16_t CRC_Check;

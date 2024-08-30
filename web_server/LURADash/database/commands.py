@@ -192,9 +192,6 @@ def upload_data(data):
                 euler_rate_roll=entry.get('euler_rate_roll', 0),
                 euler_rate_pitch=entry.get('euler_rate_pitch', 0),
                 euler_rate_yaw=entry.get('euler_rate_yaw', 0),
-                euler_kalman_roll=entry.get('euler_kalman_roll', 0),
-                euler_kalman_pitch=entry.get('euler_kalman_pitch', 0),
-                euler_kalman_yaw=entry.get('euler_kalman_yaw', 0),
                 battery=entry.get('battery', 0),
                 sattelites=entry.get('sattelites', 0),
                 errors=entry.get('errors', 'None')
