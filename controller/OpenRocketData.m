@@ -11,7 +11,6 @@
         X_CG
         M
         mDot
-        mbar
         railHeight = 6 
 
     end
@@ -36,7 +35,6 @@
             obj.I_R = data(idx:end,6);
             obj.X_CG = data(idx:end,7);
             obj.M = data(idx:end,8);  
-            obj.mbar = data(idx:end,9);  
 
             % Calculate mass derivative
             for i = 1:length(obj.t)

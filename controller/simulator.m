@@ -14,7 +14,6 @@ close all;
 
 [aptos, steadyState, OR, controller] = setupObjects('openrocket_data/OpenRocket_data_31-03-23.csv');
 
-
 simData = SimulationData;
 
 %% GAIN SCHEDULING

@@ -7,7 +7,6 @@ classdef SimulationData
         motorSpeed      % rad/sec
         windSpeed       % m/s
         time            % s
-        rollAngle
         pitchAngle      % deg
         yawAngle        % deg
         x1              % deg
@@ -23,9 +22,6 @@ classdef SimulationData
         simOutput       % Simulink.SimulationOutput object
         maxDeflection   % rad
         uncertain_obj   % Rocket object of uncertain parameters (for robustness)
-        pOut
-        qOut
-        rOut
 
     end
 
@@ -48,7 +44,7 @@ classdef SimulationData
             
             obj.time = cat(2, obj.time, data.tout);
 
-            numExports = data.yout.numElements; 
+            numExports = data.yout.numElements;
 
             for i = 1:numExports
     

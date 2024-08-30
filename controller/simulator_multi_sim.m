@@ -12,7 +12,7 @@ close all;
 
 %% OBJECT SETUP
 
-[aptos, steadyState, OR, controller] = setupObjects('openrocket_data/OpenRocket_data_31-03-23.csv');
+[aptos, steadyState, OR, controller] = setupObjects('openrocket_data/OpenRocket_data_22-02-23.csv');
 
 simData = SimulationData;
 
